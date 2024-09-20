@@ -1,0 +1,7 @@
+# Importance sampling I
+
+## Variance reduction
+
+## Rejection
+
+## Importance sampling: definition

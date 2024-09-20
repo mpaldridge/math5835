@@ -1,0 +1,273 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "MATH5835M Statistical Computing",
+    "section": "",
+    "text": "Schedule\nThis is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.\n\n1 + 1\n\n[1] 2",
+    "crumbs": [
+      "Schedule"
+    ]
+  },
+  {
+    "objectID": "lectures/L01-intro.html",
+    "href": "lectures/L01-intro.html",
+    "title": "1  Introduction to Statistical Computing",
+    "section": "",
+    "text": "1.1 What is statistical computing?",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to Statistical Computing</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L01-intro.html#probability-and-statistics-background",
+    "href": "lectures/L01-intro.html#probability-and-statistics-background",
+    "title": "1  Introduction to Statistical Computing",
+    "section": "1.2 Probability and statistics background",
+    "text": "1.2 Probability and statistics background",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to Statistical Computing</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L01-intro.html#r-programming",
+    "href": "lectures/L01-intro.html#r-programming",
+    "title": "1  Introduction to Statistical Computing",
+    "section": "1.3 R programming",
+    "text": "1.3 R programming",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to Statistical Computing</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L02-mc-intro.html",
+    "href": "lectures/L02-mc-intro.html",
+    "title": "2  Introduction to Monte Carlo",
+    "section": "",
+    "text": "2.1 Example: estimating the expection",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to Monte Carlo</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L02-mc-intro.html#example-estimating-π-with-a-tin-can-and-a-box",
+    "href": "lectures/L02-mc-intro.html#example-estimating-π-with-a-tin-can-and-a-box",
+    "title": "2  Introduction to Monte Carlo",
+    "section": "2.2 Example: Estimating π with a tin-can and a box",
+    "text": "2.2 Example: Estimating π with a tin-can and a box",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to Monte Carlo</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L02-mc-intro.html#monte-carlo-estimator",
+    "href": "lectures/L02-mc-intro.html#monte-carlo-estimator",
+    "title": "2  Introduction to Monte Carlo",
+    "section": "2.3 Monte Carlo estimator",
+    "text": "2.3 Monte Carlo estimator",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to Monte Carlo</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L03-mc-examples.html",
+    "href": "lectures/L03-mc-examples.html",
+    "title": "3  Monte Carlo examples",
+    "section": "",
+    "text": "3.1 Example of Monte Carlo estimation",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Monte Carlo examples</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L03-mc-examples.html#monte-carlo-estimation-of-probabilities",
+    "href": "lectures/L03-mc-examples.html#monte-carlo-estimation-of-probabilities",
+    "title": "3  Monte Carlo examples",
+    "section": "3.2 Monte Carlo estimation of probabilities",
+    "text": "3.2 Monte Carlo estimation of probabilities",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Monte Carlo examples</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L03-mc-examples.html#monte-carlo-estimation-of-integrals",
+    "href": "lectures/L03-mc-examples.html#monte-carlo-estimation-of-integrals",
+    "title": "3  Monte Carlo examples",
+    "section": "3.3 Monte Carlo estimation of integrals",
+    "text": "3.3 Monte Carlo estimation of integrals",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Monte Carlo examples</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L04-mc-error.html",
+    "href": "lectures/L04-mc-error.html",
+    "title": "4  Monte Carlo error",
+    "section": "",
+    "text": "4.1 Reminder: bias and error",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Monte Carlo error</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L04-mc-error.html#reminder-limit-theorems",
+    "href": "lectures/L04-mc-error.html#reminder-limit-theorems",
+    "title": "4  Monte Carlo error",
+    "section": "4.2 Reminder: limit theorems",
+    "text": "4.2 Reminder: limit theorems",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Monte Carlo error</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L04-mc-error.html#bias-and-error-of-the-monte-carlo-estimator",
+    "href": "lectures/L04-mc-error.html#bias-and-error-of-the-monte-carlo-estimator",
+    "title": "4  Monte Carlo error",
+    "section": "4.3 Bias and error of the Monte Carlo estimator",
+    "text": "4.3 Bias and error of the Monte Carlo estimator",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Monte Carlo error</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L05-is-1.html",
+    "href": "lectures/L05-is-1.html",
+    "title": "5  Importance sampling I",
+    "section": "",
+    "text": "5.1 Variance reduction",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Importance sampling I</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L05-is-1.html#rejection",
+    "href": "lectures/L05-is-1.html#rejection",
+    "title": "5  Importance sampling I",
+    "section": "5.2 Rejection",
+    "text": "5.2 Rejection",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Importance sampling I</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L05-is-1.html#importance-sampling-definition",
+    "href": "lectures/L05-is-1.html#importance-sampling-definition",
+    "title": "5  Importance sampling I",
+    "section": "5.3 Importance sampling: definition",
+    "text": "5.3 Importance sampling: definition",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Importance sampling I</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L06-is-2.html",
+    "href": "lectures/L06-is-2.html",
+    "title": "6  Importance sampling II",
+    "section": "",
+    "text": "6.1 Error of importance sampling",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Importance sampling II</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L06-is-2.html#importance-sampling-example",
+    "href": "lectures/L06-is-2.html#importance-sampling-example",
+    "title": "6  Importance sampling II",
+    "section": "6.2 Importance sampling: example",
+    "text": "6.2 Importance sampling: example",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Importance sampling II</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L06-is-2.html#picking-a-good-distribution",
+    "href": "lectures/L06-is-2.html#picking-a-good-distribution",
+    "title": "6  Importance sampling II",
+    "section": "6.3 Picking a good distribution",
+    "text": "6.3 Picking a good distribution",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Importance sampling II</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L07-antithetic-1.html",
+    "href": "lectures/L07-antithetic-1.html",
+    "title": "7  Antithetic variables I",
+    "section": "",
+    "text": "7.1 Estimation with correlation",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Antithetic variables I</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L07-antithetic-1.html#estimation-with-antithetic-variables",
+    "href": "lectures/L07-antithetic-1.html#estimation-with-antithetic-variables",
+    "title": "7  Antithetic variables I",
+    "section": "7.2 Estimation with antithetic variables",
+    "text": "7.2 Estimation with antithetic variables",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Antithetic variables I</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L07-antithetic-1.html#estimating-π-again",
+    "href": "lectures/L07-antithetic-1.html#estimating-π-again",
+    "title": "7  Antithetic variables I",
+    "section": "7.3 Estimating π again",
+    "text": "7.3 Estimating π again",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Antithetic variables I</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L08-antithetic-2.html",
+    "href": "lectures/L08-antithetic-2.html",
+    "title": "8  Antithetic variables II",
+    "section": "",
+    "text": "8.1 Error with antithetic variables",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Antithetic variables II</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L08-antithetic-2.html#antithetic-variables-example",
+    "href": "lectures/L08-antithetic-2.html#antithetic-variables-example",
+    "title": "8  Antithetic variables II",
+    "section": "8.2 Antithetic variables: example",
+    "text": "8.2 Antithetic variables: example",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Antithetic variables II</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L08-antithetic-2.html#finding-antithetic-variables",
+    "href": "lectures/L08-antithetic-2.html#finding-antithetic-variables",
+    "title": "8  Antithetic variables II",
+    "section": "8.3 Finding antithetic variables",
+    "text": "8.3 Finding antithetic variables",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Antithetic variables II</span>"
+    ]
+  }
+]

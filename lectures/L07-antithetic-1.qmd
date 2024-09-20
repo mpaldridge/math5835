@@ -1,0 +1,7 @@
+# Antithetic variables I
+
+## Estimation with correlation
+
+## Estimation with antithetic variables
+
+## Estimating π again

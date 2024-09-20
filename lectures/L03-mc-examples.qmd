@@ -1,0 +1,7 @@
+# Monte Carlo examples
+
+## Example of Monte Carlo estimation
+
+## Monte Carlo estimation of probabilities
+
+## Monte Carlo estimation of integrals

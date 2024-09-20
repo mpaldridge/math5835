@@ -1,0 +1,7 @@
+# Introduction to Monte Carlo
+
+## Example: estimating the expection
+
+## Example: Estimating *π* with a tin-can and a box
+
+## Monte Carlo estimator

@@ -1,0 +1,7 @@
+# Introduction to Statistical Computing
+
+## What is statistical computing?
+
+## Probability and statistics background
+
+## R programming

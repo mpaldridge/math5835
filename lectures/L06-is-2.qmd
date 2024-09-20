@@ -1,0 +1,7 @@
+# Importance sampling II
+
+## Error of importance sampling
+
+## Importance sampling: example
+
+## Picking a good distribution

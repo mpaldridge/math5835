@@ -1,0 +1,7 @@
+# Monte Carlo error
+
+## Reminder: bias and error
+
+## Reminder: limit theorems
+
+## Bias and error of the Monte Carlo estimator

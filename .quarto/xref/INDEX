@@ -1,0 +1,149 @@
+{
+  "index.qmd": {
+    "index.html": "ef32f9d9",
+    "index.tex": "e10bdb39"
+  },
+  "about.qmd": {
+    "about.html": "bd6c25f8",
+    "about.tex": "60ede701"
+  },
+  "lectures/L01-intro.qmd": {
+    "L01-intro.html": "94d1609e",
+    "L01-intro.tex": "0ec00edd"
+  },
+  "lectures/L02-mc-intro.qmd": {
+    "L02-mc-intro.html": "3312b666",
+    "L02-mc-intro.tex": "23c501f0"
+  },
+  "lectures/L02-mc-examples.qmd": {
+    "L02-mc-examples.html": "696d63ca"
+  },
+  "lectures/L04-mc-error.qmd": {
+    "L04-mc-error.html": "b4cea604",
+    "L04-mc-error.tex": "e725daa1"
+  },
+  "lectures/L05-is-1.qmd": {
+    "L05-is-1.html": "dac51808",
+    "L05-is-1.tex": "31a9d1d0"
+  },
+  "lectures/L06-is-2.qmd": {
+    "L06-is-2.html": "cd127adf",
+    "L06-is-2.tex": "366f586e"
+  },
+  "problems/P1.qmd": {
+    "P1.html": "5fdd5149",
+    "P1.tex": "d204673c"
+  },
+  "lectures/L07-antithetic-1.qmd": {
+    "L07-antithetic-1.html": "2e803cb0",
+    "L07-antithetic-1.tex": "26f20477"
+  },
+  "lectures/L08-antithetic-2.qmd": {
+    "L08-antithetic-2.html": "5d6e7471",
+    "L08-antithetic-2.tex": "66ff613f"
+  },
+  "lectures/L09-cv.qmd": {
+    "L09-cv.html": "8456e710",
+    "L09-cv.tex": "8d7e75a4"
+  },
+  "lectures/L10-rng-intro.qmd": {
+    "L10-rng-intro.html": "9341a9c3",
+    "L10-rng-intro.tex": "50f1cdc7"
+  },
+  "lectures/L11-lcg.qmd": {
+    "L11-lcg.html": "041622c6",
+    "L11-lcg.tex": "845887f7"
+  },
+  "problems/P2.qmd": {
+    "P2.html": "85e945e1",
+    "P2.tex": "4f13cb41"
+  },
+  "lectures/L12-uniform-discrete.qmd": {
+    "L12-uniform-discrete.html": "00734352",
+    "L12-uniform-discrete.tex": "5f02c958"
+  },
+  "lectures/L13-inverse.qmd": {
+    "L13-inverse.html": "86f28650",
+    "L13-inverse.tex": "37eaa885"
+  },
+  "lectures/L14-rejection.qmd": {
+    "L14-rejection.html": "e58c502a",
+    "L14-rejection.tex": "15d31cc3"
+  },
+  "lectures/L15-envelope-1.qmd": {
+    "L15-envelope-1.html": "697e50fc",
+    "L15-envelope-1.tex": "9f5ea76a"
+  },
+  "lectures/L16-envelope-2.qmd": {
+    "L16-envelope-2.html": "beecfd51",
+    "L16-envelope-2.tex": "abc3dcac"
+  },
+  "problems/P3.qmd": {
+    "P3.html": "971194e4",
+    "P3.tex": "61b91251"
+  },
+  "lectures/L17-markov-intro.qmd": {
+    "L17-markov-intro.html": "1841975f",
+    "L17-markov-intro.tex": "75940903"
+  },
+  "lectures/L18-markov-longrun.qmd": {
+    "L18-markov-longrun.html": "fe021e3c",
+    "L18-markov-longrun.tex": "642971c1"
+  },
+  "lectures/L19-markov-cont.qmd": {
+    "L19-markov-cont.html": "48b44b82",
+    "L19-markov-cont.tex": "eaf3a47a"
+  },
+  "lectures/L20-mh-1.qmd": {
+    "L20-mh-1.html": "d798c9ca",
+    "L20-mh-1.tex": "67675aeb"
+  },
+  "lectures/L21-mh-2.qmd": {
+    "L21-mh-2.html": "558610d9",
+    "L21-mh-2.tex": "564b9ddd"
+  },
+  "lectures/L22-convergence.qmd": {
+    "L22-convergence.html": "74f8028d",
+    "L22-convergence.tex": "7d5cefe2"
+  },
+  "lectures/L23-bayes.qmd": {
+    "L23-bayes.html": "7fc9de37",
+    "L23-bayes.tex": "e6820214"
+  },
+  "problems/P4.qmd": {
+    "P4.html": "c62f6efe",
+    "P4.tex": "fdb856c8"
+  },
+  "lectures/L24-empirical.qmd": {
+    "L24-empirical.html": "b10d954c",
+    "L24-empirical.tex": "18e6be4e"
+  },
+  "lectures/L25-bootstrap.qmd": {
+    "L25-bootstrap.html": "05266d9e",
+    "L25-bootstrap.tex": "92802a63"
+  },
+  "lectures/L26-bootstrap-error.qmd": {
+    "L26-bootstrap-error.html": "812f0440",
+    "L26-bootstrap-error.tex": "54498a95"
+  },
+  "lectures/L27-bootstrap-ci.qmd": {
+    "L27-bootstrap-ci.html": "c513fdd3",
+    "L27-bootstrap-ci.tex": "74e57793"
+  },
+  "problems/P5.qmd": {
+    "P5.html": "d409efb8",
+    "P5.tex": "aff44046"
+  },
+  "lectures/L28-faq.qmd": {
+    "L28-faq.html": "95bfaa1c",
+    "L28-faq.tex": "eb0223f3"
+  },
+  "coursework.qmd": {
+    "coursework.html": "7b4e4e2d",
+    "coursework.tex": "2bd90356"
+  },
+  "lectures/L03-mc-examples.qmd": {
+    "L03-mc-examples.html": "1bada8f2",
+    "L03-mc-examples.tex": "be680ffd"
+  }
+}
