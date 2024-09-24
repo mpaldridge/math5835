@@ -5,7 +5,7 @@ project:
 book:
   title: "MATH5835M Statistical Computing"
   author: "Matthew Aldridge"
-  date: "30/10/25"
+  date: "30/09/25"
   chapters:
     - index.qmd
     - about.qmd
@@ -15,12 +15,12 @@ book:
         - lectures/L02-mc-intro.qmd
         - lectures/L03-mc-examples.qmd
         - lectures/L04-mc-error.qmd
+        - lectures/L09-cv.qmd
+        - lectures/L07-antithetic-1.qmd
+        - problems/P1.qmd
+        - lectures/L08-antithetic-2.qmd
         - lectures/L05-is-1.qmd
         - lectures/L06-is-2.qmd
-        - problems/P1.qmd
-        - lectures/L07-antithetic-1.qmd
-        - lectures/L08-antithetic-2.qmd
-        - lectures/L09-cv.qmd
     - part: "Random number generation"
       chapters:
         - lectures/L10-rng-intro.qmd
@@ -49,14 +49,13 @@ book:
         - lectures/L26-bootstrap-error.qmd
         - lectures/L27-bootstrap-ci.qmd
         - problems/P5.qmd
-    - part: "Appendix"
-      chapters:
-        - lectures/L28-faq.qmd
-        - coursework.qmd
+    - lectures/L28-faq.qmd
+    - coursework.qmd
 
 format:
   html:
     theme: cosmo
+    css: mystyle.css
   pdf:
     documentclass: scrreprt
 

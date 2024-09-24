@@ -1,7 +1,116 @@
-# Monte Carlo examples
+# Monte Carlo for probabilities and integrals
 
-## Example of Monte Carlo estimation
+::: {.hidden}
+$$\newcommand{\Exg}{\operatorname{\mathbb{E}}} 
+\newcommand{\Ex}{\mathbb{E}} 
+\newcommand{\Ind}{\mathbb{I}}$$
+:::
+
+## Indicator function
+
+Quick recap: Last time we defined the Monte Carlo estimate for an expectation $\theta = \Exg \phi(X)$ to be
+$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$
+where $X_1, X_2, \dots, X_n$ is an independent random sample from $X$.
+
+But what is we want to find a *probability*, rather than an expectation? What if we want $\mathbb P(X = x)$ for some $x$, or $\mathbb P(X \geq a)$ for some $a$, or, more generally $\mathbb P(X \in A)$ for some set $A$?
+
+The key thing that will help us here is the *indicator function*. The indicator function simply tells us whether an outcome $x$ is in a set $A$ or not.
+
+::: {#def-indicator}
+Let $A$ be a set. Then the **indicator function** $\Ind_A$ is defined by
+$$ \Ind_A(x) = \begin{cases} 1 & \text{if $x \in A$} \\ 0 & \text{if $x \notin A$.} \end{cases} $$
+:::
+
+The set $A$ could just be a single element $A = \{y\}$. In that case $\Ind_{\{y\}(x)$ is 1 if $x = y$ and 0 if $x \neq y$. Or $A$ could be a semi-infinite interval, like $A = [a, \infty)$. In that case $\Ind_A(x)$ is 1 if $x \geq a$ and $0$ if $x < a$.
+
+Why is this helpful? Well $\Ind_A$ is a function, so let's think about what the expectation $\Exg \Ind_A(X)$ would be for some random variable $X$. Since $\Ind_A$ can only take two values, 0 and 1, we have
+$$ \begin{align*}
+\Exg \Ind_A(X) &= \sum_{y = 0, 1} y\,\mathbb P\big( \Ind_A(X) = y \big) \\\
+  &= 0 \times \mathbb P\big( \Ind_A(X) = 0 \big) + 1 \times \mathbb P\big( \Ind_A(X) = 1 \big) \\
+  &= 0 \times \mathbb P(X \notin A) + 1 \times \mathbb P(X \in A) \\
+  &= \mathbb P(X \in A)
+\end{align*} $$
+In line three, we used that $\Ind_A(X) = 0$ if and only if $X \notin A$, and that $\Ind_A(X) = 1$ if and only if $X \in A$.
+
+So the expectation of an indicator function a set is the probability that $X$ is set. This idea connects "expectations of functions" back to probabilities: if we want to find $\mathbb P(X \in A)$ we can find the expectation of $\Ind_A(X)$.
+
 
 ## Monte Carlo estimation of probabilities
 
+With this idea in hand, how do we estimate $\theta = \mathbb P(X \in A)$ using the Monte Carlo method? We write $\theta = \Exg\Ind_A(X)$. Then our Monte Carlo estimate is
+$$  \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \Ind_A(X_i) . $$
+We remember that $\Ind_A(X_i)$ is 1 if $X_i \in A$ and 0 otherwise. So if we add up $n$ of these, we count an extra 1 each time we have an $X_i \in A$. So $\sum_{i=1}^n \Ind_A(X_i)$ counts the total number of the $X_i$ that are in $n$. So the Monte Carlo estimate can be written as
+$$  \widehat{\theta}_n^{\mathrm{MC}} = \frac{\# \text{ of } X_i \text{ that are in $A$}}{n} . $$
+
+Although we've had to do a bit of work to get here, this a totally logical outcome! The right-hand side here is the proportion of the samples for which $X_i \in A$. And if we want to estimate the probability something happens, looking at the proportion of times it happens in a random sample is very much the "intuitive" estimate to take. And that intuitive estimate is indeed the Monte Carlo estimate!
+
+::: {#exm-MCprob}
+*Let $Z \sim \operatorname{N}(0,1)$ be a standard normal distribution. Estimate $\mathbb P(Z > 2)$.*
+
+This is a question that it is impossible to answer exactly using a pencil and paper: there's no closed form for
+$$ \mathbb P(Z > 2) = \int_2^\infty \frac{1}{\sqrt{2\pi}}\,\mathrm{e}^{-z^2/2}\,\mathrm{d}z , $$
+so we'll have to use an estimation method.
+
+The Monte Carlo estimate means taking a random sample $Z_1, Z_2, \dots, Z_n$ of standard normals, and calculating what proportion of them are greater than 2. In R, we can do this as follows.
+
+```{r}
+n <- 1e6
+samples <- rnorm(n, 0, 1)
+MCest <- mean(samples > 2)
+MCest
+```
+
+We can check our answer: R's inbuilt `pnorm()` function estimates probabilities for the normal distribution using a method that, in this specific case, is much quicker and accurate than Monte Carlo estimation. The true answer is
+
+```{r}
+pnorm(2, lower.tail = FALSE)
+```
+:::
+
+We should explain the third line in the code we used for the Monte Carlo estimation `mean(samples >= 2)`. In R, some statements can be answered "true" or "false": these are often statements involving equality `==` (that's a *double* equals sign) or inequalities like `<`, `<=`, `>=`, `>`. So `5 > 2` is `TRUE` but `3 == 7` is `FALSE`. These can be applied "component by component" to vectors. So, for example, testing which numbers from 1 to 10 are greater than or equal to 7, we get
+```{r}
+1:10 >= 7
+```
+
+But R also knows to treat `TRUE` like the number 1 and `FALSE` like the number 0. So if we add up some `TRUE`s and `FALSE`s, R simply counts how many `TRUE`s there are
+```{r}
+sum(1:10 >= 7)
+```
+
+So in our Monte Carlo estimation code, `samples >= 2` was a vector of `TRUE`s and `FALSE`s, depending on whether each sample was greater than 2 or not, then `mean(samples >= 2)` took the *proportion* of the samples that were greater than 2.
+
 ## Monte Carlo estimation of integrals
+
+There's another thing -- a non-statistics thing -- that Monte Carlo estimation is useful for. We can use Monte Carlo estimation to approximate integrals that are too hard to do by hand.
+
+Let's think of an integral: say,
+$$ \int_a^b h(x) \mathrm{d}x ,$$
+for some function $f$ between the limits $a$ and $b$. And let's compare that to the integral $\Exg \phi(X)$ that we can estimate using Monte Carlo estimation,
+$$ \int_{-\infty}^\infty \phi(x)\,f(x)\, \mathrm{d} x. $$
+Matching things up, we see that we want to pick a function $\phi$ and a PDF $f$ such that
+$$ \phi(x)\,f(x) = \begin{cases} 0 & x < a \\ h(x) & a \leq x \leq b \\ 0 & x > b . \end{cases} $$
+
+Of course, there are lots of choices of $\phi$ and $f$ that would satisfy this. But a "common-sense" choice that often works is to pick $f$ to be the PDF of $X$, a continuous uniform distribution on the interval $[a,b]$. Recall that this means $X$ has PDF
+$$ f(x) = \begin{cases} 0 & x < a \\ \displaystyle{\frac{1}{b-a}} & a \leq x \leq b \\ 0 & x > b . \end{cases} $$
+Comparing this equation with the one above, we then have to choose $\phi(x) = (b-a)h(x)$.
+
+Putting this all together, we have
+$$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x = \int_a^b (b-a)h(x)\,\frac{1}{b-a}\,\mathrm{d}x = \int_a^b h(x) \mathrm{d}x ,$$
+as required.
+
+::: {#exm-MCint}
+Suppose we want to approximate the integral
+$$ \int_0^1 x^{1.6} (1-x)^{0.7} \, \mathrm{d}x . $$
+
+Let's pick $X$ to be uniform on $[0,1]$. This means we should take $\phi(x) = x^4(1-x)^7$, since $b - a$ is just 1 for us. We can then approximate this integral in R using the Monte Carlo estimate
+$$ \int_0^1 x^{1.6} (1-x)^{0.7} \, \mathrm{d}x = \Exg\phi(X) \approx \frac{1}{n} \sum_{i=1}^n X_i^{1.6} (1-X_i)^{0.7} $$
+
+```{r, cache = TRUE}
+n <- 1e6
+hfun <- function(x) x^1.6 * (1 - x)^0.7
+samples <- runif(n, 0, 1)
+mean(hfun(samples))
+```
+
+(The correct answer is known to be 0.14669 to 5 decimal places, so we were very close.)
+:::

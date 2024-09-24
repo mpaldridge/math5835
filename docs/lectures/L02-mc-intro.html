@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -69,7 +103,37 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../mystyle.css">
 </head>
 
 <body class="nav-sidebar floating">
@@ -142,7 +206,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/L03-mc-examples.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo examples</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">More Monte Carlo examples</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -153,14 +217,14 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L05-is-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span></a>
+  <a href="../lectures/L09-cv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variates</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L06-is-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Importance sampling II</span></span></a>
+  <a href="../lectures/L07-antithetic-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -171,20 +235,20 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L07-antithetic-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../lectures/L08-antithetic-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L09-cv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Control variates</span></span></a>
+  <a href="../lectures/L05-is-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L06-is-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Importance sampling II</span></span></a>
   </div>
 </li>
       </ul>
@@ -354,29 +418,18 @@ ul.task-list li input[type="checkbox"] {
 </li>
       </ul>
   </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">Appendix</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/L28-faq.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">FAQ</span></span></a>
   </div>
 </li>
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../coursework.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Coursework</span></span></a>
   </div>
 </li>
-      </ul>
-  </li>
     </ul>
     </div>
 </nav>
@@ -387,9 +440,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#example-estimating-the-expection" id="toc-example-estimating-the-expection" class="nav-link active" data-scroll-target="#example-estimating-the-expection"><span class="header-section-number">2.1</span> Example: estimating the expection</a></li>
-  <li><a href="#example-estimating-π-with-a-tin-can-and-a-box" id="toc-example-estimating-π-with-a-tin-can-and-a-box" class="nav-link" data-scroll-target="#example-estimating-π-with-a-tin-can-and-a-box"><span class="header-section-number">2.2</span> Example: Estimating <em>π</em> with a tin-can and a box</a></li>
-  <li><a href="#monte-carlo-estimator" id="toc-monte-carlo-estimator" class="nav-link" data-scroll-target="#monte-carlo-estimator"><span class="header-section-number">2.3</span> Monte Carlo estimator</a></li>
+  <li><a href="#what-is-monte-carlo-estimation" id="toc-what-is-monte-carlo-estimation" class="nav-link active" data-scroll-target="#what-is-monte-carlo-estimation"><span class="header-section-number">2.1</span> What is Monte Carlo estimation?</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">2.2</span> Examples</a></li>
+  <li><a href="#random-samples-in-r" id="toc-random-samples-in-r" class="nav-link" data-scroll-target="#random-samples-in-r"><span class="header-section-number">2.3</span> Random samples in R</a></li>
   </ul>
 </nav>
     </div>
@@ -415,14 +468,86 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="example-estimating-the-expection" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="example-estimating-the-expection"><span class="header-section-number">2.1</span> Example: estimating the expection</h2>
+<p>Today, we’ll start the first main topic of the module, which is called “Monte Carlo estimation”.</p>
+<div class="hidden">
+<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
+\newcommand{\Ex}{\mathbb{E}} \]</span></p>
+</div>
+<section id="what-is-monte-carlo-estimation" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="what-is-monte-carlo-estimation"><span class="header-section-number">2.1</span> What is Monte Carlo estimation?</h2>
+<p>Let <span class="math inline">\(X\)</span> be a random variable. We recall the <strong>expectation</strong> <span class="math inline">\(\Ex X\)</span> of <span class="math inline">\(X\)</span>: if <span class="math inline">\(X\)</span> is discrete with probability mass function (PMF) <span class="math inline">\(p\)</span>, then this is <span class="math display">\[ \Ex X = \sum_x x\,p(x) ;\]</span> while if <span class="math inline">\(X\)</span> is continuous with probability density function (PDF) <span class="math inline">\(f\)</span>, then this is <span class="math display">\[ \Ex X = \int_{-\infty}^{+\infty} x\,f(x)\,\mathrm{d}x . \]</span> More generally, the expectation of a function <span class="math inline">\(\phi\)</span> of <span class="math inline">\(X\)</span> is <span class="math display">\[ \Exg \phi(X) = \begin{cases} {\displaystyle \sum_x \phi(x)\,p(x)} &amp; \text{for $X$ discrete}\\ {\displaystyle \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x}  &amp; \text{for $X$ continuous.} \end{cases}\]</span> (This matches with the “plain” expectation when <span class="math inline">\(\phi(x) = x\)</span>.)</p>
+<p>But how do we actually <em>calculate</em> an expectation like one of these? If <span class="math inline">\(X\)</span> is discrete and can only take a small, finite number of values, we can simply do the sum <span class="math inline">\(\sum_x \phi(x)\,p(x)\)</span>. Otherwise, we just have to hope that <span class="math inline">\(\phi\)</span> and <span class="math inline">\(p\)</span> or <span class="math inline">\(f\)</span> are sufficiently “nice” that we can manage to work out the sum/integral using a pencil and paper. But while this is often the case in the sort of “toy example” one comes across in maths or statistics lectures, this is very rare in “real life”.</p>
+<p><strong>Monte Carlo estimation</strong> is the idea that we can get an approximate answer for <span class="math inline">\(\Ex X\)</span> or <span class="math inline">\(\Exg \phi(X)\)</span> if we have access to lots of samples from <span class="math inline">\(X\)</span>. For example, if we have access to <span class="math inline">\(X_1, X_2 \dots, X_n\)</span> , independent and identically distributed (<strong>IID</strong>) samples with the same distribution as <span class="math inline">\(X\)</span>, then we already know that the mean <span class="math display">\[ \overline X = \frac{1}{n}(X_1 + X_2 + \cdots + X_n) = \frac{1}{n} \sum_{i=1}^n X_i \]</span> is usually close to the expectation <span class="math inline">\(\Ex X\)</span>, at least if <span class="math inline">\(n\)</span> is big. Similarly, it should be the case that <span class="math display">\[ \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) \]</span> should be close to <span class="math inline">\(\Exg \phi(X)\)</span>.</p>
+<p>In this course we will write that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> is a “<strong>random sample</strong> from <span class="math inline">\(X\)</span>” to mean that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are IID with the same distribution as <span class="math inline">\(X\)</span>.</p>
+<div id="def-MCest" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Suppose that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are a random sample from <span class="math inline">\(X\)</span>. Then the <strong>Monte Carlo estimate</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{MC}}\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) . \]</span></p>
+</div>
+<p>While general ideas for estimating using simulation go back a long time, the modern theory of Monte Carlo estimation was developed by the physicists <a href="https://en.wikipedia.org/wiki/Stanisław_Ulam">Stanislaw Ulam</a> and <a href="John von Neumann">John von Neumann</a>. Ulam (who was Polish) and von Neumann (who was Hungarian) moved to the US in the early 1940s to work on the Manhattan project to build the atomic bomb (as made famous by the film Oppenheimer). Later in the 1940s, they worked together in the Los Alamos National Laboratory continuing their research on nuclear weapons, where they used simulations on early computers to help them numerically solve difficult mathematical and physical problems.</p>
+<p>The name “Monte Carlo” was chosen because the use of randomness to solve such problems reminded them of gamblers in the casinos of Monte Carlo, Monaco. Ulam and von Neumann also worked closely with another colleague Nicholas Metropolis, whose work we will study later in this module.</p>
 </section>
-<section id="example-estimating-π-with-a-tin-can-and-a-box" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="example-estimating-π-with-a-tin-can-and-a-box"><span class="header-section-number">2.2</span> Example: Estimating <em>π</em> with a tin-can and a box</h2>
+<section id="examples" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="examples"><span class="header-section-number">2.2</span> Examples</h2>
+<p>Let’s see some simple examples of Monte Carlo esimation using R.</p>
+<div id="exm-MCexp" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.1</strong></span> Let’s suppose we’ve forgotten the expectation of the exponential distribution <span class="math inline">\(X \sim \operatorname{Exp}(2)\)</span> with rate 2. In this simple case, we could work out the answer using the PMF <span class="math inline">\(f(x) = 2\mathrm{e}^{2x}\)</span> as <span class="math display">\[ \Ex X = \int_0^\infty x\,2\mathrm{e}^{2x}\,\mathrm{d}x \]</span> (and, without too much difficulty, get the answer <span class="math inline">\(\frac12\)</span>). But instead, let’s do this the Monte Carlo way.</p>
+<p>In R, we can use the <code>rexp()</code> function to get IID samples from the exponential distribution: the full syntax is <code>rexp(n, rate)</code>, which gives <code>n</code> samples from an exponential distribution with rate with rate <code>rate</code>. So our code here should be</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>(samples)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4600462</code></pre>
+</div>
+</div>
+<p>So our Monte Carlo estimate is 0.46005, to 5 decimal places.</p>
+<p>To get a (probably) more accurate estimation, we could use more samples. We could also simplify the fourth line of this code by using the <code>mean()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4994489</code></pre>
+</div>
+</div>
+<p>(In the second line, <code>1e6</code> is R code for the scientific notation <span class="math inline">\(1 \times 10^6\)</span>, or a million.)</p>
+<p>Our new Monte Carlo estimate is 0.49945, which is closer to the true value of 2.</p>
+</div>
+<div id="exm-MC2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.2</strong></span> Let’s try another example. Let <span class="math inline">\(X \sim \operatorname{N}(1, 2^2)\)</span> be a normal distribution with mean 0 and standard deviation 2. Suppose we want to find out <span class="math inline">\(\Exg(\sin X)\)</span> (for some reason). While it <em>might</em> be possible to somehow calculate the integral <span class="math display">\[ \Exg(\sin X) = \int_{-\infty}^{+\infty} (\sin x) \, \frac{1}{\sqrt{2\pi\times 2^2}} \exp\left(\frac{(x - 1)^2}{2\times 2^2}\right) \, \mathrm{d} x , \]</span> that looks extremely difficult to me.</p>
+<p>Instead, a Monte Carlo estimation of <span class="math inline">\(\Exg(\sin X)\)</span> is very straightforward.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">sin</span>(samples))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1150127</code></pre>
+</div>
+</div>
+<p>Our Monte Carlo estimate is 0.11501.</p>
+</div>
 </section>
-<section id="monte-carlo-estimator" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="monte-carlo-estimator"><span class="header-section-number">2.3</span> Monte Carlo estimator</h2>
+<section id="random-samples-in-r" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="random-samples-in-r"><span class="header-section-number">2.3</span> Random samples in R</h2>
+<p>In this lecture, we’ve got random samples from distributions using the R functions <code>rexp()</code> (exponential distribution) and <code>rnorm()</code> (normal).</p>
+<p>Generally, R has built in functions for generating random samples for the most common distributions. These include:</p>
+<ul>
+<li><p><code>rbinom(n, size, prob)</code> for <code>n</code> samples from the binomial distribution <span class="math inline">\(\operatorname{Bin}(\mathtt{size}, \texttt{prob})\)</span>. Includes <code>rbinom(n, 1, prob)</code> for the Bernoulli distribution <span class="math inline">\(\operatorname{Bern}(\mathtt{prob})\)</span>.</p></li>
+<li><p><code>rgeom(n, prob)</code> for <code>n</code> samples from the geometric distribution <span class="math inline">\(\operatorname{Geom}(\mathtt{prob})\)</span>. (Note that R uses the “number of failures <em>before</em> for the first success” definition of the geometric, starting from 0.)</p></li>
+<li><p><code>rpois(n, lambda)</code> for <code>n</code> samples from the Poisson distribution <span class="math inline">\(\operatorname{Po}(\mathtt{lambda})\)</span>.</p></li>
+<li><p><code>rexp(n, rate)</code> for <code>n</code> samples from the exponential distribution <span class="math inline">\(\operatorname{Exp}(\mathtt{rate})\)</span>. If the <code>rate</code> parameter is omitted, then <code>rate = 1</code> is assumed by default.</p></li>
+<li><p><code>rnorm(n, mean, sd)</code> for <code>n</code> samples from the normal distribution <span class="math inline">\(\operatorname{N}(\mathtt{mean},\mathtt{sd}^2)\)</span>. Note that the third argument is the standard deviation <span class="math inline">\(\sigma\)</span>, not the variance <span class="math inline">\(\sigma^2\)</span>. If the <code>mean</code> and <code>sd</code> parameters are omitted, then <code>mean = 0</code> and <code>sd = 1</code> are assumed by default.</p></li>
+<li><p><code>runif(n, min, max)</code> for <code>n</code> samples from the continuous uniform distribution on the interval <span class="math inline">\([\mathtt{min}, \mathtt{max}]\)</span>. If the <code>min</code> and <code>max</code> parameters are omitted, the interval <span class="math inline">\([0,1]\)</span> is assumed by default. (This will turn out to be the most important sampling distribution in this module.)</p></li>
+<li><p>Look at the help file <code>?distributions</code> in R for details of other distributions.</p></li>
+</ul>
+<p>Also, we can sample from a discrete random variable on a finite number of outcomes with</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(x, n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here, <code>x</code> is a vector of values the random variable can take, <code>n</code> is the number of samples, and <code>p</code> is a vector of probabilities of each value of <code>x</code> (in the same order). If <code>prob = p</code> is omitted, equal uniform probabilities of each outcome are assumed by default.</p>
+<p>In Part II of this module, we will look at how R manages to sample from these distributions. Then we will be able to do it ourselves “from scratch”, and also be able to sample from distributions that R doesn’t have built-in functions for.</p>
 
 
 </section>
@@ -844,8 +969,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L03-mc-examples.html" class="pagination-link" aria-label="Monte Carlo examples">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo examples</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L03-mc-examples.html" class="pagination-link" aria-label="More Monte Carlo examples">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">More Monte Carlo examples</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

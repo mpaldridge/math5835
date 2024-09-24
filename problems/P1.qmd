@@ -1,1 +1,25 @@
 # Problem Sheet 1 {.unnumbered}
+
+Basic MC example
+
+
+Let $X$ be a random variable, and let $\Ind_A$ and $\Ind_B$ be two indicator functions.
+
+(a) What is the expected value of $\Ind_A(X) \times \Ind_B(X)$?
+
+(b) Show that the covariance $\Cov(\Ind_A(X), \Ind_B(A)$ is zero if and only if the events $\{X \in A\}$ and $\{X \in B\}$ are independent.
+
+
+MC integral
+
+
+Basic MC with error estimation
+
+
+Pi
+
+
+Control variate example
+
+
+Pi with antithetic

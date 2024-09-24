@@ -30,8 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L07-antithetic-1.html" rel="next">
-<link href="../lectures/L06-is-2.html" rel="prev">
+<link href="../lectures/L08-antithetic-2.html" rel="next">
+<link href="../lectures/L07-antithetic-1.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -69,7 +69,37 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../mystyle.css">
 </head>
 
 <body class="nav-sidebar floating">
@@ -142,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/L03-mc-examples.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo examples</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">More Monte Carlo examples</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -153,14 +183,14 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L05-is-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span></a>
+  <a href="../lectures/L09-cv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variates</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L06-is-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Importance sampling II</span></span></a>
+  <a href="../lectures/L07-antithetic-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -171,20 +201,20 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L07-antithetic-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../lectures/L08-antithetic-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L09-cv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Control variates</span></span></a>
+  <a href="../lectures/L05-is-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L06-is-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Importance sampling II</span></span></a>
   </div>
 </li>
       </ul>
@@ -354,29 +384,18 @@ ul.task-list li input[type="checkbox"] {
 </li>
       </ul>
   </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">Appendix</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/L28-faq.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">FAQ</span></span></a>
   </div>
 </li>
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../coursework.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Coursework</span></span></a>
   </div>
 </li>
-      </ul>
-  </li>
     </ul>
     </div>
 </nav>
@@ -407,6 +426,17 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>Basic MC example</p>
+<p>Let <span class="math inline">\(X\)</span> be a random variable, and let <span class="math inline">\(\Ind_A\)</span> and <span class="math inline">\(\Ind_B\)</span> be two indicator functions.</p>
+<ol type="a">
+<li><p>What is the expected value of <span class="math inline">\(\Ind_A(X) \times \Ind_B(X)\)</span>?</p></li>
+<li><p>Show that the covariance <span class="math inline">\(\Cov(\Ind_A(X), \Ind_B(A)\)</span> is zero if and only if the events <span class="math inline">\(\{X \in A\}\)</span> and <span class="math inline">\(\{X \in B\}\)</span> are independent.</p></li>
+</ol>
+<p>MC integral</p>
+<p>Basic MC with error estimation</p>
+<p>Pi</p>
+<p>Control variate example</p>
+<p>Pi with antithetic</p>
 
 
 
@@ -822,13 +852,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L06-is-2.html" class="pagination-link" aria-label="Importance sampling II">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Importance sampling II</span></span>
+      <a href="../lectures/L07-antithetic-1.html" class="pagination-link" aria-label="Antithetic variables I">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L07-antithetic-1.html" class="pagination-link" aria-label="Antithetic variables I">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L08-antithetic-2.html" class="pagination-link" aria-label="Antithetic variables II">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
