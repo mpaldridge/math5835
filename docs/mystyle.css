@@ -35,6 +35,15 @@ pre code {
   margin-bottom: 24px; 
 }
 
+ol, ul {
+  margin-top: 0px;
+  margin-bottom: 22px;
+}
+
+ol ol, ul ul, ol ul, ul ol {
+    margin-top: 0px;
+}
+
 .mysummary {
   padding: 1.4em 1em 0em 1em;
   margin-left: 10%;
@@ -115,6 +124,11 @@ ul > li > p, ol > li > p {
 text-indent: 0; !important
 }
 
+li {
+  margin-top: 20px;
+  margin-bottom: 16px;
+}
+
 /*
 p.author, p.date {
   padding-top: 0 !important;
@@ -138,8 +152,17 @@ ul ul {
     text-indent: 0;
 }
 
+h3 {
+  margin-bottom: 24px;
+}
+
 .quarto-title, h2 {
     margin-bottom: 28px;
+}
+
+.margin-sidebar li {
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 /*
@@ -162,9 +185,21 @@ ul ul {
 */
 
 
+h1, .h1 {
+    font-size:calc(1.500rem + 1.0vw)
+}
 
+.quarto-page-breadcrumbs li  {
+  padding: 0;
+  margin: 0 0 10px 0;
+}
 
-.math.inline, .math.display { font-size: 90% !important; }
+.math.inline, .math.display { font-size: 92% !important; }
+
+div.proof>*:last-child:after {
+  content: "\25a2";
+  float: right;
+}
 
 /*
 ul.summary {

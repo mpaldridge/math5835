@@ -160,7 +160,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">MATH5835M Statistical Computing</a> 
+      <a href="../">MATH5835</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -206,7 +206,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/L03-mc-examples.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">More Monte Carlo examples</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo for probabilities and integrals</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -427,7 +427,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../coursework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Coursework</span></span></a>
+ <span class="menu-text">Coursework</span></a>
   </div>
 </li>
     </ul>
@@ -476,7 +476,7 @@ window.Quarto = {
 <section id="what-is-monte-carlo-estimation" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="what-is-monte-carlo-estimation"><span class="header-section-number">2.1</span> What is Monte Carlo estimation?</h2>
 <p>Let <span class="math inline">\(X\)</span> be a random variable. We recall the <strong>expectation</strong> <span class="math inline">\(\Ex X\)</span> of <span class="math inline">\(X\)</span>: if <span class="math inline">\(X\)</span> is discrete with probability mass function (PMF) <span class="math inline">\(p\)</span>, then this is <span class="math display">\[ \Ex X = \sum_x x\,p(x) ;\]</span> while if <span class="math inline">\(X\)</span> is continuous with probability density function (PDF) <span class="math inline">\(f\)</span>, then this is <span class="math display">\[ \Ex X = \int_{-\infty}^{+\infty} x\,f(x)\,\mathrm{d}x . \]</span> More generally, the expectation of a function <span class="math inline">\(\phi\)</span> of <span class="math inline">\(X\)</span> is <span class="math display">\[ \Exg \phi(X) = \begin{cases} {\displaystyle \sum_x \phi(x)\,p(x)} &amp; \text{for $X$ discrete}\\ {\displaystyle \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x}  &amp; \text{for $X$ continuous.} \end{cases}\]</span> (This matches with the “plain” expectation when <span class="math inline">\(\phi(x) = x\)</span>.)</p>
-<p>But how do we actually <em>calculate</em> an expectation like one of these? If <span class="math inline">\(X\)</span> is discrete and can only take a small, finite number of values, we can simply do the sum <span class="math inline">\(\sum_x \phi(x)\,p(x)\)</span>. Otherwise, we just have to hope that <span class="math inline">\(\phi\)</span> and <span class="math inline">\(p\)</span> or <span class="math inline">\(f\)</span> are sufficiently “nice” that we can manage to work out the sum/integral using a pencil and paper. But while this is often the case in the sort of “toy example” one comes across in maths or statistics lectures, this is very rare in “real life”.</p>
+<p>But how do we actually <em>calculate</em> an expectation like one of these? If <span class="math inline">\(X\)</span> is discrete and can only take a small, finite number of values, we can simply add up the sum <span class="math inline">\(\sum_x \phi(x)\,p(x)\)</span>. Otherwise, we just have to hope that <span class="math inline">\(\phi\)</span> and <span class="math inline">\(p\)</span> or <span class="math inline">\(f\)</span> are sufficiently “nice” that we can manage to work out the sum/integral using a pencil and paper. But while this is often the case in the sort of “toy example” one comes across in maths or statistics lectures, this is very rare in “real life”.</p>
 <p><strong>Monte Carlo estimation</strong> is the idea that we can get an approximate answer for <span class="math inline">\(\Ex X\)</span> or <span class="math inline">\(\Exg \phi(X)\)</span> if we have access to lots of samples from <span class="math inline">\(X\)</span>. For example, if we have access to <span class="math inline">\(X_1, X_2 \dots, X_n\)</span> , independent and identically distributed (<strong>IID</strong>) samples with the same distribution as <span class="math inline">\(X\)</span>, then we already know that the mean <span class="math display">\[ \overline X = \frac{1}{n}(X_1 + X_2 + \cdots + X_n) = \frac{1}{n} \sum_{i=1}^n X_i \]</span> is usually close to the expectation <span class="math inline">\(\Ex X\)</span>, at least if <span class="math inline">\(n\)</span> is big. Similarly, it should be the case that <span class="math display">\[ \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) \]</span> should be close to <span class="math inline">\(\Exg \phi(X)\)</span>.</p>
 <p>In this course we will write that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> is a “<strong>random sample</strong> from <span class="math inline">\(X\)</span>” to mean that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are IID with the same distribution as <span class="math inline">\(X\)</span>.</p>
 <div id="def-MCest" class="theorem definition">
@@ -487,10 +487,10 @@ window.Quarto = {
 </section>
 <section id="examples" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="examples"><span class="header-section-number">2.2</span> Examples</h2>
-<p>Let’s see some simple examples of Monte Carlo esimation using R.</p>
+<p>Let’s see some simple examples of Monte Carlo estimation using R.</p>
 <div id="exm-MCexp" class="theorem example">
 <p><span class="theorem-title"><strong>Example 2.1</strong></span> Let’s suppose we’ve forgotten the expectation of the exponential distribution <span class="math inline">\(X \sim \operatorname{Exp}(2)\)</span> with rate 2. In this simple case, we could work out the answer using the PMF <span class="math inline">\(f(x) = 2\mathrm{e}^{2x}\)</span> as <span class="math display">\[ \Ex X = \int_0^\infty x\,2\mathrm{e}^{2x}\,\mathrm{d}x \]</span> (and, without too much difficulty, get the answer <span class="math inline">\(\frac12\)</span>). But instead, let’s do this the Monte Carlo way.</p>
-<p>In R, we can use the <code>rexp()</code> function to get IID samples from the exponential distribution: the full syntax is <code>rexp(n, rate)</code>, which gives <code>n</code> samples from an exponential distribution with rate with rate <code>rate</code>. So our code here should be</p>
+<p>In R, we can use the <code>rexp()</code> function to get IID samples from the exponential distribution: the full syntax is <code>rexp(n, rate)</code>, which gives <code>n</code> samples from an exponential distribution with rate <code>rate</code>. So our code here should be</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
@@ -501,7 +501,7 @@ window.Quarto = {
 </div>
 </div>
 <p>So our Monte Carlo estimate is 0.46005, to 5 decimal places.</p>
-<p>To get a (probably) more accurate estimation, we could use more samples. We could also simplify the fourth line of this code by using the <code>mean()</code> function.</p>
+<p>To get a (probably) more accurate estimation, we could use more samples. We could also simplify the third line of this code by using the <code>mean()</code> function.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
@@ -512,8 +512,9 @@ window.Quarto = {
 </div>
 </div>
 <p>(In the second line, <code>1e6</code> is R code for the scientific notation <span class="math inline">\(1 \times 10^6\)</span>, or a million.)</p>
-<p>Our new Monte Carlo estimate is 0.49945, which is closer to the true value of 2.</p>
+<p>Our new Monte Carlo estimate is 0.49945, which is much closer to the true value of <span class="math inline">\(\frac12\)</span>.</p>
 </div>
+<p>By the way: all R code “chunks” displayed in the notes should work perfectly if you copy-and-paste them into RStudio. I strongly encourage playing about with the code as a good way to learn this material and explore further!</p>
 <div id="exm-MC2" class="theorem example">
 <p><span class="theorem-title"><strong>Example 2.2</strong></span> Let’s try another example. Let <span class="math inline">\(X \sim \operatorname{N}(1, 2^2)\)</span> be a normal distribution with mean 0 and standard deviation 2. Suppose we want to find out <span class="math inline">\(\Exg(\sin X)\)</span> (for some reason). While it <em>might</em> be possible to somehow calculate the integral <span class="math display">\[ \Exg(\sin X) = \int_{-\infty}^{+\infty} (\sin x) \, \frac{1}{\sqrt{2\pi\times 2^2}} \exp\left(\frac{(x - 1)^2}{2\times 2^2}\right) \, \mathrm{d} x , \]</span> that looks extremely difficult to me.</p>
 <p>Instead, a Monte Carlo estimation of <span class="math inline">\(\Exg(\sin X)\)</span> is very straightforward.</p>
@@ -535,19 +536,18 @@ window.Quarto = {
 <p>Generally, R has built in functions for generating random samples for the most common distributions. These include:</p>
 <ul>
 <li><p><code>rbinom(n, size, prob)</code> for <code>n</code> samples from the binomial distribution <span class="math inline">\(\operatorname{Bin}(\mathtt{size}, \texttt{prob})\)</span>. Includes <code>rbinom(n, 1, prob)</code> for the Bernoulli distribution <span class="math inline">\(\operatorname{Bern}(\mathtt{prob})\)</span>.</p></li>
-<li><p><code>rgeom(n, prob)</code> for <code>n</code> samples from the geometric distribution <span class="math inline">\(\operatorname{Geom}(\mathtt{prob})\)</span>. (Note that R uses the “number of failures <em>before</em> for the first success” definition of the geometric, starting from 0.)</p></li>
+<li><p><code>rgeom(n, prob)</code> for <code>n</code> samples from the geometric distribution <span class="math inline">\(\operatorname{Geom}(\mathtt{prob})\)</span>. (R uses the “number of failures <em>before</em> for the first success” definition of the geometric, starting from 0.)</p></li>
 <li><p><code>rpois(n, lambda)</code> for <code>n</code> samples from the Poisson distribution <span class="math inline">\(\operatorname{Po}(\mathtt{lambda})\)</span>.</p></li>
 <li><p><code>rexp(n, rate)</code> for <code>n</code> samples from the exponential distribution <span class="math inline">\(\operatorname{Exp}(\mathtt{rate})\)</span>. If the <code>rate</code> parameter is omitted, then <code>rate = 1</code> is assumed by default.</p></li>
-<li><p><code>rnorm(n, mean, sd)</code> for <code>n</code> samples from the normal distribution <span class="math inline">\(\operatorname{N}(\mathtt{mean},\mathtt{sd}^2)\)</span>. Note that the third argument is the standard deviation <span class="math inline">\(\sigma\)</span>, not the variance <span class="math inline">\(\sigma^2\)</span>. If the <code>mean</code> and <code>sd</code> parameters are omitted, then <code>mean = 0</code> and <code>sd = 1</code> are assumed by default.</p></li>
+<li><p><code>rnorm(n, mean, sd)</code> for <code>n</code> samples from the normal distribution <span class="math inline">\(\operatorname{N}(\mathtt{mean},\mathtt{sd}^2)\)</span>. The third argument is the standard deviation <span class="math inline">\(\sigma\)</span>, not the variance <span class="math inline">\(\sigma^2\)</span>. If the <code>mean</code> and <code>sd</code> parameters are omitted, then <code>mean = 0</code> and <code>sd = 1</code> are assumed by default.</p></li>
 <li><p><code>runif(n, min, max)</code> for <code>n</code> samples from the continuous uniform distribution on the interval <span class="math inline">\([\mathtt{min}, \mathtt{max}]\)</span>. If the <code>min</code> and <code>max</code> parameters are omitted, the interval <span class="math inline">\([0,1]\)</span> is assumed by default. (This will turn out to be the most important sampling distribution in this module.)</p></li>
 <li><p>Look at the help file <code>?distributions</code> in R for details of other distributions.</p></li>
 </ul>
 <p>Also, we can sample from a discrete random variable on a finite number of outcomes with</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(x, n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(x, n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Here, <code>x</code> is a vector of values the random variable can take, <code>n</code> is the number of samples, and <code>p</code> is a vector of probabilities of each value of <code>x</code> (in the same order). If <code>prob = p</code> is omitted, equal uniform probabilities of each outcome are assumed by default.</p>
-<p>In Part II of this module, we will look at how R manages to sample from these distributions. Then we will be able to do it ourselves “from scratch”, and also be able to sample from distributions that R doesn’t have built-in functions for.</p>
+<p>In Part II of this module, we will learn how these R functions work, so we understand <em>how</em> R manages to sample from these distributions. Then we will be able to do it ourselves “from scratch”, and also be able to sample from distributions that R doesn’t have built-in functions for.</p>
+<p><strong>Next time:</strong> <em>We look at more examples of things we can estimate using the Monte Carlo method.</em></p>
 
 
 </section>
@@ -969,8 +969,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L03-mc-examples.html" class="pagination-link" aria-label="More Monte Carlo examples">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">More Monte Carlo examples</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L03-mc-examples.html" class="pagination-link" aria-label="Monte Carlo for probabilities and integrals">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo for probabilities and integrals</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

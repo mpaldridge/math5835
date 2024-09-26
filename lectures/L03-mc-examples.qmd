@@ -12,7 +12,7 @@ Quick recap: Last time we defined the Monte Carlo estimate for an expectation $\
 $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$
 where $X_1, X_2, \dots, X_n$ is an independent random sample from $X$.
 
-But what is we want to find a *probability*, rather than an expectation? What if we want $\mathbb P(X = x)$ for some $x$, or $\mathbb P(X \geq a)$ for some $a$, or, more generally $\mathbb P(X \in A)$ for some set $A$?
+But what if we want to find a *probability*, rather than an expectation? What if we want $\mathbb P(X = x)$ for some $x$, or $\mathbb P(X \geq a)$ for some $a$, or, more generally $\mathbb P(X \in A)$ for some set $A$?
 
 The key thing that will help us here is the *indicator function*. The indicator function simply tells us whether an outcome $x$ is in a set $A$ or not.
 
@@ -60,24 +60,29 @@ MCest <- mean(samples > 2)
 MCest
 ```
 
-We can check our answer: R's inbuilt `pnorm()` function estimates probabilities for the normal distribution using a method that, in this specific case, is much quicker and accurate than Monte Carlo estimation. The true answer is
+We can check our answer: R's inbuilt `pnorm()` function estimates probabilities for the normal distribution (using a method that, in this specific case, is much quicker and more accurate than Monte Carlo estimation). The true answer is
 
 ```{r}
 pnorm(2, lower.tail = FALSE)
 ```
+
+so our estimate was pretty good.
 :::
+
+
 
 We should explain the third line in the code we used for the Monte Carlo estimation `mean(samples >= 2)`. In R, some statements can be answered "true" or "false": these are often statements involving equality `==` (that's a *double* equals sign) or inequalities like `<`, `<=`, `>=`, `>`. So `5 > 2` is `TRUE` but `3 == 7` is `FALSE`. These can be applied "component by component" to vectors. So, for example, testing which numbers from 1 to 10 are greater than or equal to 7, we get
 ```{r}
 1:10 >= 7
 ```
+six `FALSE`s (for 1 to 6) followed by four `TRUE`s (for 7 to 10).
 
 But R also knows to treat `TRUE` like the number 1 and `FALSE` like the number 0. So if we add up some `TRUE`s and `FALSE`s, R simply counts how many `TRUE`s there are
 ```{r}
 sum(1:10 >= 7)
 ```
 
-So in our Monte Carlo estimation code, `samples >= 2` was a vector of `TRUE`s and `FALSE`s, depending on whether each sample was greater than 2 or not, then `mean(samples >= 2)` took the *proportion* of the samples that were greater than 2.
+So in our Monte Carlo estimation code, `samples > 2` was a vector of `TRUE`s and `FALSE`s, depending on whether each sample was greater than 2 or not, then `mean(samples >= 2)` took the *proportion* of the samples that were greater than 2.
 
 ## Monte Carlo estimation of integrals
 
@@ -102,7 +107,7 @@ as required.
 Suppose we want to approximate the integral
 $$ \int_0^1 x^{1.6} (1-x)^{0.7} \, \mathrm{d}x . $$
 
-Let's pick $X$ to be uniform on $[0,1]$. This means we should take $\phi(x) = x^4(1-x)^7$, since $b - a$ is just 1 for us. We can then approximate this integral in R using the Monte Carlo estimate
+Let's pick $X$ to be uniform on $[0,1]$. This means we should simply take $\phi(x) = h(x) = x^{1.6}(1-x)^{0.7}$, since $\frac{1}{b - a} = \frac{1}{1-0}$ is just 1 for us here. We can then approximate this integral in R using the Monte Carlo estimate
 $$ \int_0^1 x^{1.6} (1-x)^{0.7} \, \mathrm{d}x = \Exg\phi(X) \approx \frac{1}{n} \sum_{i=1}^n X_i^{1.6} (1-X_i)^{0.7} $$
 
 ```{r, cache = TRUE}
@@ -112,5 +117,7 @@ samples <- runif(n, 0, 1)
 mean(hfun(samples))
 ```
 
-(The correct answer is known to be 0.14669 to 5 decimal places, so we were very close.)
+(The correct answer is known to be 0.146693 to 6 decimal places, so we were very close.)
 :::
+
+**Next time:** *We will analyse the accuracy of these Monte Carlo estimates.*

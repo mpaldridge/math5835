@@ -69,6 +69,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../mystyle.css">
 </head>
@@ -97,7 +126,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">MATH5835M Statistical Computing</a> 
+      <a href="../">MATH5835</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -143,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/L03-mc-examples.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">More Monte Carlo examples</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo for probabilities and integrals</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -364,7 +393,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../coursework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Coursework</span></span></a>
+ <span class="menu-text">Coursework</span></a>
   </div>
 </li>
     </ul>
@@ -378,8 +407,9 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#what-is-statistical-computing" id="toc-what-is-statistical-computing" class="nav-link active" data-scroll-target="#what-is-statistical-computing"><span class="header-section-number">1.1</span> What is statistical computing?</a></li>
-  <li><a href="#probability-and-statistics-background" id="toc-probability-and-statistics-background" class="nav-link" data-scroll-target="#probability-and-statistics-background"><span class="header-section-number">1.2</span> Probability and statistics background</a></li>
-  <li><a href="#r-programming" id="toc-r-programming" class="nav-link" data-scroll-target="#r-programming"><span class="header-section-number">1.3</span> R programming</a></li>
+  <li><a href="#background-probability" id="toc-background-probability" class="nav-link" data-scroll-target="#background-probability"><span class="header-section-number">1.2</span> Background: probability</a></li>
+  <li><a href="#background-statistics" id="toc-background-statistics" class="nav-link" data-scroll-target="#background-statistics"><span class="header-section-number">1.3</span> Background: statistics</a></li>
+  <li><a href="#background-r" id="toc-background-r" class="nav-link" data-scroll-target="#background-r"><span class="header-section-number">1.4</span> Background: R</a></li>
   </ul>
 </nav>
     </div>
@@ -408,11 +438,34 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-is-statistical-computing" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="what-is-statistical-computing"><span class="header-section-number">1.1</span> What is statistical computing?</h2>
 </section>
-<section id="probability-and-statistics-background" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="probability-and-statistics-background"><span class="header-section-number">1.2</span> Probability and statistics background</h2>
+<section id="background-probability" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="background-probability"><span class="header-section-number">1.2</span> Background: probability</h2>
+<p>Let <span class="math inline">\(Y_1, Y_2, \dots\)</span> be IID random variables with common expectation <span class="math inline">\(\mathbb EY_1 = \mu\)</span> and variance <span class="math inline">\(\operatorname{Var}(Y_1) = \sigma^2\)</span>. Consider the mean of the first <span class="math inline">\(n\)</span> random variables, <span class="math display">\[ \overline{Y}_n = \frac{1}{n} \sum_{i=1}^n Y_i . \]</span> Then the expectation of <span class="math inline">\(\overline{Y}_n\)</span> is <span class="math display">\[ \mathbb E \overline{Y}_n = \mathbb E\left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \frac{1}{n}
+\sum_{i=1}^n \mathbb{E}Y_i = \frac{1}{n}\,n\mu = \mu . \]</span> The variance of <span class="math inline">\(\overline{Y}_n\)</span> is <span class="math display">\[ \operatorname{Var}\big(  \overline{Y}_n \big)= \operatorname{Var} \left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \bigg(\frac{1}{n}\bigg)^2
+\sum_{i=1}^n \operatorname{Var}(Y_i) = \frac{1}{n^2}\,n\sigma^2 = \frac{\sigma^2}{n} , \]</span> where, for this one, we used the independence of the random variables. In particular, the expectation stays the same, the same as each individual random variable. But the variance gets smaller, at rate <span class="math inline">\(1/n\)</span>; or, equivalently, the standard deviation gets smaller, at rate <span class="math inline">\(1/\sqrt{n}\)</span>.</p>
+<p>The expectation staying at <span class="math inline">\(\mu\)</span> while the variance gets smaller and smaller means the probability gets ever more concentrated around <span class="math inline">\(\mu\)</span>. This gives the <strong>law of large numbers</strong> which says that <span class="math inline">\(\overline Y_n \to \mu\)</span> (“in probability”) as <span class="math inline">\(n \to \infty\)</span>.</p>
+<p>While we know the expectation of <span class="math inline">\(\overline Y_n\)</span> is <span class="math inline">\(\mu\)</span> and the variance is <span class="math inline">\(\sigma^2/n\)</span>, the <strong>central limit theorem</strong> says that the distribution of <span class="math inline">\(\overline Y_n\)</span> is approximately normally distributed with those parameters. Informally, we can say <span class="math inline">\(\overline Y_n \approx \operatorname{N}(\mu, \sigma^2/n)\)</span> when <span class="math inline">\(n\)</span> is large. (You probably know some more formal ways to more precisely state the central limit theorem, but this will do for us.)</p>
+<p>If we want a bound on how likely are random variable is to be close to its expectation (not just a “large <span class="math inline">\(n\)</span> approximation” like the central limit theorem, but a cast-iron finite-<span class="math inline">\(n\)</span> bound) we can use <strong>Chebyshev’s inequality</strong>: <span class="math display">\[ \mathbb P\big(|Z - \Ex Z| &gt; \epsilon\big) \leq \frac{1}{\epsilon^2} \operatorname{Var}(Z) .\]</span></p>
 </section>
-<section id="r-programming" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="r-programming"><span class="header-section-number">1.3</span> R programming</h2>
+<section id="background-statistics" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="background-statistics"><span class="header-section-number">1.3</span> Background: statistics</h2>
+<p>We will, in particular, use these definitions throughout the module:</p>
+<div id="def-stats" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.1</strong></span> Let <span class="math inline">\(\widehat\theta\)</span> be an estimate of a parameter <span class="math inline">\(\theta\)</span>. Then we have the following definitions of the estimate <span class="math inline">\(\widehat\theta\)</span>:</p>
+<ul>
+<li><p>The <strong>bias</strong> is <span class="math display">\[\operatorname{bias}\big(\widehat\theta\big) = \mathbb E\big(\widehat\theta - \theta\big)  = \mathbb E\widehat\theta - \theta.\]</span></p></li>
+<li><p>The <strong>mean-square error</strong> is <span class="math display">\[\operatorname{MSE}\big(\widehat\theta\big) = \mathbb E \big(\widehat\theta - \theta\big)^2 . \]</span></p></li>
+<li><p>The <strong>root-mean-square error</strong> is the square-root of the mean-square error, <span class="math display">\[\operatorname{RMSE}\big(\widehat\theta\big) = \sqrt{\operatorname{MSE}(\widehat\theta)} = \sqrt{\mathbb E (\widehat\theta - \theta)^2} . \]</span></p></li>
+</ul>
+</div>
+<p>Usually the goal is to get the mean-square error of an estimate as small as possible. It can be more convenient to discuss the root-mean-square error, as that has the same units as the parameter being measured. (If <span class="math inline">\(\theta\)</span> is in metres, say, then the mean-square-error is in metres-squared, where as the root-mean-square error is in metres again.) It’s nice to have an unbiased estimator – that is, one with bias 0 – although unbiasedness by itself is not enough for an estimate to be good. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the rgiht, then claims to have hit the target on average.)</p>
+<p>You probably also remember the relationship between the mean-square error, the bias, and the variance:</p>
+<div id="thm-MSE-bias" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1.1</strong></span> &nbsp; <span class="math inline">\(\operatorname{MSE}\big(\widehat\theta\big) = \operatorname{bias}\big(\widehat\theta\big)^2 + \operatorname{Var}\big(\widehat\theta\big)\)</span>.</p>
+</div>
+</section>
+<section id="background-r" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="background-r"><span class="header-section-number">1.4</span> Background: R</h2>
 
 
 </section>

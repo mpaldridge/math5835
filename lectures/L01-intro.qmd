@@ -2,6 +2,47 @@
 
 ## What is statistical computing?
 
-## Probability and statistics background
+## Background: probability
 
-## R programming
+Let $Y_1, Y_2, \dots$ be IID random variables with common expectation $\mathbb EY_1 = \mu$ and variance $\operatorname{Var}(Y_1) = \sigma^2$. Consider the mean of the first $n$ random variables,
+$$ \overline{Y}_n = \frac{1}{n} \sum_{i=1}^n Y_i . $$
+Then the expectation of $\overline{Y}_n$ is
+$$ \mathbb E \overline{Y}_n = \mathbb E\left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \frac{1}{n} 
+\sum_{i=1}^n \mathbb{E}Y_i = \frac{1}{n}\,n\mu = \mu . $$
+The variance of $\overline{Y}_n$ is
+$$ \operatorname{Var}\big(  \overline{Y}_n \big)= \operatorname{Var} \left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \bigg(\frac{1}{n}\bigg)^2 
+\sum_{i=1}^n \operatorname{Var}(Y_i) = \frac{1}{n^2}\,n\sigma^2 = \frac{\sigma^2}{n} , $$
+where, for this one, we used the independence of the random variables.
+In particular, the expectation stays the same, the same as each individual random variable. But the variance gets smaller, at rate $1/n$; or, equivalently, the standard deviation gets smaller, at rate $1/\sqrt{n}$.
+
+The expectation staying at $\mu$ while the variance gets smaller and smaller means the probability gets ever more concentrated around $\mu$. This gives the **law of large numbers** which says that $\overline Y_n \to \mu$ ("in probability") as $n \to \infty$.
+
+While we know the expectation of $\overline Y_n$ is $\mu$ and the variance is $\sigma^2/n$, the **central limit theorem** says that the distribution of $\overline Y_n$ is approximately normally distributed with those parameters. Informally, we can say $\overline Y_n \approx \operatorname{N}(\mu, \sigma^2/n)$ when $n$ is large. (You probably know some more formal ways to more precisely state the central limit theorem, but this will do for us.)
+
+If we want a bound on how likely are random variable is to be close to its expectation (not just a "large $n$ approximation" like the central limit theorem, but a cast-iron finite-$n$ bound) we can use **Chebyshev's inequality**:
+$$ \mathbb P\big(|Z - \Ex Z| > \epsilon\big) \leq \frac{1}{\epsilon^2} \operatorname{Var}(Z) .$$
+
+## Background: statistics
+
+We will, in particular, use these definitions throughout the module:
+
+::: {#def-stats}
+Let $\widehat\theta$ be an estimate of a parameter $\theta$. Then we have the following definitions of the estimate $\widehat\theta$:
+
+* The **bias** is $$\operatorname{bias}\big(\widehat\theta\big) = \mathbb E\big(\widehat\theta - \theta\big)  = \mathbb E\widehat\theta - \theta.$$
+
+* The **mean-square error** is $$\operatorname{MSE}\big(\widehat\theta\big) = \mathbb E \big(\widehat\theta - \theta\big)^2 . $$
+
+* The **root-mean-square error** is the square-root of the mean-square error, $$\operatorname{RMSE}\big(\widehat\theta\big) = \sqrt{\operatorname{MSE}(\widehat\theta)} = \sqrt{\mathbb E (\widehat\theta - \theta)^2} . $$
+:::
+
+Usually the goal is to get the mean-square error of an estimate as small as possible. It can be more convenient to discuss the root-mean-square error, as that has the same units as the parameter being measured. (If $\theta$ is in metres, say, then the mean-square-error is in metres-squared, where as the root-mean-square error is in metres again.) It's nice to have an unbiased estimator -- that is, one with bias 0 -- although unbiasedness by itself is not enough for an estimate to be good. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the rgiht, then claims to have hit the target on average.)
+
+You probably also remember the relationship between the mean-square error, the bias, and the variance:
+
+::: {#thm-MSE-bias}
+ 
+$\operatorname{MSE}\big(\widehat\theta\big) = \operatorname{bias}\big(\widehat\theta\big)^2 + \operatorname{Var}\big(\widehat\theta\big)$.
+:::
+
+## Background: R

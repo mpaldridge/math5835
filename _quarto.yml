@@ -6,6 +6,8 @@ book:
   title: "MATH5835M Statistical Computing"
   author: "Matthew Aldridge"
   date: "30/09/25"
+  sidebar:
+    title: MATH5835
   chapters:
     - index.qmd
     - about.qmd
