@@ -40,197 +40,157 @@
     ]
   },
   {
-    "objectID": "lectures/L01-intro.html",
-    "href": "lectures/L01-intro.html",
-    "title": "1  Introduction to Statistical Computing",
+    "objectID": "lectures/L01-mc-intro.html",
+    "href": "lectures/L01-mc-intro.html",
+    "title": "1  Introduction to Monte Carlo",
     "section": "",
-    "text": "1.1 What is statistical computing?",
+    "text": "1.1 What is statistical computing?\n“Statistical computing” – or “computational statistics” – as a subject refers to the branch of statistics that involves not attacking statistical problems merely with a pencil and paper, but rather by combining human ingenuity with the immense calculating powers of computers.\nOne of the big ideas here is simulation. Simulation is the idea that we can understand the properties of a random model not by cleverly working out the properties from scratch – this is usually impossible for anything but the simplest “toy models” – but rather by running the model many times on a computer. From these many simulations, we can observe and measure things like the typical (or “average”) behaviour, the spread (or “variance”) of the behaviour, and many other things. This concept of simulation is at the heart of the module MATH5835M Statistical Computing.\nIn particular, we will look at Monte Carlo estimation. Monte Carlo is about estimating a parameter, expectation or probability of a random variable by taking many samples of that random variable, then computing a relevant sample mean from those samples. We will study Monte Carlo in its standard “basic” form (Lectures 2–9), but also in the modern Markov chain Monte Carlo form (Lectures 17–23), which has become such a crucial part of Bayesian statistical analysis.\nTo run a simulation, one needs random numbers with the correct distribution. Random number generation (Lectures 10–16) will be an important part of this module. We will look first at how to generate randomness of any sort, and then how to get that randomness into the shape of the distributions we want.\nWhen dealing with a very big data set, traditionally we want to “reduce the dimension” by representing it with a simple parametric model. For example, tens of thousands of datapoints might get reduced just to estimates of the parameters \\(\\mu\\) and \\(\\sigma^2\\). But with computational statistics, we don’t need to make this simplification – we can do inference using the full details of the whole dataset. An computational idea that takes advantage of this is the bootstrap (Lectures 24–27)",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to Statistical Computing</span>"
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to Monte Carlo</span>"
     ]
   },
   {
-    "objectID": "lectures/L01-intro.html#background-probability",
-    "href": "lectures/L01-intro.html#background-probability",
-    "title": "1  Introduction to Statistical Computing",
-    "section": "1.2 Background: probability",
-    "text": "1.2 Background: probability\nLet \\(Y_1, Y_2, \\dots\\) be IID random variables with common expectation \\(\\mathbb EY_1 = \\mu\\) and variance \\(\\operatorname{Var}(Y_1) = \\sigma^2\\). Consider the mean of the first \\(n\\) random variables, \\[ \\overline{Y}_n = \\frac{1}{n} \\sum_{i=1}^n Y_i . \\] Then the expectation of \\(\\overline{Y}_n\\) is \\[ \\mathbb E \\overline{Y}_n = \\mathbb E\\left(\\frac{1}{n}\\sum_{i=1}^n Y_i\\right) = \\frac{1}{n}\n\\sum_{i=1}^n \\mathbb{E}Y_i = \\frac{1}{n}\\,n\\mu = \\mu . \\] The variance of \\(\\overline{Y}_n\\) is \\[ \\operatorname{Var}\\big(  \\overline{Y}_n \\big)= \\operatorname{Var} \\left(\\frac{1}{n}\\sum_{i=1}^n Y_i\\right) = \\bigg(\\frac{1}{n}\\bigg)^2\n\\sum_{i=1}^n \\operatorname{Var}(Y_i) = \\frac{1}{n^2}\\,n\\sigma^2 = \\frac{\\sigma^2}{n} , \\] where, for this one, we used the independence of the random variables. In particular, the expectation stays the same, the same as each individual random variable. But the variance gets smaller, at rate \\(1/n\\); or, equivalently, the standard deviation gets smaller, at rate \\(1/\\sqrt{n}\\).\nThe expectation staying at \\(\\mu\\) while the variance gets smaller and smaller means the probability gets ever more concentrated around \\(\\mu\\). This gives the law of large numbers which says that \\(\\overline Y_n \\to \\mu\\) (“in probability”) as \\(n \\to \\infty\\).\nWhile we know the expectation of \\(\\overline Y_n\\) is \\(\\mu\\) and the variance is \\(\\sigma^2/n\\), the central limit theorem says that the distribution of \\(\\overline Y_n\\) is approximately normally distributed with those parameters. Informally, we can say \\(\\overline Y_n \\approx \\operatorname{N}(\\mu, \\sigma^2/n)\\) when \\(n\\) is large. (You probably know some more formal ways to more precisely state the central limit theorem, but this will do for us.)\nIf we want a bound on how likely are random variable is to be close to its expectation (not just a “large \\(n\\) approximation” like the central limit theorem, but a cast-iron finite-\\(n\\) bound) we can use Chebyshev’s inequality: \\[ \\mathbb P\\big(|Z - \\Ex Z| &gt; \\epsilon\\big) \\leq \\frac{1}{\\epsilon^2} \\operatorname{Var}(Z) .\\]",
+    "objectID": "lectures/L01-mc-intro.html#what-is-monte-carlo-estimation",
+    "href": "lectures/L01-mc-intro.html#what-is-monte-carlo-estimation",
+    "title": "1  Introduction to Monte Carlo",
+    "section": "1.2 What is Monte Carlo estimation?",
+    "text": "1.2 What is Monte Carlo estimation?\nLet \\(X\\) be a random variable. We recall the expectation \\(\\Ex X\\) of \\(X\\): if \\(X\\) is discrete with probability mass function (PMF) \\(p\\), then this is \\[ \\Ex X = \\sum_x x\\,p(x) ;\\] while if \\(X\\) is continuous with probability density function (PDF) \\(f\\), then this is \\[ \\Ex X = \\int_{-\\infty}^{+\\infty} x\\,f(x)\\,\\mathrm{d}x . \\] More generally, the expectation of a function \\(\\phi\\) of \\(X\\) is \\[ \\Exg \\phi(X) = \\begin{cases} {\\displaystyle \\sum_x \\phi(x)\\,p(x)} & \\text{for $X$ discrete}\\\\ {\\displaystyle \\int_{-\\infty}^{+\\infty} \\phi(x)\\,f(x)\\,\\mathrm{d}x}  & \\text{for $X$ continuous.} \\end{cases}\\] (This matches with the “plain” expectation when \\(\\phi(x) = x\\).)\nBut how do we actually calculate an expectation like one of these? If \\(X\\) is discrete and can only take a small, finite number of values, we can simply add up the sum \\(\\sum_x \\phi(x)\\,p(x)\\). Otherwise, we just have to hope that \\(\\phi\\) and \\(p\\) or \\(f\\) are sufficiently “nice” that we can manage to work out the sum/integral using a pencil and paper. But while this is often the case in the sort of “toy example” one comes across in maths or statistics lectures, this is very rare in “real life”.\nMonte Carlo estimation is the idea that we can get an approximate answer for \\(\\Ex X\\) or \\(\\Exg \\phi(X)\\) if we have access to lots of samples from \\(X\\). For example, if we have access to \\(X_1, X_2 \\dots, X_n\\) , independent and identically distributed (IID) samples with the same distribution as \\(X\\), then we already know that the mean \\[ \\overline X = \\frac{1}{n}(X_1 + X_2 + \\cdots + X_n) = \\frac{1}{n} \\sum_{i=1}^n X_i \\] is usually close to the expectation \\(\\Ex X\\), at least if \\(n\\) is big. Similarly, it should be the case that \\[ \\frac{1}{n} \\big(\\phi(X_1) + \\phi(X_2) + \\cdots + \\phi(X_n) \\big) = \\frac{1}{n} \\sum_{i=1}^n \\phi(X_i) \\] should be close to \\(\\Exg \\phi(X)\\).\nIn this course we will write that \\(X_1, X_2, \\dots, X_n\\) is a “random sample from \\(X\\)” to mean that \\(X_1, X_2, \\dots, X_n\\) are IID with the same distribution as \\(X\\).\n\nDefinition 1.1 Let \\(X\\) be a random variable, \\(\\phi\\) a function, and write \\(\\theta = \\Exg\\phi(X)\\). Suppose that \\(X_1, X_2, \\dots, X_n\\) are a random sample from \\(X\\). Then the Monte Carlo estimate \\(\\widehat\\theta_n^{\\mathrm{MC}}\\) of \\(\\theta\\) is \\[ \\widehat{\\theta}_n^{\\mathrm{MC}} = \\frac{1}{n} \\sum_{i=1}^n \\phi(X_i) . \\]\n\nWhile general ideas for estimating using simulation go back a long time, the modern theory of Monte Carlo estimation was developed by the physicists Stanislaw Ulam and John von Neumann. Ulam (who was Polish) and von Neumann (who was Hungarian) moved to the US in the early 1940s to work on the Manhattan project to build the atomic bomb (as made famous by the film Oppenheimer). Later in the 1940s, they worked together in the Los Alamos National Laboratory continuing their research on nuclear weapons, where they used simulations on early computers to help them numerically solve difficult mathematical and physical problems.\nThe name “Monte Carlo” was chosen because the use of randomness to solve such problems reminded them of gamblers in the casinos of Monte Carlo, Monaco. Ulam and von Neumann also worked closely with another colleague Nicholas Metropolis, whose work we will study later in this module.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to Statistical Computing</span>"
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to Monte Carlo</span>"
     ]
   },
   {
-    "objectID": "lectures/L01-intro.html#background-statistics",
-    "href": "lectures/L01-intro.html#background-statistics",
-    "title": "1  Introduction to Statistical Computing",
-    "section": "1.3 Background: statistics",
-    "text": "1.3 Background: statistics\nWe will, in particular, use these definitions throughout the module:\n\nDefinition 1.1 Let \\(\\widehat\\theta\\) be an estimate of a parameter \\(\\theta\\). Then we have the following definitions of the estimate \\(\\widehat\\theta\\):\n\nThe bias is \\[\\operatorname{bias}\\big(\\widehat\\theta\\big) = \\mathbb E\\big(\\widehat\\theta - \\theta\\big)  = \\mathbb E\\widehat\\theta - \\theta.\\]\nThe mean-square error is \\[\\operatorname{MSE}\\big(\\widehat\\theta\\big) = \\mathbb E \\big(\\widehat\\theta - \\theta\\big)^2 . \\]\nThe root-mean-square error is the square-root of the mean-square error, \\[\\operatorname{RMSE}\\big(\\widehat\\theta\\big) = \\sqrt{\\operatorname{MSE}(\\widehat\\theta)} = \\sqrt{\\mathbb E (\\widehat\\theta - \\theta)^2} . \\]\n\n\nUsually the goal is to get the mean-square error of an estimate as small as possible. It can be more convenient to discuss the root-mean-square error, as that has the same units as the parameter being measured. (If \\(\\theta\\) is in metres, say, then the mean-square-error is in metres-squared, where as the root-mean-square error is in metres again.) It’s nice to have an unbiased estimator – that is, one with bias 0 – although unbiasedness by itself is not enough for an estimate to be good. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the rgiht, then claims to have hit the target on average.)\nYou probably also remember the relationship between the mean-square error, the bias, and the variance:\n\nTheorem 1.1   \\(\\operatorname{MSE}\\big(\\widehat\\theta\\big) = \\operatorname{bias}\\big(\\widehat\\theta\\big)^2 + \\operatorname{Var}\\big(\\widehat\\theta\\big)\\).",
+    "objectID": "lectures/L01-mc-intro.html#examples",
+    "href": "lectures/L01-mc-intro.html#examples",
+    "title": "1  Introduction to Monte Carlo",
+    "section": "1.3 Examples",
+    "text": "1.3 Examples\nLet’s see some simple examples of Monte Carlo estimation using R.\n\nExample 1.1 Let’s suppose we’ve forgotten the expectation of the exponential distribution \\(X \\sim \\operatorname{Exp}(2)\\) with rate 2. In this simple case, we could work out the answer using the PMF \\(f(x) = 2\\mathrm{e}^{2x}\\) as \\[ \\Ex X = \\int_0^\\infty x\\,2\\mathrm{e}^{2x}\\,\\mathrm{d}x \\] (and, without too much difficulty, get the answer \\(\\frac12\\)). But instead, let’s do this the Monte Carlo way.\nIn R, we can use the rexp() function to get IID samples from the exponential distribution: the full syntax is rexp(n, rate), which gives n samples from an exponential distribution with rate rate. So our code here should be\n\nn &lt;- 100\nsamples &lt;- rexp(n, 2)\nMCest &lt;- (1 / n) * sum(samples)\nMCest\n\n[1] 0.4056852\n\n\nSo our Monte Carlo estimate is 0.40569, to 5 decimal places.\nTo get a (probably) more accurate estimation, we could use more samples. We could also simplify the third line of this code by using the mean() function.\n\nn &lt;- 1e6\nsamples &lt;- rexp(n, 2)\nMCest &lt;- mean(samples)\nMCest\n\n[1] 0.5000638\n\n\n(In the second line, 1e6 is R code for the scientific notation \\(1 \\times 10^6\\), or a million.)\nOur new Monte Carlo estimate is 0.50006, which is much closer to the true value of \\(\\frac12\\).\n\nBy the way: all R code “chunks” displayed in the notes should work perfectly if you copy-and-paste them into RStudio. I strongly encourage playing about with the code as a good way to learn this material and explore further!\n\nExample 1.2 Let’s try another example. Let \\(X \\sim \\operatorname{N}(1, 2^2)\\) be a normal distribution with mean 0 and standard deviation 2. Suppose we want to find out \\(\\Exg(\\sin X)\\) (for some reason). While it might be possible to somehow calculate the integral \\[ \\Exg(\\sin X) = \\int_{-\\infty}^{+\\infty} (\\sin x) \\, \\frac{1}{\\sqrt{2\\pi\\times 2^2}} \\exp\\left(\\frac{(x - 1)^2}{2\\times 2^2}\\right) \\, \\mathrm{d} x , \\] that looks extremely difficult to me.\nInstead, a Monte Carlo estimation of \\(\\Exg(\\sin X)\\) is very straightforward.\n\nn &lt;- 1e6\nsamples &lt;- rnorm(n, 1, 2)\nMCest &lt;- mean(sin(samples))\nMCest\n\n[1] 0.1143824\n\n\nOur Monte Carlo estimate is 0.11438.\n\n\nNext time: We look at more examples of things we can estimate using the Monte Carlo method.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to Statistical Computing</span>"
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to Monte Carlo</span>"
     ]
   },
   {
-    "objectID": "lectures/L01-intro.html#background-r",
-    "href": "lectures/L01-intro.html#background-r",
-    "title": "1  Introduction to Statistical Computing",
-    "section": "1.4 Background: R",
-    "text": "1.4 Background: R",
-    "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to Statistical Computing</span>"
-    ]
-  },
-  {
-    "objectID": "lectures/L02-mc-intro.html",
-    "href": "lectures/L02-mc-intro.html",
-    "title": "2  Introduction to Monte Carlo",
+    "objectID": "lectures/L02-mc-uses.html",
+    "href": "lectures/L02-mc-uses.html",
+    "title": "2  Uses of Monte Carlo",
     "section": "",
-    "text": "2.1 What is Monte Carlo estimation?\nLet \\(X\\) be a random variable. We recall the expectation \\(\\Ex X\\) of \\(X\\): if \\(X\\) is discrete with probability mass function (PMF) \\(p\\), then this is \\[ \\Ex X = \\sum_x x\\,p(x) ;\\] while if \\(X\\) is continuous with probability density function (PDF) \\(f\\), then this is \\[ \\Ex X = \\int_{-\\infty}^{+\\infty} x\\,f(x)\\,\\mathrm{d}x . \\] More generally, the expectation of a function \\(\\phi\\) of \\(X\\) is \\[ \\Exg \\phi(X) = \\begin{cases} {\\displaystyle \\sum_x \\phi(x)\\,p(x)} & \\text{for $X$ discrete}\\\\ {\\displaystyle \\int_{-\\infty}^{+\\infty} \\phi(x)\\,f(x)\\,\\mathrm{d}x}  & \\text{for $X$ continuous.} \\end{cases}\\] (This matches with the “plain” expectation when \\(\\phi(x) = x\\).)\nBut how do we actually calculate an expectation like one of these? If \\(X\\) is discrete and can only take a small, finite number of values, we can simply add up the sum \\(\\sum_x \\phi(x)\\,p(x)\\). Otherwise, we just have to hope that \\(\\phi\\) and \\(p\\) or \\(f\\) are sufficiently “nice” that we can manage to work out the sum/integral using a pencil and paper. But while this is often the case in the sort of “toy example” one comes across in maths or statistics lectures, this is very rare in “real life”.\nMonte Carlo estimation is the idea that we can get an approximate answer for \\(\\Ex X\\) or \\(\\Exg \\phi(X)\\) if we have access to lots of samples from \\(X\\). For example, if we have access to \\(X_1, X_2 \\dots, X_n\\) , independent and identically distributed (IID) samples with the same distribution as \\(X\\), then we already know that the mean \\[ \\overline X = \\frac{1}{n}(X_1 + X_2 + \\cdots + X_n) = \\frac{1}{n} \\sum_{i=1}^n X_i \\] is usually close to the expectation \\(\\Ex X\\), at least if \\(n\\) is big. Similarly, it should be the case that \\[ \\frac{1}{n} \\big(\\phi(X_1) + \\phi(X_2) + \\cdots + \\phi(X_n) \\big) = \\frac{1}{n} \\sum_{i=1}^n \\phi(X_i) \\] should be close to \\(\\Exg \\phi(X)\\).\nIn this course we will write that \\(X_1, X_2, \\dots, X_n\\) is a “random sample from \\(X\\)” to mean that \\(X_1, X_2, \\dots, X_n\\) are IID with the same distribution as \\(X\\).\nWhile general ideas for estimating using simulation go back a long time, the modern theory of Monte Carlo estimation was developed by the physicists Stanislaw Ulam and John von Neumann. Ulam (who was Polish) and von Neumann (who was Hungarian) moved to the US in the early 1940s to work on the Manhattan project to build the atomic bomb (as made famous by the film Oppenheimer). Later in the 1940s, they worked together in the Los Alamos National Laboratory continuing their research on nuclear weapons, where they used simulations on early computers to help them numerically solve difficult mathematical and physical problems.\nThe name “Monte Carlo” was chosen because the use of randomness to solve such problems reminded them of gamblers in the casinos of Monte Carlo, Monaco. Ulam and von Neumann also worked closely with another colleague Nicholas Metropolis, whose work we will study later in this module.",
+    "text": "2.1 Indicator function\nQuick recap: Last time we defined the Monte Carlo estimate for an expectation \\(\\theta = \\Exg \\phi(X)\\) to be \\[ \\widehat{\\theta}_n^{\\mathrm{MC}} = \\frac{1}{n} \\big(\\phi(X_1) + \\phi(X_2) + \\cdots + \\phi(X_n) \\big) = \\frac{1}{n} \\sum_{i=1}^n \\phi(X_i) , \\] where \\(X_1, X_2, \\dots, X_n\\) is an independent random sample from \\(X\\).\nBut what if we want to find a probability, rather than an expectation? What if we want \\(\\mathbb P(X = x)\\) for some \\(x\\), or \\(\\mathbb P(X \\geq a)\\) for some \\(a\\), or, more generally \\(\\mathbb P(X \\in A)\\) for some set \\(A\\)?\nThe key thing that will help us here is the indicator function. The indicator function simply tells us whether an outcome \\(x\\) is in a set \\(A\\) or not.\nThe set \\(A\\) could just be a single element \\(A = \\{y\\}\\). In that case \\(\\Ind_{\\{y\\}}(x)\\) is 1 if \\(x = y\\) and 0 if \\(x \\neq y\\). Or \\(A\\) could be a semi-infinite interval, like \\(A = [a, \\infty)\\). In that case \\(\\Ind_A(x)\\) is 1 if \\(x \\geq a\\) and \\(0\\) if \\(x &lt; a\\).\nWhy is this helpful? Well \\(\\Ind_A\\) is a function, so let’s think about what the expectation \\(\\Exg \\Ind_A(X)\\) would be for some random variable \\(X\\). Since \\(\\Ind_A\\) can only take two values, 0 and 1, we have \\[ \\begin{align*}\n\\Exg \\Ind_A(X) &= \\sum_{y \\in\\{0,1\\}} y\\,\\mathbb P\\big( \\Ind_A(X) = y \\big) \\\\\\\n  &= 0 \\times \\mathbb P\\big( \\Ind_A(X) = 0 \\big) + 1 \\times \\mathbb P\\big( \\Ind_A(X) = 1 \\big) \\\\\n  &= 0 \\times \\mathbb P(X \\notin A) + 1 \\times \\mathbb P(X \\in A) \\\\\n  &= \\mathbb P(X \\in A)\n\\end{align*} \\] In line three, we used that \\(\\Ind_A(X) = 0\\) if and only if \\(X \\notin A\\), and that \\(\\Ind_A(X) = 1\\) if and only if \\(X \\in A\\).\nSo the expectation of an indicator function a set is the probability that \\(X\\) is set. This idea connects “expectations of functions” back to probabilities: if we want to find \\(\\mathbb P(X \\in A)\\) we can find the expectation of \\(\\Ind_A(X)\\).",
     "crumbs": [
       "Monte Carlo estimation",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to Monte Carlo</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Uses of Monte Carlo</span>"
     ]
   },
   {
-    "objectID": "lectures/L02-mc-intro.html#what-is-monte-carlo-estimation",
-    "href": "lectures/L02-mc-intro.html#what-is-monte-carlo-estimation",
-    "title": "2  Introduction to Monte Carlo",
+    "objectID": "lectures/L02-mc-uses.html#indicator-function",
+    "href": "lectures/L02-mc-uses.html#indicator-function",
+    "title": "2  Uses of Monte Carlo",
     "section": "",
-    "text": "Definition 2.1 Let \\(X\\) be a random variable, \\(\\phi\\) a function, and write \\(\\theta = \\Exg\\phi(X)\\). Suppose that \\(X_1, X_2, \\dots, X_n\\) are a random sample from \\(X\\). Then the Monte Carlo estimate \\(\\widehat\\theta_n^{\\mathrm{MC}}\\) is \\[ \\widehat{\\theta}_n^{\\mathrm{MC}} = \\frac{1}{n} \\sum_{i=1}^n \\phi(X_i) . \\]",
+    "text": "Definition 2.1 Let \\(A\\) be a set. Then the indicator function \\(\\Ind_A\\) is defined by \\[ \\Ind_A(x) = \\begin{cases} 1 & \\text{if $x \\in A$} \\\\ 0 & \\text{if $x \\notin A$.} \\end{cases} \\]",
     "crumbs": [
       "Monte Carlo estimation",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to Monte Carlo</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Uses of Monte Carlo</span>"
     ]
   },
   {
-    "objectID": "lectures/L02-mc-intro.html#examples",
-    "href": "lectures/L02-mc-intro.html#examples",
-    "title": "2  Introduction to Monte Carlo",
-    "section": "2.2 Examples",
-    "text": "2.2 Examples\nLet’s see some simple examples of Monte Carlo estimation using R.\n\nExample 2.1 Let’s suppose we’ve forgotten the expectation of the exponential distribution \\(X \\sim \\operatorname{Exp}(2)\\) with rate 2. In this simple case, we could work out the answer using the PMF \\(f(x) = 2\\mathrm{e}^{2x}\\) as \\[ \\Ex X = \\int_0^\\infty x\\,2\\mathrm{e}^{2x}\\,\\mathrm{d}x \\] (and, without too much difficulty, get the answer \\(\\frac12\\)). But instead, let’s do this the Monte Carlo way.\nIn R, we can use the rexp() function to get IID samples from the exponential distribution: the full syntax is rexp(n, rate), which gives n samples from an exponential distribution with rate rate. So our code here should be\n\nn &lt;- 100\nsamples &lt;- rexp(n, 2)\nMCest &lt;- (1 / n) * sum(samples)\nMCest\n\n[1] 0.4600462\n\n\nSo our Monte Carlo estimate is 0.46005, to 5 decimal places.\nTo get a (probably) more accurate estimation, we could use more samples. We could also simplify the third line of this code by using the mean() function.\n\nn &lt;- 1e6\nsamples &lt;- rexp(n, 2)\nMCest &lt;- mean(samples)\nMCest\n\n[1] 0.4994489\n\n\n(In the second line, 1e6 is R code for the scientific notation \\(1 \\times 10^6\\), or a million.)\nOur new Monte Carlo estimate is 0.49945, which is much closer to the true value of \\(\\frac12\\).\n\nBy the way: all R code “chunks” displayed in the notes should work perfectly if you copy-and-paste them into RStudio. I strongly encourage playing about with the code as a good way to learn this material and explore further!\n\nExample 2.2 Let’s try another example. Let \\(X \\sim \\operatorname{N}(1, 2^2)\\) be a normal distribution with mean 0 and standard deviation 2. Suppose we want to find out \\(\\Exg(\\sin X)\\) (for some reason). While it might be possible to somehow calculate the integral \\[ \\Exg(\\sin X) = \\int_{-\\infty}^{+\\infty} (\\sin x) \\, \\frac{1}{\\sqrt{2\\pi\\times 2^2}} \\exp\\left(\\frac{(x - 1)^2}{2\\times 2^2}\\right) \\, \\mathrm{d} x , \\] that looks extremely difficult to me.\nInstead, a Monte Carlo estimation of \\(\\Exg(\\sin X)\\) is very straightforward.\n\nn &lt;- 1e6\nsamples &lt;- rnorm(n, 1, 2)\nMCest &lt;- mean(sin(samples))\nMCest\n\n[1] 0.1150127\n\n\nOur Monte Carlo estimate is 0.11501.",
+    "objectID": "lectures/L02-mc-uses.html#monte-carlo-for-probabilities",
+    "href": "lectures/L02-mc-uses.html#monte-carlo-for-probabilities",
+    "title": "2  Uses of Monte Carlo",
+    "section": "2.2 Monte Carlo for probabilities",
+    "text": "2.2 Monte Carlo for probabilities\nWith this idea in hand, how do we estimate \\(\\theta = \\mathbb P(X \\in A)\\) using the Monte Carlo method? We write \\(\\theta = \\Exg\\Ind_A(X)\\). Then our Monte Carlo estimate is \\[  \\widehat{\\theta}_n^{\\mathrm{MC}} = \\frac{1}{n} \\sum_{i=1}^n \\Ind_A(X_i) . \\] We remember that \\(\\Ind_A(X_i)\\) is 1 if \\(X_i \\in A\\) and 0 otherwise. So if we add up \\(n\\) of these, we count an extra 1 each time we have an \\(X_i \\in A\\). So \\(\\sum_{i=1}^n \\Ind_A(X_i)\\) counts the total number of the \\(X_i\\) that are in \\(n\\). So the Monte Carlo estimate can be written as \\[  \\widehat{\\theta}_n^{\\mathrm{MC}} = \\frac{\\# \\text{ of } X_i \\text{ that are in $A$}}{n} . \\]\nAlthough we’ve had to do a bit of work to get here, this a totally logical outcome! The right-hand side here is the proportion of the samples for which \\(X_i \\in A\\). And if we want to estimate the probability something happens, looking at the proportion of times it happens in a random sample is very much the “intuitive” estimate to take. And that intuitive estimate is indeed the Monte Carlo estimate!\n\nExample 2.1 Let \\(Z \\sim \\operatorname{N}(0,1)\\) be a standard normal distribution. Estimate \\(\\mathbb P(Z &gt; 2)\\).\nThis is a question that it is impossible to answer exactly using a pencil and paper: there’s no closed form for \\[ \\mathbb P(Z &gt; 2) = \\int_2^\\infty \\frac{1}{\\sqrt{2\\pi}}\\,\\mathrm{e}^{-z^2/2}\\,\\mathrm{d}z , \\] so we’ll have to use an estimation method.\nThe Monte Carlo estimate means taking a random sample \\(Z_1, Z_2, \\dots, Z_n\\) of standard normals, and calculating what proportion of them are greater than 2. In R, we can do this as follows.\n\nn &lt;- 1e6\nsamples &lt;- rnorm(n, 0, 1)\nMCest &lt;- mean(samples &gt; 2)\nMCest\n\n[1] 0.022886\n\n\nWe can check our answer: R’s inbuilt pnorm() function estimates probabilities for the normal distribution (using a method that, in this specific case, is much quicker and more accurate than Monte Carlo estimation). The true answer is\n\npnorm(2, lower.tail = FALSE)\n\n[1] 0.02275013\n\n\nso our estimate was pretty good.\n\nWe should explain the third line in the code we used for the Monte Carlo estimation mean(samples &gt;= 2). In R, some statements can be answered “true” or “false”: these are often statements involving equality == (that’s a double equals sign) or inequalities like &lt;, &lt;=, &gt;=, &gt;. So 5 &gt; 2 is TRUE but 3 == 7 is FALSE. These can be applied “component by component” to vectors. So, for example, testing which numbers from 1 to 10 are greater than or equal to 7, we get\n\n1:10 &gt;= 7\n\n [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE\n\n\nsix FALSEs (for 1 to 6) followed by four TRUEs (for 7 to 10).\nBut R also knows to treat TRUE like the number 1 and FALSE like the number 0. So if we add up some TRUEs and FALSEs, R simply counts how many TRUEs there are\n\nsum(1:10 &gt;= 7)\n\n[1] 4\n\n\nSo in our Monte Carlo estimation code, samples &gt; 2 was a vector of TRUEs and FALSEs, depending on whether each sample was greater than 2 or not, then mean(samples &gt;= 2) took the proportion of the samples that were greater than 2.",
     "crumbs": [
       "Monte Carlo estimation",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to Monte Carlo</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Uses of Monte Carlo</span>"
     ]
   },
   {
-    "objectID": "lectures/L02-mc-intro.html#random-samples-in-r",
-    "href": "lectures/L02-mc-intro.html#random-samples-in-r",
-    "title": "2  Introduction to Monte Carlo",
-    "section": "2.3 Random samples in R",
-    "text": "2.3 Random samples in R\nIn this lecture, we’ve got random samples from distributions using the R functions rexp() (exponential distribution) and rnorm() (normal).\nGenerally, R has built in functions for generating random samples for the most common distributions. These include:\n\nrbinom(n, size, prob) for n samples from the binomial distribution \\(\\operatorname{Bin}(\\mathtt{size}, \\texttt{prob})\\). Includes rbinom(n, 1, prob) for the Bernoulli distribution \\(\\operatorname{Bern}(\\mathtt{prob})\\).\nrgeom(n, prob) for n samples from the geometric distribution \\(\\operatorname{Geom}(\\mathtt{prob})\\). (R uses the “number of failures before for the first success” definition of the geometric, starting from 0.)\nrpois(n, lambda) for n samples from the Poisson distribution \\(\\operatorname{Po}(\\mathtt{lambda})\\).\nrexp(n, rate) for n samples from the exponential distribution \\(\\operatorname{Exp}(\\mathtt{rate})\\). If the rate parameter is omitted, then rate = 1 is assumed by default.\nrnorm(n, mean, sd) for n samples from the normal distribution \\(\\operatorname{N}(\\mathtt{mean},\\mathtt{sd}^2)\\). The third argument is the standard deviation \\(\\sigma\\), not the variance \\(\\sigma^2\\). If the mean and sd parameters are omitted, then mean = 0 and sd = 1 are assumed by default.\nrunif(n, min, max) for n samples from the continuous uniform distribution on the interval \\([\\mathtt{min}, \\mathtt{max}]\\). If the min and max parameters are omitted, the interval \\([0,1]\\) is assumed by default. (This will turn out to be the most important sampling distribution in this module.)\nLook at the help file ?distributions in R for details of other distributions.\n\nAlso, we can sample from a discrete random variable on a finite number of outcomes with\nsample(x, n, replace = TRUE, prob = p)\nHere, x is a vector of values the random variable can take, n is the number of samples, and p is a vector of probabilities of each value of x (in the same order). If prob = p is omitted, equal uniform probabilities of each outcome are assumed by default.\nIn Part II of this module, we will learn how these R functions work, so we understand how R manages to sample from these distributions. Then we will be able to do it ourselves “from scratch”, and also be able to sample from distributions that R doesn’t have built-in functions for.\nNext time: We look at more examples of things we can estimate using the Monte Carlo method.",
+    "objectID": "lectures/L02-mc-uses.html#monte-carlo-for-integrals",
+    "href": "lectures/L02-mc-uses.html#monte-carlo-for-integrals",
+    "title": "2  Uses of Monte Carlo",
+    "section": "2.3 Monte Carlo for integrals",
+    "text": "2.3 Monte Carlo for integrals\nThere’s another thing – a non-statistics thing – that Monte Carlo estimation is useful for. We can use Monte Carlo estimation to approximate integrals that are too hard to do by hand.\nLet’s think of an integral: say, \\[ \\int_a^b h(x) \\mathrm{d}x ,\\] for some function \\(f\\) between the limits \\(a\\) and \\(b\\). And let’s compare that to the integral \\(\\Exg \\phi(X)\\) that we can estimate using Monte Carlo estimation, \\[ \\int_{-\\infty}^\\infty \\phi(x)\\,f(x)\\, \\mathrm{d} x. \\] Matching things up, we see that we want to pick a function \\(\\phi\\) and a PDF \\(f\\) such that \\[ \\phi(x)\\,f(x) = \\begin{cases} 0 & x &lt; a \\\\ h(x) & a \\leq x \\leq b \\\\ 0 & x &gt; b . \\end{cases} \\]\nOf course, there are lots of choices of \\(\\phi\\) and \\(f\\) that would satisfy this. But a “common-sense” choice that often works is to pick \\(f\\) to be the PDF of \\(X\\), a continuous uniform distribution on the interval \\([a,b]\\) (provided that \\(a\\) and \\(b\\) are finite). Recall that this means \\(X\\) has PDF \\[ f(x) = \\begin{cases} 0 & x &lt; a \\\\ \\displaystyle{\\frac{1}{b-a}} & a \\leq x \\leq b \\\\ 0 & x &gt; b . \\end{cases} \\] Comparing this equation with the one above, we then have to choose \\(\\phi(x) = (b-a)h(x)\\).\nPutting this all together, we have \\[ \\Exg \\phi(X) = \\int_{-\\infty}^{+\\infty} \\phi(x)\\,f(x)\\,\\mathrm{d}x = \\int_a^b (b-a)h(x)\\,\\frac{1}{b-a}\\,\\mathrm{d}x = \\int_a^b h(x) \\mathrm{d}x ,\\] as required.\n\nExample 2.2 Suppose we want to approximate the integral \\[ \\int_0^2 x^{1.6} (2-x)^{0.7} \\, \\mathrm{d}x . \\]\nLet’s pick \\(X\\) to be uniform on \\([0,2]\\). This means we should simply take \\(\\phi(x) = (2-0)h(x) = 2x^{1.6}(1-x)^{0.7}\\). We can then approximate this integral in R using the Monte Carlo estimate \\[ \\int_0^1 x^{1.6} (2-x)^{0.7} \\, \\mathrm{d}x = \\Exg\\phi(X) \\approx \\frac{1}{n} \\sum_{i=1}^n 2\\,X_i^{1.6} (2-X_i)^{0.7} \\]\n\nn &lt;- 1e6\nintegrand &lt;- function(x) x^1.6 * (2 - x)^0.7\nsamples &lt;- runif(n, 0, 2)\nmean(2 * integrand(samples))\n\n[1] 1.44451\n\n\n\n\nExample 2.3 Suppose we want to approximate the integral \\[ \\int_{-\\infty}^{+\\infty}\n\\mathrm{e}^{-0.1|x|} \\cos x \\, \\mathrm{d}x . \\] This one is an integral on the whole real line, so we can’t take a uniform distribution. Maybe we should take \\(f(x)\\) to be the PDF of a normal distribution, and then put \\[ \\phi(x) = \\frac{h(x)}{f(x)} = \\frac{\\mathrm{e}^{-0.1|x|} \\cos x}{h(x)} . \\]\nBut which normal distribution should we take? Well, we’re allowed to take any one. But we’ll probably get the best results if we pick one that is mostly likely to take values where \\(h(x)\\) is big – or perhaps the absolute value \\(|h(x)|\\), to be precise. That is because we don’t want to “waste” too many samples where \\(h(x)\\) is very small, because they don’t contribute much to the integral. But we don’t want to “miss” – or only sample very rarely – places where \\(h(x)\\) is big, which contribute a lot to the integral. Let’s have a look at the graph of \\(h(x) = \\mathrm{e}^{-0.1|x|} \\cos x\\).\n\n\n\n\n\n\n\n\n\nThis suggests to me that a mean of 0 and a standard deviation of 20 might work quite well.\n\nn &lt;- 1e6\nintegrand &lt;- function(x) exp(-0.1 * abs(x)) * cos(x)\npdf       &lt;- function(x) dnorm(x, 0, 20)\nphi       &lt;- function(x) integrand(x) / pdf(x)\n\nsamples &lt;- rnorm(n, 0, 20)\nmean(phi(samples))\n\n[1] 0.2101946\n\n\n\nNext time: We will analyse the accuracy of these Monte Carlo estimates.",
     "crumbs": [
       "Monte Carlo estimation",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to Monte Carlo</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Uses of Monte Carlo</span>"
     ]
   },
   {
-    "objectID": "lectures/L03-mc-examples.html",
-    "href": "lectures/L03-mc-examples.html",
-    "title": "3  Monte Carlo for probabilities and integrals",
+    "objectID": "lectures/L03-mc-error-1.html",
+    "href": "lectures/L03-mc-error-1.html",
+    "title": "3  Monte Carlo error I",
     "section": "",
-    "text": "3.1 Indicator function\nQuick recap: Last time we defined the Monte Carlo estimate for an expectation \\(\\theta = \\Exg \\phi(X)\\) to be \\[ \\widehat{\\theta}_n^{\\mathrm{MC}} = \\frac{1}{n} \\big(\\phi(X_1) + \\phi(X_2) + \\cdots + \\phi(X_n) \\big) = \\frac{1}{n} \\sum_{i=1}^n \\phi(X_i) , \\] where \\(X_1, X_2, \\dots, X_n\\) is an independent random sample from \\(X\\).\nBut what is we want to find a probability, rather than an expectation? What if we want \\(\\mathbb P(X = x)\\) for some \\(x\\), or \\(\\mathbb P(X \\geq a)\\) for some \\(a\\), or, more generally \\(\\mathbb P(X \\in A)\\) for some set \\(A\\)?\nThe key thing that will help us here is the indicator function. The indicator function simply tells us whether an outcome \\(x\\) is in a set \\(A\\) or not.\nThe set \\(A\\) could just be a single element \\(A = \\{y\\}\\). In that case \\(\\Ind_{\\{y\\}(x)\\) is 1 if \\(x = y\\) and 0 if \\(x \\neq y\\). Or \\(A\\) could be a semi-infinite interval, like \\(A = [a, \\infty)\\). In that case \\(\\Ind_A(x)\\) is 1 if \\(x \\geq a\\) and \\(0\\) if \\(x &lt; a\\).\nWhy is this helpful? Well \\(\\Ind_A\\) is a function, so let’s think about what the expectation \\(\\Exg \\Ind_A(X)\\) would be for some random variable \\(X\\). Since \\(\\Ind_A\\) can only take two values, 0 and 1, we have \\[ \\begin{align*}\n\\Exg \\Ind_A(X) &= \\sum_{y = 0, 1} y\\,\\mathbb P\\big( \\Ind_A(X) = y \\big) \\\\\\\n  &= 0 \\times \\mathbb P\\big( \\Ind_A(X) = 0 \\big) + 1 \\times \\mathbb P\\big( \\Ind_A(X) = 1 \\big) \\\\\n  &= 0 \\times \\mathbb P(X \\notin A) + 1 \\times \\mathbb P(X \\in A) \\\\\n  &= \\mathbb P(X \\in A)\n\\end{align*} \\] In line three, we used that \\(\\Ind_A(X) = 0\\) if and only if \\(X \\notin A\\), and that \\(\\Ind_A(X) = 1\\) if and only if \\(X \\in A\\).\nSo the expectation of an indicator function a set is the probability that \\(X\\) is set. This idea connects “expectations of functions” back to probabilities: if we want to find \\(\\mathbb P(X \\in A)\\) we can find the expectation of \\(\\Ind_A(X)\\).",
+    "text": "3.1 Estimation error\nBefore talking about error in Monte Carlo estimation, just remind ourselves of some concepts about error in estimation more generally. We will use the following definitions.\nUsually the goal is to get the mean-square error of an estimate as small as possible. It can be more convenient to discuss the root-mean-square error, as that has the same units as the parameter being measured. (If \\(\\theta\\) is in metres, say, then the mean-square-error is in metres-squared, where as the root-mean-square error is in metres again.) It’s nice to have an unbiased estimator – that is, one with bias 0 – although unbiasedness by itself is not enough for an estimate to be good. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the rgiht, then claims to have hit the target on average.)\nYou probably also remember the relationship between the mean-square error, the bias, and the variance:\n(There’s a proof in Voss, An Introduction to Statistical Computing, Proposition 3.14, if you’ve forgotten.)",
     "crumbs": [
       "Monte Carlo estimation",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Monte Carlo for probabilities and integrals</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Monte Carlo error I</span>"
     ]
   },
   {
-    "objectID": "lectures/L03-mc-examples.html#indicator-function",
-    "href": "lectures/L03-mc-examples.html#indicator-function",
-    "title": "3  Monte Carlo for probabilities and integrals",
+    "objectID": "lectures/L03-mc-error-1.html#estimation-error",
+    "href": "lectures/L03-mc-error-1.html#estimation-error",
+    "title": "3  Monte Carlo error I",
     "section": "",
-    "text": "Definition 3.1 Let \\(A\\) be a set. Then the indicator function \\(\\Ind_A\\) is defined by \\[ \\Ind_A(x) = \\begin{cases} 1 & \\text{if $x \\in A$} \\\\ 0 & \\text{if $x \\notin A$.} \\end{cases} \\]",
+    "text": "Definition 3.1 Let \\(\\widehat\\theta\\) be an estimate of a parameter \\(\\theta\\). Then we have the following definitions of the estimate \\(\\widehat\\theta\\):\n\nThe bias is \\(\\operatorname{bias}\\big(\\widehat\\theta\\big) = \\mathbb E\\big(\\widehat\\theta - \\theta\\big)  = \\mathbb E\\widehat\\theta - \\theta\\).\nThe mean-square error is \\(\\operatorname{MSE}\\big(\\widehat\\theta\\big) = \\mathbb E \\big(\\widehat\\theta - \\theta\\big)^2\\).\nThe root-mean-square error is the square-root of the mean-square error, \\[\\operatorname{RMSE}\\big(\\widehat\\theta\\big) = \\sqrt{\\operatorname{MSE}(\\widehat\\theta)} = \\sqrt{\\mathbb E (\\widehat\\theta - \\theta)^2} . \\]\n\n\n\n\n\nTheorem 3.1   \\(\\operatorname{MSE}\\big(\\widehat\\theta\\big) = \\operatorname{bias}\\big(\\widehat\\theta\\big)^2 + \\operatorname{Var}\\big(\\widehat\\theta\\big)\\).",
     "crumbs": [
       "Monte Carlo estimation",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Monte Carlo for probabilities and integrals</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Monte Carlo error I</span>"
     ]
   },
   {
-    "objectID": "lectures/L03-mc-examples.html#monte-carlo-estimation-of-probabilities",
-    "href": "lectures/L03-mc-examples.html#monte-carlo-estimation-of-probabilities",
-    "title": "3  Monte Carlo for probabilities and integrals",
-    "section": "3.2 Monte Carlo estimation of probabilities",
-    "text": "3.2 Monte Carlo estimation of probabilities\nWith this idea in hand, how do we estimate \\(\\theta = \\mathbb P(X \\in A)\\) using the Monte Carlo method? We write \\(\\theta = \\Exg\\Ind_A(X)\\). Then our Monte Carlo estimate is \\[  \\widehat{\\theta}_n^{\\mathrm{MC}} = \\frac{1}{n} \\sum_{i=1}^n \\Ind_A(X_i) . \\] We remember that \\(\\Ind_A(X_i)\\) is 1 if \\(X_i \\in A\\) and 0 otherwise. So if we add up \\(n\\) of these, we count an extra 1 each time we have an \\(X_i \\in A\\). So \\(\\sum_{i=1}^n \\Ind_A(X_i)\\) counts the total number of the \\(X_i\\) that are in \\(n\\). So the Monte Carlo estimate can be written as \\[  \\widehat{\\theta}_n^{\\mathrm{MC}} = \\frac{\\# \\text{ of } X_i \\text{ that are in $A$}}{n} . \\]\nAlthough we’ve had to do a bit of work to get here, this a totally logical outcome! The right-hand side here is the proportion of the samples for which \\(X_i \\in A\\). And if we want to estimate the probability something happens, looking at the proportion of times it happens in a random sample is very much the “intuitive” estimate to take. And that intuitive estimate is indeed the Monte Carlo estimate!\n\nExample 3.1 Let \\(Z \\sim \\operatorname{N}(0,1)\\) be a standard normal distribution. Estimate \\(\\mathbb P(Z &gt; 2)\\).\nThis is a question that it is impossible to answer exactly using a pencil and paper: there’s no closed form for \\[ \\mathbb P(Z &gt; 2) = \\int_2^\\infty \\frac{1}{\\sqrt{2\\pi}}\\,\\mathrm{e}^{-z^2/2}\\,\\mathrm{d}z , \\] so we’ll have to use an estimation method.\nThe Monte Carlo estimate means taking a random sample \\(Z_1, Z_2, \\dots, Z_n\\) of standard normals, and calculating what proportion of them are greater than 2. In R, we can do this as follows.\n\nn &lt;- 1e6\nsamples &lt;- rnorm(n, 0, 1)\nMCest &lt;- mean(samples &gt; 2)\nMCest\n\n[1] 0.022884\n\n\nWe can check our answer: R’s inbuilt pnorm() function estimates probabilities for the normal distribution (using a method that, in this specific case, is much quicker and more accurate than Monte Carlo estimation). The true answer is\n\npnorm(2, lower.tail = FALSE)\n\n[1] 0.02275013\n\n\nso our estimate was pretty good.\n\nWe should explain the third line in the code we used for the Monte Carlo estimation mean(samples &gt;= 2). In R, some statements can be answered “true” or “false”: these are often statements involving equality == (that’s a double equals sign) or inequalities like &lt;, &lt;=, &gt;=, &gt;. So 5 &gt; 2 is TRUE but 3 == 7 is FALSE. These can be applied “component by component” to vectors. So, for example, testing which numbers from 1 to 10 are greater than or equal to 7, we get\n\n1:10 &gt;= 7\n\n [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE\n\n\nsix FALSEs (for 1 to 6) followed by four TRUEs (for 7 to 10).\nBut R also knows to treat TRUE like the number 1 and FALSE like the number 0. So if we add up some TRUEs and FALSEs, R simply counts how many TRUEs there are\n\nsum(1:10 &gt;= 7)\n\n[1] 4\n\n\nSo in our Monte Carlo estimation code, samples &gt; 2 was a vector of TRUEs and FALSEs, depending on whether each sample was greater than 2 or not, then mean(samples &gt;= 2) took the proportion of the samples that were greater than 2.",
+    "objectID": "lectures/L03-mc-error-1.html#bias-and-error-of-the-monte-carlo-estimator",
+    "href": "lectures/L03-mc-error-1.html#bias-and-error-of-the-monte-carlo-estimator",
+    "title": "3  Monte Carlo error I",
+    "section": "3.2 Bias and error of the Monte Carlo estimator",
+    "text": "3.2 Bias and error of the Monte Carlo estimator\nIn this lecture, we’re going to be looking more carefully at the size of the errors made by the Monte Carlo estimate \\[ \\widehat{\\theta}_n^{\\mathrm{MC}} = \\frac{1}{n} \\big(\\phi(X_1) + \\phi(X_2) + \\cdots + \\phi(X_n) \\big) = \\frac{1}{n} \\sum_{i=1}^n \\phi(X_i) . \\]\nIn doing so, we’ll be making particular use of the probability and statistics background that we talked about back in [….]\nOur main result is the following.\n\nTheorem 3.2 Let \\(X\\) be a random variable, \\(\\phi\\) a function, and \\(\\theta = \\Exg\\phi(X)\\). Let \\[ \\widehat{\\theta}_n^{\\mathrm{MC}} = \\frac{1}{n} \\sum_{i=1}^n \\phi(X_i) \\] be the Monte Carlo estimator of \\(\\theta\\). Then:\n\n\\(\\widehat{\\theta}_n^{\\mathrm{MC}}\\) is unbiased, in that \\(\\operatorname{bias}\\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = 0\\).\nThe variance of of \\(\\widehat{\\theta}_n^{\\mathrm{MC}}\\) is \\({\\displaystyle \\operatorname{Var}\\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = \\frac{1}{n} \\operatorname{Var}\\big(\\phi(X)\\big)}\\).\nThe mean-square error of \\(\\widehat{\\theta}_n^{\\mathrm{MC}}\\) is \\({\\displaystyle \\operatorname{MSE}\\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = \\frac{1}{n} \\operatorname{Var}\\big(\\phi(X)\\big)}\\).\nThe root-mean-square error of \\(\\widehat{\\theta}_n^{\\mathrm{MC}}\\) is \\({\\displaystyle \\operatorname{RMSE}\\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = \\frac{1}{\\sqrt{n}} \\operatorname{sd}\\big(\\phi(X)\\big)}\\).\n\n\nBefore we get to the proof, let’s recap some relevant probability.\nLet \\(Y_1, Y_2, \\dots\\) be IID random variables with common expectation \\(\\mathbb EY_1 = \\mu\\) and variance \\(\\operatorname{Var}(Y_1) = \\sigma^2\\). Consider the mean of the first \\(n\\) random variables, \\[ \\overline{Y}_n = \\frac{1}{n} \\sum_{i=1}^n Y_i . \\] Then the expectation of \\(\\overline{Y}_n\\) is \\[ \\mathbb E \\overline{Y}_n = \\mathbb E\\left(\\frac{1}{n}\\sum_{i=1}^n Y_i\\right) = \\frac{1}{n}\n\\sum_{i=1}^n \\mathbb{E}Y_i = \\frac{1}{n}\\,n\\mu = \\mu . \\] The variance of \\(\\overline{Y}_n\\) is \\[ \\operatorname{Var}\\big(  \\overline{Y}_n \\big)= \\operatorname{Var} \\left(\\frac{1}{n}\\sum_{i=1}^n Y_i\\right) = \\bigg(\\frac{1}{n}\\bigg)^2\n\\sum_{i=1}^n \\operatorname{Var}(Y_i) = \\frac{1}{n^2}\\,n\\sigma^2 = \\frac{\\sigma^2}{n} , \\] where, for this one, we used the independence of the random variables. In particular, the expectation stays the same, the same as each individual random variable. But the variance gets smaller, at rate \\(1/n\\); or, equivalently, the standard deviation gets smaller, at rate \\(1/\\sqrt{n}\\).\n\nProof. Apply the probability facts from above, with \\(Y = \\phi(X)\\). This gives:\n\n\\(\\Ex \\widehat{\\theta}_n^{\\mathrm{MC}} = \\Ex Y = \\Exg \\phi(X)\\), so \\(\\operatorname{bias}(\\widehat{\\theta}_n^{\\mathrm{MC}}) = \\Exg \\phi(X) - \\Exg \\phi(X) = 0\\)\n\\({\\displaystyle \\operatorname{Var}(\\widehat{\\theta}_n^{\\mathrm{MC}}) = \\frac{1}{n} \\operatorname{Var}(Y) = \\frac{1}{n} \\operatorname{Var}\\big(\\phi(X)\\big)}\\)\nUsing Theorem 3.1, \\[\\operatorname{MSE}(\\widehat{\\theta}_n^{\\mathrm{MC}}) = \\operatorname{bias}(\\widehat{\\theta}_n^{\\mathrm{MC}})^2 + \\operatorname{Var}(\\widehat{\\theta}_n^{\\mathrm{MC}}) = 0^2 + \\frac{1}{n} \\operatorname{Var}\\big(\\phi(X)\\big) = \\frac{1}{n} \\operatorname{Var}\\big(\\phi(X)\\big) . \\]\nTake the square root of part 3.\n\n\nThere’s a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we couldn’t calculate \\(\\Exg \\phi(X)\\). So it seems very unlikely we’ll be able to calculate the variance \\(\\operatorname{Var}(\\phi(X))\\) either. But we can estimate the variance from our samples too: by taking the sample variance of our samples \\(\\phi(x_i)\\).\nNext time: That’s enough theory. Let’s do some examples of working with Monte Carlo error.",
     "crumbs": [
       "Monte Carlo estimation",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Monte Carlo for probabilities and integrals</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Monte Carlo error I</span>"
     ]
   },
   {
-    "objectID": "lectures/L03-mc-examples.html#monte-carlo-estimation-of-integrals",
-    "href": "lectures/L03-mc-examples.html#monte-carlo-estimation-of-integrals",
-    "title": "3  Monte Carlo for probabilities and integrals",
-    "section": "3.3 Monte Carlo estimation of integrals",
-    "text": "3.3 Monte Carlo estimation of integrals\nThere’s another thing – a non-statistics thing – that Monte Carlo estimation is useful for. We can use Monte Carlo estimation to approximate integrals that are too hard to do by hand.\nLet’s think of an integral: say, \\[ \\int_a^b h(x) \\mathrm{d}x ,\\] for some function \\(f\\) between the limits \\(a\\) and \\(b\\). And let’s compare that to the integral \\(\\Exg \\phi(X)\\) that we can estimate using Monte Carlo estimation, \\[ \\int_{-\\infty}^\\infty \\phi(x)\\,f(x)\\, \\mathrm{d} x. \\] Matching things up, we see that we want to pick a function \\(\\phi\\) and a PDF \\(f\\) such that \\[ \\phi(x)\\,f(x) = \\begin{cases} 0 & x &lt; a \\\\ h(x) & a \\leq x \\leq b \\\\ 0 & x &gt; b . \\end{cases} \\]\nOf course, there are lots of choices of \\(\\phi\\) and \\(f\\) that would satisfy this. But a “common-sense” choice that often works is to pick \\(f\\) to be the PDF of \\(X\\), a continuous uniform distribution on the interval \\([a,b]\\). Recall that this means \\(X\\) has PDF \\[ f(x) = \\begin{cases} 0 & x &lt; a \\\\ \\displaystyle{\\frac{1}{b-a}} & a \\leq x \\leq b \\\\ 0 & x &gt; b . \\end{cases} \\] Comparing this equation with the one above, we then have to choose \\(\\phi(x) = (b-a)h(x)\\).\nPutting this all together, we have \\[ \\Exg \\phi(X) = \\int_{-\\infty}^{+\\infty} \\phi(x)\\,f(x)\\,\\mathrm{d}x = \\int_a^b (b-a)h(x)\\,\\frac{1}{b-a}\\,\\mathrm{d}x = \\int_a^b h(x) \\mathrm{d}x ,\\] as required.\n\nExample 3.2 Suppose we want to approximate the integral \\[ \\int_0^1 x^{1.6} (1-x)^{0.7} \\, \\mathrm{d}x . \\]\nLet’s pick \\(X\\) to be uniform on \\([0,1]\\). This means we should take \\(\\phi(x) = x^1.6(1-x)^0.7\\), since \\(b - a\\) is just 1 for us. We can then approximate this integral in R using the Monte Carlo estimate \\[ \\int_0^1 x^{1.6} (1-x)^{0.7} \\, \\mathrm{d}x = \\Exg\\phi(X) \\approx \\frac{1}{n} \\sum_{i=1}^n X_i^{1.6} (1-X_i)^{0.7} \\]\n\nn &lt;- 1e6\nhfun &lt;- function(x) x^1.6 * (1 - x)^0.7\nsamples &lt;- runif(n, 0, 1)\nmean(hfun(samples))\n\n[1] 0.1466827\n\n\n(The correct answer is known to be 0.146693 to 6 decimal places, so we were very close.)\n\nNext time: We will analyse the accuracy of these Monte Carlo estimates.",
-    "crumbs": [
-      "Monte Carlo estimation",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Monte Carlo for probabilities and integrals</span>"
-    ]
-  },
-  {
-    "objectID": "lectures/L04-mc-error.html",
-    "href": "lectures/L04-mc-error.html",
-    "title": "4  Monte Carlo error",
+    "objectID": "lectures/L04-mc-error-2.html",
+    "href": "lectures/L04-mc-error-2.html",
+    "title": "4  Monte Carlo error II",
     "section": "",
-    "text": "4.1 Bias and error of the Monte Carlo estimator\nIn this lecture, we’re going to be looking more carefully at the size of the errors made by the Monte Carlo estimate \\[ \\widehat{\\theta}_n^{\\mathrm{MC}} = \\frac{1}{n} \\big(\\phi(X_1) + \\phi(X_2) + \\cdots + \\phi(X_n) \\big) = \\frac{1}{n} \\sum_{i=1}^n \\phi(X_i) . \\]\nIn doing so, we’ll be making particular use of the probability and statistics background that we talked about back in [….]\nOur main result is the following.\nThere’s a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we couldn’t calculate \\(\\Exg \\phi(X)\\). So it seems very unlikely we’ll be able to calculate the variance \\(\\operatorname{Var}(\\phi(X))\\) either. But we can estimate the variance from our samples too: by taking the sample variance of our samples \\(\\phi(x_i)\\).",
+    "text": "4.1 Examples\n[RECAP]\nWe’ve done enough theory. Let’s see some examples.",
     "crumbs": [
       "Monte Carlo estimation",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Monte Carlo error</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Monte Carlo error II</span>"
     ]
   },
   {
-    "objectID": "lectures/L04-mc-error.html#bias-and-error-of-the-monte-carlo-estimator",
-    "href": "lectures/L04-mc-error.html#bias-and-error-of-the-monte-carlo-estimator",
-    "title": "4  Monte Carlo error",
+    "objectID": "lectures/L04-mc-error-2.html#examples",
+    "href": "lectures/L04-mc-error-2.html#examples",
+    "title": "4  Monte Carlo error II",
     "section": "",
-    "text": "Theorem 4.1 Let \\(X\\) be a random variable, \\(\\phi\\) a function, and \\(\\theta = \\Exg\\phi(X)\\). Let \\[ \\widehat{\\theta}_n^{\\mathrm{MC}} = \\frac{1}{n} \\big(\\phi(X_1) + \\phi(X_2) + \\cdots + \\phi(X_n) \\big) = \\frac{1}{n} \\sum_{i=1}^n \\phi(X_i) \\] be the Monte Carlo estimate of \\(\\theta\\). Then:\n\n\\(\\widehat{\\theta}_n^{\\mathrm{MC}}\\) is unbiased, in that \\(\\operatorname{bias}\\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = 0\\).\nThe variance of of \\(\\widehat{\\theta}_n^{\\mathrm{MC}}\\) is \\({\\displaystyle \\operatorname{Var}\\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = \\frac{1}{n} \\operatorname{Var}\\big(\\phi(X)\\big)}\\).\nThe mean-square error of \\(\\widehat{\\theta}_n^{\\mathrm{MC}}\\) is \\({\\displaystyle \\operatorname{MSE}\\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = \\frac{1}{n} \\operatorname{Var}\\big(\\phi(X)\\big)}\\).\nThe root-mean-square error of \\(\\widehat{\\theta}_n^{\\mathrm{MC}}\\) is \\({\\displaystyle \\operatorname{RMSE}\\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = \\frac{1}{\\sqrt{n}} \\operatorname{sd}\\big(\\phi(X)\\big)}\\).\n\n\n\nProof. Apply the probability facts from […..], with \\(Y = \\phi(X)\\). This gives:\n\n\\(\\Ex \\widehat{\\theta}_n^{\\mathrm{MC}} = \\Ex Y = \\Exg \\phi(X)\\), so \\(\\operatorname{bias}(\\widehat{\\theta}_n^{\\mathrm{MC}}) = \\Exg \\phi(X) - \\Exg \\phi(X) = 0\\)\n\\({\\displaystyle \\operatorname{Var}(\\widehat{\\theta}_n^{\\mathrm{MC}}) = \\frac{1}{n} \\operatorname{Var}(Y) = \\frac{1}{n} \\operatorname{Var}\\big(\\phi(X)\\big)}\\)\nUsing Theorem 1.1, \\[\\operatorname{MSE}(\\widehat{\\theta}_n^{\\mathrm{MC}}) = \\operatorname{bias}(\\widehat{\\theta}_n^{\\mathrm{MC}})^2 + \\operatorname{Var}(\\widehat{\\theta}_n^{\\mathrm{MC}}) = 0^2 + \\frac{1}{n} \\operatorname{Var}\\big(\\phi(X)\\big) = \\frac{1}{n} \\operatorname{Var}\\big(\\phi(X)\\big) . \\]\nTake the square root of part 3.",
+    "text": "Example 4.1 Let’s go back to the very first example in the module, Example 1.1, where we were trying to find the expectation of an \\(\\operatorname{Exp}(2)\\) random variable. We used this R code:\n\nn &lt;- 1e6\nsamples &lt;- rexp(n, 2)\nMCest &lt;- mean(samples)\nMCest\n\n[1] 0.5001563\n\n\n(Because Monte Carlo estimation is random, this won’t be the exact same estimate we had before, of course.)\nSo if we want to investigate the error, we can use the sample variance of these samples.\n\nvar_est &lt;- var(samples)\nMSEest  &lt;- var_est / n\nRMSEest &lt;- sqrt(MSEest)\nc(var_est, MSEest, RMSEest)\n\n[1] 2.495989e-01 2.495989e-07 4.995988e-04\n\n\nThe first number is var_est \\(= 0.25\\), the sample variance of our \\(\\phi(x_i)\\)s: \\[ s^2 = \\frac{1}{n-1} \\sum_{i=1}^n \\big(\\phi(x_i) - \\widehat{\\theta}_n^{\\mathrm{MC}}\\big)^2 . \\] This should be a good estimate of the true variance \\(\\operatorname{Var}(\\phi(X))\\).\nThe second number is MSEest \\(= 2.5\\times 10^{-7}\\), our estimate of the mean-square error. Since \\(\\operatorname{MSE}(\\widehat{\\theta}_n^{\\mathrm{MC}}) = \\frac{1}{n} \\operatorname{Var}(\\phi(X))\\), our estimate of the MSE is \\(\\frac{1}{n} s^2\\).\nThe third number is RMSEest \\(= 5\\times 10^{-4}\\) our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.\n\n\nExample 4.2 In Example 2.1, we were estimating \\(\\mathbb P(Z &gt; 2)\\), where \\(Z\\) is a standard normal.\nOur code was\n\nn &lt;- 1e6\nsamples &lt;- rnorm(n, 0, 1)\nMCest &lt;- mean(samples &gt; 2)\nMCest\n\n[1] 0.022701\n\n\nSo our root-mean-square error can be approximated as\n\nRMSEest &lt;- sqrt(var(samples &gt; 2) / n)\nRMSEest\n\n[1] 0.0001489486",
     "crumbs": [
       "Monte Carlo estimation",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Monte Carlo error</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Monte Carlo error II</span>"
     ]
   },
   {
-    "objectID": "lectures/L04-mc-error.html#examples",
-    "href": "lectures/L04-mc-error.html#examples",
-    "title": "4  Monte Carlo error",
-    "section": "4.2 Examples",
-    "text": "4.2 Examples\nThat’s enough theory. Let’s see some examples.\n\nExample 4.1 Let’s go back to the very first example in the module, Example 2.1, where we were trying to find the expectation of an \\(\\operatorname{Exp}(2)\\) random variable. We used this R code:\n\nn &lt;- 1e6\nsamples &lt;- rexp(n, 2)\nMCest &lt;- mean(samples)\nMCest\n\n[1] 0.5006522\n\n\n(Because Monte Carlo estimation is random, this won’t be the exact same estimate we had before, of course.)\nSo if we want to investigate the error, we can use the sample variance of these samples.\n\nvar_est &lt;- var(samples)\nMSEest  &lt;- var_est / n\nRMSEest &lt;- sqrt(MSEest)\nc(var_est, MSEest, RMSEest)\n\n[1] 2.502973e-01 2.502973e-07 5.002972e-04\n\n\nThe first number is var_est \\(= 0.25\\), the sample variance of our \\(\\phi(x_i)\\)s: \\[ s^2 = \\frac{1}{n-1} \\sum_{i=1}^n \\big(\\phi(x_i) - \\widehat{\\theta}_n^{\\mathrm{MC}}\\big)^2 . \\] This should be a good estimate of the true variance \\(\\operatorname{Var}(\\phi(X))\\).\nThe second number is MSEest \\(= 2.5\\times 10^{-7}\\), our estimate of the mean-square error. Since \\(\\operatorname{MSE}(\\widehat{\\theta}_n^{\\mathrm{MC}}) = \\frac{1}{n} \\operatorname{Var}(\\phi(X))\\), our estimate of the MSE is \\(\\frac{1}{n} s^2\\).\nThe third number is RMSEest \\(= 5\\times 10^{-4}\\) our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.\n\n\nExample 4.2 In Example 3.1, we were estimating \\(\\mathbb P(Z &gt; 2)\\), where \\(Z\\) is a standard normal.\nOur code was\n\nn &lt;- 1e6\nsamples &lt;- rnorm(n, 0, 1)\nMCest &lt;- mean(samples &gt; 2)\nMCest\n\n[1] 0.022952\n\n\nSo our root-mean-square error can be approximated as\n\nRMSEest &lt;- sqrt(var(samples &gt; 2) / n)\nRMSEest\n\n[1] 0.0001497506",
+    "objectID": "lectures/L04-mc-error-2.html#how-many-samples-do-i-need",
+    "href": "lectures/L04-mc-error-2.html#how-many-samples-do-i-need",
+    "title": "4  Monte Carlo error II",
+    "section": "4.2 How many samples do I need?",
+    "text": "4.2 How many samples do I need?\nIn our examples we’ve picked the number of samples \\(n\\) for our estimator, then approximated the error based on that. But we could do things the other way around – fix an error tolerance that we’re willing to deal with, then choose the sample size based on that.\nThat is, we have a three-step process:\n\nRun an initial “pilot” Monte Carlo algorithm with a small number of samples \\(n\\). We want \\(n\\) small enough that this runs very quickly.\nUse the results of the “pilot” to approximate the error. Then use this to decide what value \\(n\\) we will need for the “real” Monte Carlo algorithm.\nRun the “real” Monte Carlo algorithm with this big number of samples \\(n\\). We will put up with this being quite slow, because we know we’re definitely going to get the error tolerance we need.\n\n\nExample 4.3 Let’s try this with Example 1.2 from before. We were trying to esimate \\(\\Exg(\\sin X)\\), where \\(X \\sim \\operatorname{N}(1, 2^2)\\).\nWe’ll start with just \\(n = 1000\\) samples, for our pilot study\n\nn_pilot &lt;- 1000\nsamples &lt;- rnorm(n_pilot, 1, 2)\nvar_est &lt;- var(sin(samples))\nvar_est\n\n[1] 0.4896725\n\n\nThis was super-quick! But with only 1000 samples, it won’t have been an accurate estimate yet.\nLet’s suppose we want to get the root-mean-square error down to \\(\\epsilon = 10^{-4}\\). We know, using var_est to estimate the variance, that we want \\[ \\epsilon = \\operatorname{RMSE} \\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = \\frac{1}{\\sqrt{n}} \\,\\operatorname{sd}\\big(\\phi(X)\\big) \\approx \\frac{1}{\\sqrt{n}} \\times \\sqrt{0.4897} . \\] Rearranging to make \\(n\\) the subject and using \\(\\epsilon = 10^{-4}\\), we need \\[ n \\approx 0.4897\\times \\frac{1}{\\epsilon^2} = 0.49\\times 10^{8} =  4.897\\times 10^{7} \\approx 5\\times 10^{7}\\] samples, or about 50 million.\n\nepsilon &lt;- 1e-4\nn_real  &lt;- round(var_est / epsilon^2)\nn_real\n\n[1] 48967249\n\nsamples &lt;- rnorm(n_real, 1, 2)\nMCest &lt;- mean(sin(samples))\nMCest\n\n[1] 0.1138024\n\nRMSEest &lt;- sqrt(var(sin(samples)) / n_real)\nRMSEest\n\n[1] 9.973786e-05\n\n\nThis was very slow! But we see that we have indeed got our Monte Carlo estimate to (near enough) the desired accuracy.\n\nA lot of this is actually quite bad news. We noticed that to get an RMSE of \\(\\epsilon\\) we need order \\(1/\\epsilon^2\\) samples. That’s not good. Think of it like this: to double the accuracy we need to quadruple the number of samples. Even worse: to get “one more decimal place of accuracy” means dividing \\(\\epsilon\\) by ten; but that means multiplying the number of samples by one hundred!",
     "crumbs": [
       "Monte Carlo estimation",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Monte Carlo error</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Monte Carlo error II</span>"
     ]
   },
   {
-    "objectID": "lectures/L07-antithetic-1.html",
-    "href": "lectures/L07-antithetic-1.html",
-    "title": "6  Antithetic variables I",
-    "section": "",
-    "text": "6.1 Estimation with correlation",
+    "objectID": "lectures/L04-mc-error-2.html#margins-of-error",
+    "href": "lectures/L04-mc-error-2.html#margins-of-error",
+    "title": "4  Monte Carlo error II",
+    "section": "4.3 Margins of error",
+    "text": "4.3 Margins of error\nWe could describe our error tolerance in terms of the RMSE. But we could have talked about “confidence intervals” instead, by appealing the central limit theorem approximation. This might be easier to understand for non-mathematicians, for whom “root-mean-square error” doesn’t really mean anything.\nA bit more probability revision: Let \\(Y_1, Y_2, \\dots\\) be IID again, with the mean \\(\\overline Y_n\\).\nThe expectation of \\(\\overline Y_n\\) staying at \\(\\mu\\) while the variance \\(\\sigma^2/n\\) gets smaller and smaller means the probability gets ever more concentrated around \\(\\mu\\). This gives the law of large numbers which says that \\(\\overline Y_n \\to \\mu\\) in probability as \\(n \\to \\infty\\). You may remember that this means the Monte Carlo estimate is consistent.\nWhile we know the expectation of \\(\\overline Y_n\\) is \\(\\mu\\) and the variance is \\(\\sigma^2/n\\), the central limit theorem says that the distribution of \\(\\overline Y_n\\) is approximately normally distributed with those parameters. Informally, we can say \\(\\overline Y_n \\approx \\operatorname{N}(\\mu, \\sigma^2/n)\\) when \\(n\\) is large. (You probably know some more formal ways to more precisely state the central limit theorem, but this will do for us.)\nRecall that, in the normal distribution, we expect to be within \\(1.96\\) standard deviations of the mean with 95% probability. So our previous example could interpret this as a \\(1.96\\epsilon \\approx 2\\times 10^{-4}\\) “margin of error” or a “95% confidence interval” of \\(0.1138 \\pm (2.0\\times 10^{-4})\\).\n[EXAMPLE?]\nWouldn’t it be nice to have some better ways of increasing the accuracy of a Monte Carlo estimate besides just taking more and more samples?\nNext time: We begin our study of clever “variance reduction” methods for Monte Carlo estimation.",
     "crumbs": [
       "Monte Carlo estimation",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Antithetic variables I</span>"
-    ]
-  },
-  {
-    "objectID": "lectures/L07-antithetic-1.html#estimation-with-antithetic-variables",
-    "href": "lectures/L07-antithetic-1.html#estimation-with-antithetic-variables",
-    "title": "6  Antithetic variables I",
-    "section": "6.2 Estimation with antithetic variables",
-    "text": "6.2 Estimation with antithetic variables",
-    "crumbs": [
-      "Monte Carlo estimation",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Antithetic variables I</span>"
-    ]
-  },
-  {
-    "objectID": "lectures/L07-antithetic-1.html#estimating-π-again",
-    "href": "lectures/L07-antithetic-1.html#estimating-π-again",
-    "title": "6  Antithetic variables I",
-    "section": "6.3 Estimating π again",
-    "text": "6.3 Estimating π again",
-    "crumbs": [
-      "Monte Carlo estimation",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Antithetic variables I</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Monte Carlo error II</span>"
     ]
   },
   {
@@ -245,8 +205,41 @@
     ]
   },
   {
-    "objectID": "lectures/L08-antithetic-2.html",
-    "href": "lectures/L08-antithetic-2.html",
+    "objectID": "lectures/L06-antithetic-1.html",
+    "href": "lectures/L06-antithetic-1.html",
+    "title": "6  Antithetic variables I",
+    "section": "",
+    "text": "6.1 Estimation with correlation",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Antithetic variables I</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L06-antithetic-1.html#estimation-with-antithetic-variables",
+    "href": "lectures/L06-antithetic-1.html#estimation-with-antithetic-variables",
+    "title": "6  Antithetic variables I",
+    "section": "6.2 Estimation with antithetic variables",
+    "text": "6.2 Estimation with antithetic variables",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Antithetic variables I</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L06-antithetic-1.html#estimating-π-again",
+    "href": "lectures/L06-antithetic-1.html#estimating-π-again",
+    "title": "6  Antithetic variables I",
+    "section": "6.3 Estimating π again",
+    "text": "6.3 Estimating π again",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Antithetic variables I</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L07-antithetic-2.html",
+    "href": "lectures/L07-antithetic-2.html",
     "title": "7  Antithetic variables II",
     "section": "",
     "text": "7.1 Error with antithetic variables",
@@ -256,8 +249,8 @@
     ]
   },
   {
-    "objectID": "lectures/L08-antithetic-2.html#antithetic-variables-example",
-    "href": "lectures/L08-antithetic-2.html#antithetic-variables-example",
+    "objectID": "lectures/L07-antithetic-2.html#antithetic-variables-example",
+    "href": "lectures/L07-antithetic-2.html#antithetic-variables-example",
     "title": "7  Antithetic variables II",
     "section": "7.2 Antithetic variables: example",
     "text": "7.2 Antithetic variables: example",
@@ -267,8 +260,8 @@
     ]
   },
   {
-    "objectID": "lectures/L08-antithetic-2.html#finding-antithetic-variables",
-    "href": "lectures/L08-antithetic-2.html#finding-antithetic-variables",
+    "objectID": "lectures/L07-antithetic-2.html#finding-antithetic-variables",
+    "href": "lectures/L07-antithetic-2.html#finding-antithetic-variables",
     "title": "7  Antithetic variables II",
     "section": "7.3 Finding antithetic variables",
     "text": "7.3 Finding antithetic variables",
@@ -278,8 +271,8 @@
     ]
   },
   {
-    "objectID": "lectures/L05-is-1.html",
-    "href": "lectures/L05-is-1.html",
+    "objectID": "lectures/L08-is-1.html",
+    "href": "lectures/L08-is-1.html",
     "title": "8  Importance sampling I",
     "section": "",
     "text": "8.1 Variance reduction",
@@ -289,8 +282,8 @@
     ]
   },
   {
-    "objectID": "lectures/L05-is-1.html#rejection",
-    "href": "lectures/L05-is-1.html#rejection",
+    "objectID": "lectures/L08-is-1.html#rejection",
+    "href": "lectures/L08-is-1.html#rejection",
     "title": "8  Importance sampling I",
     "section": "8.2 Rejection",
     "text": "8.2 Rejection",
@@ -300,8 +293,8 @@
     ]
   },
   {
-    "objectID": "lectures/L05-is-1.html#importance-sampling-definition",
-    "href": "lectures/L05-is-1.html#importance-sampling-definition",
+    "objectID": "lectures/L08-is-1.html#importance-sampling-definition",
+    "href": "lectures/L08-is-1.html#importance-sampling-definition",
     "title": "8  Importance sampling I",
     "section": "8.3 Importance sampling: definition",
     "text": "8.3 Importance sampling: definition",
@@ -311,8 +304,8 @@
     ]
   },
   {
-    "objectID": "lectures/L06-is-2.html",
-    "href": "lectures/L06-is-2.html",
+    "objectID": "lectures/L09-is-2.html",
+    "href": "lectures/L09-is-2.html",
     "title": "9  Importance sampling II",
     "section": "",
     "text": "9.1 Error of importance sampling",
@@ -322,8 +315,8 @@
     ]
   },
   {
-    "objectID": "lectures/L06-is-2.html#importance-sampling-example",
-    "href": "lectures/L06-is-2.html#importance-sampling-example",
+    "objectID": "lectures/L09-is-2.html#importance-sampling-example",
+    "href": "lectures/L09-is-2.html#importance-sampling-example",
     "title": "9  Importance sampling II",
     "section": "9.2 Importance sampling: example",
     "text": "9.2 Importance sampling: example",
@@ -333,8 +326,8 @@
     ]
   },
   {
-    "objectID": "lectures/L06-is-2.html#picking-a-good-distribution",
-    "href": "lectures/L06-is-2.html#picking-a-good-distribution",
+    "objectID": "lectures/L09-is-2.html#picking-a-good-distribution",
+    "href": "lectures/L09-is-2.html#picking-a-good-distribution",
     "title": "9  Importance sampling II",
     "section": "9.3 Picking a good distribution",
     "text": "9.3 Picking a good distribution",
@@ -344,14 +337,47 @@
     ]
   },
   {
-    "objectID": "lectures/L04-mc-error.html#how-many-samples-do-i-need",
-    "href": "lectures/L04-mc-error.html#how-many-samples-do-i-need",
-    "title": "4  Monte Carlo error",
-    "section": "4.3 How many samples do I need?",
-    "text": "4.3 How many samples do I need?\nIn our examples we’ve picked the number of samples \\(n\\) for our estimator, then approximated the error based on that. But we could do things the other way around – fix an error tolerance that we’re willing to deal with, then choose the sample size based on that.\nThat is, we have a three-step process:\n\nRun an initial “pilot” Monte Carlo algorithm with a small number of samples \\(n\\). We want \\(n\\) small enough that this runs very quickly.\nApproximate the error. Then use this to decide what value \\(n\\) we will need for the “real” Monte Carlo algorithm.\nRun the “real” Monte Carlo algorithm with this big number of samples \\(n\\). We will put up with this being quite slow, because we know we’re definitely going to get the error tolerance we need.\n\n\nExample 4.3 Let’s try this with Example 2.2 from before. We were trying to esimate \\(\\Exg(\\sin X)\\), where \\(X \\sim \\operatorname{N}(1, 2^2)\\).\nWe’ll start with just \\(n = 1000\\) samples, for our pilot study\n\nn_pilot &lt;- 1000\nsamples &lt;- rnorm(n_pilot, 1, 2)\nvar_est &lt;- var(sin(samples))\nvar_est\n\n[1] 0.4684279\n\n\nThis was super-quick! But with only 1000 samples, it won’t have been an accurate estimate yet.\nLet’s suppose we want to get the root-mean-square error down to \\(\\epsilon = 10^{-4}\\). We know, using var_est to estimate the variance, that we want \\[ \\epsilon = \\operatorname{RMSE} \\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = \\frac{1}{\\sqrt{n}} \\,\\operatorname{sd}\\big(\\phi(X)\\big) \\approx \\frac{1}{\\sqrt{n}} \\times \\sqrt{0.4684} . \\] Rearranging to make \\(n\\) the subject and using \\(\\epsilon = 10^{-4}\\), we need \\[ n \\approx 0.4684\\times \\frac{1}{\\epsilon^2} = 0.468\\times 10^{8} =  4.684\\times 10^{7} \\approx 5\\times 10^{7}\\] samples, or about 50 million.\n\nepsilon &lt;- 1e-4\nn_real  &lt;- round(var_est / epsilon^2)\nn_real\n\n[1] 46842791\n\nsamples &lt;- rnorm(n_real, 1, 2)\nMCest &lt;- mean(sin(samples))\nMCest\n\n[1] 0.1139307\n\nRMSEest &lt;- sqrt(var(sin(samples)) / n_real)\nRMSEest\n\n[1] 0.0001019755\n\n\nWe see that we’ve got our Monte Carlo estimate to (near enough) the desired accuracy.\n\nWe could phrase out desired tolerance about accuracy using the central limit theorem approximation. Recall that, in the normal distribution, we expect to be within \\(1.96\\) standard deviations of the mean with 95% probability.\nSo our previous example could interpret this as a \\(1.96\\epsilon\\) “margin of error” or a “95% confidence interval” of \\(0.11393 \\pm (2.0\\times 10^{-4})\\).\nLet’s end on a piece of bad news. We noticed that to get an RMSE of \\(\\epsilon\\) we need order \\(1/\\epsilon^2\\) samples. That’s not good. Think of it like this: to double or accuracy, we need to quadruple the number of samples. Even worse: to get “one more decimal place of accuracy” means dividing \\(\\epsilon\\) by ten; but that means multiplying the number of samples by one hundred!\nWouldn’t it be nice to have some better ways of increasing the accuracy of a Monte Carlo estimate besides just taking more and more samples? Next time: We begin our study of clever “variance reduction” methods for Monte Carlo estimation.",
+    "objectID": "lectures/L05-cv.html",
+    "href": "lectures/L05-cv.html",
+    "title": "5  Control variate",
+    "section": "",
+    "text": "5.1 Variance reduction\nLet’s recap where we’ve got to. The Monte Carlo estimate of \\(\\theta = \\Exg \\phi(X)\\) from IID samples \\(X_1, X_2, \\dots, X_n\\) is \\[ \\widehat{\\theta}_n^{\\mathrm{MC}} = \\frac{1}{n} \\sum_{i=1}^n \\phi(X_i). \\] The mean-square error of this estimate is \\[{\\displaystyle \\operatorname{MSE}\\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = \\frac{1}{n} \\operatorname{Var}\\big(\\phi(X)\\big)} . \\]\nIf we want a more accurate estimate, we can just take more samples \\(n\\). But the problem is that the root-mean-square error scales like \\(1/\\sqrt{n}\\). To double the accuracy, we need four times as many samples; for one more decimal place of accuracy, we need one hundred times as many samples. And it’s taking the samples that takes time, money, energy, etc.\nAre there other ways we could reduce the error of Monte Carlo estimation, so we need fewer samples? That is, can we use some mathematical ingenuity to adapt the Monte Carlo estimate to one with a smaller error?\nWell, the mean-square error is the variance divided by \\(n\\). So if we can’t (or don’t want to) increase \\(n\\), perhaps we can decrease the variance instead? Strategies to do this are called variance reduction strategies. In this module, we will look at three variance reduction strategies:",
     "crumbs": [
       "Monte Carlo estimation",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Monte Carlo error</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Control variate</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L05-cv.html#variance-reduction",
+    "href": "lectures/L05-cv.html#variance-reduction",
+    "title": "5  Control variate",
+    "section": "",
+    "text": "Control variate: We can “anchor” our estimate of \\(\\Exg \\phi(X)\\) to a very similar but easier-to-calculate value \\(\\Exg \\psi(X)\\). [This lecture]\nAntithetical variables: Instead of using IID samples, we could use correlated samples. If the correlation is negative this can improve our estimate. [Lectures 6 and 7]\nImportance sampling: Instead of sampling from \\(X\\), sample from some other more suitable distribution instead, then readjust the answer we get. [Lectures 8 and 9]",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Control variate</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L05-cv.html#controlled-estimation",
+    "href": "lectures/L05-cv.html#controlled-estimation",
+    "title": "5  Control variate",
+    "section": "5.2 Controlled estimation",
+    "text": "5.2 Controlled estimation\nConsider this problem: Estimate the average time it takes to fly from London to Washington D.C.\nThis is quite a tricky problem for me. (Maybe for you too?) I have flown there once before for a maths conference, but it was a long time ago. It was a long flight, many hours, more than just 3 or 4. But it wasn’t super-long either, like 13 hours or anything. I’m going to guess 9 hours.\nNow consider this problem when you are given the following hint: PS: The average time it takes to fly from London to New York is 8 hours and 10 minutes.\nWell now, this helps a lot! The answer’s going to pretty similar, about 8 hours 10 minutes. But Washington D.C. is a little bit further south and east compared to New York, so it will take a bit longer to get there. But not much, though. I’ll guess an extra 15 minutes, so I’ll go for 8 hours 25 minutes.\nThe true answer is 8 hours 29 minutes. My first guess was 31 minutes off (better than I expected!) but my second guess, with the hint, only missed by 4 minutes!\nWhy was my second guess better? We were trying to estimate \\(\\theta^{\\mathrm{DC}}\\), the distance to D.C. But that’s a big number, and my estimate had a big error (31 minutes). But after the hint, we could write \\[\\theta^{\\mathrm{DC}} = \\big(\\theta^{\\mathrm{DC}} - \\theta^{\\mathrm{NY}}\\big) - \\theta^{\\mathrm{NY}} . \\] In that equation, the second term, \\(\\theta^{\\mathrm{NY}}\\) was completely known, so had error 0, while the first term \\(\\theta^{\\mathrm{DC}} - \\theta^{\\mathrm{NY}}\\) was a small number, so only had a small error (4 minutes!).\nWe can apply this idea to Monte Carlo estimation too. Suppose we are trying to estimate \\(\\theta = \\Exg \\phi(X)\\). We want to look for a function \\(\\psi\\) that is similar to \\(\\phi\\) (at least for the values of \\(x\\) that have high probability for the random variable \\(X\\)), but where we know for certain what \\(\\Exg \\psi(X)\\) is. Then we can write \\[ \\theta = \\Exg \\phi(X) = \\Exg \\big(\\phi(X) - \\psi(X) + \\psi(X)\\big) = \\underbrace{\\Exg\\big(\\phi(X) - \\psi(X)\\big)}_{\\text{estimate this with Monte Carlo}} + \\underbrace{\\Exg \\psi(X)}_{\\text{known}} . \\]\nHere, \\(\\psi(X)\\) is known as the control variate.\n\nDefinition 5.1 Let \\(X\\) be a random variable, \\(\\phi\\) a function, and write \\(\\theta = \\Exg\\phi(X)\\). Let \\(\\psi\\) be a function fuch that \\(\\Exg\\psi(X)\\) is known. Suppose that \\(X_1, X_2, \\dots, X_n\\) are a random sample from \\(X\\). Then the control variate Monte Carlo estimate \\(\\widehat\\theta_n^{\\mathrm{CV}}\\) of \\(\\theta\\) is \\[ \\widehat{\\theta}_n^{\\mathrm{CV}} = \\frac{1}{n} \\sum_{i=1}^n \\big(\\phi(X_i) - \\psi(X_i)\\big) + \\Exg \\psi(X) . \\]\n\n\nExample 5.1 Let’s try to estimate \\(\\Ex \\cos(X)\\), where \\(X \\sim \\operatorname{N}(0,1)\\) is a standard normal distribution.\nWe could do this the “usual” Monte Carlo way.\n\nn &lt;- 1e6\nphi &lt;- function(x) cos(x)\nsamples &lt;- rnorm(n)\nMCest &lt;- mean(phi(samples))\nMCvar &lt;- var(phi(samples))\nMCest\n\n[1] 0.6073331\n\n\nBut we could see if we can do better with a control variate. But what should we pick for the control function \\(\\psi\\)? We want something that’s similar to \\(\\phi(x) = \\cos(x)\\), but where we can actually calculate the expectation.\nHere’s a suggestion. If we remember our Taylor series, we know that, for \\(x\\) near \\(0\\), \\[ \\cos x \\approx 1 - \\frac{x^2}{2!} + \\frac{x^4}{4!} - \\frac{x^6}{6!} + \\cdots . \\] So how about taking the first two nonzero terms in the Taylor series \\[ \\psi(x) = 1 - \\frac{x^2}{2} . \\] That is quite close to \\(\\cos x\\), at least for the small values of \\(x\\) that \\(X \\sim \\operatorname{N}(0,1)\\) is likely to take.",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Control variate</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L05-cv.html#control-variate-estimation",
+    "href": "lectures/L05-cv.html#control-variate-estimation",
+    "title": "5  Control variate",
+    "section": "5.2 Control variate estimation",
+    "text": "5.2 Control variate estimation\nConsider this problem: Estimate the average time it takes to fly from London to Washington D.C.\nThis is quite a tricky problem for me. (Maybe for you too?) I have flown there once before for a maths conference, but it was a long time ago. It was a long flight, many hours, more than just 3 or 4. But it wasn’t super-long either, like 13 hours or anything. I’m going to guess 9 hours.\nNow consider this problem when you are given the following hint: PS: The average time it takes to fly from London to New York is 8 hours and 10 minutes.\nWell now, this helps a lot! The answer’s going to pretty similar, about 8 hours 10 minutes. But Washington D.C. is a little bit further south and east compared to New York, so it will take a bit longer to get there. But not much, though. I’ll guess an extra 15 minutes, so I’ll go for 8 hours 25 minutes.\nThe true answer is 8 hours 29 minutes. My first guess was 31 minutes off (better than I expected!) but my second guess, with the hint, only missed by 4 minutes!\nWhy was my second guess better? We were trying to estimate \\(\\theta^{\\mathrm{DC}}\\), the distance to D.C. But that’s a big number, and my estimate had a big error (31 minutes). But after the hint, we could write \\[\\theta^{\\mathrm{DC}} = \\big(\\theta^{\\mathrm{DC}} - \\theta^{\\mathrm{NY}}\\big) - \\theta^{\\mathrm{NY}} . \\] In that equation, the second term, $^{} = $ 8:10 was completely known, so had error 0, while the first term \\(\\theta^{\\mathrm{DC}} - \\theta^{\\mathrm{NY}}\\) was a small number, so only had a small error (4 minutes!).\nWe can apply this idea to Monte Carlo estimation too. Suppose we are trying to estimate \\(\\theta = \\Exg \\phi(X)\\). We want to look for a function \\(\\psi\\) that is similar to \\(\\phi\\) (at least for the values of \\(x\\) that have high probability for the random variable \\(X\\)), but where we know for certain what \\(\\Exg \\psi(X)\\) is. Then we can write \\[ \\theta = \\Exg \\phi(X) = \\Exg \\big(\\phi(X) - \\psi(X) + \\psi(X)\\big) = \\underbrace{\\Exg\\big(\\phi(X) - \\psi(X)\\big)}_{\\text{estimate this with Monte Carlo}} + \\underbrace{\\Exg \\psi(X)}_{\\text{known}} . \\]\nHere, \\(\\psi(X)\\) is known as the control variate.\n\nDefinition 5.1 Let \\(X\\) be a random variable, \\(\\phi\\) a function, and write \\(\\theta = \\Exg\\phi(X)\\). Let \\(\\psi\\) be a function fuch that \\(\\Exg\\psi(X)\\) is known. Suppose that \\(X_1, X_2, \\dots, X_n\\) are a random sample from \\(X\\). Then the control variate Monte Carlo estimate \\(\\widehat\\theta_n^{\\mathrm{CV}}\\) of \\(\\theta\\) is \\[ \\widehat{\\theta}_n^{\\mathrm{CV}} = \\frac{1}{n} \\sum_{i=1}^n \\big(\\phi(X_i) - \\psi(X_i)\\big) + \\Exg \\psi(X) . \\]\n\n\nExample 5.1 Let’s try to estimate \\(\\Ex \\cos(X)\\), where \\(X \\sim \\operatorname{N}(0,1)\\) is a standard normal distribution.\nWe could do this the “usual” Monte Carlo way.\n\nn &lt;- 1e6\nphi &lt;- function(x) cos(x)\nsamples &lt;- rnorm(n)\nMCest &lt;- mean(phi(samples))\nMCvar &lt;- var(phi(samples))\nMCest\n\n[1] 0.6073331\n\n\nBut we could see if we can do better with a control variate. But what should we pick for the control function \\(\\psi\\)? We want something that’s similar to \\(\\phi(x) = \\cos(x)\\), but where we can actually calculate the expectation.\nHere’s a suggestion. If we remember our Taylor series, we know that, for \\(x\\) near \\(0\\), \\[ \\cos x \\approx 1 - \\frac{x^2}{2!} + \\frac{x^4}{4!} - \\frac{x^6}{6!} + \\cdots . \\] So how about taking the first two nonzero terms in the Taylor series \\[ \\psi(x) = 1 - \\frac{x^2}{2} . \\] That is quite close to \\(\\cos x\\), at least for the small values of \\(x\\) that \\(X \\sim \\operatorname{N}(0,1)\\) is likely to take.\n\n\n\n\n\n\n\n\n\nNot only that, but we know that, for \\(Y \\sim \\operatorname{N}(\\mu, \\sigma^2)\\), we have \\(\\Ex Y^2 = \\mu^2 + \\sigma^2\\). So \\[ \\Exg \\psi(X) = \\Exg \\left(1 - \\frac{X^2}{2} \\right) = 1 - \\frac{\\Ex X^2}{2} = 1 - \\frac{0^2 + 1}{2} = \\frac12 . \\]\nSo our control variate estimate is:\n\npsi &lt;- function(x) 1 - x^2 / 2\nCVest &lt;- mean(phi(samples) - psi(samples)) + 1/2\nCVest\n\n[1] 0.6058315\n\n\n\nWhat is the error in a control variate estimate?\n\nTheorem 5.1 Let \\(X\\) be a random variable, \\(\\phi\\) a function, and \\(\\theta = \\Exg\\phi(X)\\). Let \\(\\psi\\) be a function fuch that \\(\\Exg\\psi(X)\\) is known. Let \\[ \\widehat{\\theta}_n^{\\mathrm{CV}} = \\frac{1}{n} \\sum_{i=1}^n \\big(\\phi(X_i) - \\psi(X_i)\\big) + \\Exg \\psi(X) \\] be the control variate Monte Carlo estimator of \\(\\theta\\). Then:\n\n\\(\\widehat{\\theta}_n^{\\mathrm{CV}}\\) is unbiased, in that \\(\\operatorname{bias}\\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = 0\\).\nThe variance of of \\(\\widehat{\\theta}_n^{\\mathrm{MC}}\\) is \\({\\displaystyle \\operatorname{Var}\\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = \\frac{1}{n} \\operatorname{Var}\\big(\\phi(X) - \\psi(X)\\big)}\\).\nThe mean-square error of \\(\\widehat{\\theta}_n^{\\mathrm{MC}}\\) is \\({\\displaystyle \\operatorname{MSE}\\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = \\frac{1}{n} \\operatorname{Var}\\big(\\phi(X) - \\psi(X)\\big)}\\).\nThe root-mean-square error of \\(\\widehat{\\theta}_n^{\\mathrm{MC}}\\) is \\({\\displaystyle \\operatorname{RMSE}\\big(\\widehat{\\theta}_n^{\\mathrm{MC}}\\big) = \\frac{1}{\\sqrt{n}} \\operatorname{sd}\\big(\\phi(X) - \\psi(X)\\big)}\\).\n\n\n\nProof. This is very similar to Theorem 3.2, so we’ll just sketch the important differences.\nIn part 1, we have \\[\\begin{align*}\n\\Exg \\widehat{\\theta}_n^{\\mathrm{CV}}\n  &= \\Exg \\left(\\frac{1}{n} \\sum_{i=1}^n \\big(\\phi(X_i) - \\psi(X_i)\\big) + \\Exg \\psi(X)\\right) \\\\\n  &= \\frac{1}{n}\\Exg \\left(\\sum_{i=1}^n \\big(\\phi(X_i) - \\psi(X_i)\\big)\\right) + \\Exg \\psi(X) \\\\\n  &= \\frac{n}{n}\\Exg\\big(\\phi(X) - \\psi(X)\\big) + \\Exg \\psi(X) \\\\\n  &= \\Exg\\phi(X) - \\Exg\\psi(X) + \\Exg\\phi(X) \\\\\n  &= \\Exg\\phi(X) ,\n\\end{align*}\\] so the estimator is unbiased.\nFor part 2, remembering that \\(\\Exg \\psi(X)\\) is a constant, so doesn’t affect the variance, we have \\[\\begin{align*}\n\\Var \\big(\\widehat{\\theta}_n^{\\mathrm{CV}}\\big)\n&= \\Var \\left(\\frac{1}{n} \\sum_{i=1}^n \\big(\\phi(X_i) - \\psi(X_i)\\big) + \\Exg \\psi(X)\\right) \\\\\n&= \\Big( \\frac{1}{n}\\Big)^2 \\Var \\left(\\sum_{i=1}^n \\big(\\phi(X_i) - \\psi(X_i)\\big) \\right) \\\\\n&= \\frac{1}{n} \\Var \\big(\\phi(X_i) - \\psi(X_i)\\big) .\n\\end{align*}\\]\nParts 3 and 4 follow in the usual way.",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Control variate</span>"
     ]
   }
 ]

@@ -11,18 +11,18 @@ book:
   chapters:
     - index.qmd
     - about.qmd
-    - lectures/L01-intro.qmd
     - part: "Monte Carlo estimation"
       chapters:
-        - lectures/L02-mc-intro.qmd
-        - lectures/L03-mc-examples.qmd
-        - lectures/L04-mc-error.qmd
-        - lectures/L09-cv.qmd
-        - lectures/L07-antithetic-1.qmd
+        - lectures/L01-mc-intro.qmd
+        - lectures/L02-mc-uses.qmd
+        - lectures/L03-mc-error-1.qmd
+        - lectures/L04-mc-error-2.qmd
+        - lectures/L05-cv.qmd
         - problems/P1.qmd
-        - lectures/L08-antithetic-2.qmd
-        - lectures/L05-is-1.qmd
-        - lectures/L06-is-2.qmd
+        - lectures/L06-antithetic-1.qmd
+        - lectures/L07-antithetic-2.qmd
+        - lectures/L08-is-1.qmd
+        - lectures/L09-is-2.qmd
     - part: "Random number generation"
       chapters:
         - lectures/L10-rng-intro.qmd

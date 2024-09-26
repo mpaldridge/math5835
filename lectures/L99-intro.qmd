@@ -1,0 +1,14 @@
+# Introduction to Statistical Computing
+
+
+
+
+
+## Background: probability
+
+
+
+
+
+If we want a bound on how likely are random variable is to be close to its expectation (not just a "large $n$ approximation" like the central limit theorem, but a cast-iron finite-$n$ bound) we can use **Chebyshev's inequality**:
+$$ \mathbb P\big(|Z - \Ex Z| > \epsilon\big) \leq \frac{1}{\epsilon^2} \operatorname{Var}(Z) .$$

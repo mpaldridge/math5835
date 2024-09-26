@@ -1,0 +1,88 @@
+# Monte Carlo error I
+
+::: {.hidden}
+$$\newcommand{\Exg}{\operatorname{\mathbb{E}}} 
+\newcommand{\Ex}{\mathbb{E}} 
+\newcommand{\Ind}{\mathbb{I}}$$
+:::
+
+## Estimation error
+
+Before talking about error in Monte Carlo estimation, just remind ourselves of some concepts about error in estimation more generally. We will use the following definitions.
+
+::: {#def-stats}
+Let $\widehat\theta$ be an estimate of a parameter $\theta$. Then we have the following definitions of the estimate $\widehat\theta$:
+
+* The **bias** is $\operatorname{bias}\big(\widehat\theta\big) = \mathbb E\big(\widehat\theta - \theta\big)  = \mathbb E\widehat\theta - \theta$.
+
+* The **mean-square error** is $\operatorname{MSE}\big(\widehat\theta\big) = \mathbb E \big(\widehat\theta - \theta\big)^2$.
+
+* The **root-mean-square error** is the square-root of the mean-square error, $$\operatorname{RMSE}\big(\widehat\theta\big) = \sqrt{\operatorname{MSE}(\widehat\theta)} = \sqrt{\mathbb E (\widehat\theta - \theta)^2} . $$
+:::
+
+Usually the goal is to get the mean-square error of an estimate as small as possible. It can be more convenient to discuss the root-mean-square error, as that has the same units as the parameter being measured. (If $\theta$ is in metres, say, then the mean-square-error is in metres-squared, where as the root-mean-square error is in metres again.) It's nice to have an unbiased estimator -- that is, one with bias 0 -- although unbiasedness by itself is not enough for an estimate to be good. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the rgiht, then claims to have hit the target on average.)
+
+You probably also remember the relationship between the mean-square error, the bias, and the variance:
+
+::: {#thm-MSE-bias}
+ 
+$\operatorname{MSE}\big(\widehat\theta\big) = \operatorname{bias}\big(\widehat\theta\big)^2 + \operatorname{Var}\big(\widehat\theta\big)$.
+:::
+
+(There's a proof in [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Proposition 3.14, if you've forgotten.)
+
+## Bias and error of the Monte Carlo estimator
+
+In this lecture, we're going to be looking more carefully at the size of the errors made by the Monte Carlo estimate
+$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) . $$
+
+In doing so, we'll be making particular use of the probability and statistics background that we talked about back in [....]
+
+Our main result is the following.
+
+::: {#thm-MCerr}
+Let $X$ be a random variable, $\phi$ a function, and $\theta = \Exg\phi(X)$. Let
+$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) $$
+be the Monte Carlo estimator of $\theta$. Then:
+
+1. $\widehat{\theta}_n^{\mathrm{MC}}$ is unbiased, in that $\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = 0$.
+
+1. The variance of of $\widehat{\theta}_n^{\mathrm{MC}}$ is 
+${\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$.
+
+1. The mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is 
+${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$.
+
+1. The root-mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is 
+${\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{\sqrt{n}} \operatorname{sd}\big(\phi(X)\big)}$.
+:::
+
+Before we get to the proof, let's recap some relevant probability.
+
+Let $Y_1, Y_2, \dots$ be IID random variables with common expectation $\mathbb EY_1 = \mu$ and variance $\operatorname{Var}(Y_1) = \sigma^2$. Consider the mean of the first $n$ random variables,
+$$ \overline{Y}_n = \frac{1}{n} \sum_{i=1}^n Y_i . $$
+Then the expectation of $\overline{Y}_n$ is
+$$ \mathbb E \overline{Y}_n = \mathbb E\left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \frac{1}{n} 
+\sum_{i=1}^n \mathbb{E}Y_i = \frac{1}{n}\,n\mu = \mu . $$
+The variance of $\overline{Y}_n$ is
+$$ \operatorname{Var}\big(  \overline{Y}_n \big)= \operatorname{Var} \left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \bigg(\frac{1}{n}\bigg)^2 
+\sum_{i=1}^n \operatorname{Var}(Y_i) = \frac{1}{n^2}\,n\sigma^2 = \frac{\sigma^2}{n} , $$
+where, for this one, we used the independence of the random variables.
+In particular, the expectation stays the same, the same as each individual random variable. But the variance gets smaller, at rate $1/n$; or, equivalently, the standard deviation gets smaller, at rate $1/\sqrt{n}$.
+
+::: {.proof}
+Apply the probability facts from above, with $Y = \phi(X)$. This gives:
+
+1. $\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex Y = \Exg \phi(X)$, so $\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0$
+
+1. ${\displaystyle \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(Y) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$
+
+1. Using @thm-MSE-bias,
+$$\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}})^2 + \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = 0^2 + \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) . $$
+
+1. Take the square root of part 3.
+:::
+
+There's a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we *couldn't* calculate $\Exg \phi(X)$. So it seems very unlikely we'll be able to calculate the variance $\operatorname{Var}(\phi(X))$ either. But we *can* estimate the variance from our samples too: by taking the sample variance of our samples $\phi(x_i)$.
+
+**Next time:** That's enough theory. Let's do some examples of working with Monte Carlo error.
