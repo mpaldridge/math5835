@@ -22,7 +22,7 @@ Well, the mean-square error is the variance divided by $n$. So if we can't (or d
 
 * **Control variate:** We can "anchor" our estimate of $\Exg \phi(X)$ to a very similar but easier-to-calculate value $\Exg \psi(X)$. [This lecture]
 
-* **Antithetical variables:** Instead of using IID samples, we could use correlated samples. If the correlation is *negative* this can improve our estimate. [Lectures 6 and 7]
+* **Antithetical variables:** Instead of using independent samples, we could use correlated samples. If the correlation is negative this can improve our estimate. [Lectures 6 and 7]
 
 * **Importance sampling:** Instead of sampling from $X$, sample from some other more suitable distribution instead, then readjust the answer we get.
 [Lectures 8 and 9]
@@ -42,7 +42,7 @@ The true answer is 8 hours 29 minutes. My first guess was 31 minutes off (better
 
 Why was my second guess better? We were trying to estimate $\theta^{\mathrm{DC}}$, the distance to D.C. But that's a big number, and my estimate had a big error (31 minutes). But after the hint, we could write
 $$\theta^{\mathrm{DC}} = \big(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\big) - \theta^{\mathrm{NY}} . $$
-In that equation, the second term, $\theta^{\mathrm{NY}} = $ 8:10 was completely known, so had error 0, while the first term $\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}$ was a small number, so only had a small error (4 minutes!).
+In that equation, the second term, $\theta^{\mathrm{NY}} =$ 8:10 was completely known, so had error 0, while the first term $\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}$ was a small number, so only had a small error (4 minutes!).
 
 We can apply this idea to Monte Carlo estimation too. Suppose we are trying to estimate $\theta = \Exg \phi(X)$. We want to look for a function $\psi$ that is similar to $\phi$ (at least for the values of $x$ that have high probability for the random variable $X$), but where we know for certain what $\Exg \psi(X)$ is. Then we can write
 $$ \theta = \Exg \phi(X) = \Exg \big(\phi(X) - \psi(X) + \psi(X)\big) = \underbrace{\Exg\big(\phi(X) - \psi(X)\big)}_{\text{estimate this with Monte Carlo}} + \underbrace{\Exg \psi(X)}_{\text{known}} . $$
@@ -50,7 +50,7 @@ $$ \theta = \Exg \phi(X) = \Exg \big(\phi(X) - \psi(X) + \psi(X)\big) = \underbr
 Here, $\psi(X)$ is known as the **control variate**.
 
 ::: {#def-MCest}
-Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Let $\psi$ be a function fuch that $\Exg\psi(X)$ is known. Suppose that $X_1, X_2, \dots, X_n$ are a random sample from $X$. Then the **control variate Monte Carlo estimate** $\widehat\theta_n^{\mathrm{CV}}$ of $\theta$ is
+Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Let $\psi$ be a function such that $\Exg\psi(X)$ is known. Suppose that $X_1, X_2, \dots, X_n$ are a random sample from $X$. Then the **control variate Monte Carlo estimate** $\widehat\theta_n^{\mathrm{CV}}$ of $\theta$ is
 $$ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \Exg \psi(X) . $$
 :::
 
@@ -95,6 +95,8 @@ CVest
 ```
 :::
 
+## Error of control variate estimate
+
 What is the error in a control variate estimate?
 
 ::: {#thm-CVerr}
@@ -138,3 +140,25 @@ For part 2, remembering that $\Exg \psi(X)$ is a constant, so doesn't affect the
 
 Parts 3 and 4 follow in the usual way.
 :::
+
+::: {#exm-control2}
+We return to @exm-control, where we were estimating $\Ex \cos(X)$ for $X \sim \operatorname{N}(0,1)$.
+
+The naive Monte Carlo estimate had variance and root-mean-square error
+```{r, cache = TRUE}
+c(MCvar, sqrt(MCvar / n))
+```
+
+The variance and root-mean-square error of our control variate estimate, on the other hand, are
+
+```{r, cache = TRUE}
+CVvar <- var(phi(samples) - psi(samples))
+c(CVvar, sqrt(CVvar / n))
+```
+
+This was a success! The variance roughly halved, from $`r round(MCvar, 2)`$ to $`r round(CVvar, 2)`$. This meant the root-mean-square went down by about a third, from $`r signif(sqrt(MCvar / n), 2)`$ to $`r signif(sqrt(CVvar / n), 2)`$.
+:::
+
+**Next time:** *We look at our second variance reduction technique: antithetic variables.*
+
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 3.3.3.

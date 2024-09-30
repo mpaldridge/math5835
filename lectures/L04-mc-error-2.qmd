@@ -1,75 +1,77 @@
-# Monte Carlo error II
+# Monte Carlo error II: practice
 
 ::: {.hidden}
 $$\newcommand{\Exg}{\operatorname{\mathbb{E}}} 
 \newcommand{\Ex}{\mathbb{E}} 
-\newcommand{\Ind}{\mathbb{I}}$$
+\newcommand{\Ind}{\mathbb{I}}
+\newcommand{\Var}{\operatorname{Var}}$$
 :::
 
 ## Examples
 
-[RECAP]
+Let's recap what we learned last time: The Monte Carlo estimator is unbiased, and its mean-square and root-mean-square errors are
+$$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) \qquad \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . $$
 
-We've done enough theory. Let's see some examples.
-
-::: {#exm-MCexp2}
-Let's go back to the very first example in the module, @exm-MCexp, where we were trying to find the expectation of an $\operatorname{Exp}(2)$ random variable. We used this R code:
-
-```{r, cache = TRUE}
-n <- 1e6
-samples <- rexp(n, 2)
-MCest <- mean(samples)
-MCest
-```
-
-(Because Monte Carlo estimation is random, this won't be the *exact* same estimate we had before, of course.)
-
-So if we want to investigate the error, we can use the sample variance of these samples.
-
-```{r, cache = TRUE}
-var_est <- var(samples)
-MSEest  <- var_est / n
-RMSEest <- sqrt(MSEest)
-c(var_est, MSEest, RMSEest)
-```
-
-The first number is `var_est` $= `r signif(var_est, 3)`$, the sample variance of our $\phi(x_i)$s:
-$$ s^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(x_i) - \widehat{\theta}_n^{\mathrm{MC}}\big)^2 . $$
-This should be a good estimate of the true variance $\operatorname{Var}(\phi(X))$.
-
-The second number is `MSEest` $= `r signif(var_est/n, 3)`$, our estimate of the mean-square error. Since $\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(\phi(X))$, our estimate of the MSE is $\frac{1}{n} s^2$.
-
-The third number is `RMSEest` $= `r signif(sqrt(var_est/n), 3)`$ our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.
-:::
+Now let's see some examples.
 
 ::: {#exm-MCprob2}
 In @exm-MCprob, we were estimating $\mathbb P(Z > 2)$, where $Z$ is a standard normal.
 
 Our code was
+
 ```{r}
 n <- 1e6
 samples <- rnorm(n, 0, 1)
 MCest <- mean(samples > 2)
 MCest
 ```
+
 So our root-mean-square error can be approximated as
+
 ```{r}
 RMSEest <- sqrt(var(samples > 2) / n)
 RMSEest
 ```
 :::
 
+## Confidence intervals
+
+So far, we have described our error tolerance in terms of the MSE or RMSE. But we could have talked about "confidence intervals" or "margins of error" instead. This might be easier to understand for non-mathematicians, for whom "root-mean-square error" doesn't really mean anything.
+
+Here, we will want to appeal to the central limit theorem approximation. A bit more probability revision: Let $Y_1, Y_2, \dots$ be IID again, with expectation $\mu$ and variance $\sigma^2$. Write $\overline Y_n$ for the mean. We've already reminded ourselves that $\mathbb E \overline Y_n = \mu$  and $\Var(\overline{Y}_n) = \sigma^2/n$. But the **central limit theorem** says that the distribution of $\overline Y_n$ is approximately normally distributed with those parameters, so $\overline Y_n \approx \operatorname{N}(\mu, \sigma^2/n)$ when $n$ is large. (This is an informal statement of the central limit theorem: you probably know some more formal ways to more precisely state the it, but this will do for us.)
+
+Recall that, in the normal distribution, we expect to be within $1.96$ standard deviations of the mean with 95% probability. More generally, the probability is $1-\alpha$ that we are in the interval $[\mu - q_{1-\alpha/2}\sigma, \mu + q_{1-\alpha/2}\sigma]$, where $q_{1-\alpha/2}$ is the $(1- \frac{\alpha}{2})$-quantile of the normal distribution.
+
+So we can form an approximate confidence interval like this:
+
+::: {#exm-MCprob3}
+We continue the example of @exm-MCprob and @exm-MCprob2, where we were estimating $\mathbb P(Z > 2)$ for $Z$ a standard normal. Our confidence interval is estimated as the following.
+
+```{r}
+alpha <- 0.05
+quant <- qnorm(1 - alpha / 2)
+c(MCest - quant * RMSEest, MCest + quant * RMSEest)
+```
+:::
+
 ## How many samples do I need?
 
-In our examples we've picked the number of samples $n$ for our estimator, then approximated the error based on that. But we could do things the other way around -- fix an error tolerance that we're willing to deal with, then choose the sample size based on that.
+In our examples we've picked the number of samples $n$ for our estimator, then approximated the error based on that. But we could do things the other way around -- fix an error tolerance that we're willing to deal with, then work out what sample size we need to achieve it.
 
-That is, we have a three-step process:
+We know that the root-mean-square error is
+$$ \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} $$
+So if we want to get the RMSE down to $\epsilon$, say, then this shows that we need
+$$ n = \frac{1}{\epsilon^2} \Var\big(\phi(X)\big) . $$
 
-1. Run an initial "pilot" Monte Carlo algorithm with a small number of samples $n$. We want $n$ small enough that this runs very quickly.
+This is actually quite bad news. We noticed that to get an RMSE of $\epsilon$ we need order $1/\epsilon^2$ samples. That's not good. Think of it like this: to *double* the accuracy we need to *quadruple* the number of samples. Even worse: to get "one more decimal place of accuracy" means dividing $\epsilon$ by ten; but that means multiplying the number of samples by one hundred!
 
-1. Use the results of the "pilot" to approximate the error. Then use this to decide what value $n$ we will need for the "real" Monte Carlo algorithm.
+This suggests a three-step process:
 
-1. Run the "real" Monte Carlo algorithm with this big number of samples $n$. We will put up with this being quite slow, because we know we're definitely going to get the error tolerance we need.
+1. Run an initial "pilot" Monte Carlo algorithm with a small number of samples $n$. Use the results of the "pilot" to estimate the variance $s^2 = \Var(\phi(X))$. We want $n$ small enough that this runs very quickly, but big enough that we get a reasonable estimate of the variance.
+
+1.  Pick a desired RMSE accuracy $\epsilon$. We now know that we require roughly $N = s^2 / epsilon^2$ samples to get our desired accuracy.
+
+1. Run the "real" Monte Carlo algorithm with this big number of samples $N$. We will put up with this being quite slow, because we know we're definitely going to get the error tolerance we need.
 
 ::: {#exm-MC22}
 Let's try this with @exm-MC2 from before. We were trying to esimate $\Exg(\sin X)$, where $X \sim \operatorname{N}(1, 2^2)$.
@@ -83,13 +85,7 @@ var_est <- var(sin(samples))
 var_est
 ```
   
-This was super-quick! But with only 1000 samples, it won't have been an accurate estimate yet.
-
-Let's suppose we want to get the root-mean-square error down to $\epsilon = 10^{-4}$. We know, using `var_est` to estimate the variance, that we want
-$$ \epsilon = \operatorname{RMSE} \big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{\sqrt{n}} \,\operatorname{sd}\big(\phi(X)\big) \approx \frac{1}{\sqrt{n}} \times \sqrt{`r signif(var_est, 4)`} . $$
-Rearranging to make $n$ the subject and using $\epsilon = 10^{-4}$, we need
-$$ n \approx `r signif(var_est, 4)`\times \frac{1}{\epsilon^2} = `r signif(var_est, 3)`\times 10^{8} =  `r signif(var_est * 1e8, 4)` \approx `r signif(var_est * 1e8, 1)`$$
-samples, or about 50 million.
+This was super-quick! We won't have got a super-accurate estimate of $\Exg\phi(X)$, but we have a reasonable idea what $\Var(\phi(X))$. This will allow us to pick out "real" sample size.
 
 ```{r, cache = TRUE}
 epsilon <- 1e-4
@@ -105,25 +101,20 @@ RMSEest
 This was very slow! But we see that we have indeed got our Monte Carlo estimate to (near enough) the desired accuracy.
 :::
 
-A lot of this is actually quite bad news. We noticed that to get an RMSE of $\epsilon$ we need order $1/\epsilon^2$ samples. That's not good. Think of it like this: to *double* the accuracy we need to *quadruple* the number of samples. Even worse: to get "one more decimal place of accuracy" means dividing $\epsilon$ by ten; but that means multiplying the number of samples by one hundred!
-
-## Margins of error
-
-We could describe our error tolerance in terms of the RMSE. But we could have talked about "confidence intervals" instead, by appealing the central limit theorem approximation. This might be easier to understand for non-mathematicians, for whom "root-mean-square error" doesn't really mean anything.
-
-A bit more probability revision: Let $Y_1, Y_2, \dots$ be IID again, with the mean $\overline Y_n$.
-
-The expectation of $\overline Y_n$ staying at $\mu$ while the variance $\sigma^2/n$ gets smaller and smaller means the probability gets ever more concentrated around $\mu$. This gives the **law of large numbers** which says that $\overline Y_n \to \mu$ in probability as $n \to \infty$. You may remember that this means the Monte Carlo estimate is **consistent**.
-
-While we know the expectation of $\overline Y_n$ is $\mu$ and the variance is $\sigma^2/n$, the **central limit theorem** says that the distribution of $\overline Y_n$ is approximately normally distributed with those parameters. Informally, we can say $\overline Y_n \approx \operatorname{N}(\mu, \sigma^2/n)$ when $n$ is large. (You probably know some more formal ways to more precisely state the central limit theorem, but this will do for us.)
-
-Recall that, in the normal distribution, we expect to be within $1.96$ standard deviations of the mean with 95% probability.
-So our previous example could interpret this as a $1.96\epsilon \approx 2\times 10^{-4}$ "margin of error" or a "95% confidence interval" of $`r round(MCest, 5)` \pm (2.0\times 10^{-4})$.
-
-
-
-[EXAMPLE?]
+We should note that the equation
+$$ n = \frac{1}{\epsilon^2} \Var\big(\phi(X)\big) $$
+is actually quite bad news. To get an RMSE of $\epsilon$ we need order $1/\epsilon^2$ samples. That's not good. Think of it like this: to *double* the accuracy we need to *quadruple* the number of samples. Even worse: to get "one more decimal place of accuracy" means dividing $\epsilon$ by ten; but that means multiplying the number of samples by one hundred!
 
 Wouldn't it be nice to have some better ways of increasing the accuracy of a Monte Carlo estimate besides just taking more and more samples?
 
 **Next time:** *We begin our study of clever "variance reduction" methods for Monte Carlo estimation.* 
+
+::: {.mysummary}
+**Summary:**
+
+* We can approximate confidence intervals for a Monte Carlo estimate by using a normal approximation.
+
+* To get the mean-square error below $\epsilon$ we need $n = \Var(\phi(X))/\epsilon^2$ samples.
+
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsections 3.2.2--3.2.4.
+:::

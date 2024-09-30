@@ -30,8 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L06-antithetic-1.html" rel="next">
-<link href="../lectures/L05-cv.html" rel="prev">
+<link href="../lectures/L03-mc-error-1.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -139,12 +138,6 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Schedule</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About MATH5835</span></a>
   </div>
 </li>
@@ -172,19 +165,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error 1</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L04-mc-error-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error 2</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L05-cv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variates</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -193,209 +174,8 @@ window.Quarto = {
  <span class="menu-text">Problem Sheet 1</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L06-antithetic-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L07-antithetic-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L08-is-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L09-is-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Importance sampling II</span></span></a>
-  </div>
-</li>
       </ul>
   </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Random number generation</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L10-rng-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generating random numbers</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L11-lcg.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../problems/P2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Problem Sheet 2</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete generation</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L13-inverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L14-rejection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Rejection sampling</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L15-envelope-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Envelope rejection sampling I</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L16-envelope-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Envelope rejection sampling II</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../problems/P3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Problem Sheet 3</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">MCMC</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L17-markov-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Introduction to Markov chains</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L18-markov-longrun.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Long-run behaviour of Markov chains</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L19-markov-cont.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Markov chains in continuous space</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L20-mh-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Metropolis–Hastings algorithm I</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L21-mh-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Metropolis–Hastings algorithm I</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L22-convergence.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Convergence and mixing</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L23-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">MCMC and Bayesian statistics</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../problems/P4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Problem Sheet 4</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Bootstrap</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L24-empirical.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L25-bootstrap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bootstrap estimation</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L26-bootstrap-error.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bootstrap error</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L27-bootstrap-ci.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Bootstrap confidence intervals</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../problems/P5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Problem Sheet 5</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L28-faq.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">FAQ</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../coursework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Coursework</span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
@@ -426,17 +206,80 @@ window.Quarto = {
 </header>
 
 
-<p>Basic MC example</p>
-<p>Let <span class="math inline">\(X\)</span> be a random variable, and let <span class="math inline">\(\Ind_A\)</span> and <span class="math inline">\(\Ind_B\)</span> be two indicator functions.</p>
-<ol type="a">
-<li><p>What is the expected value of <span class="math inline">\(\Ind_A(X) \times \Ind_B(X)\)</span>?</p></li>
-<li><p>Show that the covariance <span class="math inline">\(\Cov(\Ind_A(X), \Ind_B(A)\)</span> is zero if and only if the events <span class="math inline">\(\{X \in A\}\)</span> and <span class="math inline">\(\{X \in B\}\)</span> are independent.</p></li>
-</ol>
-<p>MC integral</p>
-<p>Basic MC with error estimation</p>
-<p>Pi</p>
-<p>Control variate example</p>
-<p>Pi with antithetic</p>
+<div class="hidden">
+<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
+\newcommand{\Ex}{\mathbb{E}}
+\newcommand{\Ind}{\mathbb{I}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
+</div>
+<style>
+.myanswers { 
+display: none !important;
+}
+</style>
+<div class="mysummary">
+<p>This is Problem Sheet 1, which covers material from Lectures 1 to 6. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of <strong>Thursday 17 October</strong>.</p>
+<p>This problem sheet is to help you practice material from the module. It is not for assessment and will not be marked. However, you can get feedback on your work by (a) being well prepared for the problems class, by making attempts at all questions in advance; (b) speaking up in the problems class, asking for clarification where things aren’t clear and offering ideas on how to solve the questions; (c) discussing your work with colleagues and friends; (d) coming along to my office hours on Mondays at 1500.</p>
+<p>Many of these questions will require use of the <a href="https://cran.r-project.org">R programming language</a> (for example, by using the <a href="https://posit.co/downloads/">program RStudio</a>).</p>
+</div>
+<div class="myq">
+<p><strong>1.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(X\)</span> be uniform on <span class="math inline">\([-1,2]\)</span>.</p>
+<div class="subq">
+<p><strong>(a)</strong> &nbsp;&nbsp;By hand, calculate the exact value of <span class="math inline">\(\Ex X^4\)</span>.</p>
+</div>
+<div class="subq">
+<p><strong>(b)</strong> &nbsp;&nbsp;Using R, calculate a Monte Carlo estimate for <span class="math inline">\(\Ex X^4\)</span>.</p>
+</div>
+</div>
+<div class="myq">
+<p><strong>2.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> both be standard normal distributions. Compute a Monte Carlo estimate of <span class="math inline">\(\Exg \max\{X,Y\}\)</span>. (You may wish to investigate R’s <code>pmax()</code> function.)</p>
+</div>
+<div class="myq">
+<p><strong>3.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You are trapped alone on an island. All you have with you is a tin can (radius <span class="math inline">\(r\)</span>) and a cardboard box (side lengths <span class="math inline">\(2r \times 2r\)</span>) that it fits snugly inside. You put the can inside the box [left picture].</p>
+<p>When it starts raining, each raindrop that falls in the cardboard box might fall into the tin can [middle picture], or might fall into the corners of the box outside the can [right picture].</p>
+<p><img src="P1-can-box.svg" class="img-fluid" width="600"></p>
+<div class="subq">
+<p><strong>(a)</strong> &nbsp;&nbsp;Using R, simulate rainfall into the box. You may take units such that <span class="math inline">\(r = 1\)</span>. Estimate the probability <span class="math inline">\(\theta\)</span> that a uniformly-random raindrop that falls in the cardboard box falls into the tin can also.</p>
+</div>
+<div class="subq">
+<p><strong>(b)</strong> &nbsp;&nbsp;Calculate exactly the probability <span class="math inline">\(\theta\)</span>.</p>
+</div>
+<div class="subq">
+<p><strong>(c)</strong> &nbsp;&nbsp;You realise that, despite being trapped all alone on the island, you now have a way of approximating the value of <span class="math inline">\(\pi\)</span>. If you want to calculate <span class="math inline">\(\pi\)</span> to 6 decimal places, roughly how many raindrops do you need to fall into the box?</p>
+</div>
+</div>
+<div class="myq">
+<p><strong>4.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(f(x) = 1/(x + 0.1)\)</span>. We wish to estimate <span class="math inline">\(\int_0^5 f(x) \, \mathrm{d}x\)</span> using a Monte Carlo method.</p>
+<div class="subq">
+<p><strong>(a)</strong> &nbsp;&nbsp;Estimate the integral using <span class="math inline">\(X\)</span> uniform on <span class="math inline">\([0,5]\)</span>.</p>
+</div>
+<div class="subq">
+<p><strong>(b)</strong> &nbsp;&nbsp;Can you come up with a choice of <span class="math inline">\(X\)</span> that improves on the estimate from (a)?</p>
+</div>
+</div>
+<div class="myq">
+<p><strong>5.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When <span class="math inline">\(n\)</span> is very large, one might wish to store all <span class="math inline">\(n\)</span> samples <span class="math inline">\(x_i\)</span> before calculating the Monte Carlo estimate <span class="math inline">\(\frac{1}{n} \sum_{i=1}^n \phi(x_i)\)</span>. However, this uses up a lot of space in a computer’s memory. Describe (in words, in R code, or in a mixture of the two) how the Monte Carlo estimate could be produced using much less memory.</p>
+</div>
+<div class="myq">
+<p><strong>6.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Show that the indicator functions <span class="math inline">\(\mathbb I_A(X)\)</span> and <span class="math inline">\(\mathbb I_B(X)\)</span> have covariance 0 if and only if the events <span class="math inline">\(\{X \in A\}\)</span> and <span class="math inline">\(\{X \in B\}\)</span> are independent.</p>
+</div>
+<div class="myq">
+<p><strong>7.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(X\)</span> be an exponential distribution with rate 1.</p>
+<div class="subq">
+<p><strong>(a)</strong> &nbsp;&nbsp;Estimate <span class="math inline">\(\mathbb EX^{2.1}\)</span> using the standard Monte Carlo method</p>
+</div>
+<div class="subq">
+<p><strong>(b)</strong> &nbsp;&nbsp;Estimate <span class="math inline">\(\mathbb EX^{2.1}\)</span> using <span class="math inline">\(X^2\)</span> as a control variate. (You may recall that if <span class="math inline">\(Y\)</span> is exponential with rate <span class="math inline">\(\lambda\)</span>, then <span class="math inline">\(\mathbb EY^2 = 2/\lambda^2\)</span>.)</p>
+</div>
+<div class="subq">
+<p><strong>(c)</strong> &nbsp;&nbsp;Which method is better?</p>
+</div>
+</div>
+<div class="myq">
+<p><strong>8.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(Z\)</span> be a standard normal distribution. A statistician has been investigating estimates of <span class="math inline">\(\mathbb EZ^k\)</span> for different positive integers values of <span class="math inline">\(k\)</span>. Her colleague suggests using <span class="math inline">\(Z' = -Z\)</span> as an antithetic variables. Without running any R code, explain whether or not this is a good idea <strong>(a)</strong> when <span class="math inline">\(k\)</span> is even; <strong>(b)</strong> when <span class="math inline">\(k\)</span> is odd.</p>
+</div>
 
 
 
@@ -852,14 +695,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L05-cv.html" class="pagination-link" aria-label="Control variates">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variates</span></span>
+      <a href="../lectures/L03-mc-error-1.html" class="pagination-link" aria-label="Monte Carlo error I: theory">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L06-antithetic-1.html" class="pagination-link" aria-label="Antithetic variables I">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

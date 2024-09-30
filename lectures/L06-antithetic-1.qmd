@@ -1,7 +1,52 @@
 # Antithetic variables I
 
+{{< include ../_header.qmd >}}
+
 ## Estimation with correlation
 
-## Estimation with antithetic variables
+This lecture and the next, we will be looking at our second variance reduction method for Monte Carlo estimation. "Antithetic" refers to a way of using negative correlation to reduce the variance an estimator.
 
-## Estimating π again
+Let's start with the simple example of estimating an expectation from $n = 2$ samples. Suppose $Y$ has expectation $\mu = \Ex Y$ and variance $\Var(Y) = \sigma^2$. Suppose $Y_1$ and $Y_2$ are independent samples from $Y$. Then the Monte Carlo estimator is
+$$ \overline Y = \tfrac12(Y_1 + Y_2) . $$
+This estimator is unbiased, since
+$$ \Ex \overline Y = \Ex \big(\tfrac12(Y_1 + Y_2)\big) = \tfrac12 ( \Ex Y_1 + \Ex Y_2 ) = \tfrac12 (\mu + \mu) = \mu . $$
+Thus the mean-square error equals the variance, which is
+$$ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) \big)= \tfrac14 (\sigma^2 + \sigma^2) = \tfrac12 \sigma^2 . $$
+
+But what if $Y_1$ and $Y_2$ still have the same distribution as $Y$ but now are *not* independent? The expectation is still the same, so the estimator is still unbiased. But the variance (and hence mean-square error) is now
+$$ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) + 2 \Cov(Y_1, Y_2) \big) . $$
+Write $\rho$ for the correlation
+$$ \rho = \Corr(Y_1, Y_2) = \frac{\Cov(Y_1, Y_2)}{\sqrt{\Var(Y_1) \Var(Y_2)}} = \frac{\Cov(Y_1, Y_2)}{\sqrt{\sigma^2 \times \sigma^2}} = \frac{\Cov(Y_1, Y_2)}{\sigma^2} . $$
+(Remember that $-1 \leq \rho \leq +1$.)
+Then the variance is 
+$$ \Var \big( \overline Y\big) = \tfrac14 ( \sigma^2 + \sigma^2 + 2 \rho \sigma^2 ) = \frac{1+\rho}{2} \,\sigma^2 . $$
+
+We can compare this with the variance $\frac12 \sigma^2$ from the independent-sample case:
+
+* If $Y_1$ and $Y_2$ are **positively correlated**, in that $\rho > 0$, then the variance, and hence the mean-square error, has got bigger. This means the estimator is worse. This is because, with positive correlation, errors compound each other -- if one sample is bigger than average, then the other one is likely to be bigger than average too; while if one sample is smaller than average, then the other one is likely to be smaller than average too.
+
+* If $Y_1$ and $Y_2$ are **negatively correlated**, in that $\rho < 0$, then the variance, and hence the mean-square error, has got smaller. This means the estimator is better. This is because, with negative correlation, errors compensate for each other -- if one sample is bigger than average, then the other one is likely to be smaller than average, which will help "cancel out" the error.
+
+
+## Monte Carlo with antithetic variables
+
+We have seen that negative correlation helps improve estimation from $n=2$ samples. How can we make this work in our favour for Monte Carlo simulation with more samples?
+
+We will look at the idea of **antithetic pairs**. So instead of taking $n$ samples
+$$ X_1, X_2, \dots, X_n $$
+that are all independent of each other, we will take $n/2$ pairs of samples
+$$ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X'_{n/2})  $$
+(which makes $n/2 \times 2 = n$ samples overall, of course). Here, *within* each pair, $X_i$ and $X_i'$ are *not* independent, but *between* different pairs, $(X_i, X_i')$ and $(X_j, X'j)$ *are* independent.
+
+::: {#def-AV}
+Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Let $X'$ have the same distribution as $X$ (but not necessarily be independent of it). Suppose that $(X_1, X_1')$, $(X_2, X_2')$, $\dots$, $(X_{n/2}, X'_{n/2})$ are be a random sample from $(X, X')$. Then the **antithetic variables Monte Carlo estimator** $\widehat\theta_n^{\mathrm{AV}}$ of $\theta$ is
+$$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) . $$
+:::
+
+## Example
+
+
+
+**Next time:** *We continue our study of the antithetic variables method with more examples and analysis of the error.*
+
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 3.3.2.

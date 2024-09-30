@@ -1,0 +1,22 @@
+*Let* $Z \sim \operatorname{N}(0,1)$ be a standard normal distribution. Estimate $\mathbb P(Z > 2)$.
+
+This is a question that it is impossible to answer exactly using a pencil and paper: there's no closed form for $$ \mathbb P(Z > 2) = \int_2^\infty \frac{1}{\sqrt{2\pi}}\,\mathrm{e}^{-z^2/2}\,\mathrm{d}z , $$ so we'll have to use an estimation method.
+
+The Monte Carlo estimate means taking a random sample $Z_1, Z_2, \dots, Z_n$ of standard normals, and calculating what proportion of them are greater than 2. In R, we can do this as follows.
+
+```{r}
+n <- 1e6
+samples <- rnorm(n)
+MCest <- mean(samples > 2)
+MCest
+```
+
+In the second line, we could have written `rnorm(n, 0, 1)`. But, if you don't give the parameters `mean` and `sd` to the function `rnorm()`, R just assumes you want the standard normal with `mean = 0` and `sd = 1`.
+
+We can check our answer: R's inbuilt `pnorm()` function estimates probabilities for the normal distribution (using a method that, in this specific case, is much quicker and more accurate than Monte Carlo estimation). The true answer is very close to
+
+```{r}
+pnorm(2, lower.tail = FALSE)
+```
+
+so our estimate was pretty good.

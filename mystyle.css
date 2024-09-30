@@ -106,7 +106,7 @@ div.theorem, div.example, div.proof, div.definition, div.lemma, .thpart {
 
 
 
-div.theorem p:nth-child(1), div.example p:nth-child(1), div.proof p:nth-child(1), div.definition p:nth-child(1), div.lemma p:nth-child(1), .thpart p:nth-child(1), .mysummary p:nth-child(1), .mysched p:nth-child(1), .myanswers p:nth-child(1), .myq p:nth-child(1), .oldsched p:nth-child(1) {
+div.theorem p:nth-child(1), div.example p:nth-child(1), div.proof p:nth-child(1), div.definition p:nth-child(1), div.lemma p:nth-child(1), .thpart p:nth-child(1), .mysummary p:nth-child(1), .mysched p:nth-child(1), .myanswers p:nth-child(1), .oldsched p:nth-child(1) {
   text-indent: 0px;
 }
 
@@ -165,24 +165,31 @@ h3 {
   margin-bottom: 0px;
 }
 
-/*
+
 .myq {
   padding-top: 20px;
+  padding-left: 30px;
+  text-indent: -30px;
 }
 
-
-.subq {
-  margin-left: 40px;
+.myq p {
+  text-indent: -32px; 
 }
+
+.myq p + p {
+  text-indent: 20px;
+}
+
 
 .subq p {
-  text-indent: 0;
+  text-indent: -30px;
+  padding-left: 40px;
 }
 
 .subq p + p {
   text-indent: 20px;
 }
-*/
+
 
 
 h1, .h1 {
@@ -202,21 +209,22 @@ div.proof>*:last-child:after {
 }
 
 /*
-ul.summary {
+
+.summary {
   padding-bottom: -5px !important;
   margin-bottom: -5px !important;
   padding-top: -5px !important;
   margin-top: -5px !important;
 }
 
-ul.summary ul {
+.summary ul {
   padding-bottom: -5px !important;
   margin-bottom: -5px !important;
   padding-top: -5px !important;
   margin-top: -5px !important;
 }
 
-ul.summary ul li {
+.summary ul li {
   padding-bottom: 0 !important;
   margin-bottom: 0 !important;
   padding-top: 0 !important;

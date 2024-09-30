@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>MATH5835M Statistical Computing - 3&nbsp; Monte Carlo error I</title>
+<title>MATH5835M Statistical Computing - 3&nbsp; Monte Carlo error I: theory</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,7 +64,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L04-mc-error-2.html" rel="next">
+<link href="../problems/P1.html" rel="next">
 <link href="../lectures/L02-mc-uses.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -111,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L03-mc-error-1.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L03-mc-error-1.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -139,12 +173,6 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Schedule</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About MATH5835</span></a>
   </div>
 </li>
@@ -172,19 +200,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L04-mc-error-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L05-cv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -193,230 +209,22 @@ window.Quarto = {
  <span class="menu-text">Problem Sheet 1</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L06-antithetic-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L07-antithetic-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L08-is-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L09-is-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Importance sampling II</span></span></a>
-  </div>
-</li>
       </ul>
   </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Random number generation</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L10-rng-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generating random numbers</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L11-lcg.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../problems/P2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Problem Sheet 2</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete generation</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L13-inverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L14-rejection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Rejection sampling</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L15-envelope-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Envelope rejection sampling I</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L16-envelope-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Envelope rejection sampling II</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../problems/P3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Problem Sheet 3</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">MCMC</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L17-markov-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Introduction to Markov chains</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L18-markov-longrun.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Long-run behaviour of Markov chains</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L19-markov-cont.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Markov chains in continuous space</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L20-mh-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Metropolis–Hastings algorithm I</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L21-mh-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Metropolis–Hastings algorithm I</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L22-convergence.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Convergence and mixing</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L23-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">MCMC and Bayesian statistics</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../problems/P4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Problem Sheet 4</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Bootstrap</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L24-empirical.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L25-bootstrap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bootstrap estimation</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L26-bootstrap-error.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bootstrap error</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L27-bootstrap-ci.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Bootstrap confidence intervals</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../problems/P5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Problem Sheet 5</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L28-faq.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">FAQ</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../coursework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Coursework</span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#estimation-error" id="toc-estimation-error" class="nav-link active" data-scroll-target="#estimation-error"><span class="header-section-number">3.1</span> Estimation error</a></li>
-  <li><a href="#bias-and-error-of-the-monte-carlo-estimator" id="toc-bias-and-error-of-the-monte-carlo-estimator" class="nav-link" data-scroll-target="#bias-and-error-of-the-monte-carlo-estimator"><span class="header-section-number">3.2</span> Bias and error of the Monte Carlo estimator</a></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L03-mc-error-1.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L03-mc-error-1.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></h1>
 </div>
 
 
@@ -436,58 +244,141 @@ window.Quarto = {
 <div class="hidden">
 <p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
 \newcommand{\Ex}{\mathbb{E}}
-\newcommand{\Ind}{\mathbb{I}}\]</span></p>
+\newcommand{\Ind}{\mathbb{I}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
 </div>
-<section id="estimation-error" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="estimation-error"><span class="header-section-number">3.1</span> Estimation error</h2>
-<p>Before talking about error in Monte Carlo estimation, just remind ourselves of some concepts about error in estimation more generally. We will use the following definitions.</p>
-<div id="def-stats" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 3.1</strong></span> Let <span class="math inline">\(\widehat\theta\)</span> be an estimate of a parameter <span class="math inline">\(\theta\)</span>. Then we have the following definitions of the estimate <span class="math inline">\(\widehat\theta\)</span>:</p>
+<!--
+
+## Estimation error
+
+Before talking about error in Monte Carlo estimation, let's first remind ourselves of some concepts about error in statistical estimation more generally. We will use the following definitions.
+
+::: {#def-stats}
+Let $\widehat\theta$ be an estimator of a parameter $\theta$. Then we have the following definitions of the estimate $\widehat\theta$:
+
+* The **bias** is $\operatorname{bias}\big(\widehat\theta\big) = \mathbb E\big(\widehat\theta - \theta\big)  = \mathbb E\widehat\theta - \theta$.
+
+* The **mean-square error** is $\operatorname{MSE}\big(\widehat\theta\big) = \mathbb E \big(\widehat\theta - \theta\big)^2$.
+
+* The **root-mean-square error** is the square-root of the mean-square error, $$\operatorname{RMSE}\big(\widehat\theta\big) = \sqrt{\operatorname{MSE}(\widehat\theta)} = \sqrt{\mathbb E (\widehat\theta - \theta)^2} . $$
+:::
+
+Usually the goal is to get the mean-square error of an estimate as small as possible. It can be more convenient to discuss the root-mean-square error, as that has the same units as the parameter being measured. (If $\theta$ is in metres, say, then the mean-square-error is in metres-squared, where as the root-mean-square error is in metres again.)
+
+It's nice to have an unbiased estimator -- that is, one with bias 0 -- although unbiasedness by itself is not enough for an estimate to be good. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the right, then claims to have "hit the target on average.")
+
+You probably also remember the relationship between the mean-square error, the bias, and the variance:
+
+::: {#thm-MSE-bias}
+ 
+$\operatorname{MSE}\big(\widehat\theta\big) = \operatorname{bias}\big(\widehat\theta\big)^2 + \operatorname{Var}\big(\widehat\theta\big)$.
+:::
+
+(There's a proof in [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Proposition 3.14, if you've forgotten.)
+
+Since the bias contributes to the mean-square error, that's another reason to like estimator with low (or zero!) bias.
+
+## Bias and error of the Monte Carlo estimator
+
+In this lecture, we're going to be looking more carefully at the size of the errors made by the Monte Carlo estimator
+$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) . $$
+
+Our main result is the following.
+
+::: {#thm-MCerr}
+Let $X$ be a random variable, $\phi$ a function, and $\theta = \Exg\phi(X)$. Let
+$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) $$
+be the Monte Carlo estimator of $\theta$. Then:
+
+1. $\widehat{\theta}_n^{\mathrm{MC}}$ is unbiased, in that $\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = 0$.
+
+1. The variance of of $\widehat{\theta}_n^{\mathrm{MC}}$ is 
+${\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$.
+
+1. The mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is 
+${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$.
+
+1. The root-mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is 
+$${\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} = \frac{1}{\sqrt{n}} \operatorname{sd}\big(\phi(X)\big)}. $$
+:::
+
+Before we get to the proof, let's recap some relevant probability.
+
+Let $Y_1, Y_2, \dots$ be IID random variables with common expectation $\mathbb EY_1 = \mu$ and variance $\operatorname{Var}(Y_1) = \sigma^2$. Consider the mean of the first $n$ random variables,
+$$ \overline{Y}_n = \frac{1}{n} \sum_{i=1}^n Y_i . $$
+Then the expectation of $\overline{Y}_n$ is
+$$ \mathbb E \overline{Y}_n = \mathbb E\left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \frac{1}{n} 
+\sum_{i=1}^n \mathbb{E}Y_i = \frac{1}{n}\,n\mu = \mu . $$
+The variance of $\overline{Y}_n$ is
+$$ \operatorname{Var}\big(  \overline{Y}_n \big)= \operatorname{Var} \left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \bigg(\frac{1}{n}\bigg)^2 
+\sum_{i=1}^n \operatorname{Var}(Y_i) = \frac{1}{n^2}\,n\sigma^2 = \frac{\sigma^2}{n} , $$
+where, for this one, we used the independence of the random variables.
+
+::: {.proof}
+Apply the probability facts from above, with $Y = \phi(X)$. This gives:
+
+1. $\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex \overline Y_m = \Ex Y = \Exg \phi(X)$, so $\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0$.
+
+1. ${\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \operatorname{Var}\big(\overline Y_n\big) = \frac{1}{n} \operatorname{Var}(Y) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$.
+
+1. Using @thm-MSE-bias,
+$$\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}})^2 + \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = 0^2 + \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) . $$
+
+1. Take the square root of part 3.
+:::
+
+There's a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we *couldn't* calculate $\Exg \phi(X)$. So it seems very unlikely we'll be able to calculate the variance $\operatorname{Var}(\phi(X))$ either.
+
+But we *can* estimate the variance from our samples too: by taking the sample variance of our samples $\phi(x_i)$. That is, we can estimate the variance of the Monte Carlo estimator by
+$$ S^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(X_i) - \widehat{\theta}_n^{\mathrm{MC}} \big)^2 . $$
+Then we can similar estimate the mean-square and root-mean-square errors by
+$$ \frac{1}{n}S^2 \qquad \text{and} \qquad \sqrt{\frac{1}{n} S^2} = \frac{1}{\sqrt{n}}S  $$
+respectively.
+
+
+## Example
+
+-->
+<div id="exm-MCexp2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 3.1</strong></span> Let’s go back to the very first example in the module, <a href="L01-mc-intro.html#exm-MCexp" class="quarto-xref">Example&nbsp;<span>1.1</span></a>, where we were trying to find the expectation of an <span class="math inline">\(\operatorname{Exp}(2)\)</span> random variable. We used this R code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4996679</code></pre>
+</div>
+</div>
+<p>(Because Monte Carlo estimation is random, this won’t be the <em>exact</em> same estimate we had before, of course.)</p>
+<p>So if we want to investigate the error, we can use the sample variance of these samples.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>var_est <span class="ot">&lt;-</span> <span class="fu">var</span>(samples)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>MSEest  <span class="ot">&lt;-</span> var_est <span class="sc">/</span> n</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>RMSEest <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(MSEest)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(var_est, MSEest, RMSEest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.494507e-01 2.494507e-07 4.994504e-04</code></pre>
+</div>
+</div>
+<p>The first number is <code>var_est</code> <span class="math inline">\(= 0.249\)</span>, the sample variance of our <span class="math inline">\(\phi(x_i)\)</span>s: <span class="math display">\[ s^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(x_i) - \widehat{\theta}_n^{\mathrm{MC}}\big)^2 . \]</span> This should be a good estimate of the true variance <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span>.</p>
+<p>The second number is <code>MSEest</code> <span class="math inline">\(= 2.49\times 10^{-7}\)</span>, our estimate of the mean-square error. Since <span class="math inline">\(\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(\phi(X))\)</span>, then <span class="math inline">\(\frac{1}{n} s^2\)</span> should be a good estimate of the MSE.</p>
+<p>The third number is <code>RMSEest</code> <span class="math inline">\(= 4.99\times 10^{-4}\)</span> our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.</p>
+</div>
+<p><strong>Next time:</strong> <em>We’ll continue analysing Monte Carlo error, with more examples.</em></p>
+<div class="mysummary">
+<p><strong>Summary:</strong></p>
 <ul>
-<li><p>The <strong>bias</strong> is <span class="math inline">\(\operatorname{bias}\big(\widehat\theta\big) = \mathbb E\big(\widehat\theta - \theta\big)  = \mathbb E\widehat\theta - \theta\)</span>.</p></li>
-<li><p>The <strong>mean-square error</strong> is <span class="math inline">\(\operatorname{MSE}\big(\widehat\theta\big) = \mathbb E \big(\widehat\theta - \theta\big)^2\)</span>.</p></li>
-<li><p>The <strong>root-mean-square error</strong> is the square-root of the mean-square error, <span class="math display">\[\operatorname{RMSE}\big(\widehat\theta\big) = \sqrt{\operatorname{MSE}(\widehat\theta)} = \sqrt{\mathbb E (\widehat\theta - \theta)^2} . \]</span></p></li>
+<li><p>The Monte Carlo estimator is unbiased.</p></li>
+<li><p>The Monte Carlo estimator has mean-square error <span class="math inline">\(\Var(\phi(X))/n\)</span>, so the root-mean-square error scales like <span class="math inline">\(1/\sqrt{n}\)</span>.</p></li>
+<li><p>The mean-square error can be estimated by <span class="math inline">\(S^2 / n\)</span>, where <span class="math inline">\(S^2\)</span> is the sample variance of <span class="math inline">\(\phi(X)\)</span>.</p></li>
 </ul>
+<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.2.2.</p>
 </div>
-<p>Usually the goal is to get the mean-square error of an estimate as small as possible. It can be more convenient to discuss the root-mean-square error, as that has the same units as the parameter being measured. (If <span class="math inline">\(\theta\)</span> is in metres, say, then the mean-square-error is in metres-squared, where as the root-mean-square error is in metres again.) It’s nice to have an unbiased estimator – that is, one with bias 0 – although unbiasedness by itself is not enough for an estimate to be good. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the rgiht, then claims to have hit the target on average.)</p>
-<p>You probably also remember the relationship between the mean-square error, the bias, and the variance:</p>
-<div id="thm-MSE-bias" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 3.1</strong></span> &nbsp; <span class="math inline">\(\operatorname{MSE}\big(\widehat\theta\big) = \operatorname{bias}\big(\widehat\theta\big)^2 + \operatorname{Var}\big(\widehat\theta\big)\)</span>.</p>
-</div>
-<p>(There’s a proof in <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Proposition 3.14, if you’ve forgotten.)</p>
-</section>
-<section id="bias-and-error-of-the-monte-carlo-estimator" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="bias-and-error-of-the-monte-carlo-estimator"><span class="header-section-number">3.2</span> Bias and error of the Monte Carlo estimator</h2>
-<p>In this lecture, we’re going to be looking more carefully at the size of the errors made by the Monte Carlo estimate <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) . \]</span></p>
-<p>In doing so, we’ll be making particular use of the probability and statistics background that we talked about back in [….]</p>
-<p>Our main result is the following.</p>
-<div id="thm-MCerr" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 3.2</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) \]</span> be the Monte Carlo estimator of <span class="math inline">\(\theta\)</span>. Then:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is unbiased, in that <span class="math inline">\(\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = 0\)</span>.</p></li>
-<li><p>The variance of of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>The mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>The root-mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{\sqrt{n}} \operatorname{sd}\big(\phi(X)\big)}\)</span>.</p></li>
-</ol>
-</div>
-<p>Before we get to the proof, let’s recap some relevant probability.</p>
-<p>Let <span class="math inline">\(Y_1, Y_2, \dots\)</span> be IID random variables with common expectation <span class="math inline">\(\mathbb EY_1 = \mu\)</span> and variance <span class="math inline">\(\operatorname{Var}(Y_1) = \sigma^2\)</span>. Consider the mean of the first <span class="math inline">\(n\)</span> random variables, <span class="math display">\[ \overline{Y}_n = \frac{1}{n} \sum_{i=1}^n Y_i . \]</span> Then the expectation of <span class="math inline">\(\overline{Y}_n\)</span> is <span class="math display">\[ \mathbb E \overline{Y}_n = \mathbb E\left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \frac{1}{n}
-\sum_{i=1}^n \mathbb{E}Y_i = \frac{1}{n}\,n\mu = \mu . \]</span> The variance of <span class="math inline">\(\overline{Y}_n\)</span> is <span class="math display">\[ \operatorname{Var}\big(  \overline{Y}_n \big)= \operatorname{Var} \left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \bigg(\frac{1}{n}\bigg)^2
-\sum_{i=1}^n \operatorname{Var}(Y_i) = \frac{1}{n^2}\,n\sigma^2 = \frac{\sigma^2}{n} , \]</span> where, for this one, we used the independence of the random variables. In particular, the expectation stays the same, the same as each individual random variable. But the variance gets smaller, at rate <span class="math inline">\(1/n\)</span>; or, equivalently, the standard deviation gets smaller, at rate <span class="math inline">\(1/\sqrt{n}\)</span>.</p>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>Apply the probability facts from above, with <span class="math inline">\(Y = \phi(X)\)</span>. This gives:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex Y = \Exg \phi(X)\)</span>, so <span class="math inline">\(\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0\)</span></p></li>
-<li><p><span class="math inline">\({\displaystyle \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(Y) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span></p></li>
-<li><p>Using <a href="#thm-MSE-bias" class="quarto-xref">Theorem&nbsp;<span>3.1</span></a>, <span class="math display">\[\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}})^2 + \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = 0^2 + \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) . \]</span></p></li>
-<li><p>Take the square root of part 3.</p></li>
-</ol>
-</div>
-<p>There’s a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we <em>couldn’t</em> calculate <span class="math inline">\(\Exg \phi(X)\)</span>. So it seems very unlikely we’ll be able to calculate the variance <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span> either. But we <em>can</em> estimate the variance from our samples too: by taking the sample variance of our samples <span class="math inline">\(\phi(x_i)\)</span>.</p>
-<p><strong>Next time:</strong> That’s enough theory. Let’s do some examples of working with Monte Carlo error.</p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -906,8 +797,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L04-mc-error-2.html" class="pagination-link" aria-label="Monte Carlo error II">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/P1.html" class="pagination-link" aria-label="Problem Sheet 1">
+        <span class="nav-page-text">Problem Sheet 1</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

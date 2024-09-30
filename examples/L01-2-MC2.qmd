@@ -1,0 +1,12 @@
+Let's try another example. Let $X \sim \operatorname{N}(1, 2^2)$ be a normal distribution with mean 0 and standard deviation 2. Suppose we want to find out $\Exg(\sin X)$ (for some reason). While it *might* be possible to somehow calculate the integral $$ \Exg(\sin X) = \int_{-\infty}^{+\infty} (\sin x) \, \frac{1}{\sqrt{2\pi\times 2^2}} \exp\left(\frac{(x - 1)^2}{2\times 2^2}\right) \, \mathrm{d} x , $$ that looks extremely difficult to me.
+
+Instead, a Monte Carlo estimation of $\Exg(\sin X)$ is very straightforward.
+
+```{r}
+n <- 1e6
+samples <- rnorm(n, 1, 2)
+MCest <- mean(sin(samples))
+MCest
+```
+
+Our Monte Carlo estimate is `{r} format(round(MCest, 5), nsmall = 5)`.

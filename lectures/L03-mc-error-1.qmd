@@ -1,17 +1,15 @@
-# Monte Carlo error I
+# Monte Carlo error I: theory
 
-::: {.hidden}
-$$\newcommand{\Exg}{\operatorname{\mathbb{E}}} 
-\newcommand{\Ex}{\mathbb{E}} 
-\newcommand{\Ind}{\mathbb{I}}$$
-:::
+{{< include ../_header.qmd >}}
+
+<!--
 
 ## Estimation error
 
-Before talking about error in Monte Carlo estimation, just remind ourselves of some concepts about error in estimation more generally. We will use the following definitions.
+Before talking about error in Monte Carlo estimation, let's first remind ourselves of some concepts about error in statistical estimation more generally. We will use the following definitions.
 
 ::: {#def-stats}
-Let $\widehat\theta$ be an estimate of a parameter $\theta$. Then we have the following definitions of the estimate $\widehat\theta$:
+Let $\widehat\theta$ be an estimator of a parameter $\theta$. Then we have the following definitions of the estimate $\widehat\theta$:
 
 * The **bias** is $\operatorname{bias}\big(\widehat\theta\big) = \mathbb E\big(\widehat\theta - \theta\big)  = \mathbb E\widehat\theta - \theta$.
 
@@ -20,7 +18,9 @@ Let $\widehat\theta$ be an estimate of a parameter $\theta$. Then we have the fo
 * The **root-mean-square error** is the square-root of the mean-square error, $$\operatorname{RMSE}\big(\widehat\theta\big) = \sqrt{\operatorname{MSE}(\widehat\theta)} = \sqrt{\mathbb E (\widehat\theta - \theta)^2} . $$
 :::
 
-Usually the goal is to get the mean-square error of an estimate as small as possible. It can be more convenient to discuss the root-mean-square error, as that has the same units as the parameter being measured. (If $\theta$ is in metres, say, then the mean-square-error is in metres-squared, where as the root-mean-square error is in metres again.) It's nice to have an unbiased estimator -- that is, one with bias 0 -- although unbiasedness by itself is not enough for an estimate to be good. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the rgiht, then claims to have hit the target on average.)
+Usually the goal is to get the mean-square error of an estimate as small as possible. It can be more convenient to discuss the root-mean-square error, as that has the same units as the parameter being measured. (If $\theta$ is in metres, say, then the mean-square-error is in metres-squared, where as the root-mean-square error is in metres again.)
+
+It's nice to have an unbiased estimator -- that is, one with bias 0 -- although unbiasedness by itself is not enough for an estimate to be good. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the right, then claims to have "hit the target on average.")
 
 You probably also remember the relationship between the mean-square error, the bias, and the variance:
 
@@ -31,12 +31,12 @@ $\operatorname{MSE}\big(\widehat\theta\big) = \operatorname{bias}\big(\widehat\t
 
 (There's a proof in [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Proposition 3.14, if you've forgotten.)
 
+Since the bias contributes to the mean-square error, that's another reason to like estimator with low (or zero!) bias.
+
 ## Bias and error of the Monte Carlo estimator
 
-In this lecture, we're going to be looking more carefully at the size of the errors made by the Monte Carlo estimate
+In this lecture, we're going to be looking more carefully at the size of the errors made by the Monte Carlo estimator
 $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) . $$
-
-In doing so, we'll be making particular use of the probability and statistics background that we talked about back in [....]
 
 Our main result is the following.
 
@@ -54,7 +54,7 @@ ${\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \
 ${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$.
 
 1. The root-mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is 
-${\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{\sqrt{n}} \operatorname{sd}\big(\phi(X)\big)}$.
+$${\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} = \frac{1}{\sqrt{n}} \operatorname{sd}\big(\phi(X)\big)}. $$
 :::
 
 Before we get to the proof, let's recap some relevant probability.
@@ -68,14 +68,13 @@ The variance of $\overline{Y}_n$ is
 $$ \operatorname{Var}\big(  \overline{Y}_n \big)= \operatorname{Var} \left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \bigg(\frac{1}{n}\bigg)^2 
 \sum_{i=1}^n \operatorname{Var}(Y_i) = \frac{1}{n^2}\,n\sigma^2 = \frac{\sigma^2}{n} , $$
 where, for this one, we used the independence of the random variables.
-In particular, the expectation stays the same, the same as each individual random variable. But the variance gets smaller, at rate $1/n$; or, equivalently, the standard deviation gets smaller, at rate $1/\sqrt{n}$.
 
 ::: {.proof}
 Apply the probability facts from above, with $Y = \phi(X)$. This gives:
 
-1. $\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex Y = \Exg \phi(X)$, so $\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0$
+1. $\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex \overline Y_m = \Ex Y = \Exg \phi(X)$, so $\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0$.
 
-1. ${\displaystyle \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(Y) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$
+1. ${\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \operatorname{Var}\big(\overline Y_n\big) = \frac{1}{n} \operatorname{Var}(Y) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$.
 
 1. Using @thm-MSE-bias,
 $$\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}})^2 + \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = 0^2 + \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) . $$
@@ -83,6 +82,34 @@ $$\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\wi
 1. Take the square root of part 3.
 :::
 
-There's a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we *couldn't* calculate $\Exg \phi(X)$. So it seems very unlikely we'll be able to calculate the variance $\operatorname{Var}(\phi(X))$ either. But we *can* estimate the variance from our samples too: by taking the sample variance of our samples $\phi(x_i)$.
+There's a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we *couldn't* calculate $\Exg \phi(X)$. So it seems very unlikely we'll be able to calculate the variance $\operatorname{Var}(\phi(X))$ either.
 
-**Next time:** That's enough theory. Let's do some examples of working with Monte Carlo error.
+But we *can* estimate the variance from our samples too: by taking the sample variance of our samples $\phi(x_i)$. That is, we can estimate the variance of the Monte Carlo estimator by
+$$ S^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(X_i) - \widehat{\theta}_n^{\mathrm{MC}} \big)^2 . $$
+Then we can similar estimate the mean-square and root-mean-square errors by
+$$ \frac{1}{n}S^2 \qquad \text{and} \qquad \sqrt{\frac{1}{n} S^2} = \frac{1}{\sqrt{n}}S  $$
+respectively.
+
+
+## Example
+
+-->
+
+::: {#exm-MCexp2}
+{{< include ../examples/L03-1-MCexp2.qmd >}}
+:::
+
+
+**Next time:** *We'll continue analysing Monte Carlo error, with more examples.*
+
+::: {.mysummary}
+**Summary:**
+
+* The Monte Carlo estimator is unbiased.
+
+* The Monte Carlo estimator has mean-square error $\Var(\phi(X))/n$, so the root-mean-square error scales like $1/\sqrt{n}$.
+
+* The mean-square error can be estimated by $S^2 / n$, where $S^2$ is the sample variance of $\phi(X)$.
+
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 3.2.2.
+:::
