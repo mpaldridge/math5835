@@ -1,5 +1,5 @@
 Let's suppose we've forgotten the expectation of the exponential distribution $X \sim \operatorname{Exp}(2)$ with rate 2. In this simple case, we could work out the answer using the PDF $f(x) = 2\mathrm{e}^{-2x}$ as\
-$$ \Ex X = \int_0^\infty x\,2\mathrm{e}^{-2x}\,\mathrm{d}x $$(and, without too much difficulty, get the answer $\frac12$). But instead, let's do this the Monte Carlo way.
+$$ \mathbb E X = \int_0^\infty x\,2\mathrm{e}^{-2x}\,\mathrm{d}x $$(and, without too much difficulty, get the answer $\frac12$). But instead, let's do this the Monte Carlo way.
 
 In R, we can use the `rexp()` function to get IID samples from the exponential distribution: the full syntax is `rexp(n, rate)`, which gives `n` samples from an exponential distribution with rate `rate`. So our code here should be
 

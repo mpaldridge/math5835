@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Monte Carlo error I: theory – MATH5835M Statistical Computing</title>
+<title>l01-1-mcexp</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -57,51 +57,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../problems/P1.html" rel="next">
-<link href="../lectures/L02-mc-uses.html" rel="prev">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
-  "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
-  }
-}</script>
+<script src="L01-1-MCexp_files/libs/clipboard/clipboard.min.js"></script>
+<script src="L01-1-MCexp_files/libs/quarto-html/quarto.js"></script>
+<script src="L01-1-MCexp_files/libs/quarto-html/popper.min.js"></script>
+<script src="L01-1-MCexp_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="L01-1-MCexp_files/libs/quarto-html/anchor.min.js"></script>
+<link href="L01-1-MCexp_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="L01-1-MCexp_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="L01-1-MCexp_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="L01-1-MCexp_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="L01-1-MCexp_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -133,254 +98,45 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="../mystyle.css">
 </head>
 
-<body class="nav-sidebar floating">
+<body class="fullcontent">
 
-<div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L03-mc-error-1.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
-<!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="../">MATH5835</a> 
-    </div>
-      </div>
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">About MATH5835</span></a>
-  </div>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Monte Carlo estimation</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L01-mc-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../problems/P1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Problem Sheet 1</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
-<!-- main -->
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L03-mc-error-1.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></a></li></ol></nav>
-<div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></h1>
-</div>
 
 
 
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<div class="hidden">
-<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
-\newcommand{\Ex}{\mathbb{E}}
-\newcommand{\Ind}{\mathbb{I}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
-</div>
-<!--
-
-## Estimation error
-
-Before talking about error in Monte Carlo estimation, let's first remind ourselves of some concepts about error in statistical estimation more generally. We will use the following definitions.
-
-::: {#def-stats}
-Let $\widehat\theta$ be an estimator of a parameter $\theta$. Then we have the following definitions of the estimate $\widehat\theta$:
-
-* The **bias** is $\operatorname{bias}\big(\widehat\theta\big) = \mathbb E\big(\widehat\theta - \theta\big)  = \mathbb E\widehat\theta - \theta$.
-
-* The **mean-square error** is $\operatorname{MSE}\big(\widehat\theta\big) = \mathbb E \big(\widehat\theta - \theta\big)^2$.
-
-* The **root-mean-square error** is the square-root of the mean-square error, $$\operatorname{RMSE}\big(\widehat\theta\big) = \sqrt{\operatorname{MSE}(\widehat\theta)} = \sqrt{\mathbb E (\widehat\theta - \theta)^2} . $$
-:::
-
-Usually the goal is to get the mean-square error of an estimate as small as possible. It can be more convenient to discuss the root-mean-square error, as that has the same units as the parameter being measured. (If $\theta$ is in metres, say, then the mean-square-error is in metres-squared, where as the root-mean-square error is in metres again.)
-
-It's nice to have an unbiased estimator -- that is, one with bias 0 -- although unbiasedness by itself is not enough for an estimate to be good. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the right, then claims to have "hit the target on average.")
-
-You probably also remember the relationship between the mean-square error, the bias, and the variance:
-
-::: {#thm-MSE-bias}
- 
-$\operatorname{MSE}\big(\widehat\theta\big) = \operatorname{bias}\big(\widehat\theta\big)^2 + \operatorname{Var}\big(\widehat\theta\big)$.
-:::
-
-(There's a proof in [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Proposition 3.14, if you've forgotten.)
-
-Since the bias contributes to the mean-square error, that's another reason to like estimator with low (or zero!) bias.
-
-## Bias and error of the Monte Carlo estimator
-
-In this lecture, we're going to be looking more carefully at the size of the errors made by the Monte Carlo estimator
-$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) . $$
-
-Our main result is the following.
-
-::: {#thm-MCerr}
-Let $X$ be a random variable, $\phi$ a function, and $\theta = \Exg\phi(X)$. Let
-$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) $$
-be the Monte Carlo estimator of $\theta$. Then:
-
-1. $\widehat{\theta}_n^{\mathrm{MC}}$ is unbiased, in that $\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = 0$.
-
-1. The variance of of $\widehat{\theta}_n^{\mathrm{MC}}$ is 
-${\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$.
-
-1. The mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is 
-${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$.
-
-1. The root-mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is 
-$${\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} = \frac{1}{\sqrt{n}} \operatorname{sd}\big(\phi(X)\big)}. $$
-:::
-
-Before we get to the proof, let's recap some relevant probability.
-
-Let $Y_1, Y_2, \dots$ be IID random variables with common expectation $\mathbb EY_1 = \mu$ and variance $\operatorname{Var}(Y_1) = \sigma^2$. Consider the mean of the first $n$ random variables,
-$$ \overline{Y}_n = \frac{1}{n} \sum_{i=1}^n Y_i . $$
-Then the expectation of $\overline{Y}_n$ is
-$$ \mathbb E \overline{Y}_n = \mathbb E\left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \frac{1}{n} 
-\sum_{i=1}^n \mathbb{E}Y_i = \frac{1}{n}\,n\mu = \mu . $$
-The variance of $\overline{Y}_n$ is
-$$ \operatorname{Var}\big(  \overline{Y}_n \big)= \operatorname{Var} \left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \bigg(\frac{1}{n}\bigg)^2 
-\sum_{i=1}^n \operatorname{Var}(Y_i) = \frac{1}{n^2}\,n\sigma^2 = \frac{\sigma^2}{n} , $$
-where, for this one, we used the independence of the random variables.
-
-::: {.proof}
-Apply the probability facts from above, with $Y = \phi(X)$. This gives:
-
-1. $\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex \overline Y_m = \Ex Y = \Exg \phi(X)$, so $\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0$.
-
-1. ${\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \operatorname{Var}\big(\overline Y_n\big) = \frac{1}{n} \operatorname{Var}(Y) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$.
-
-1. Using @thm-MSE-bias,
-$$\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}})^2 + \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = 0^2 + \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) . $$
-
-1. Take the square root of part 3.
-:::
-
-There's a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we *couldn't* calculate $\Exg \phi(X)$. So it seems very unlikely we'll be able to calculate the variance $\operatorname{Var}(\phi(X))$ either.
-
-But we *can* estimate the variance from our samples too: by taking the sample variance of our samples $\phi(x_i)$. That is, we can estimate the variance of the Monte Carlo estimator by
-$$ S^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(X_i) - \widehat{\theta}_n^{\mathrm{MC}} \big)^2 . $$
-Then we can similar estimate the mean-square and root-mean-square errors by
-$$ \frac{1}{n}S^2 \qquad \text{and} \qquad \sqrt{\frac{1}{n} S^2} = \frac{1}{\sqrt{n}}S  $$
-respectively.
-
-
-## Example
-
--->
-<div id="exm-MCexp2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 3.1</strong></span> Let’s go back to the very first example in the module, <a href="L01-mc-intro.html#exm-MCexp" class="quarto-xref">Example&nbsp;<span>1.1</span></a>, where we were trying to find the expectation of an <span class="math inline">\(\operatorname{Exp}(2)\)</span> random variable. We used this R code:</p>
+<p>Let’s suppose we’ve forgotten the expectation of the exponential distribution <span class="math inline">\(X \sim \operatorname{Exp}(2)\)</span> with rate 2. In this simple case, we could work out the answer using the PDF <span class="math inline">\(f(x) = 2\mathrm{e}^{-2x}\)</span> as<br>
+<span class="math display">\[ \mathbb E X = \int_0^\infty x\,2\mathrm{e}^{-2x}\,\mathrm{d}x \]</span>(and, without too much difficulty, get the answer <span class="math inline">\(\frac12\)</span>). But instead, let’s do this the Monte Carlo way.</p>
+<p>In R, we can use the <code>rexp()</code> function to get IID samples from the exponential distribution: the full syntax is <code>rexp(n, rate)</code>, which gives <code>n</code> samples from an exponential distribution with rate <code>rate</code>. So our code here should be</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>(samples)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4999312</code></pre>
+<pre><code>[1] 0.5821662</code></pre>
 </div>
 </div>
-<p>(Because Monte Carlo estimation is random, this won’t be the <em>exact</em> same estimate we had before, of course.)</p>
-<p>So if we want to investigate the error, we can use the sample variance of these samples.</p>
+<p>So our Monte Carlo estimate is 0.58217, to 5 decimal places.</p>
+<p>To get a (hopefully) more accurate estimation, we can use more samples. We could also simplify the third line of this code by using the <code>mean()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>var_est <span class="ot">&lt;-</span> <span class="fu">var</span>(samples)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>MSEest  <span class="ot">&lt;-</span> var_est <span class="sc">/</span> n</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>RMSEest <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(MSEest)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(var_est, MSEest, RMSEest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.507541e-01 2.507541e-07 5.007535e-04</code></pre>
+<pre><code>[1] 0.4993746</code></pre>
 </div>
 </div>
-<p>The first number is <code>var_est</code> <span class="math inline">\(= 0.251\)</span>, the sample variance of our <span class="math inline">\(\phi(x_i)\)</span>s: <span class="math display">\[ s^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(x_i) - \widehat{\theta}_n^{\mathrm{MC}}\big)^2 . \]</span> This should be a good estimate of the true variance <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span>.</p>
-<p>The second number is <code>MSEest</code> <span class="math inline">\(= 2.51\times 10^{-7}\)</span>, our estimate of the mean-square error. Since <span class="math inline">\(\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(\phi(X))\)</span>, then <span class="math inline">\(\frac{1}{n} s^2\)</span> should be a good estimate of the MSE.</p>
-<p>The third number is <code>RMSEest</code> <span class="math inline">\(= 5.01\times 10^{-4}\)</span> our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.</p>
-</div>
-<p><strong>Next time:</strong> <em>We’ll continue analysing Monte Carlo error, with more examples.</em></p>
-<div class="mysummary">
-<p><strong>Summary:</strong></p>
-<ul>
-<li><p>The Monte Carlo estimator is unbiased.</p></li>
-<li><p>The Monte Carlo estimator has mean-square error <span class="math inline">\(\Var(\phi(X))/n\)</span>, so the root-mean-square error scales like <span class="math inline">\(1/\sqrt{n}\)</span>.</p></li>
-<li><p>The mean-square error can be estimated by <span class="math inline">\(S^2 / n\)</span>, where <span class="math inline">\(S^2\)</span> is the sample variance of <span class="math inline">\(\phi(X)\)</span>.</p></li>
-</ul>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.2.2.</p>
-</div>
+<p>(In the second line, <code>1e6</code> is R code for the scientific notation <span class="math inline">\(1 \times 10^6\)</span>, or a million. I just picked this as “a big number, but where my code still only took a few seconds to run.”)</p>
+<p>Our new Monte Carlo estimate is 0.49937, which is much closer to the true value of <span class="math inline">\(\frac12\)</span>.</p>
 
-
-
-</main> <!-- /main -->
+</main>
+<!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -801,18 +557,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="../lectures/L02-mc-uses.html" class="pagination-link" aria-label="Uses of Monte Carlo">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="../problems/P1.html" class="pagination-link" aria-label="Problem Sheet 1">
-        <span class="nav-page-text">Problem Sheet 1</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 
 
