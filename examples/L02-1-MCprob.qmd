@@ -1,4 +1,4 @@
-*Let* $Z \sim \operatorname{N}(0,1)$ be a standard normal distribution. Estimate $\mathbb P(Z > 2)$.
+*Let* $Z \sim \operatorname{N}(0,1)$ *be a standard normal distribution. Estimate* $\mathbb P(Z > 2)$*.*
 
 This is a question that it is impossible to answer exactly using a pencil and paper: there's no closed form for $$ \mathbb P(Z > 2) = \int_2^\infty \frac{1}{\sqrt{2\pi}}\,\mathrm{e}^{-z^2/2}\,\mathrm{d}z , $$ so we'll have to use an estimation method.
 
