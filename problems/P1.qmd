@@ -75,11 +75,11 @@ When it starts raining, each raindrop that falls in the cardboard box might fall
 :::::
 
 :::: {.myq}
-**5.**      When $n$ is very large, one might wish to store all $n$ samples $x_i$ before calculating the Monte Carlo estimate $\frac{1}{n} \sum_{i=1}^n \phi(x_i)$. However, this uses up a lot of space in a computer's memory. Describe (in words, in R code, or in a mixture of the two) how the Monte Carlo estimate could be produced using much less memory.
+**5.**      When calculating a Monte Carlo estimate $\frac{1}{n} \sum_{i=1}^n \phi(x_i)$, one might wish to first generate the $n$ samples $(x_1, x_2, \dots, x_n)$ and store them, and only then, after all samples are generated, finally calculate the estimate. However, when $n$ is extremely large, storing all $n$ samples uses up a lot of space in a computer's memory. Describe (in words, in R code, or in a mixture of the two) how the Monte Carlo estimate could be produced using much less memory.
 ::::
 
 :::: {.myq}
-**6.**      Show that the indicator functions $\mathbb I_A(X)$ and $\mathbb I_B(X)$ have covariance 0 if and only if the events $\{X \in A\}$ and $\{X \in B\}$ are independent.
+**6.**      Show that the indicator functions $\mathbb I_A(X)$ and $\mathbb I_B(X)$ have correlation 0 if and only if the events $\{X \in A\}$ and $\{X \in B\}$ are independent.
 ::::
 
 
@@ -100,7 +100,7 @@ When it starts raining, each raindrop that falls in the cardboard box might fall
 :::::
 
 :::: {.myq}
-**8.**      Let $Z$ be a standard normal distribution. A statistician has been investigating estimates of $\mathbb EZ^k$ for different positive integers values of $k$. Her colleague suggests using $Z' = -Z$ as an antithetic variables. Without running any R code, explain whether or not this is a good idea **(a)** when $k$ is even; **(b)** when $k$ is odd.
+**8.**      Let $Z$ be a standard normal distribution. A statistician has been investigating Monte Carlo estimates of $\mathbb EZ^k$ for different positive integers values of $k$. Her colleague suggests using $Z' = -Z$ as an antithetic variable. Without running any R code, explain whether or not this is a good idea **(a)** when $k$ is even; **(b)** when $k$ is odd.
 ::::
 
 
