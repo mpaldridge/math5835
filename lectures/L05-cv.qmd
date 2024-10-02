@@ -42,7 +42,7 @@ Well now, this helps a lot! The answer's going to pretty similar, about 8 hours 
 The true answer is 8 hours 29 minutes. My first guess was 31 minutes off (better than I expected!) but my second guess, with the hint, only missed by 4 minutes!
 
 Why was my second guess better? We were trying to estimate $\theta^{\mathrm{DC}}$, the distance to D.C. But that's a big number, and my estimate had a big error (31 minutes). But after the hint, we could write
-$$\theta^{\mathrm{DC}} = \big(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\big) - \theta^{\mathrm{NY}} . $$
+$$\theta^{\mathrm{DC}} = \theta^{\mathrm{DC}} + \big(\theta^{\mathrm{NY}} - \theta^{\mathrm{NY}}\big) =  \underbrace{\big(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\big)}_\text{small} + \underbrace{\theta^{\mathrm{NY}}}_{\text{known}} . $$
 In that equation, the second term, $\theta^{\mathrm{NY}} =$ 8:10 was completely known, so had error 0, while the first term $\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}$ was a small number, so only had a small error (4 minutes!).
 
 We can apply this idea to Monte Carlo estimation too. Suppose we are trying to estimate $\theta = \Exg \phi(X)$. We want to look for a function $\psi$ that is similar to $\phi$ (at least for the values of $x$ that have high probability for the random variable $X$), but where we know for certain what $\Exg \psi(X)$ is. Then we can write
@@ -50,9 +50,9 @@ $$ \theta = \Exg \phi(X) = \Exg \big(\phi(X) - \psi(X) + \psi(X)\big) = \underbr
 
 Here, $\psi(X)$ is known as the **control variate**.
 
-::: {#def-MCest}
-Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Let $\psi$ be a function such that $\Exg\psi(X)$ is known. Suppose that $X_1, X_2, \dots, X_n$ are a random sample from $X$. Then the **control variate Monte Carlo estimate** $\widehat\theta_n^{\mathrm{CV}}$ of $\theta$ is
-$$ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \Exg \psi(X) . $$
+::: {#def-CVest}
+Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Let $\psi$ be a function such that $\eta = \Exg\psi(X)$ is known. Suppose that $X_1, X_2, \dots, X_n$ are a random sample from $X$. Then the **control variate Monte Carlo estimate** $\widehat\theta_n^{\mathrm{CV}}$ of $\theta$ is
+$$ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta . $$
 :::
 
 ::: {#exm-control}
@@ -78,11 +78,17 @@ $$ \psi(x) = 1 - \frac{x^2}{2} . $$
 That is quite close to $\cos x$, at least for the small values of $x$ that $X \sim \operatorname{N}(0,1)$ is likely to take.
 
 ```{r taylor}
-#| echo: FALSE
-#| fig-format: svg
-curve(cos(x), from = -4.5, to = 4.5, col = "blue", lwd = 3, xlab = "x", ylab = "", xlim = c(-4,4), ylim = c(-1.2,1.2))
+#| code-fold: true
+curve(
+  cos(x), from = -4.5, to = 4.5,
+  col = "blue", lwd = 3,
+  xlab = "x", ylab = "", xlim = c(-4,4), ylim = c(-1.2,1.2)
+)
 curve(1 - x^2 / 2, add = TRUE, col = "red", lwd = 2)
-legend("topright", c("cos x", expression(1-x^2/2)), lwd = c(3,2), col = c("blue","red"))
+legend(
+  "topright", c("cos x", expression(1 - x^2 / 2)),
+  lwd = c(3, 2), col = c("blue", "red")
+)
 ```
 Not only that, but we know that, for $Y \sim \operatorname{N}(\mu, \sigma^2)$, we have $\Ex Y^2 = \mu^2 + \sigma^2$. So
 $$ \Exg \psi(X) = \Exg \left(1 - \frac{X^2}{2} \right) = 1 - \frac{\Ex X^2}{2} = 1 - \frac{0^2 + 1}{2} = \frac12 . $$

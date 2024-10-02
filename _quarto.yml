@@ -15,11 +15,11 @@ book:
         - lectures/L01-mc-intro.qmd
         - lectures/L02-mc-uses.qmd
         - lectures/L03-mc-error-1.qmd
-#        - lectures/L04-mc-error-2.qmd
-#        - lectures/L05-cv.qmd
-#        - lectures/L06-antithetic-1.qmd
+        - lectures/L04-mc-error-2.qmd
+        - lectures/L05-cv.qmd
+        - lectures/L06-antithetic-1.qmd
         - problems/P1.qmd
-#        - lectures/L07-antithetic-2.qmd
+        - lectures/L07-antithetic-2.qmd
 #        - lectures/L08-is-1.qmd
 #        - lectures/L09-is-2.qmd
 #    - part: "Random number generation"
@@ -62,6 +62,11 @@ format:
 
 execute: 
   cache: true
+  
+knitr:
+  opts_chunk: 
+    fig-format: svg
+    code-summary: "Code for drawing this graph"
 
 
 

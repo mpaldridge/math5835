@@ -2,7 +2,6 @@
 
 {{< include ../_header.qmd >}}
 
-<!--
 
 ## Estimation error
 
@@ -92,8 +91,6 @@ respectively.
 
 
 ## Example
-
--->
 
 ::: {#exm-MCexp2}
 {{< include ../examples/L03-1-MCexp2.qmd >}}

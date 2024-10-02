@@ -10,3 +10,13 @@ b <- 2
 samples <- runif(n, a, b)
 mean((b - a) * integrand(samples))
 ```
+
+You have perhaps noticed that, here and elsewhere, I tend to split my R code up into lots of small bits, perhaps slightly unnecessarily. After all, those 6 lines of code could simply have been written as just 2 lines
+
+```{r}
+#| eval = FALSE
+samples <- runif(1e6, 0, 2)
+mean(2 * samples^1.6 * (2 - samples)^0.7)
+```
+
+There's nothing *wrong* with that. However, I find that code is easier to read if divided into small pieces. It also makes it easier to tinker with, if I want to use it to solve some similar but slightly different problem.

@@ -2,7 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
-<!--
+
 ## Monte Carlo for probabilities
 
 Quick recap: Last time we defined the Monte Carlo estimator for an expectation of a function of a random variable $\theta = \Exg \phi(X)$ to be $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$ where $X_1, X_2, \dots, X_n$ are independent random samples from $X$.
@@ -32,13 +32,11 @@ We remember that $\Ind_A(X_i)$ is 1 if $X_i \in A$ and 0 otherwise. So if we add
 
 Although we've had to do a bit of work to get here, this a totally logical outcome! The right-hand side here is the proportion of the samples for which $X_i \in A$. And if we want to estimate the probability something happens, looking at the proportion of times it happens in a random sample is very much the "intuitive" estimate to take. And that intuitive estimate is indeed the Monte Carlo estimate!
 
--->
 
 ::: {#exm-MCprob}
 {{< include ../examples/L02-1-MCprob.qmd >}}
 :::
 
-<!--
 
 We should explain the third line in the code we used for the Monte Carlo estimation `mean(samples >= 2)`. In R, some statements can be answered "true" or "false": these are often statements involving equality `==` (that's a *double* equals sign) or inequalities like `<`, `<=`, `>=`, `>`. So `5 > 2` is `TRUE` but `3 == 7` is `FALSE`. These can be applied "component by component" to vectors. So, for example, testing which numbers from 1 to 10 are greater than or equal to 7, we get
 
@@ -68,11 +66,11 @@ Of course, there are lots of choices of $\phi$ and $f$ that would satisfy this. 
 
 Putting this all together, we have $$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x = \int_a^b (b-a)h(x)\,\frac{1}{b-a}\,\mathrm{d}x = \int_a^b h(x) \,\mathrm{d}x ,$$ as required.
 
--->
 
 ::: {#exm-MCint}
 {{< include ../examples/L02-2-MCint.qmd >}}
 :::
+
 
 ::: {#exm-MCint2}
 {{< include ../examples/L02-3-MCint2.qmd >}}

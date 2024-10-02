@@ -5,13 +5,13 @@ But which normal distribution should we take? Well, we're *allowed* to take any 
 
 ```{r h-graph}
 #| code-fold: true
-#| code-summary: "Code for drawing this graph"
-#| fig-format: svg
 integrand <- function(x) exp(-0.1 * abs(x)) * cos(x)
 
-curve(integrand, n = 1001, from = -55, to = 55,
-      col = "blue", lwd = 3,
-      xlab = "x", ylab = "h(x)", xlim = c(-50,50))
+curve(
+  integrand, n = 1001, from = -55, to = 55,
+  col = "blue", lwd = 3,
+  xlab = "x", ylab = "h(x)", xlim = c(-50,50)
+)
 abline(h = 0)
 ```
 
