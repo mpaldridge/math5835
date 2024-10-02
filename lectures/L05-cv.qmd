@@ -9,12 +9,13 @@ $$\newcommand{\Exg}{\operatorname{\mathbb{E}}}
 
 ## Variance reduction
 
-Let's recap where we've got to. The Monte Carlo estimate of $\theta = \Exg \phi(X)$ from IID samples $X_1, X_2, \dots, X_n$ is
-$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i). $$
+Let's recap where we've got to. The Monte Carlo estimator of $\theta = \Exg \phi(X)$ is
+$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i), $$
+where $X_1, X_2, \dots, X_n$ are IID random samples from $X$.
 The mean-square error of this estimate is
 $${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . $$
 
-If we want a more accurate estimate, we can just take more samples $n$. But the problem is that the root-mean-square error scales like $1/\sqrt{n}$. To double the accuracy, we need four times as many samples; for one more decimal place of accuracy, we need one hundred times as many samples. And it's taking the samples that takes time, money, energy, etc.
+If we want a more accurate estimate, we can just take more samples $n$. But the problem is that the root-mean-square error scales like $1/\sqrt{n}$. To double the accuracy, we need four times as many samples; for one more decimal place of accuracy, we need one hundred times as many samples. And it's generating the samples that takes time, money, energy, etc.
 
 Are there other ways we could reduce the error of Monte Carlo estimation, so we need fewer samples? That is, can we use some mathematical ingenuity to adapt the Monte Carlo estimate to one with a smaller error?
 
@@ -22,7 +23,7 @@ Well, the mean-square error is the variance divided by $n$. So if we can't (or d
 
 * **Control variate:** We can "anchor" our estimate of $\Exg \phi(X)$ to a very similar but easier-to-calculate value $\Exg \psi(X)$. [This lecture]
 
-* **Antithetical variables:** Instead of using independent samples, we could use correlated samples. If the correlation is negative this can improve our estimate. [Lectures 6 and 7]
+* **Antithetic variables:** Instead of using independent samples, we could use correlated samples. If the correlation is negative this can improve our estimate. [Lectures 6 and 7]
 
 * **Importance sampling:** Instead of sampling from $X$, sample from some other more suitable distribution instead, then readjust the answer we get.
 [Lectures 8 and 9]
