@@ -24,6 +24,8 @@ I recommend taking your own notes during the lecture. I will put brief summary n
 
 In Weeks 3, 5, 7, 9 and 11, the Thursday lecture will operate as a "problems class" -- see more on this below.
 
+Attendance at lectures in compulsory.
+
 
 ### Problem sheets and problem classes
 
@@ -45,7 +47,7 @@ The deadline for the coursework will be the penultimate day of the Autumn term, 
 
 I will run a weekly office hours drop-in session for feedback and consultation. You can come along if you want to talk to me about anything on the course, including if you'd like some feedback on your attempts at problem sheet questions. (For extremely short queries, you can approach me before or after lectures, but my response will often be: "Come to my office hours, and we can discuss it there!")
 
-Office hours will happen on **Mondays from 1500 to 1600** -- so directly after the Monday lecture -- in my office, which is **EC Stoner 9.10n**. (The easiest way to get to my office is via the doors directly opposite the main entrance to the School of Mathematics. You can also get there from Staircase 2 *[note to self: check this]* on the Level 10 "red route" through EC Stoner, next to the Maths Satellite.) If you cannot make this time, contact me for an alternative arrangement.
+Office hours will happen on **Mondays from 1500 to 1600** -- so directly after the Monday lecture -- in my office, which is **EC Stoner 9.10n** on the 9th floor of the EC Stoner building. (One way my office is via the doors directly opposite the main entrance to the School of Mathematics. You can also get there from Staircase 1 on the Level 10 "red route" through EC Stoner, next to the Maths Satellite.) If you cannot make this time, contact me for an alternative arrangement.
 
 ### Exam
 
@@ -59,11 +61,17 @@ The exam will last 2 hours and 30 minutes. The exam will consist of 4 questions,
 
 ### Necessary background
 
-It is recommended that students should have completed two undergraduate level courses in statistics, or something equivalent. For Leeds undergraduates, the official prerequisite is [MATH2715 Statistical Methods](https://webprod3.leeds.ac.uk/catalogue/dynmodules.asp?Y=202425&M=MATH-2715). We will talk in Lecture 1 about the background knowledge the module will assume.
+It is recommended that students should have completed at least two undergraduate level courses in probability and statistics, or something equivalent, although confidence and proficiency in basic material is more important than very deep knowledge. For Leeds undergraduates, the official prerequisite is [MATH2715 Statistical Methods](https://webprod3.leeds.ac.uk/catalogue/dynmodules.asp?Y=202425&M=MATH-2715), although confidence and proficiency in the material of MATH1710 & MATH1712 Probability and Statistics 1 & 2 is probably more important.
 
-This module will include an introduction to Markov chains. We won't assume any pre-existing knowledge of this, but students who have studied Markov chains before (for example in the Leeds module MATH2750 Introduction to Markov Processes) may find a couple of lectures here a just a reminder of things they already know.
+Some knowledge I will assume:
 
-The lectures will include examples using the R program language, and the coursework will require use of R. We will assume very basic R capability -- that you can enter R commands (for example using RStudio), store R objects using the `<-` assignment, and perform basic arithmetic with numbers and vectors. Other concepts will be introduced as necessary.
+* **Probability:** Basic rules of probability; random variables, both continuous and discrete; "famous" distributions (especially the normal distribution and the continuous uniform distribution); expectation, variance, covariance, correlation; law of large numbers and central limit theorem.
+
+* **Statistics:** Estimation of parameters; bias and error; sample mean and sample variance
+
+This module will also include an material on Markov chains. I won't assume any pre-existing knowledge of this, and I will introduce all new material we need, but students who have studied Markov chains before (for example in the Leeds module MATH2750 Introduction to Markov Processes) may find a couple of lectures here are merely a reminder of things they already know.
+
+The lectures will include examples using the **R** program language. The coursework and problem sheets will require use of R. The exam, while just a "pencil and paper" exam, will require understanding and writing short portions of R code. We will assume basic R capability -- that you can enter R commands, store R objects using the `<-` assignment, and perform basic arithmetic with numbers and vectors. Other concepts will be introduced as necessary. If you want to use R on your own device, I recommend downloading (if you have not already) the [R programming language](https://cran.r-project.org) and the [program RStudio](https://posit.co/downloads/). (These lecture notes were written in R using RStudio.)
 
 ### Syllabus
 
