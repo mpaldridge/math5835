@@ -2,7 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
-<!--
+
 ## Monte Carlo for probabilities
 
 Quick recap: Last time we defined the Monte Carlo estimator for an expectation of a function of a random variable $\theta = \Exg \phi(X)$ to be $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$ where $X_1, X_2, \dots, X_n$ are independent random samples from $X$.
@@ -31,7 +31,6 @@ With this idea in hand, how do we estimate $\theta = \mathbb P(X \in A)$ using t
 We remember that $\Ind_A(X_i)$ is 1 if $X_i \in A$ and 0 otherwise. So if we add up $n$ of these, we count an extra +1 each time we have an $X_i \in A$. So $\sum_{i=1}^n \Ind_A(X_i)$ counts the total number of the $X_i$ that are in $A$. So the Monte Carlo estimator can be written as $$  \widehat{\theta}_n^{\mathrm{MC}} = \frac{\# \text{ of } X_i \text{ that are in $A$}}{n} . $$
 
 Although we've had to do a bit of work to get here, this a totally logical outcome! The right-hand side here is the proportion of the samples for which $X_i \in A$. And if we want to estimate the probability something happens, looking at the proportion of times it happens in a random sample is very much the "intuitive" estimate to take. And that intuitive estimate is indeed the Monte Carlo estimate!
--->
 
 ::: {#exm-MCprob}
 {{< include ../examples/L02-1-MCprob.qmd >}}
@@ -56,7 +55,7 @@ sum(1:10 >= 7)
 
 So in our Monte Carlo estimation code, `samples > 2` was a vector of `TRUE`s and `FALSE`s, depending on whether each sample was greater than 2 or not, then `mean(samples > 2)` took the *proportion* of the samples that were greater than 2.
 
-<!--
+
 ## Monte Carlo for integrals
 
 There's another thing -- a non-statistics thing -- that Monte Carlo estimation is useful for. We can use Monte Carlo estimation to approximate integrals that are too hard to do by hand.
@@ -77,7 +76,6 @@ Consider an integral $\theta = \int_a^b h(x)\,\mathrm{d}x$. Let $f$ be the proba
 $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$
 where $X_1, X_2, \dots, X_n$ are a random sample from $X$.
 :::
--->
 
 ::: {#exm-MCint}
 {{< include ../examples/L02-2-MCint.qmd >}}

@@ -1,7 +1,11 @@
 Suppose we want to approximate the integral $$ \int_{-\infty}^{+\infty}
 \mathrm{e}^{-0.1|x|} \cos x \, \mathrm{d}x . $$ This one is an integral on the whole real line, so we can't take a uniform distribution. Maybe we should take $f(x)$ to be the PDF of a normal distribution, and then put $$ \phi(x) = \frac{h(x)}{f(x)} = \frac{\mathrm{e}^{-0.1|x|} \cos x}{f(x)} . $$
 
-But which normal distribution should we take? Well, we're *allowed* to take any one. But we'll probably get the best results if we pick one that is mostly likely to take values where $h(x)$ is big -- or, rather, where the absolute value $|h(x)|$ is big, to be precise. That is because we don't want to "waste" too many samples where $h(x)$ is very small, because they don't contribute much to the integral. But we don't want to "miss" -- or only sample very rarely -- places where $h(x)$ is big, which contribute a lot to the integral. Let's have a look at the graph of $h(x) = \mathrm{e}^{-0.1|x|} \cos x$.
+But which normal distribution should we take? Well, we're *allowed* to take any one – we will still get an accurate estimate in the limit as $n \to \infty$. But we'd like an estimator that gives accurate results at moderate-sized $n$, and picking a "good" distribution for $X$ will help that.
+
+We'll probably get the best results if we pick a distribution that is likely to mostly take values where $h(x)$ is big -- or, rather, where the absolute value $|h(x)|$ is big, to be precise. That is because we don't want to "waste" too many samples where $h(x)$ is very small, because they don't contribute much to the integral. But we don't want to "miss" -- or only sample very rarely -- places where $h(x)$ is big, which contribute a lot to the integral.
+
+Let's have a look at the graph of $h(x) = \mathrm{e}^{-0.1|x|} \cos x$.
 
 ```{r h-graph}
 #| code-fold: true
@@ -10,12 +14,14 @@ integrand <- function(x) exp(-0.1 * abs(x)) * cos(x)
 curve(
   integrand, n = 1001, from = -55, to = 55,
   col = "blue", lwd = 3,
-  xlab = "x", ylab = "h(x)", xlim = c(-50,50)
+  xlab = "x", ylab = "integrand h(x)", xlim = c(-50,50)
 )
 abline(h = 0)
 ```
 
-This suggests to me that a mean of 0 and a standard deviation of 20 might work quite well. We will use R's function `dnorm()` for the probability density function of the normal distribution (which saves us from having to remember what that is).
+This suggests to me that a mean of 0 and a standard deviation of 20 might work quite well, since this will tend to take values in $[-40,40]$ or so.
+
+We will use R's function `dnorm()` for the probability density function of the normal distribution (which saves us from having to remember what that is).
 
 ```{r}
 n <- 1e6
