@@ -205,32 +205,8 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L04-mc-error-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L05-cv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L06-antithetic-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../problems/P1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 1</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L07-antithetic-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span></a>
   </div>
 </li>
       </ul>
@@ -298,7 +274,7 @@ window.Quarto = {
 <p><strong>Monte Carlo estimation</strong> is the idea that we can get an approximate answer for <span class="math inline">\(\Ex X\)</span> or <span class="math inline">\(\Exg \phi(X)\)</span> if we have access to lots of samples from <span class="math inline">\(X\)</span>. For example, if we have access to <span class="math inline">\(X_1, X_2 \dots, X_n\)</span> , independent and identically distributed (<strong>IID</strong>) samples with the same distribution as <span class="math inline">\(X\)</span>, then we already know that the mean <span class="math display">\[ \overline X = \frac{1}{n}(X_1 + X_2 + \cdots + X_n) = \frac{1}{n} \sum_{i=1}^n X_i \]</span> is usually close to the expectation <span class="math inline">\(\Ex X\)</span>, at least if <span class="math inline">\(n\)</span> is big. Similarly, it should be the case that <span class="math display">\[ \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) \]</span> should be close to <span class="math inline">\(\Exg \phi(X)\)</span>.</p>
 <p>In this course we will write that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> is a “<strong>random sample</strong> from <span class="math inline">\(X\)</span>” to mean that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are IID with the same distribution as <span class="math inline">\(X\)</span>.</p>
 <div id="def-MCest" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Suppose that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are a random sample from <span class="math inline">\(X\)</span>. Then the <strong>Monte Carlo estimator</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{MC}}\)</span> of <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) . \]</span></p>
+<p><span class="theorem-title"><strong>Definition 1.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Then the <strong>Monte Carlo estimator</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{MC}}\)</span> of <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are a random sample from <span class="math inline">\(X\)</span>.</p>
 </div>
 <p>While general ideas for estimating using simulation go back a long time, the modern theory of Monte Carlo estimation was developed by the physicists <a href="https://en.wikipedia.org/wiki/Stanisław_Ulam">Stanislaw Ulam</a> and <a href="John von Neumann">John von Neumann</a>. Ulam (who was Polish) and von Neumann (who was Hungarian) moved to the US in the early 1940s to work on the Manhattan project to build the atomic bomb (as made famous by the film Oppenheimer). Later in the 1940s, they worked together in the Los Alamos National Laboratory continuing their research on nuclear weapons, where they used simulations on early computers to help them numerically solve difficult mathematical and physical problems.</p>
 <p>The name “Monte Carlo” was chosen because the use of randomness to solve such problems reminded them of gamblers in the casinos of Monte Carlo, Monaco. Ulam and von Neumann also worked closely with another colleague Nicholas Metropolis, whose work we will study later in this module.</p>
@@ -336,7 +312,7 @@ window.Quarto = {
 <p>By the way: all R code “chunks” displayed in the notes should work perfectly if you copy-and-paste them into RStudio. (Indeed, these lecture notes should not appear unless the code runs correctly without errors.) I strongly encourage playing about with the code as a good way to learn this material and explore further!</p>
 <div id="exm-MC2" class="theorem example">
 <p><span class="theorem-title"><strong>Example 1.2</strong></span> Let’s try another example. Let <span class="math inline">\(X \sim \operatorname{N}(1, 2^2)\)</span> be a normal distribution with mean 0 and standard deviation 2. Suppose we want to find out <span class="math inline">\(\mathbb E(\sin X)\)</span> (for some reason). While it <em>might</em> be possible to somehow calculate the integral <span class="math display">\[ \mathbb E(\sin X) = \int_{-\infty}^{+\infty} (\sin x) \, \frac{1}{\sqrt{2\pi\times 2^2}} \exp\left(\frac{(x - 1)^2}{2\times 2^2}\right) \, \mathrm{d} x , \]</span> that looks extremely difficult to me.</p>
-<p>Instead, a Monte Carlo estimation of <span class="math inline">\(\Exg(\sin X)\)</span> is very straightforward.</p>
+<p>Instead, a Monte Carlo estimation of <span class="math inline">\(\Exg(\sin X)\)</span> is very straightforward. (Although we must remember that when using the <code>rnorm()</code> function to generate normally distributed variates, the third argument is the <em>standard deviation</em>, here <span class="math inline">\(2\)</span>, <em>not</em> the variance, here <span class="math inline">\(2^2 = 4\)</span>.)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">1</span>, <span class="dv">2</span>)</span>

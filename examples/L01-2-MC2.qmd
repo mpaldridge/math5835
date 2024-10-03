@@ -1,6 +1,6 @@
 Let's try another example. Let $X \sim \operatorname{N}(1, 2^2)$ be a normal distribution with mean 0 and standard deviation 2. Suppose we want to find out $\mathbb E(\sin X)$ (for some reason). While it *might* be possible to somehow calculate the integral $$ \mathbb E(\sin X) = \int_{-\infty}^{+\infty} (\sin x) \, \frac{1}{\sqrt{2\pi\times 2^2}} \exp\left(\frac{(x - 1)^2}{2\times 2^2}\right) \, \mathrm{d} x , $$ that looks extremely difficult to me.
 
-Instead, a Monte Carlo estimation of $\Exg(\sin X)$ is very straightforward.
+Instead, a Monte Carlo estimation of $\Exg(\sin X)$ is very straightforward. (Although we must remember that when using the `rnorm()` function to generate normally distributed variates, the third argument is the *standard deviation*, here $2$, *not* the variance, here $2^2 = 4$.)
 
 ```{r}
 n <- 1e6

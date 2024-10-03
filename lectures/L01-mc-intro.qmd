@@ -41,8 +41,9 @@ should be close to $\Exg \phi(X)$.
 In this course we will write that $X_1, X_2, \dots, X_n$ is a "**random sample** from $X$" to mean that $X_1, X_2, \dots, X_n$ are IID with the same distribution as $X$.
 
 ::: {#def-MCest}
-Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Suppose that $X_1, X_2, \dots, X_n$ are a random sample from $X$. Then the **Monte Carlo estimator** $\widehat\theta_n^{\mathrm{MC}}$ of $\theta$ is
-$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) . $$
+Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Then the **Monte Carlo estimator** $\widehat\theta_n^{\mathrm{MC}}$ of $\theta$ is
+$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$
+where $X_1, X_2, \dots, X_n$ are a random sample from $X$.
 :::
 
 While general ideas for estimating using simulation go back a long time, the modern theory of Monte Carlo estimation was developed by the physicists [Stanislaw Ulam](https://en.wikipedia.org/wiki/Stanisław_Ulam) and [John von Neumann](John von Neumann). Ulam (who was Polish) and von Neumann (who was Hungarian) moved to the US in the early 1940s to work on the Manhattan project to build the atomic bomb (as made famous by the film Oppenheimer). Later in the 1940s, they worked together in the Los Alamos National Laboratory continuing their research on nuclear weapons, where they used simulations on early computers to help them numerically solve difficult mathematical and physical problems.

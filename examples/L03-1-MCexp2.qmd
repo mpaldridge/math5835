@@ -9,7 +9,7 @@ MCest
 
 (Because Monte Carlo estimation is random, this won't be the *exact* same estimate we had before, of course.)
 
-So if we want to investigate the error, we can use the sample variance of these samples.
+So if we want to investigate the error, we can use the sample variance of these samples. We will use the sample variance function `var()` to calculate the sample variance.
 
 ```{r}
 var_est <- var(samples)
@@ -20,6 +20,6 @@ c(var_est, MSEest, RMSEest)
 
 The first number is `var_est` $= `r signif(var_est, 3)`$, the sample variance of our $\phi(x_i)$s: $$ s^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(x_i) - \widehat{\theta}_n^{\mathrm{MC}}\big)^2 . $$ This should be a good estimate of the true variance $\operatorname{Var}(\phi(X))$.
 
-The second number is `MSEest` $= `r signif(var_est/n, 3)`$, our estimate of the mean-square error. Since $\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(\phi(X))$, then $\frac{1}{n} s^2$ should be a good estimate of the MSE.
+The second number is `MSEest` $= `{r} signif(var_est/n, 3)`$, our estimate of the mean-square error. Since $\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(\phi(X))$, then $\frac{1}{n} s^2$ should be a good estimate of the MSE.
 
-The third number is `RMSEest` $= `r signif(sqrt(var_est/n), 3)`$ our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.
+The third number is `RMSEest` $= `{r} signif(sqrt(var_est/n), 3)`$ our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.

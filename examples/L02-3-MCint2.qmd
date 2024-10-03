@@ -15,7 +15,7 @@ curve(
 abline(h = 0)
 ```
 
-This suggests to me that a mean of 0 and a standard deviation of 20 might work quite well.
+This suggests to me that a mean of 0 and a standard deviation of 20 might work quite well. We will use R's function `dnorm()` for the probability density function of the normal distribution (which saves us from having to remember what that is).
 
 ```{r}
 n <- 1e6

@@ -2,6 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
+<!--
 
 ## Estimation error
 
@@ -17,9 +18,9 @@ Let $\widehat\theta$ be an estimator of a parameter $\theta$. Then we have the f
 * The **root-mean-square error** is the square-root of the mean-square error, $$\operatorname{RMSE}\big(\widehat\theta\big) = \sqrt{\operatorname{MSE}(\widehat\theta)} = \sqrt{\mathbb E (\widehat\theta - \theta)^2} . $$
 :::
 
-Usually the goal is to get the mean-square error of an estimate as small as possible. It can be more convenient to discuss the root-mean-square error, as that has the same units as the parameter being measured. (If $\theta$ is in metres, say, then the mean-square-error is in metres-squared, where as the root-mean-square error is in metres again.)
+Usually, the main goal of estimation is to get the mean-square error of an estimate as small as possible. This is because the MSE measures by what distance we are missing on average. It can be more convenient to discuss the root-mean-square error, as that has the same units as the parameter being measured. (If $\theta$ is in metres, say, then the MSE is in metres-squared, whereas the RMSE error is in metres again.)
 
-It's nice to have an unbiased estimator -- that is, one with bias 0 -- although unbiasedness by itself is not enough for an estimate to be good. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the right, then claims to have "hit the target on average.")
+It's nice to have an unbiased estimator -- that is, one with bias 0. This is because bias measures any systematic error in a particular direction. However, unbiasedness by itself is not enough for an estimate to be good -- remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the right, then claims to have "hit the target on average." (Remember also that "bias" is simply the words statisticians use for $\mathbb E(\widehat\theta - \theta)$; we don't mean "bias" in the derogatory way it is sometimes used in political arguments, for example.)
 
 You probably also remember the relationship between the mean-square error, the bias, and the variance:
 
@@ -30,7 +31,7 @@ $\operatorname{MSE}\big(\widehat\theta\big) = \operatorname{bias}\big(\widehat\t
 
 (There's a proof in [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Proposition 3.14, if you've forgotten.)
 
-Since the bias contributes to the mean-square error, that's another reason to like estimator with low (or zero!) bias.
+Since the bias contributes to the mean-square error, that's another reason to like estimator with low -- or preferably zero -- bias. (That said, there are some situations where there's a "bias--variance tradeoff", where allowing some bias reduces the variance and so can reduce the MSE. It turns out that Monte Carlo is not one of these cases, however.)
 
 ## Bias and error of the Monte Carlo estimator
 
@@ -58,7 +59,7 @@ $${\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) =
 
 Before we get to the proof, let's recap some relevant probability.
 
-Let $Y_1, Y_2, \dots$ be IID random variables with common expectation $\mathbb EY_1 = \mu$ and variance $\operatorname{Var}(Y_1) = \sigma^2$. Consider the mean of the first $n$ random variables,
+Let $Y_1, Y_2, \dots$ be IID random variables with common expectation $\mathbb EY_1 = \mu$ and common variance $\operatorname{Var}(Y_1) = \sigma^2$. Consider the mean of the first $n$ random variables,
 $$ \overline{Y}_n = \frac{1}{n} \sum_{i=1}^n Y_i . $$
 Then the expectation of $\overline{Y}_n$ is
 $$ \mathbb E \overline{Y}_n = \mathbb E\left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \frac{1}{n} 
@@ -69,9 +70,9 @@ $$ \operatorname{Var}\big(  \overline{Y}_n \big)= \operatorname{Var} \left(\frac
 where, for this one, we used the independence of the random variables.
 
 ::: {.proof}
-Apply the probability facts from above, with $Y = \phi(X)$. This gives:
+Apply the probability facts from above with $Y = \phi(X)$. This gives:
 
-1. $\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex \overline Y_m = \Ex Y = \Exg \phi(X)$, so $\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0$.
+1. $\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex \overline Y_n = \Ex Y = \Exg \phi(X)$, so $\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0$.
 
 1. ${\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \operatorname{Var}\big(\overline Y_n\big) = \frac{1}{n} \operatorname{Var}(Y) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$.
 
@@ -85,12 +86,13 @@ There's a problem here, though. The reason we are doing Monte Carlo estimation i
 
 But we *can* estimate the variance from our samples too: by taking the sample variance of our samples $\phi(x_i)$. That is, we can estimate the variance of the Monte Carlo estimator by
 $$ S^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(X_i) - \widehat{\theta}_n^{\mathrm{MC}} \big)^2 . $$
-Then we can similar estimate the mean-square and root-mean-square errors by
-$$ \frac{1}{n}S^2 \qquad \text{and} \qquad \sqrt{\frac{1}{n} S^2} = \frac{1}{\sqrt{n}}S  $$
+Then we can similarly estimate the mean-square and root-mean-square errors by
+$$ \text{MSE} \approx \frac{1}{n}S^2 \qquad \text{and} \qquad \text{RMSE} \approx \sqrt{\frac{1}{n} S^2} = \frac{1}{\sqrt{n}}S  $$
 respectively.
 
 
 ## Example
+-->
 
 ::: {#exm-MCexp2}
 {{< include ../examples/L03-1-MCexp2.qmd >}}

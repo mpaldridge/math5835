@@ -2,7 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
-
+<!--
 ## Monte Carlo for probabilities
 
 Quick recap: Last time we defined the Monte Carlo estimator for an expectation of a function of a random variable $\theta = \Exg \phi(X)$ to be $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$ where $X_1, X_2, \dots, X_n$ are independent random samples from $X$.
@@ -28,17 +28,17 @@ So the expectation of an indicator function a set is the probability that $X$ is
 
 With this idea in hand, how do we estimate $\theta = \mathbb P(X \in A)$ using the Monte Carlo method? We write $\theta = \Exg\Ind_A(X)$. Then our Monte Carlo estimator is $$  \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \Ind_A(X_i) . $$
 
-We remember that $\Ind_A(X_i)$ is 1 if $X_i \in A$ and 0 otherwise. So if we add up $n$ of these, we count an extra 1 each time we have an $X_i \in A$. So $\sum_{i=1}^n \Ind_A(X_i)$ counts the total number of the $X_i$ that are in $n$. So the Monte Carlo estimator can be written as $$  \widehat{\theta}_n^{\mathrm{MC}} = \frac{\# \text{ of } X_i \text{ that are in $A$}}{n} . $$
+We remember that $\Ind_A(X_i)$ is 1 if $X_i \in A$ and 0 otherwise. So if we add up $n$ of these, we count an extra +1 each time we have an $X_i \in A$. So $\sum_{i=1}^n \Ind_A(X_i)$ counts the total number of the $X_i$ that are in $A$. So the Monte Carlo estimator can be written as $$  \widehat{\theta}_n^{\mathrm{MC}} = \frac{\# \text{ of } X_i \text{ that are in $A$}}{n} . $$
 
 Although we've had to do a bit of work to get here, this a totally logical outcome! The right-hand side here is the proportion of the samples for which $X_i \in A$. And if we want to estimate the probability something happens, looking at the proportion of times it happens in a random sample is very much the "intuitive" estimate to take. And that intuitive estimate is indeed the Monte Carlo estimate!
-
+-->
 
 ::: {#exm-MCprob}
 {{< include ../examples/L02-1-MCprob.qmd >}}
 :::
 
 
-We should explain the third line in the code we used for the Monte Carlo estimation `mean(samples >= 2)`. In R, some statements can be answered "true" or "false": these are often statements involving equality `==` (that's a *double* equals sign) or inequalities like `<`, `<=`, `>=`, `>`. So `5 > 2` is `TRUE` but `3 == 7` is `FALSE`. These can be applied "component by component" to vectors. So, for example, testing which numbers from 1 to 10 are greater than or equal to 7, we get
+We should explain the third line in the code we used for the Monte Carlo estimation `mean(samples > 2)`. In R, some statements can be answered "true" or "false": these are often statements involving equality `==` (that's a *double* equals sign) or inequalities like `<`, `<=`, `>=`, `>`, for example. So `5 > 2` is `TRUE` but `3 == 7` is `FALSE`. These can be applied "component by component" to vectors. So, for example, testing which numbers from 1 to 10 are greater than or equal to 7, we get
 
 ```{r}
 1:10 >= 7
@@ -46,26 +46,38 @@ We should explain the third line in the code we used for the Monte Carlo estimat
 
 six `FALSE`s (for 1 to 6) followed by four `TRUE`s (for 7 to 10).
 
+We can also use `&` ("and") and `|` ("or") in true/false statements like these.
+
 But R also knows to treat `TRUE` like the number 1 and `FALSE` like the number 0. So if we add up some `TRUE`s and `FALSE`s, R simply counts how many `TRUE`s there are
 
 ```{r}
 sum(1:10 >= 7)
 ```
 
-We can also use `&` ("and") and `|` ("or") in true/false statements like these.
-
 So in our Monte Carlo estimation code, `samples > 2` was a vector of `TRUE`s and `FALSE`s, depending on whether each sample was greater than 2 or not, then `mean(samples > 2)` took the *proportion* of the samples that were greater than 2.
 
+<!--
 ## Monte Carlo for integrals
 
 There's another thing -- a non-statistics thing -- that Monte Carlo estimation is useful for. We can use Monte Carlo estimation to approximate integrals that are too hard to do by hand.
 
-Let's think of an integral: say, $$ \int_a^b h(x) \,\mathrm{d}x ,$$ the integral of some function $h$ (the "integrand") between the limits $a$ and $b$. Now let's compare that to the integral $\Exg \phi(X)$ of a continuous random variable that we can estimate using Monte Carlo estimation, $$ \Exg \phi(X) = \int_{-\infty}^\infty \phi(x)\,f(x)\, \mathrm{d} x. $$ Matching things up, we can see that we want to pick a function $\phi$ and a PDF $f$ such that $$ \phi(x)\,f(x) = \begin{cases} 0 & x < a \\ h(x) & a \leq x \leq b \\ 0 & x > b . \end{cases} $$
+This might seem surprising. Estimating the expectation of (a function of) a random variable seems a naturally statistical thing to do. But an integral is just a straight maths problem -- there's not any randomness at all. But actually, integrals and expectations are very similar things.
 
-Of course, there are lots of choices of $\phi$ and $f$ that would satisfy this. But a "common-sense" choice that often works is to pick $f$ to be the PDF of $X$, a continuous uniform distribution on the interval $[a,b]$ (when $a$ and $b$ are finite, anyway). Recall that this means $X$ has PDF $$ f(x) = \begin{cases} 0 & x < a \\ \displaystyle{\frac{1}{b-a}} & a \leq x \leq b \\ 0 & x > b . \end{cases} $$ Comparing this equation with the one above, we then have to choose $$\phi(x) = \frac{h(x)}{f(x)} = (b-a)h(x).$$
+Let's think of an integral: say, $$ \int_a^b h(x) \,\mathrm{d}x ,$$ the integral of some function $h$ (the "integrand") between the limits $a$ and $b$. Now let's compare that to the integral $\Exg \phi(X)$ of a continuous random variable that we can estimate using Monte Carlo estimation, $$ \Exg \phi(X) = \int_{-\infty}^\infty \phi(x)\,f(x)\, \mathrm{d} x. $$ Matching things up, we can see that we if we were to a function $\phi$ and a PDF $f$ such that $$ \phi(x)\,f(x) = \begin{cases} 0 & x < a \\ h(x) & a \leq x \leq b \\ 0 & x > b , \end{cases} $${#eq-match}
+then we would have
+$$ \Exg \phi(X) = \int_{-\infty}^\infty \phi(x)\,f(x)\, \mathrm{d} x = \int_a^b h(x) \,\mathrm{d}x, $$
+so the value of the expectation would be precisely the value of the integral we're after. Then we could use Monte Carlo to estimate that expectation/integral.
 
-Putting this all together, we have $$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x = \int_a^b (b-a)h(x)\,\frac{1}{b-a}\,\mathrm{d}x = \int_a^b h(x) \,\mathrm{d}x ,$$ as required.
+There are lots of choices of $\phi$ and $f$ that would satisfy this the condition in @eq-match. But a "common-sense" choice that often works is to pick $f$ to be the PDF of $X$, a continuous uniform distribution on the interval $[a,b]$. (This certainly works when $a$ and $b$ are finite, anyway.) Recall that the continuous uniform distribution means that $X$ has PDF $$ f(x) = \begin{cases} 0 & x < a \\ \displaystyle{\frac{1}{b-a}} & a \leq x \leq b \\ 0 & x > b . \end{cases} $$ Comparing this equation with @eq-match, we then have to choose $$\phi(x) = \frac{h(x)}{f(x)} = (b-a)h(x).$$
 
+Putting this all together, we have $$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x = \int_a^b (b-a)h(x)\,\frac{1}{b-a}\,\mathrm{d}x = \int_a^b h(x) \,\mathrm{d}x ,$$ as required. This can then be estimated using the Monte Carlo method.
+
+::: {#def-MCint}
+Consider an integral $\theta = \int_a^b h(x)\,\mathrm{d}x$. Let $f$ be the probability density function of a random variable $X$ and let $\phi$ be function such that @eq-match holds. Then the **Monte Carlo estimator** $\widehat\theta_n^{\mathrm{MC}}$ of the integral $\theta$ is
+$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$
+where $X_1, X_2, \dots, X_n$ are a random sample from $X$.
+:::
+-->
 
 ::: {#exm-MCint}
 {{< include ../examples/L02-2-MCint.qmd >}}
