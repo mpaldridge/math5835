@@ -52,6 +52,7 @@ book:
 #        - problems/P5.qmd
 #    - lectures/L28-faq.qmd
 #    - coursework.qmd
+#    - problems/solutions.qmd
 
 format:
   html:

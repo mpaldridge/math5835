@@ -1,0 +1,16 @@
+We continue the example of @exm-MCprob and @exm-MCprob2, where we were estimating $\mathbb P(Z > 2)$ for $Z$ a standard normal.
+
+```{r}
+n <- 1e6
+samples <- rnorm(n)
+MCest   <- mean(samples > 2)
+RMSEest <- sqrt(var(samples > 2) / n)
+```
+
+Our confidence interval is estimates as follows
+
+```{r}
+alpha <- 0.05
+quant <- qnorm(1 - alpha / 2)
+c(MCest - quant * RMSEest, MCest + quant * RMSEest)
+```

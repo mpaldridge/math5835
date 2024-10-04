@@ -2,11 +2,9 @@
 
 {{< include ../_header.qmd >}}
 
-<!--
-
 ## Estimation error
 
-Before talking about error in Monte Carlo estimation, let's first remind ourselves of some concepts about error in statistical estimation more generally. We will use the following definitions.
+Today we are going to analysing the accuracy of Monte Carlo estimation. But before talking about Monte Carlo estimation specifically, let's first remind ourselves of some concepts about error in statistical estimation more generally. We will use the following definitions.
 
 ::: {#def-stats}
 Let $\widehat\theta$ be an estimator of a parameter $\theta$. Then we have the following definitions of the estimate $\widehat\theta$:
@@ -20,7 +18,7 @@ Let $\widehat\theta$ be an estimator of a parameter $\theta$. Then we have the f
 
 Usually, the main goal of estimation is to get the mean-square error of an estimate as small as possible. This is because the MSE measures by what distance we are missing on average. It can be more convenient to discuss the root-mean-square error, as that has the same units as the parameter being measured. (If $\theta$ is in metres, say, then the MSE is in metres-squared, whereas the RMSE error is in metres again.)
 
-It's nice to have an unbiased estimator -- that is, one with bias 0. This is because bias measures any systematic error in a particular direction. However, unbiasedness by itself is not enough for an estimate to be good -- remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the right, then claims to have "hit the target on average." (Remember also that "bias" is simply the words statisticians use for $\mathbb E(\widehat\theta - \theta)$; we don't mean "bias" in the derogatory way it is sometimes used in political arguments, for example.)
+It's nice to have an unbiased estimator -- that is, one with bias 0. This is because bias measures any systematic error in a particular direction. However, unbiasedness by itself is not enough for an estimate to be good -- there's the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the right, then claims to have "hit the target on average." (Remember also that "bias" is simply the word statisticians use for $\mathbb E(\widehat\theta - \theta)$; we don't mean "bias" in the derogatory way it is sometimes used in political arguments, for example.)
 
 You probably also remember the relationship between the mean-square error, the bias, and the variance:
 
@@ -92,7 +90,6 @@ respectively.
 
 
 ## Example
--->
 
 ::: {#exm-MCexp2}
 {{< include ../examples/L03-1-MCexp2.qmd >}}
@@ -109,6 +106,8 @@ respectively.
 * The Monte Carlo estimator has mean-square error $\Var(\phi(X))/n$, so the root-mean-square error scales like $1/\sqrt{n}$.
 
 * The mean-square error can be estimated by $S^2 / n$, where $S^2$ is the sample variance of $\phi(X)$.
+
+On [**Problem Sheet 1**](#P1), you should now be able to answers Questions 1--6, except 2(c).
 
 **Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 3.2.2.
 :::

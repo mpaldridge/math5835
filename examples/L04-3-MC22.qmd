@@ -1,0 +1,30 @@
+Let's try this with @exm-MC2 from before. We were trying to estimate $\mathbb{E}(\sin X)$, where $X \sim \operatorname{N}(1, 2^2)$.
+
+We'll start with just $n = 1000$ samples, for our pilot study.
+
+```{r}
+n_pilot <- 1000
+samples <- rnorm(n_pilot, 1, 2)
+var_est <- var(sin(samples))
+var_est
+```
+
+This was very quick! We won't have got a super-accurate estimate of $\mathbb E\phi(X)$, but we have a reasonable idea of roughly what $\operatorname{Var}(\phi(X))$ is. This will allow us to pick out "real" sample size in order to get a root-mean-square error of $10^{-4}$.
+
+```{r}
+epsilon <- 1e-4
+n_real  <- round(var_est / epsilon^2)
+n_real
+```
+
+This tells us that we will need about 50 million samples! This is a lot, but now we know we're going to get the accuracy we want, so it's worth it. (In this particular case, 50 million samples will only take a few second on a modern computer. But generally, once we know our code works and we know how many samples we will need for the desired accuracy, this is the sort of thing that we could leave running overnight or whatever.)
+
+```{r}
+samples <- rnorm(n_real, 1, 2)
+MCest <- mean(sin(samples))
+MCest
+RMSEest <- sqrt(var(sin(samples)) / n_real)
+RMSEest
+```
+
+This was very slow, of course. But we see that we have indeed got our Monte Carlo estimate to (near enough) the desired accuracy.

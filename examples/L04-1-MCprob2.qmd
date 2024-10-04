@@ -1,0 +1,19 @@
+In @exm-MCprob, we were estimating $\mathbb P(Z > 2)$, where $Z$ is a standard normal.
+
+Our code was
+
+```{r}
+n <- 1e6
+samples <- rnorm(n)
+MCest <- mean(samples > 2)
+MCest
+```
+
+So our root-mean-square error can be approximated as
+
+```{r}
+RMSEest <- sqrt(var(samples > 2) / n)
+RMSEest
+```
+
+Here we used R's `var()` function, which calculate the sample variance of some data.

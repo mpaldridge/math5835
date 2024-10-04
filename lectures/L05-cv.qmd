@@ -20,19 +20,29 @@ Well, the mean-square error is the variance divided by $n$. So if we can't (or d
 
 ## Control variate estimation
 
-Consider this problem: *Estimate the average time it takes to fly from London to Washington D.C.*
+In last Friday's lecture, I polled the class on this question: *Estimate the average time it takes to fly from London to Washington D.C.*
 
-This is quite a tricky problem for me. (Maybe for you too?) I have flown there once before for a maths conference, but it was a long time ago. It was a long flight, many hours, more than just 3 or 4. But it wasn't super-long either, like 13 hours or anything. I'm going to guess 9 hours.
+* The actual answer is: 8 hours and 29 minutes.
 
-Now consider this problem when you are given the following hint: *PS: The average time it takes to fly from London to New York is 8 hours and 10 minutes.*
+* The mean guess for the class was: 7 hours and 37 minutes (52 minutes too little)
 
-Well now, this helps a lot! The answer's going to pretty similar, about 8 hours 10 minutes. But Washington D.C. is a little bit further south and east compared to New York, so it will take a bit longer to get there. But not much, though. I'll guess an extra 15 minutes, so I'll go for 8 hours 25 minutes.
+* The root-mean-square error for the guesses was: 133 minutes
 
-The true answer is 8 hours 29 minutes. My first guess was 31 minutes off (better than I expected!) but my second guess, with the hint, only missed by 4 minutes!
+After you'd guessed, I gave the following hint: *Hint: The average time it takes to fly from London to New York is 8 hours and 10 minutes.* After the hint:
 
-Why was my second guess better? We were trying to estimate $\theta^{\mathrm{DC}}$, the distance to D.C. But that's a big number, and my estimate had a big error (31 minutes). But after the hint about the distance $\theta^{\mathrm{NY}}$ to New York, we could write $$\theta^{\mathrm{DC}} = \theta^{\mathrm{DC}} + \big(\theta^{\mathrm{NY}} - \theta^{\mathrm{NY}}\big)= \underbrace{\big(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\big)}_{\text{small}} + \underbrace{\theta^{\mathrm{NY}}\vphantom{\big)}}_{\text{known}} . $$ In that equation, the second term, $\theta^{\mathrm{NY}} =$ 8:10 was completely known, so had error 0, while the first term $\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}$ was a small number, so only had a small error (4 minutes!).
+* The mean guess for the class was: 8 hours and 45 minutes (16 minutes too much)
 
-We can apply this idea to Monte Carlo estimation too. Suppose we are trying to estimate $\theta = \Exg \phi(X)$. We want to look for a function $\psi$ that is similar to $\phi$ (at least for the values of $x$ that have high probability for the random variable $X$), but where we know for certain what $\Exg \psi(X)$ is. Then we can write $$ \theta = \Exg \phi(X) = \Exg \big(\phi(X) - \psi(X) + \psi(X)\big) = \underbrace{\Exg\big(\phi(X) - \psi(X)\big)}_{\text{estimate this with Monte Carlo}} + \underbrace{\Exg \psi(X)\vphantom{\big)}}_{\text{known}} . $$
+* The root-mean-square error for the guesses was: 49 minutes
+
+So after the hint, the error of the class was reduced by 63%.
+
+Why did the hint help? We were trying to estimate $\theta^{\mathrm{DC}}$, the distance to D.C. But that's a big number, and the first estimates had a big error (over an hour, on average). After the hint, I expect most people thought something like this: "The answer $\theta^{\mathrm{DC}}$ is going to be similar to the $\theta^{\mathrm{NY}} = {}$8:10 to New York, but Washington D.C. is a bit further, so I should increase the number a bit, but not too much."
+
+To be more mathematical, we could write $$\theta^{\mathrm{DC}} = \theta^{\mathrm{DC}} + \big(\theta^{\mathrm{NY}} - \theta^{\mathrm{NY}}\big)= \underbrace{\big(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\big)}_{\text{small}} + \underbrace{\theta^{\mathrm{NY}}\vphantom{\big)}}_{\text{known}} . $$ In that equation, the second term, $\theta^{\mathrm{NY}} = {}$ 8:10 was completely known, so had error 0, while the first term $\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}$ (actually 19 minutes) was a small number, so only had a small error.
+
+This idea of improving an estimate by "anchoring" it to some known value is called **controlled estimation**. It is a very useful idea in statistics (and in life!).
+
+We can apply this idea to Monte Carlo estimation too. Suppose we are trying to estimate $\theta = \Exg \phi(X)$. We could look for a function $\psi$ that is similar to $\phi$ (at least for the values of $x$ that have high probability for the random variable $X$), but where we know for certain what $\Exg \psi(X)$ is. Then we can write $$ \theta = \Exg \phi(X) = \Exg \big(\phi(X) - \psi(X) + \psi(X)\big) = \underbrace{\Exg\big(\phi(X) - \psi(X)\big)}_{\text{estimate this with Monte Carlo}} + \underbrace{\Exg \psi(X)\vphantom{\big)}}_{\text{known}} . $$
 
 Here, $\psi(X)$ is known as the **control variate**.
 

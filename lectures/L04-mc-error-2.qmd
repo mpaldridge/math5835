@@ -4,7 +4,7 @@
 
 ## Recap
 
-Let's recap where we've got to. We know that the Monte Carlo estimate for $\theta = \Exg \phi(X)$ is 
+Let's recap where we've got to. We know that the Monte Carlo estimator for $\theta = \Exg \phi(X)$ is 
 $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) .$$
 Last time, we saw that the Monte Carlo estimator is unbiased, and that its mean-square and root-mean-square errors are
 $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) \qquad \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . $$
@@ -13,23 +13,7 @@ We saw that these themselves can be estimated as $S^2/n$ and $S/\sqrt{n}$ respec
 Let's do one more example before moving on.
 
 ::: {#exm-MCprob2}
-In @exm-MCprob, we were estimating $\mathbb P(Z > 2)$, where $Z$ is a standard normal.
-
-Our code was
-
-```{r}
-n <- 1e6
-samples <- rnorm(n, 0, 1)
-MCest <- mean(samples > 2)
-MCest
-```
-
-So our root-mean-square error can be approximated as
-
-```{r}
-RMSEest <- sqrt(var(samples > 2) / n)
-RMSEest
-```
+{{< include ../examples/L04-1-MCprob2.qmd >}}
 :::
 
 ## Confidence intervals
@@ -40,27 +24,11 @@ Here, we will want to appeal to the central limit theorem approximation. A bit m
 
 Recall that, in the normal distribution $\operatorname{N}(\mu, \sigma^2)$, we expect to be within $1.96$ standard deviations of the mean with 95% probability. More generally, the interval $[\mu - q_{1-\alpha/2}\sigma, \mu + q_{1-\alpha/2}\sigma]$, where $q_{1-\alpha/2}$ is the $(1- \frac{\alpha}{2})$-quantile of the normal distribution, contains the true value with probability approximately $1 - \alpha$.
 
-We can form an approximate confidence interval for a Monte Carlo estimate using this idea. We have our Monte Carlo estimate $\widehat{\theta}_n^\mathrm{MC}$ as our estimate of the expectation, and our estimate of the root-mean-square error $S/\sqrt{n}$ as our estimate of the variance. So our confidence interval is estimated as 
+We can form an approximate confidence interval for a Monte Carlo estimate using this idea. We have our Monte Carlo estimator $\widehat{\theta}_n^\mathrm{MC}$ as our estimator of the $\mu$ parameter, and our estimator of the root-mean-square error $S/\sqrt{n}$ as our estimator of the $\sigma$ parameter. So our confidence interval is estimated as 
 $$\bigg[ \widehat{\theta}_n^\mathrm{MC} - q_{1-\alpha/2}\,\frac{S}{\sqrt{n}}, \ \widehat{\theta}_n^\mathrm{MC} + q_{1-\alpha/2}\,\frac{S}{\sqrt{n}} \bigg] . $$
 
 ::: {#exm-MCprob3}
-We continue the example of @exm-MCprob and @exm-MCprob2, where we were estimating $\mathbb P(Z > 2)$ for $Z$ a standard normal. 
-
-
-```{r}
-n <- 1e6
-samples <- rnorm(n, 0, 1)
-MCest   <- mean(samples > 2)
-RMSEest <- sqrt(var(samples > 2) / n)
-```
-
-Our confidence interval is estimates as follows
-
-```{r}
-alpha <- 0.05
-quant <- qnorm(1 - alpha / 2)
-c(MCest - quant * RMSEest, MCest + quant * RMSEest)
-```
+{{< include ../examples/L04-2-MCprob3.qmd >}}
 :::
 
 ## How many samples do I need?
@@ -72,7 +40,7 @@ $$ \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1
 So if we want to get the RMSE down to $\epsilon$, say, then this shows that we need
 $$ n = \frac{1}{\epsilon^2} \Var\big(\phi(X)\big) . $$
 
-We can make use of this idea with a three-step process:
+We still have a problem here, though. We (usually) don't know $\Var(\phi(X))$. But we can't even estimate $\phi(X)$ until we've already taken the samples. But we can use of this idea with a three-step process:
 
 1. Run an initial "pilot" Monte Carlo algorithm with a small number of samples $n$. Use the results of the "pilot" to estimate the variance $S^2 \approx \Var(\phi(X))$. We want $n$ small enough that this runs very quickly, but big enough that we get a reasonably OK estimate of the variance.
 
@@ -80,37 +48,11 @@ We can make use of this idea with a three-step process:
 
 1. Run the "real" Monte Carlo algorithm with this big number of samples $N$. We will put up with this being quite slow, because we know we're definitely going to get the error tolerance we need.
 
+(We could potentially use further steps, where we now check the variance with the "real" big-$N$ samples, and, if we learn we had underestimated in Step 1, take even more samples to correct for this.)
+
 ::: {#exm-MC22}
-Let's try this with @exm-MC2 from before. We were trying to esimate $\Exg(\sin X)$, where $X \sim \operatorname{N}(1, 2^2)$.
+{{< include ../examples/L04-3-MC22.qmd >}}
 
-We'll start with just $n = 1000$ samples, for our pilot study
-
-```{r,}
-n_pilot <- 1000
-samples <- rnorm(n_pilot, 1, 2)
-var_est <- var(sin(samples))
-var_est
-```
-  
-This was super-quick! We won't have got a super-accurate estimate of $\Exg\phi(X)$, but we have a reasonable idea what $\Var(\phi(X))$. This will allow us to pick out "real" sample size in order to get a root-mean-square error of $10^{-4}$.
-
-```{r,}
-epsilon <- 1e-4
-n_real  <- round(var_est / epsilon^2)
-n_real
-```
-
-We need about 50 million samples! This is a lot, but now we know we're going to get the accuracy we want, so it's worth it. (Here, 50 million samples will only take a few second on a modern computer, but this is the sort of code that one could leave running overnight, for example.)
-
-```{r}
-samples <- rnorm(n_real, 1, 2)
-MCest <- mean(sin(samples))
-MCest
-RMSEest <- sqrt(var(sin(samples)) / n_real)
-RMSEest
-```
-
-This was very slow! But we see that we have indeed got our Monte Carlo estimate to (near enough) the desired accuracy.
 :::
 
 We should note that the equation

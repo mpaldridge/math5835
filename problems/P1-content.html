@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Problem Sheet 1 – MATH5835M Statistical Computing</title>
+<title>p1-content</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -57,50 +57,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../lectures/L03-mc-error-1.html" rel="prev">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
-  "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
-  }
-}</script>
+<script src="P1-content_files/libs/clipboard/clipboard.min.js"></script>
+<script src="P1-content_files/libs/quarto-html/quarto.js"></script>
+<script src="P1-content_files/libs/quarto-html/popper.min.js"></script>
+<script src="P1-content_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="P1-content_files/libs/quarto-html/anchor.min.js"></script>
+<link href="P1-content_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="P1-content_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="P1-content_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="P1-content_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="P1-content_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -132,125 +98,17 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="../mystyle.css">
 </head>
 
-<body class="nav-sidebar floating">
+<body class="fullcontent">
 
-<div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../problems/P1.html">Problem Sheet 1</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
-<!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="../">MATH5835</a> 
-    </div>
-      </div>
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">About MATH5835</span></a>
-  </div>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Monte Carlo estimation</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L01-mc-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../problems/P1.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Problem Sheet 1</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
-<!-- main -->
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../problems/P1.html">Problem Sheet 1</a></li></ol></nav>
-<div class="quarto-title">
-<h1 class="title"><span id="P1" class="quarto-section-identifier">Problem Sheet 1</span></h1>
-</div>
 
 
 
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<style>
-.myanswers { 
-display: none !important;
-}
-</style>
-<div class="mysummary">
-<p>This is Problem Sheet 1, which covers material from Lectures 1 to 6. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of <strong>Thursday 17 October</strong>.</p>
-<p>This problem sheet is to help you practice material from the module. It is not for assessment and will not be marked. However, you can get feedback on your work by: (a) being well prepared for the problems class, by making attempts at all questions in advance; (b) speaking up in the problems class, asking for clarification where things aren’t clear and offering ideas on how to solve the questions; (c) discussing your work with colleagues and friends; (d) coming along to my office hours on Mondays at 1500; (e) studying the full solutions when they are released and comparing with your own attempts.</p>
-<p>Many of these questions will require use of the <a href="https://cran.r-project.org">R programming language</a> (for example, by using the <a href="https://posit.co/downloads/">program RStudio</a>).</p>
-<p>Full solutions should be released on <strong>Friday 18 October</strong>.</p>
-</div>
 <div class="hidden">
 <p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
 \newcommand{\Ex}{\mathbb{E}}
@@ -277,7 +135,7 @@ display: none !important;
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.199236</code></pre>
+<pre><code>[1] 2.206319</code></pre>
 </div>
 </div>
 </div>
@@ -294,7 +152,7 @@ display: none !important;
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>ysamples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">pmax</span>(xsamples, ysamples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5645173</code></pre>
+<pre><code>[1] 0.5641481</code></pre>
 </div>
 </div>
 </div>
@@ -314,7 +172,7 @@ display: none !important;
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>in_box <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> y<span class="sc">^</span><span class="dv">2</span> <span class="sc">&lt;=</span> <span class="dv">1</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">in_box</span>(rain_x, rain_y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.785022</code></pre>
+<pre><code>[1] 0.785178</code></pre>
 </div>
 </div>
 </div>
@@ -335,7 +193,7 @@ display: none !important;
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>var_est <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">in_box</span>(rain_x, rain_y))</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>var_est <span class="sc">/</span> (<span class="fl">1e-6</span>)<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 168762628281</code></pre>
+<pre><code>[1] 168673676989</code></pre>
 </div>
 </div>
 <p>We will probably spend a long time waiting for that much rain!</p>
@@ -354,7 +212,7 @@ display: none !important;
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>samples1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">5</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">integrand</span>(samples1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.928643</code></pre>
+<pre><code>[1] 3.932139</code></pre>
 </div>
 </div>
 </div>
@@ -362,45 +220,45 @@ display: none !important;
 <div class="subq">
 <p><strong>(b)</strong> &nbsp;&nbsp;Can you come up with a choice of <span class="math inline">\(X\)</span> that improves on the estimate from (a)?</p>
 <div class="myanswers">
-<p><em>Solution.</em> Let’s look at a graph of the integrand <span class="math inline">\(h\)</span>.</p>
+<p>Let’s look at a graph of the integrand <span class="math inline">\(h\)</span>.</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Code for drawing this graph</summary>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  integrand, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="sc">-</span><span class="fl">0.05</span>, <span class="at">to =</span> <span class="dv">6</span>,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">3</span>,</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"integrand h(x)"</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>)</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="dv">4</span><span class="sc">*</span><span class="fu">dexp</span>(x, <span class="dv">1</span>), <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="dv">4</span><span class="sc">*</span><span class="fu">dexp</span>(x, <span class="dv">2</span>), <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="P1_files/figure-html/h2-graph-1.svg" class="img-fluid figure-img" width="672"></p>
+<p><img src="P1-content_files/figure-html/h2-graph-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>We see that we get a much bigger contribution to the integral from values near 0. So a random variable that picks values nearer to 0 more often should give a more accurate result for moderate <span class="math inline">\(n\)</span>. I’m going to pick an exponential distribution with rate 1.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pdf <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dexp</span>(x, <span class="dv">2</span>)</span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pdf <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dexp</span>(x, <span class="dv">1</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (<span class="fu">integrand</span>(x) <span class="sc">/</span> <span class="fu">pdf</span>(x)) <span class="sc">*</span> (x <span class="sc">&lt;=</span> <span class="dv">5</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>samples2 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>samples2 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">1</span>)</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">phi</span>(samples2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.948061</code></pre>
+<pre><code>[1] 3.928451</code></pre>
 </div>
 </div>
 <p>Is this an improvement or not? We can find out by looking at the variance (or, equivalently, the mean-square or root-mean-square error).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">integrand</span>(samples1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 33.41696</code></pre>
+<pre><code>[1] 33.56005</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(<span class="fu">phi</span>(samples2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.064075</code></pre>
+<pre><code>[1] 6.047854</code></pre>
 </div>
 </div>
 </div>
@@ -408,91 +266,28 @@ display: none !important;
 </div>
 <div class="myq">
 <p><strong>5.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When calculating a Monte Carlo estimate <span class="math inline">\(\frac{1}{n} \sum_{i=1}^n \phi(x_i)\)</span>, one might wish to first generate the <span class="math inline">\(n\)</span> samples <span class="math inline">\((x_1, x_2, \dots, x_n)\)</span> and store them, and only then, after all samples are generated, finally calculate the estimate. However, when <span class="math inline">\(n\)</span> is extremely large, storing all <span class="math inline">\(n\)</span> samples uses up a lot of space in a computer’s memory. Describe (in words, in R code, or in a mixture of the two) how the Monte Carlo estimate could be produced using much less memory.</p>
-<div class="myanswers">
-<p><em>Solution.</em> The idea is to keep a “running total” of the <span class="math inline">\(\phi(x_i)\)</span>s. Then we only have to store that running total, not all the samples. Once this has been done <span class="math inline">\(n\)</span> times, then divide by <span class="math inline">\(n\)</span> to get the estimate.</p>
-<p>In R code, this might be something like</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>total <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  sample <span class="ot">&lt;-</span> <span class="co"># sampling code for 1 sample</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  total <span class="ot">&lt;-</span> total <span class="sc">+</span> <span class="fu">phi</span>(sample)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> total <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
 </div>
 <div class="myq">
 <p><strong>6.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Show that the indicator functions <span class="math inline">\(\mathbb I_A(X)\)</span> and <span class="math inline">\(\mathbb I_B(X)\)</span> have correlation 0 if and only if the events <span class="math inline">\(\{X \in A\}\)</span> and <span class="math inline">\(\{X \in B\}\)</span> are independent.</p>
-<div class="myanswers">
-<p><em>Solution.</em> Recall that two random variables <span class="math inline">\(U\)</span>, <span class="math inline">\(V\)</span> have correlation 0 if and only if their covariance <span class="math inline">\(\Cov(U,V) = \Ex UV - (\Ex U)(\Ex V)\)</span> is 0 too.</p>
-<p>We know that <span class="math inline">\(\Exg\Ind_A(X) = \mathbb P(X \in A)\)</span> and <span class="math inline">\(\Exg \Ind_B(Y) = \mathbb P(X \in B)\)</span>. What about <span class="math inline">\(\Exg \Ind_A(X) \Ind_B(X)\)</span>? Well, <span class="math inline">\(\Ind_A(x) \Ind_B(x)\)</span> is 1 if and only if <em>both</em> indicator functions equal 1, which is if and only if both <span class="math inline">\(x \in A\)</span> and <span class="math inline">\(x \in B\)</span>. So <span class="math inline">\(\Exg \Ind_A(X) \Ind_B(X) = \mathbb P(X \in A \text{ and } X \in B)\)</span>.</p>
-<p>So the covariance is <span class="math display">\[ \Cov \big(\Ind_A(X), \Ind_B(X) \big) = \mathbb P(X \in A \text{ and } X \in B) - \mathbb P(X \in A)\, \mathbb P(X \in B) . \]</span> If this is 0, then <span class="math inline">\(\mathbb P(X \in A \text{ and } X \in B) = \mathbb P(X \in A)\, \mathbb P(X \in B)\)</span>, which is precisely the definition of those two events being independent.</p>
-</div>
 </div>
 <div class="myq">
 <p><strong>7.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(X\)</span> be an exponential distribution with rate 1.</p>
 <div class="subq">
 <p><strong>(a)</strong> &nbsp;&nbsp;Estimate <span class="math inline">\(\mathbb EX^{2.1}\)</span> using the standard Monte Carlo method.</p>
-<div class="myanswer">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">1</span>)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="fl">2.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.199144</code></pre>
-</div>
-</div>
-</div>
 </div>
 <div class="subq">
 <p><strong>(b)</strong> &nbsp;&nbsp;Estimate <span class="math inline">\(\mathbb EX^{2.1}\)</span> using <span class="math inline">\(X^2\)</span> as a control variate. (You may recall that if <span class="math inline">\(Y\)</span> is exponential with rate <span class="math inline">\(\lambda\)</span> then <span class="math inline">\(\mathbb EY^2 = 2/\lambda^2\)</span>.)</p>
-<div class="myanswers">
-<p><em>Solution.</em> We have <span class="math inline">\(\Ex X^2 = 2\)</span>. So, re-using the same sample as before (you don’t have to do this), our R code is as follows.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="fl">2.1</span> <span class="sc">-</span> samples<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.198019</code></pre>
-</div>
-</div>
-</div>
 </div>
 <div class="subq">
 <p><strong>(c)</strong> &nbsp;&nbsp;Which method is better?</p>
-<div class="myanswers">
-<p><em>Solution.</em> The better answer is the one with the smaller varaince (or, equivalently, mean-square or root-mean-square error).</p>
-<p>For the basic method,</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(samples<span class="sc">^</span><span class="fl">2.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 28.03217</code></pre>
-</div>
-</div>
-<p>For the control variate method,</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(samples<span class="sc">^</span><span class="fl">2.1</span> <span class="sc">-</span> samples<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6907415</code></pre>
-</div>
-</div>
-<p>So the control variates method is much, much better.</p>
-</div>
 </div>
 </div>
 <div class="myq">
 <p><strong>8.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(Z\)</span> be a standard normal distribution. A statistician has been investigating Monte Carlo estimates of <span class="math inline">\(\mathbb EZ^k\)</span> for different positive integers values of <span class="math inline">\(k\)</span>. Her colleague suggests using <span class="math inline">\(Z' = -Z\)</span> as an antithetic variable. Without running any R code, explain whether or not this is a good idea <strong>(a)</strong> when <span class="math inline">\(k\)</span> is even; <strong>(b)</strong> when <span class="math inline">\(k\)</span> is odd.</p>
-<div class="myanswers">
-<p><em>Solution.</em></p>
-<p><strong>(a)</strong> When <span class="math inline">\(k\)</span> is even, we have <span class="math inline">\(Z^k = (-Z)^k\)</span>. So the antithetic variables method just repeats each sample twice. This is obviously no benefit at all, and just wastes time. Indeed, we have perfect positive correlation <span class="math inline">\(\rho = +1\)</span>, which is the “worst-case scenario”.</p>
-<p><strong>(b)</strong> When <span class="math inline">\(k\)</span> is odd, we have <span class="math inline">\(Z^k = -(-Z)^k\)</span>. In this case we know that <span class="math inline">\(\Ex Z^k = 0\)</span>, because the results for positive <span class="math inline">\(z\)</span> exactly balance out those for negative <span class="math inline">\(z\)</span>, so no Monte Carlo sampling is necessary. If our statistician has somehow forgotten that, though, she will get a pleasant surprise! After just two samples, she will get the estimate <span class="math display">\[\frac{1}{2} \big(Z_1^k + (-Z_1)^k \big) = \frac{1}{2} (Z_1^k - Z_1^k) = 0 ,\]</span> Thereby getting the result exactly right. Indeed, we have perfect negative correlation <span class="math inline">\(\rho = -1\)</span>, which is the “best-case scenario”.</p>
-</div>
 </div>
 
-
-
-</main> <!-- /main -->
+</main>
+<!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -913,15 +708,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="../lectures/L03-mc-error-1.html" class="pagination-link" aria-label="Monte Carlo error I: theory">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-  </div>
-</nav>
 </div> <!-- /content -->
 
 
