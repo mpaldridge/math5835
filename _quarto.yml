@@ -15,7 +15,7 @@ book:
         - lectures/L01-mc-intro.qmd
         - lectures/L02-mc-uses.qmd
         - lectures/L03-mc-error-1.qmd
-#        - lectures/L04-mc-error-2.qmd
+        - lectures/L04-mc-error-2.qmd
 #        - lectures/L05-cv.qmd
 #        - lectures/L06-antithetic-1.qmd
         - problems/P1.qmd

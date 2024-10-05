@@ -15,5 +15,3 @@ So our root-mean-square error can be approximated as
 RMSEest <- sqrt(var(samples > 2) / n)
 RMSEest
 ```
-
-Here we used R's `var()` function, which calculate the sample variance of some data.

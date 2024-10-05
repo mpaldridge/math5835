@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Matthew Aldridge">
-<meta name="dcterms.date" content="2024-09-30">
 
-<title>MATH5835M Statistical Computing</title>
+<title>4&nbsp; Monte Carlo error II: practice – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,26 +20,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./lectures/L01-mc-intro.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../problems/P1.html" rel="next">
+<link href="../lectures/L03-mc-error-1.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -70,8 +103,37 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="mystyle.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../mystyle.css">
 </head>
 
 <body class="nav-sidebar floating">
@@ -83,7 +145,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">About MATH5835</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L04-mc-error-2.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -98,7 +160,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">MATH5835</a> 
+      <a href="../">MATH5835</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -110,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About MATH5835</span></a>
   </div>
 </li>
@@ -125,31 +187,31 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L01-mc-intro.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L01-mc-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L04-mc-error-2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L04-mc-error-2.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./problems/P1.html" class="sidebar-item-text sidebar-link">
+  <a href="../problems/P1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 1</span></a>
   </div>
 </li>
@@ -160,56 +222,22 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#about-math5835" id="toc-about-math5835" class="nav-link active" data-scroll-target="#about-math5835">About MATH5835</a>
-  <ul class="collapse">
-  <li><a href="#organisation-of-math5835" id="toc-organisation-of-math5835" class="nav-link" data-scroll-target="#organisation-of-math5835">Organisation of MATH5835</a>
-  <ul class="collapse">
-  <li><a href="#lectures" id="toc-lectures" class="nav-link" data-scroll-target="#lectures">Lectures</a></li>
-  <li><a href="#problem-sheets-and-problem-classes" id="toc-problem-sheets-and-problem-classes" class="nav-link" data-scroll-target="#problem-sheets-and-problem-classes">Problem sheets and problem classes</a></li>
-  <li><a href="#coursework" id="toc-coursework" class="nav-link" data-scroll-target="#coursework">Coursework</a></li>
-  <li><a href="#office-hours" id="toc-office-hours" class="nav-link" data-scroll-target="#office-hours">Office hours</a></li>
-  <li><a href="#exam" id="toc-exam" class="nav-link" data-scroll-target="#exam">Exam</a></li>
-  </ul></li>
-  <li><a href="#content-of-math5835" id="toc-content-of-math5835" class="nav-link" data-scroll-target="#content-of-math5835">Content of MATH5835</a>
-  <ul class="collapse">
-  <li><a href="#necessary-background" id="toc-necessary-background" class="nav-link" data-scroll-target="#necessary-background">Necessary background</a></li>
-  <li><a href="#syllabus" id="toc-syllabus" class="nav-link" data-scroll-target="#syllabus">Syllabus</a></li>
-  <li><a href="#book" id="toc-book" class="nav-link" data-scroll-target="#book">Book</a></li>
-  </ul></li>
-  </ul></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L04-mc-error-2.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">MATH5835M Statistical Computing</h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Matthew Aldridge </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 30, 2024</p>
-    </div>
-  </div>
   
     
   </div>
@@ -219,98 +247,152 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="about-math5835" class="level1 unnumbered">
-<h1 class="unnumbered">About MATH5835</h1>
-<section id="organisation-of-math5835" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="organisation-of-math5835">Organisation of MATH5835</h2>
-<p>This module is <strong>MATH5835M Statistical Computing</strong>.</p>
-<p>This module lasts for 11 weeks from 30 September to 13 December 2024. The exam will take place between 13 and 24 January 2025.</p>
-<p>The module leader, the lecturer, and the main author of these notes is <a href="https://mpaldridge.github.io/">Dr Matthew Aldridge</a>. (You can call me “Matt”, “Matthew”, or “Dr Aldridge”, pronounced “<em>old</em>-ridge”.) My email address is <a href="mailto:m.aldridge@leeds.ac.uk">m.aldridge@leeds.ac.uk</a>, although I much prefer questions in person at office hours (see below) rather than by email.</p>
-<section id="lectures" class="level3">
-<h3 class="anchored" data-anchor-id="lectures">Lectures</h3>
-<p>The main way you will learn new material for this module is by attending lectures. There are three lectures per week:</p>
+<div class="hidden">
+<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
+\newcommand{\Ex}{\mathbb{E}}
+\newcommand{\Ind}{\mathbb{I}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
+</div>
+<!--
+## Recap
+
+Let's recap where we've got to. We know that the Monte Carlo estimator for $\theta = \Exg \phi(X)$ is 
+$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) .$$
+Last time, we saw that the Monte Carlo estimator is unbiased, and that its mean-square and root-mean-square errors are
+$$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) \qquad \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . $$
+We saw that these themselves can be estimated as $S^2/n$ and $S/\sqrt{n}$ respectively, where $S^2$ is the sample variance of the $\phi(X_i)$s.
+
+Let's do one more example before moving on.
+-->
+<div id="exm-MCprob2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 4.1</strong></span> In <a href="L02-mc-uses.html#exm-MCprob" class="quarto-xref">Example&nbsp;<span>2.1</span></a>, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span>, where <span class="math inline">\(Z\)</span> is a standard normal.</p>
+<p>Our code was</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.022686</code></pre>
+</div>
+</div>
+<p>So our root-mean-square error can be approximated as</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>RMSEest <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">/</span> n)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>RMSEest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0001489005</code></pre>
+</div>
+</div>
+</div>
+<!--
+## Confidence intervals
+
+So far, we have described our error tolerance in terms of the MSE or RMSE. But we could have talked about "confidence intervals" or "margins of error" instead. This might be easier to understand for non-mathematicians, for whom "root-mean-square error" doesn't really mean anything.
+
+Here, we will want to appeal to the central limit theorem approximation. A bit more probability revision: Let $Y_1, Y_2, \dots$ be IID again, with expectation $\mu$ and variance $\sigma^2$. Write $\overline Y_n$ for the mean. We've already reminded ourselves that $\mathbb E \overline Y_n = \mu$  and $\Var(\overline{Y}_n) = \sigma^2/n$. But the **central limit theorem** says that the distribution of $\overline Y_n$ is approximately normally distributed with those parameters, so $\overline Y_n \approx \operatorname{N}(\mu, \sigma^2/n)$ when $n$ is large. (This is an informal statement of the central limit theorem: you probably know some more formal ways to more precisely state the it, but this will do for us.)
+
+Recall that, in the normal distribution $\operatorname{N}(\mu, \sigma^2)$, we expect to be within $1.96$ standard deviations of the mean with 95% probability. More generally, the interval $[\mu - q_{1-\alpha/2}\sigma, \mu + q_{1-\alpha/2}\sigma]$, where $q_{1-\alpha/2}$ is the $(1- \frac{\alpha}{2})$-quantile of the normal distribution, contains the true value with probability approximately $1 - \alpha$.
+
+We can form an approximate confidence interval for a Monte Carlo estimate using this idea. We have our Monte Carlo estimator $\widehat{\theta}_n^\mathrm{MC}$ as our estimator of the $\mu$ parameter, and our estimator of the root-mean-square error $S/\sqrt{n}$ as our estimator of the $\sigma$ parameter. So our confidence interval is estimated as 
+$$\bigg[ \widehat{\theta}_n^\mathrm{MC} - q_{1-\alpha/2}\,\frac{S}{\sqrt{n}}, \ \widehat{\theta}_n^\mathrm{MC} + q_{1-\alpha/2}\,\frac{S}{\sqrt{n}} \bigg] . $$
+-->
+<div id="exm-MCprob3" class="theorem example">
+<p><span class="theorem-title"><strong>Example 4.2</strong></span> We continue the example of <a href="L02-mc-uses.html#exm-MCprob" class="quarto-xref">Example&nbsp;<span>2.1</span></a> and <a href="#exm-MCprob2" class="quarto-xref">Example&nbsp;<span>4.1</span></a>, where we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span> for <span class="math inline">\(Z\)</span> a standard normal.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>MCest   <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>RMSEest <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">/</span> n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Our confidence interval is estimates as follows</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>quant <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MCest <span class="sc">-</span> quant <span class="sc">*</span> RMSEest, MCest <span class="sc">+</span> quant <span class="sc">*</span> RMSEest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02244285 0.02302715</code></pre>
+</div>
+</div>
+</div>
+<!--
+## How many samples do I need?
+
+In our examples we've picked the number of samples $n$ for our estimator, then approximated the error based on that. But we could do things the other way around -- fix an error tolerance that we're willing to deal with, then work out what sample size we need to achieve it.
+
+We know that the root-mean-square error is
+$$ \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} $$
+So if we want to get the RMSE down to $\epsilon$, say, then this shows that we need
+$$ n = \frac{1}{\epsilon^2} \Var\big(\phi(X)\big) . $$
+
+We still have a problem here, though. We (usually) don't know $\Var(\phi(X))$. But we can't even *estimate* $\Var(\phi(X))$ until we've already taken the samples. But we can use this idea with a three-step process:
+
+1. Run an initial "pilot" Monte Carlo algorithm with a small number of samples $n$. Use the results of the "pilot" to estimate the variance $S^2 \approx \Var(\phi(X))$. We want $n$ small enough that this runs very quickly, but big enough that we get a reasonably OK estimate of the variance.
+
+1.  Pick a desired RMSE accuracy $\epsilon$. We now know that we require roughly $N = S^2 / \epsilon^2$ samples to get our desired accuracy.
+
+1. Run the "real" Monte Carlo algorithm with this big number of samples $N$. We will put up with this being quite slow, because we know we're definitely going to get the error tolerance we need.
+
+(We could potentially use further steps, where we now check the variance with the "real" big-$N$ samples, and, if we learn we had underestimated in Step 1, take even more samples to correct for this.)
+-->
+<div id="exm-MC22" class="theorem example">
+<p><span class="theorem-title"><strong>Example 4.3</strong></span> Let’s try this with <a href="L01-mc-intro.html#exm-MC2" class="quarto-xref">Example&nbsp;<span>1.2</span></a> from before. We were trying to estimate <span class="math inline">\(\mathbb{E}(\sin X)\)</span>, where <span class="math inline">\(X \sim \operatorname{N}(1, 2^2)\)</span>.</p>
+<p>We’ll start with just <span class="math inline">\(n = 1000\)</span> samples, for our pilot study.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>n_pilot <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_pilot, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>var_est <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">sin</span>(samples))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>var_est</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4900872</code></pre>
+</div>
+</div>
+<p>This was very quick! We won’t have got a super-accurate estimate of <span class="math inline">\(\mathbb E\phi(X)\)</span>, but we have a reasonable idea of roughly what <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span> is. This will allow us to pick out “real” sample size in order to get a root-mean-square error of <span class="math inline">\(10^{-4}\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>epsilon <span class="ot">&lt;-</span> <span class="fl">1e-4</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>n_real  <span class="ot">&lt;-</span> <span class="fu">round</span>(var_est <span class="sc">/</span> epsilon<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>n_real</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 49008721</code></pre>
+</div>
+</div>
+<p>This tells us that we will need about 50 million samples! This is a lot, but now we know we’re going to get the accuracy we want, so it’s worth it. (In this particular case, 50 million samples will only take a few second on a modern computer. But generally, once we know our code works and we know how many samples we will need for the desired accuracy, this is the sort of thing that we could leave running overnight or whatever.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_real, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">sin</span>(samples))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1139167</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>RMSEest <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(<span class="fu">sin</span>(samples)) <span class="sc">/</span> n_real)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>RMSEest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9.968996e-05</code></pre>
+</div>
+</div>
+<p>This was very slow, of course. But we see that we have indeed got our Monte Carlo estimate to (near enough) the desired accuracy.</p>
+</div>
+<!--
+We should note that the equation
+$$ n = \frac{1}{\epsilon^2} \Var\big(\phi(X)\big) $$
+is actually quite bad news. To get an RMSE of $\epsilon$ we need order $1/\epsilon^2$ samples. That's not good. Think of it like this: to *double* the accuracy we need to *quadruple* the number of samples. Even worse: to get "one more decimal place of accuracy" means dividing $\epsilon$ by ten; but that means multiplying the number of samples by one hundred!
+
+Wouldn't it be nice to have some better ways of increasing the accuracy of a Monte Carlo estimate besides just taking more and more samples?
+-->
+<p><strong>Next time:</strong> <em>We begin our study of clever “variance reduction” methods for Monte Carlo estimation.</em></p>
+<div class="mysummary">
+<p><strong>Summary:</strong></p>
 <ul>
-<li><p>Mondays at 1400 in Roger Stevens LT 13</p></li>
-<li><p>Thursdays at 1200 in Roger Stevens LT 03</p></li>
-<li><p>Fridays at 1000 in Rogers Stevens LT 09</p></li>
+<li><p>We can approximate confidence intervals for a Monte Carlo estimate by using a normal approximation.</p></li>
+<li><p>To get the root-mean-square error below <span class="math inline">\(\epsilon\)</span> we need <span class="math inline">\(n = \Var(\phi(X))/\epsilon^2\)</span> samples.</p></li>
+<li><p>We can use a two-step process, where a small “pilot” Monte Carlo estimation allows us to work out how many samples we will need for the big “real” estimation.</p></li>
 </ul>
-<p>I recommend taking your own notes during the lecture. I will put brief summary notes from the lectures on this website, but they will not reflect all the details I say out loud and write on the whiteboard. Lectures will go through material quite quickly and the material may be quite difficult, so it’s likely you’ll want to spend time reading through your notes after the lecture. Lectures should be recorded on the lecture capture system; I find it very difficult to read the whiteboard in these videos, but if you unavoidably miss a lecture, for example due to illness, you may find they are better than nothing.</p>
-<p>In Weeks 3, 5, 7, 9 and 11, the Thursday lecture will operate as a “problems class” – see more on this below.</p>
-<p>Attendance at lectures in compulsory.</p>
-</section>
-<section id="problem-sheets-and-problem-classes" class="level3">
-<h3 class="anchored" data-anchor-id="problem-sheets-and-problem-classes">Problem sheets and problem classes</h3>
-<p>Mathematics and statistics are “doing” subjects! To help you learn material for the module and to help you prepare for the exam, I will provide 5 unassessed problem sheets. These are for you to work through in your own time to help you learn; they are <em>not</em> formally assessed and will not be marked by me (or anyone else). You are welcome to discuss work on the problem sheets with colleagues and friends, although my recommendation would be to write-up your “last, best” attempt neatly by yourself.</p>
-<p>You should work through each problem sheet in preparation for the problems class in the Thursday lecture of Week 3, 5, 7, 9 and 11. In the problems class, you should be ready to discuss your answers to questions you managed to solve, explain your progress on questions you partially solved, and ask for help on questions you got stuck on. You can also ask for extra help or feedback at office hours (see below).</p>
-</section>
-<section id="coursework" class="level3">
-<h3 class="anchored" data-anchor-id="coursework">Coursework</h3>
-<p>There will be one piece of assessed coursework, which will make up 20% of your module mark.</p>
-<p>The coursework will be in the form of a worksheet. The worksheet will have some questions, mostly computational but also mathematical, and you will have to write a report containing your answers and computations.</p>
-<p>The assessed coursework will be introduced in the <strong>computer practical</strong> sessions in Week 9.</p>
-<p>The deadline for the coursework will be the penultimate day of the Autumn term, <strong>Thursday 12 December </strong> at 1400. Feedback and marks will be returned on Monday 13 January, the first day of the Spring term.</p>
-</section>
-<section id="office-hours" class="level3">
-<h3 class="anchored" data-anchor-id="office-hours">Office hours</h3>
-<p>I will run a weekly office hours drop-in session for feedback and consultation. You can come along if you want to talk to me about anything on the course, including if you’d like some feedback on your attempts at problem sheet questions. (For extremely short queries, you can approach me before or after lectures, but my response will often be: “Come to my office hours, and we can discuss it there!”)</p>
-<p>Office hours will happen on <strong>Mondays from 1500 to 1600</strong> – so directly after the Monday lecture – in my office, which is <strong>EC Stoner 9.10n</strong> on the 9th floor of the EC Stoner building. (One way my office is via the doors directly opposite the main entrance to the School of Mathematics. You can also get there from Staircase 1 on the Level 10 “red route” through EC Stoner, next to the Maths Satellite.) If you cannot make this time, contact me for an alternative arrangement.</p>
-</section>
-<section id="exam" class="level3">
-<h3 class="anchored" data-anchor-id="exam">Exam</h3>
-<p>There will be one exam, which will make up 80% of your module mark.</p>
-<p>The exam will be in the January 2025 exam period (13–24 January); the date and time will be announced in December. The exam will be in person and on campus.</p>
-<p>The exam will last 2 hours and 30 minutes. The exam will consist of 4 questions, all compulsory. You will be allowed to use a basic non-programmable calculator in the exam.</p>
-</section>
-</section>
-<section id="content-of-math5835" class="level2">
-<h2 class="anchored" data-anchor-id="content-of-math5835">Content of MATH5835</h2>
-<section id="necessary-background" class="level3">
-<h3 class="anchored" data-anchor-id="necessary-background">Necessary background</h3>
-<p>It is recommended that students should have completed at least two undergraduate level courses in probability and statistics, or something equivalent, although confidence and proficiency in basic material is more important than very deep knowledge. For Leeds undergraduates, the official prerequisite is <a href="https://webprod3.leeds.ac.uk/catalogue/dynmodules.asp?Y=202425&amp;M=MATH-2715">MATH2715 Statistical Methods</a>, although confidence and proficiency in the material of MATH1710 &amp; MATH1712 Probability and Statistics 1 &amp; 2 is probably more important.</p>
-<p>Some knowledge I will assume:</p>
-<ul>
-<li><p><strong>Probability:</strong> Basic rules of probability; random variables, both continuous and discrete; “famous” distributions (especially the normal distribution and the continuous uniform distribution); expectation, variance, covariance, correlation; law of large numbers and central limit theorem.</p></li>
-<li><p><strong>Statistics:</strong> Estimation of parameters; bias and error; sample mean and sample variance</p></li>
-</ul>
-<p>This module will also include an material on Markov chains. I won’t assume any pre-existing knowledge of this, and I will introduce all new material we need, but students who have studied Markov chains before (for example in the Leeds module MATH2750 Introduction to Markov Processes) may find a couple of lectures here are merely a reminder of things they already know.</p>
-<p>The lectures will include examples using the <strong>R</strong> program language. The coursework and problem sheets will require use of R. The exam, while just a “pencil and paper” exam, will require understanding and writing short portions of R code. We will assume basic R capability – that you can enter R commands, store R objects using the <code>&lt;-</code> assignment, and perform basic arithmetic with numbers and vectors. Other concepts will be introduced as necessary. If you want to use R on your own device, I recommend downloading (if you have not already) the <a href="https://cran.r-project.org">R programming language</a> and the <a href="https://posit.co/downloads/">program RStudio</a>. (These lecture notes were written in R using RStudio.)</p>
-</section>
-<section id="syllabus" class="level3">
-<h3 class="anchored" data-anchor-id="syllabus">Syllabus</h3>
-<p>We plan to cover the following topics in the module:</p>
-<ul>
-<li><p><strong>Monte Carlo estimation:</strong> definition and examples; bias and error; variance reduction techniques: control variates, antithetic variables, importance sampling. [9 lectures]</p></li>
-<li><p><strong>Random number generation:</strong> pseudo-random number generation using linear congruential generators; inverse transform method; rejection sampling [7 lectures]</p></li>
-<li><p><strong>Markov chain Monte Carlo</strong> (MCMC)<strong>:</strong> [7 lectures]</p>
-<ul>
-<li><p>Introduction to Markov chains in discrete and continuous space</p></li>
-<li><p>Metropolis–Hastings algorithm: definition; examples; MCMC in practice; MCMC for Bayesian statistics</p></li>
-</ul></li>
-<li><p><strong>Bootstrap:</strong> Empirical distribution; definition of the bootstrap; bootstrap error; bootstrap confidence intervals [4 lectures]</p></li>
-<li><p>Frequently-asked questions [1 lecture]</p></li>
-</ul>
-<p>Together with the 5 problems classes, this makes 33 lectures.</p>
-</section>
-<section id="book" class="level3">
-<h3 class="anchored" data-anchor-id="book">Book</h3>
-<p>The following book is strongly recommended for the module:</p>
-<ul>
-<li>J Voss, <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031"><em>An Introduction to Statistical Computing: A simulation-based approach</em></a>, Wiley Series in Computational Statistics, Wiley, 2014</li>
-</ul>
-<p>The library has <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">electronic access to this book</a> (and two paper copies).</p>
-<p>Dr Voss is a lecturer in the School of Mathematics and the University of Leeds, and has taught MATH5835 many times. <em>An Introduction to Statistical Computing</em> grew out of his lecture notes for this module, so the book is ideally suited for this module. My lectures will follow this book closely – specifically:</p>
-<ul>
-<li><p>Monte Carlo estimation: Sections 3.1–3.3</p></li>
-<li><p>Random number generation: Sections 1.1–1.4</p></li>
-<li><p>Markov chain Monte Carlo: Section 2.3 and Sections 4.1–4.3</p></li>
-<li><p>Bootstrap: Section 5.2</p></li>
-</ul>
-<p>For a second look at material, for preparatory reading, for optional extended reading, or for extra exercises, this book comes with my highest recommendation!</p>
+<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsections 3.2.2–3.2.4.</p>
+</div>
 
 
-</section>
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -735,10 +817,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../lectures/L03-mc-error-1.html" class="pagination-link" aria-label="Monte Carlo error I: theory">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./lectures/L01-mc-intro.html" class="pagination-link" aria-label="Introduction to Monte Carlo">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/P1.html" class="pagination-link" aria-label="Problem Sheet 1">
+        <span class="nav-page-text">Problem Sheet 1</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

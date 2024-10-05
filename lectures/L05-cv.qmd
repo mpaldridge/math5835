@@ -36,9 +36,9 @@ After you'd guessed, I gave the following hint: *Hint: The average time it takes
 
 So after the hint, the error of the class was reduced by 63%.
 
-Why did the hint help? We were trying to estimate $\theta^{\mathrm{DC}}$, the distance to D.C. But that's a big number, and the first estimates had a big error (over an hour, on average). After the hint, I expect most people thought something like this: "The answer $\theta^{\mathrm{DC}}$ is going to be similar to the $\theta^{\mathrm{NY}} = {}$8:10 to New York, but Washington D.C. is a bit further, so I should increase the number a bit, but not too much."
+Why did the hint help? We were trying to estimate $\theta^{\mathrm{DC}}$, the distance to D.C. But that's a big number, and the first estimates had a big error (over an hour, on average). After the hint, I expect most people thought something like this: "The answer $\theta^{\mathrm{DC}}$ is going to be similar to the $\theta^{\mathrm{NY}} =$ 8:10 to New York, but Washington D.C. is a bit further, so I should increase the number a bit, but not too much."
 
-To be more mathematical, we could write $$\theta^{\mathrm{DC}} = \theta^{\mathrm{DC}} + \big(\theta^{\mathrm{NY}} - \theta^{\mathrm{NY}}\big)= \underbrace{\big(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\big)}_{\text{small}} + \underbrace{\theta^{\mathrm{NY}}\vphantom{\big)}}_{\text{known}} . $$ In that equation, the second term, $\theta^{\mathrm{NY}} = {}$ 8:10 was completely known, so had error 0, while the first term $\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}$ (actually 19 minutes) was a small number, so only had a small error.
+To be more mathematical, we could write $$\theta^{\mathrm{DC}} = \theta^{\mathrm{DC}} + \big(\theta^{\mathrm{NY}} - \theta^{\mathrm{NY}}\big)= \underbrace{\big(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\big)}_{\text{small}} + \underbrace{\theta^{\mathrm{NY}}\vphantom{\big)}}_{\text{known}} . $$ In that equation, the second term, $\theta^{\mathrm{NY}} =$ 8:10 was completely known, so had error 0, while the first term $\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}$ (actually 19 minutes) was a small number, so only had a small error.
 
 This idea of improving an estimate by "anchoring" it to some known value is called **controlled estimation**. It is a very useful idea in statistics (and in life!).
 
@@ -159,4 +159,16 @@ This was a success! The variance roughly halved, from $`r round(MCvar, 2)`$ to $
 
 **Next time:** *We look at our second variance reduction technique: antithetic variables.*
 
+::: {.mysummary}
+**Summary:**
+
+* Variance reduction techniques attempt to improve on Monte Carlo estimation making the variance smaller.
+
+* If we know $\eta = \Exg \psi(X)$, then the  control variate Monte Carlo estimate is
+$$ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta.$$
+
+* The variance of the control variate Monte Carlo estimate is 
+$${\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}.$$
+
 **Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 3.3.3.
+:::

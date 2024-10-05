@@ -38,7 +38,7 @@ is usually close to the expectation $\Ex X$, at least if $n$ is big. Similarly, 
 $$ \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) $$
 should be close to $\Exg \phi(X)$.
 
-In this course we will write that $X_1, X_2, \dots, X_n$ is a "**random sample** from $X$" to mean that $X_1, X_2, \dots, X_n$ are IID with the same distribution as $X$.
+In this module we will write that $X_1, X_2, \dots, X_n$ is a "**random sample** from $X$" to mean that $X_1, X_2, \dots, X_n$ are IID with the same distribution as $X$.
 
 ::: {#def-MCest}
 Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Then the **Monte Carlo estimator** $\widehat\theta_n^{\mathrm{MC}}$ of $\theta$ is
@@ -46,15 +46,13 @@ $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$
 where $X_1, X_2, \dots, X_n$ are a random sample from $X$.
 :::
 
-While general ideas for estimating using simulation go back a long time, the modern theory of Monte Carlo estimation was developed by the physicists [Stanislaw Ulam](https://en.wikipedia.org/wiki/Stanisław_Ulam) and [John von Neumann](John von Neumann). Ulam (who was Polish) and von Neumann (who was Hungarian) moved to the US in the early 1940s to work on the Manhattan project to build the atomic bomb (as made famous by the film Oppenheimer). Later in the 1940s, they worked together in the Los Alamos National Laboratory continuing their research on nuclear weapons, where they used simulations on early computers to help them numerically solve difficult mathematical and physical problems.
+While general ideas for estimating using simulation go back a long time, the modern theory of Monte Carlo estimation was developed by the physicists [Stanislaw Ulam](https://en.wikipedia.org/wiki/Stanisław_Ulam) and [John von Neumann](https://en.wikipedia.org/wiki/John_von_Neumann). Ulam (who was Polish) and von Neumann (who was Hungarian) moved to the US in the early 1940s to work on the Manhattan project to build the atomic bomb (as made famous by the film Oppenheimer). Later in the 1940s, they worked together in the Los Alamos National Laboratory continuing their research on nuclear weapons, where they used simulations on early computers to help them numerically solve difficult mathematical and physical problems.
 
 The name "Monte Carlo" was chosen because the use of randomness to solve such problems reminded them of gamblers in the casinos of Monte Carlo, Monaco. Ulam and von Neumann also worked closely with another colleague Nicholas Metropolis, whose work we will study later in this module.
 
 ## Examples
 
 Let's see some simple examples of Monte Carlo estimation using R.
-
-
 
 :::: {#exm-MCexp}
 {{< include ../examples/L01-1-MCexp.qmd >}}

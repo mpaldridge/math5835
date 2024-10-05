@@ -196,7 +196,7 @@ If this is 0, then $\mathbb P(X \in A \text{ and } X \in B) = \mathbb P(X \in A)
 :::: {.subq}
 **(a)**   Estimate $\mathbb EX^{2.1}$ using the standard Monte Carlo method.
 
-::: {.myanswer}
+::: {.myanswers}
 ```{r}
 n <- 1e6
 samples <- rexp(n, 1)
