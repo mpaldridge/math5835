@@ -5,6 +5,7 @@ n <- 1e6
 samples <- rnorm(n)
 MCest   <- mean(samples > 2)
 RMSEest <- sqrt(var(samples > 2) / n)
+MCest
 ```
 
 Our confidence interval is estimates as follows

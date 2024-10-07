@@ -1,6 +1,6 @@
 Suppose we want to approximate the integral $$ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x . $$
 
-Since this is an integral on the finite interval $[0,2]$, it would seem to make sense to pick $X$ to be uniform on $[0,2]$. This means we should take $$\phi(x) = \frac{h(x)}{f(x)} = (2-0)h(x) = 2\,x^{1.6}(1-x)^{0.7}.$$ We can then approximate this integral in R using the Monte Carlo estimator $$ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x = \operatorname{\mathbb{E}} \phi(X) \approx \frac{1}{n} \sum_{i=1}^n 2\,X_i^{1.6} (2-X_i)^{0.7} . $$
+Since this is an integral on the finite interval $[0,2]$, it would seem to make sense to pick $X$ to be uniform on $[0,2]$. This means we should take $$\phi(x) = \frac{h(x)}{f(x)} = (2-0)h(x) = 2\,x^{1.6}(2-x)^{0.7}.$$ We can then approximate this integral in R using the Monte Carlo estimator $$ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x = \operatorname{\mathbb{E}} \phi(X) \approx \frac{1}{n} \sum_{i=1}^n 2\,X_i^{1.6} (2-X_i)^{0.7} . $$
 
 ```{r}
 n <- 1e6

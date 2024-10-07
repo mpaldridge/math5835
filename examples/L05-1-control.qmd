@@ -1,0 +1,39 @@
+Let's try to estimate $\Ex \cos(X)$, where $X \sim \operatorname{N}(0,1)$ is a standard normal distribution.
+
+We could do this the "usual" Monte Carlo way.
+
+```{r}
+n <- 1e6
+phi <- function(x) cos(x)
+samples <- rnorm(n)
+MCest <- mean(phi(samples))
+MCest
+```
+
+But we could see if we can do better with a control variate. But what should we pick for the control function $\psi$? We want something that's similar to $\phi(x) = \cos(x)$, but where we can actually calculate the expectation.
+
+Here's a suggestion. If we remember our [Taylor series](https://en.wikipedia.org/wiki/Taylor_series), we know that, for $x$ near $0$, $$ \cos x \approx 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots . $$ So how about taking the first two nonzero terms in the Taylor series $$ \psi(x) = 1 - \frac{x^2}{2} . $$ That is quite close to $\cos x$, at least for the values of $x$ near 0 that $X \sim \operatorname{N}(0,1)$ is most likely to take.
+
+```{r taylor}
+#| code-fold: true
+curve(
+  cos(x), from = -4.5, to = 4.5,
+  col = "blue", lwd = 3,
+  xlab = "x", ylab = "", xlim = c(-4,4), ylim = c(-1.2,1.2)
+)
+curve(1 - x^2 / 2, add = TRUE, col = "red", lwd = 2)
+legend(
+  "topright", c("cos x", expression(1 - x^2 / 2)),
+  lwd = c(3, 2), col = c("blue", "red")
+)
+```
+
+Not only that, but we know that for $Y \sim \operatorname{N}(\mu, \sigma^2)$ we have $\Ex Y^2 = \mu^2 + \sigma^2$. So $$ \Exg \psi(X) = \Exg \left(1 - \frac{X^2}{2} \right) = 1 - \frac{\Ex X^2}{2} = 1 - \frac{0^2 + 1}{2} = \frac12 . $$
+
+So our control variate estimate is:
+
+```{r}
+psi <- function(x) 1 - x^2 / 2
+CVest <- mean(phi(samples) - psi(samples)) + 1/2
+CVest
+```

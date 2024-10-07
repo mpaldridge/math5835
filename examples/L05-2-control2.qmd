@@ -1,0 +1,21 @@
+We return to @exm-control, where we were estimating $\Ex \cos(X)$ for $X \sim \operatorname{N}(0,1)$.
+
+The naive Monte Carlo estimate had variance and root-mean-square error
+
+```{r}
+n <- 1e6
+phi <- function(x) cos(x)
+samples <- rnorm(n)
+MCvar <- var(phi(samples))
+c(MCvar, sqrt(MCvar / n))
+```
+
+The variance and root-mean-square error of our control variate estimate, on the other hand, are
+
+```{r}
+psi <- function(x) 1 - x^2 / 2
+CVvar <- var(phi(samples) - psi(samples))
+c(CVvar, sqrt(CVvar / n))
+```
+
+This was a success! The variance roughly halved, from $`r round(MCvar, 2)`$ to $`r round(CVvar, 2)`$. This meant the root-mean-square went down by about a third, from $`r signif(sqrt(MCvar / n), 2)`$ to $`r signif(sqrt(CVvar / n), 2)`$.

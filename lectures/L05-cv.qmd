@@ -2,21 +2,21 @@
 
 {{< include ../_header.qmd >}}
 
+<!--
 ## Variance reduction
 
 Let's recap where we've got to. The Monte Carlo estimator of $\theta = \Exg \phi(X)$ is $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i), $$ where $X_1, X_2, \dots, X_n$ are IID random samples from $X$. The mean-square error of this estimator is $${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . $$
-
-If we want a more accurate estimate, we can just take more samples $n$. But the problem is that the root-mean-square error scales like $1/\sqrt{n}$. To double the accuracy, we need four times as many samples; for one more decimal place of accuracy, we need one hundred times as many samples. And it's generating the samples that takes time, money, energy, etc.
+If we want a more accurate estimate, we can just take more samples $n$. But the problem is that the root-mean-square error scales like $1/\sqrt{n}$. To double the accuracy, we need four times as many samples; for one more decimal place of accuracy, we need one hundred times as many samples.
 
 Are there other ways we could reduce the error of Monte Carlo estimation, so we need fewer samples? That is, can we use some mathematical ingenuity to adapt the Monte Carlo estimate to one with a smaller error?
 
 Well, the mean-square error is the variance divided by $n$. So if we can't (or don't want to) increase $n$, perhaps we can *decrease* the *variance* instead? Strategies to do this are called **variance reduction strategies**. In this module, we will look at three variance reduction strategies:
 
--   **Control variate:** We can "anchor" our estimate of $\Exg \phi(X)$ to a similar but easier-to-calculate value $\Exg \psi(X)$. \[This lecture\]
+-   **Control variate:** We can "anchor" our estimate of $\Exg \phi(X)$ to a similar but easier-to-calculate value $\Exg \psi(X)$. (This lecture)
 
--   **Antithetic variables:** Instead of using independent samples, we could use correlated samples. If the correlation is negative this can improve our estimate. \[Lectures 6 and 7\]
+-   **Antithetic variables:** Instead of using independent samples, we could use correlated samples. If the correlation is negative this can improve our estimate. (Lectures 6 and 7)
 
--   **Importance sampling:** Instead of sampling from $X$, sample from some other more suitable distribution instead, then readjust the answer we get. \[Lectures 8 and 9\]
+-   **Importance sampling:** Instead of sampling from $X$, sample from some other more suitable distribution instead, then readjust the answer we get. (Lectures 8 and 9)
 
 ## Control variate estimation
 
@@ -50,47 +50,11 @@ Here, $\psi(X)$ is known as the **control variate**.
 Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Let $\psi$ be a function such that $\eta = \Exg\psi(X)$ is known. Suppose that $X_1, X_2, \dots, X_n$ are a random sample from $X$. Then the **control variate Monte Carlo estimate** $\widehat\theta_n^{\mathrm{CV}}$ of $\theta$ is $$ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta . $$
 :::
 
+-->
 ::: {#exm-control}
-Let's try to estimate $\Ex \cos(X)$, where $X \sim \operatorname{N}(0,1)$ is a standard normal distribution.
-
-We could do this the "usual" Monte Carlo way.
-
-```{r}
-n <- 1e6
-phi <- function(x) cos(x)
-samples <- rnorm(n)
-MCest <- mean(phi(samples))
-MCest
-```
-
-But we could see if we can do better with a control variate. But what should we pick for the control function $\psi$? We want something that's similar to $\phi(x) = \cos(x)$, but where we can actually calculate the expectation.
-
-Here's a suggestion. If we remember our Taylor series, we know that, for $x$ near $0$, $$ \cos x \approx 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots . $$ So how about taking the first two nonzero terms in the Taylor series $$ \psi(x) = 1 - \frac{x^2}{2} . $$ That is quite close to $\cos x$, at least for the values of $x$ near 0 that $X \sim \operatorname{N}(0,1)$ is most likely to take.
-
-```{r taylor}
-#| code-fold: true
-curve(
-  cos(x), from = -4.5, to = 4.5,
-  col = "blue", lwd = 3,
-  xlab = "x", ylab = "", xlim = c(-4,4), ylim = c(-1.2,1.2)
-)
-curve(1 - x^2 / 2, add = TRUE, col = "red", lwd = 2)
-legend(
-  "topright", c("cos x", expression(1 - x^2 / 2)),
-  lwd = c(3, 2), col = c("blue", "red")
-)
-```
-
-Not only that, but we know that for $Y \sim \operatorname{N}(\mu, \sigma^2)$ we have $\Ex Y^2 = \mu^2 + \sigma^2$. So $$ \Exg \psi(X) = \Exg \left(1 - \frac{X^2}{2} \right) = 1 - \frac{\Ex X^2}{2} = 1 - \frac{0^2 + 1}{2} = \frac12 . $$
-
-So our control variate estimate is:
-
-```{r}
-psi <- function(x) 1 - x^2 / 2
-CVest <- mean(phi(samples) - psi(samples)) + 1/2
-CVest
-```
+{{< include ../examples/L05-1-control.qmd >}}
 :::
+<!--
 
 ## Error of control variate estimate
 
@@ -108,7 +72,7 @@ Let $X$ be a random variable, $\phi$ a function, and $\theta = \Exg\phi(X)$. Let
 4.  The root-mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is ${\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{\sqrt{n}} \operatorname{sd}\big(\phi(X) - \psi(X)\big)}$.
 :::
 
-::: proof
+::: {.proof}
 This is very similar to @thm-MCerr, so we'll just sketch the important differences.
 
 In part 1, we have
@@ -133,28 +97,11 @@ For part 2, remembering that $\eta = \Exg \psi(X)$ is a constant, so doesn't aff
 Parts 3 and 4 follow in the usual way.
 :::
 
+This tells us that a control variate Monte Carlo estimate is good when the variance of $\phi(X) - \psi(X)$. This variance is likely to be small if $\phi(X) - \psi(X)$ is usually small -- although, to be more precise, it's more important for $\phi(X) - \psi(X)$ to be *consistent*, rather than small per se.
+-->
+
 ::: {#exm-control2}
-We return to @exm-control, where we were estimating $\Ex \cos(X)$ for $X \sim \operatorname{N}(0,1)$.
-
-The naive Monte Carlo estimate had variance and root-mean-square error
-
-```{r}
-n <- 1e6
-phi <- function(x) cos(x)
-samples <- rnorm(n)
-MCvar <- var(phi(samples))
-c(MCvar, sqrt(MCvar / n))
-```
-
-The variance and root-mean-square error of our control variate estimate, on the other hand, are
-
-```{r}
-psi <- function(x) 1 - x^2 / 2
-CVvar <- var(phi(samples) - psi(samples))
-c(CVvar, sqrt(CVvar / n))
-```
-
-This was a success! The variance roughly halved, from $`r round(MCvar, 2)`$ to $`r round(CVvar, 2)`$. This meant the root-mean-square went down by about a third, from $`r signif(sqrt(MCvar / n), 2)`$ to $`r signif(sqrt(CVvar / n), 2)`$.
+{{< include ../examples/L05-2-control2.qmd >}}
 :::
 
 **Next time:** *We look at our second variance reduction technique: antithetic variables.*
