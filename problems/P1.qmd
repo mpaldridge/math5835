@@ -7,9 +7,9 @@ display: none !important;
 </style>
 
 ::: {.mysummary}
-This is Problem Sheet 1, which covers material from Lectures 1 to 6. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of **Thursday 17 October**.
+This is Problem Sheet 1, which covers material from Lectures 1 to 6. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of **Thursday 17 October**. If you are stuck on any of the questions, you are welcome to discuss them with me in my office hours on Mondays at 1500.
 
-This problem sheet is to help you practice material from the module. It is not for assessment and will not be marked. However, you can get feedback on your work by: (a) being well prepared for the problems class, by making attempts at all questions in advance; (b) speaking up in the problems class, asking for clarification where things aren't clear and offering ideas on how to solve the questions; (c) discussing your work with colleagues and friends; (d) coming along to my office hours on Mondays at 1500; (e) studying the full solutions when they are released and comparing with your own attempts.
+This problem sheet is to help you practice material from the module. It is *not* for assessment and will not be marked. However, you can get feedback on your work by: (a) being well prepared for the problems class, by making attempts at all questions in advance; (b) speaking up in the problems class, asking for clarification where things aren't clear and offering ideas on how to solve the questions; (c) discussing your work with colleagues and friends; (d) coming along to my office hours on Mondays at 1500; (e) studying the full solutions when they are released and comparing with your own attempts.
 
 Many of these questions will require use of the [R programming language](https://cran.r-project.org) (for example, by using the [program RStudio](https://posit.co/downloads/)).
 

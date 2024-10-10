@@ -1,0 +1,20 @@
+Recall @exm-MCprob (continued in @exm-MCprob2 and @exm-MCprob3). Here, we were estimating $\mathbb P(Z > 2)$ for $Z$ a standard normal.
+
+The basic Monte Carlo estimate was
+
+```{r}
+n <- 1e6
+samples <- rnorm(n)
+MCest   <- mean(samples > 2)
+MCest
+```
+
+Can we improve this estimate with an antithetic variable? Well, if $Z$ is a standard normal, then $Z' = -Z$ is also standard normal and is not independent of $Z$. So maybe that could work as an antithetic variable. Let's try
+
+```{r}
+n <- 1e6
+samples_a <- rnorm(n / 2)
+samples_b <- -samples_a
+AVest <- (1 / n) * sum((samples_a > 2) + (samples_b > 2))
+AVest
+```

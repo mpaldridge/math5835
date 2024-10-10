@@ -18,4 +18,6 @@ CV_MSE <- var(phi(samples) - psi(samples)) / n
 c(CV_MSE, sqrt(CV_MSE))
 ```
 
-This was a success! The mean-square error roughly halved, from $`r signif(MC_MSE, 2)`$ to $`r signif(CV_MSE, 2)`$. This meant the root-mean-square went down by about a third, from $`r signif(sqrt(MC_MSE), 2)`$ to $`r signif(sqrt(CV_MSE), 2)`$. This is the same amount of error reduction as we would get from doubling $n$, which we got "for free" by using the control variate.
+This was a success! The mean-square error roughly halved, from $`r signif(MC_MSE, 2)`$ to $`r signif(CV_MSE, 2)`$. This meant the root-mean-square went down by about a third, from $`r signif(sqrt(MC_MSE), 2)`$ to $`r signif(sqrt(CV_MSE), 2)`$.
+
+Halving the mean-square error would normally have required doubling the number of samples $n$, so we have effectively doubled the sample size by using the control variate.

@@ -35,6 +35,7 @@ mean(samples^4)
 *Solution.* By looking at `?pmax` (or maybe searching on Google) I discovered that `pmax()` gives the "parallel maxima" of two (or more vectors). That is the first element is the maximum of all the first elements of the vectors; the second element is the maximum of all the second elements of the vectors; and so on.
 
 So I used the R code
+
 ```{r}
 n <- 1e6
 xsamples <- rnorm(n)
@@ -88,6 +89,7 @@ So we need
 $$n = \frac{0.169}{(10^{-6})^2} \approx 169 \text{ billion} . $$
 
 That said, if we are trapped on our desert island, maybe we don't know what $\frac{\pi}{4}(1 - \frac{\pi}{4})$ is. In that case we could do this using the can and the box. Our estimate of the variance is
+
 ```{r}
 var_est <- var(in_box(rain_x, rain_y))
 var_est / (1e-6)^2
