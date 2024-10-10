@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Monte Carlo error I: theory – MATH5835M Statistical Computing</title>
+<title>6&nbsp; Antithetic variables I – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L04-mc-error-2.html" rel="next">
-<link href="../lectures/L02-mc-uses.html" rel="prev">
+<link href="../problems/P1.html" rel="next">
+<link href="../lectures/L05-cv.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +111,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L03-mc-error-1.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L06-antithetic-1.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -199,7 +165,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span></a>
   </div>
 </li>
@@ -217,7 +183,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L06-antithetic-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L06-antithetic-1.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span></a>
   </div>
 </li>
@@ -239,18 +205,18 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#estimation-error" id="toc-estimation-error" class="nav-link active" data-scroll-target="#estimation-error"><span class="header-section-number">3.1</span> Estimation error</a></li>
-  <li><a href="#bias-and-error-of-the-monte-carlo-estimator" id="toc-bias-and-error-of-the-monte-carlo-estimator" class="nav-link" data-scroll-target="#bias-and-error-of-the-monte-carlo-estimator"><span class="header-section-number">3.2</span> Bias and error of the Monte Carlo estimator</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">3.3</span> Example</a></li>
+  <li><a href="#estimation-with-correlation" id="toc-estimation-with-correlation" class="nav-link active" data-scroll-target="#estimation-with-correlation"><span class="header-section-number">6.1</span> Estimation with correlation</a></li>
+  <li><a href="#monte-carlo-with-antithetic-variables" id="toc-monte-carlo-with-antithetic-variables" class="nav-link" data-scroll-target="#monte-carlo-with-antithetic-variables"><span class="header-section-number">6.2</span> Monte Carlo with antithetic variables</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">6.3</span> Example</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L03-mc-error-1.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L06-antithetic-1.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></h1>
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></h1>
 </div>
 
 
@@ -275,97 +241,40 @@ window.Quarto = {
 \newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
 </div>
-<section id="estimation-error" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="estimation-error"><span class="header-section-number">3.1</span> Estimation error</h2>
-<p>Today we are going to analysing the accuracy of Monte Carlo estimation. But before talking about Monte Carlo estimation specifically, let’s first remind ourselves of some concepts about error in statistical estimation more generally. We will use the following definitions.</p>
-<div id="def-stats" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 3.1</strong></span> Let <span class="math inline">\(\widehat\theta\)</span> be an estimator of a parameter <span class="math inline">\(\theta\)</span>. Then we have the following definitions of the estimate <span class="math inline">\(\widehat\theta\)</span>:</p>
+<section id="estimation-with-correlation" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="estimation-with-correlation"><span class="header-section-number">6.1</span> Estimation with correlation</h2>
+<p>This lecture and the next, we will be looking at our second variance reduction method for Monte Carlo estimation. “Antithetic” refers to a way of using negative correlation to reduce the variance an estimator.</p>
+<p>Let’s start with the simple example of estimating an expectation from <span class="math inline">\(n = 2\)</span> samples. Suppose <span class="math inline">\(Y\)</span> has expectation <span class="math inline">\(\mu = \Ex Y\)</span> and variance <span class="math inline">\(\Var(Y) = \sigma^2\)</span>. Suppose <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are independent samples from <span class="math inline">\(Y\)</span>. Then the Monte Carlo estimator is <span class="math display">\[ \overline Y = \tfrac12(Y_1 + Y_2) . \]</span> This estimator is unbiased, since <span class="math display">\[ \Ex \overline Y = \Ex \big(\tfrac12(Y_1 + Y_2)\big) = \tfrac12 ( \Ex Y_1 + \Ex Y_2 ) = \tfrac12 (\mu + \mu) = \mu . \]</span> Thus the mean-square error equals the variance, which is <span class="math display">\[ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) \big)= \tfrac14 (\sigma^2 + \sigma^2) = \tfrac12 \sigma^2 . \]</span></p>
+<p>But what if <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> still have the same distribution as <span class="math inline">\(Y\)</span> but now are <em>not</em> independent? The expectation is still the same, so the estimator is still unbiased. But the variance (and hence mean-square error) is now <span class="math display">\[ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) + 2 \Cov(Y_1, Y_2) \big) . \]</span> Write <span class="math inline">\(\rho\)</span> for the correlation <span class="math display">\[ \rho = \Corr(Y_1, Y_2) = \frac{\Cov(Y_1, Y_2)}{\sqrt{\Var(Y_1) \Var(Y_2)}} = \frac{\Cov(Y_1, Y_2)}{\sqrt{\sigma^2 \times \sigma^2}} = \frac{\Cov(Y_1, Y_2)}{\sigma^2} . \]</span> (Remember that <span class="math inline">\(-1 \leq \rho \leq +1\)</span>.) Then the variance is <span class="math display">\[ \Var \big( \overline Y\big) = \tfrac14 ( \sigma^2 + \sigma^2 + 2 \rho \sigma^2 ) = \frac{1+\rho}{2} \,\sigma^2 . \]</span></p>
+<p>We can compare this with the variance <span class="math inline">\(\frac12 \sigma^2\)</span> from the independent-sample case:</p>
 <ul>
-<li><p>The <strong>bias</strong> is <span class="math inline">\(\operatorname{bias}\big(\widehat\theta\big) = \mathbb E\big(\widehat\theta - \theta\big)  = \mathbb E\widehat\theta - \theta\)</span>.</p></li>
-<li><p>The <strong>mean-square error</strong> is <span class="math inline">\(\operatorname{MSE}\big(\widehat\theta\big) = \mathbb E \big(\widehat\theta - \theta\big)^2\)</span>.</p></li>
-<li><p>The <strong>root-mean-square error</strong> is the square-root of the mean-square error, <span class="math display">\[\operatorname{RMSE}\big(\widehat\theta\big) = \sqrt{\operatorname{MSE}(\widehat\theta)} = \sqrt{\mathbb E (\widehat\theta - \theta)^2} . \]</span></p></li>
+<li><p>If <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are <strong>positively correlated</strong>, in that <span class="math inline">\(\rho &gt; 0\)</span>, then the variance, and hence the mean-square error, has got bigger. This means the estimator is worse. This is because, with positive correlation, errors compound each other – if one sample is bigger than average, then the other one is likely to be bigger than average too; while if one sample is smaller than average, then the other one is likely to be smaller than average too.</p></li>
+<li><p>If <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are <strong>negatively correlated</strong>, in that <span class="math inline">\(\rho &lt; 0\)</span>, then the variance, and hence the mean-square error, has got smaller. This means the estimator is better. This is because, with negative correlation, errors compensate for each other – if one sample is bigger than average, then the other one is likely to be smaller than average, which will help “cancel out” the error.</p></li>
 </ul>
-</div>
-<p>Usually, the main goal of estimation is to get the mean-square error of an estimate as small as possible. This is because the MSE measures by what distance we are missing on average. It can be more convenient to discuss the root-mean-square error, as that has the same units as the parameter being measured. (If <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\widehat{\theta}\)</span> are in metres, say, then the MSE is in metres-squared, whereas the RMSE error is in metres again.)</p>
-<p>It’s nice to have an unbiased estimator – that is, one with bias 0. This is because bias measures any systematic error in a particular direction. However, unbiasedness by itself is not enough for an estimate to be good – we need low variance too. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the right, then claims to have “hit the target on average.”)</p>
-<p>(Remember also that “bias” is simply the word statisticians use for <span class="math inline">\(\mathbb E(\widehat\theta - \theta)\)</span>; we don’t mean “bias” in the derogatory way it is sometimes used in political arguments, for example.)</p>
-<p>You probably also remember the relationship between the mean-square error, the bias, and the variance:</p>
-<div id="thm-MSE-bias" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 3.1</strong></span> &nbsp; <span class="math inline">\(\operatorname{MSE}\big(\widehat\theta\big) = \operatorname{bias}\big(\widehat\theta\big)^2 + \operatorname{Var}\big(\widehat\theta\big)\)</span>.</p>
-</div>
-<p>(There’s a proof in <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Proposition 3.14, if you’ve forgotten.)</p>
-<p>Since the bias contributes to the mean-square error, that’s another reason to like estimator with low – or preferably zero – bias. (That said, there are some situations where there’s a “bias–variance tradeoff”, where allowing some bias reduces the variance and so can reduce the MSE. It turns out that Monte Carlo is not one of these cases, however.)</p>
 </section>
-<section id="bias-and-error-of-the-monte-carlo-estimator" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="bias-and-error-of-the-monte-carlo-estimator"><span class="header-section-number">3.2</span> Bias and error of the Monte Carlo estimator</h2>
-<p>In this lecture, we’re going to be looking more carefully at the size of the errors made by the Monte Carlo estimator <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) . \]</span></p>
-<p>Our main result is the following.</p>
-<div id="thm-MCerr" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 3.2</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) \]</span> be the Monte Carlo estimator of <span class="math inline">\(\theta\)</span>. Then:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is unbiased, in that <span class="math inline">\(\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = 0\)</span>.</p></li>
-<li><p>The variance of of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>The mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>The root-mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math display">\[{\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} = \frac{1}{\sqrt{n}} \operatorname{sd}\big(\phi(X)\big)}. \]</span></p></li>
-</ol>
+<section id="monte-carlo-with-antithetic-variables" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="monte-carlo-with-antithetic-variables"><span class="header-section-number">6.2</span> Monte Carlo with antithetic variables</h2>
+<p>We have seen that negative correlation helps improve estimation from <span class="math inline">\(n=2\)</span> samples. How can we make this work in our favour for Monte Carlo simulation with more samples?</p>
+<p>We will look at the idea of <strong>antithetic pairs</strong>. So instead of taking <span class="math inline">\(n\)</span> samples <span class="math display">\[ X_1, X_2, \dots, X_n \]</span> that are all independent of each other, we will take <span class="math inline">\(n/2\)</span> pairs of samples <span class="math display">\[ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X'_{n/2})  \]</span> (which makes <span class="math inline">\(n/2 \times 2 = n\)</span> samples overall, of course). Here, <em>within</em> each pair, <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_i'\)</span> are <em>not</em> independent, but <em>between</em> different pairs, <span class="math inline">\((X_i, X_i')\)</span> and <span class="math inline">\((X_j, X'_j)\)</span> <em>are</em> independent.</p>
+<div id="def-AV" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 6.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(X'\)</span> have the same distribution as <span class="math inline">\(X\)</span> (but not necessarily be independent of it). Suppose that <span class="math inline">\((X_1, X_1')\)</span>, <span class="math inline">\((X_2, X_2')\)</span>, <span class="math inline">\(\dots\)</span>, <span class="math inline">\((X_{n/2}, X'_{n/2})\)</span> are be a random sample from <span class="math inline">\((X, X')\)</span>. Then the <strong>antithetic variables Monte Carlo estimator</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{AV}}\)</span> of <span class="math inline">\(\theta\)</span> is <span class="math display">\[\begin{align*} \widehat{\theta}_n^{\mathrm{AV}} &amp;= \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) \\
+&amp;= \frac{1}{2} \left( \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i) + \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i') \right).
+\end{align*}\]</span></p>
 </div>
-<p>Before we get to the proof, let’s recap some relevant probability.</p>
-<p>Let <span class="math inline">\(Y_1, Y_2, \dots\)</span> be IID random variables with common expectation <span class="math inline">\(\mathbb EY_1 = \mu\)</span> and common variance <span class="math inline">\(\operatorname{Var}(Y_1) = \sigma^2\)</span>. Consider the mean of the first <span class="math inline">\(n\)</span> random variables, <span class="math display">\[ \overline{Y}_n = \frac{1}{n} \sum_{i=1}^n Y_i . \]</span> Then the expectation of <span class="math inline">\(\overline{Y}_n\)</span> is <span class="math display">\[ \mathbb E \overline{Y}_n = \mathbb E\left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \frac{1}{n}
-\sum_{i=1}^n \mathbb{E}Y_i = \frac{1}{n}\,n\mu = \mu . \]</span> The variance of <span class="math inline">\(\overline{Y}_n\)</span> is <span class="math display">\[ \operatorname{Var}\big(  \overline{Y}_n \big)= \operatorname{Var} \left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \bigg(\frac{1}{n}\bigg)^2
-\sum_{i=1}^n \operatorname{Var}(Y_i) = \frac{1}{n^2}\,n\sigma^2 = \frac{\sigma^2}{n} , \]</span> where, for this one, we used the independence of the random variables.</p>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>Apply the probability facts from above with <span class="math inline">\(Y = \phi(X)\)</span>. This gives:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex \overline Y_n = \Ex Y = \Exg \phi(X)\)</span>, so <span class="math inline">\(\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0\)</span>.</p></li>
-<li><p><span class="math inline">\({\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \operatorname{Var}\big(\overline Y_n\big) = \frac{1}{n} \operatorname{Var}(Y) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>Using <a href="#thm-MSE-bias" class="quarto-xref">Theorem&nbsp;<span>3.1</span></a>, <span class="math display">\[\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}})^2 + \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = 0^2 + \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) . \]</span></p></li>
-<li><p>Take the square root of part 3.</p></li>
-</ol>
-</div>
-<p>There’s a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we <em>couldn’t</em> calculate <span class="math inline">\(\Exg \phi(X)\)</span>. So it seems very unlikely we’ll be able to calculate the variance <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span> either.</p>
-<p>But we <em>can</em> estimate the variance from our samples too: by taking the sample variance of our samples <span class="math inline">\(\phi(x_i)\)</span>. That is, we can estimate the variance of the Monte Carlo estimator by <span class="math display">\[ S^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(X_i) - \widehat{\theta}_n^{\mathrm{MC}} \big)^2 . \]</span> Then we can similarly estimate the mean-square and root-mean-square errors by <span class="math display">\[ \text{MSE} \approx \frac{1}{n}S^2 \qquad \text{and} \qquad \text{RMSE} \approx \sqrt{\frac{1}{n} S^2} = \frac{1}{\sqrt{n}}S  \]</span> respectively.</p>
 </section>
-<section id="example" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="example"><span class="header-section-number">3.3</span> Example</h2>
-<div id="exm-MCexp2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 3.1</strong></span> Let’s go back to the very first example in the module, <a href="L01-mc-intro.html#exm-MCexp" class="quarto-xref">Example&nbsp;<span>1.1</span></a>, where we were trying to find the expectation of an <span class="math inline">\(\operatorname{Exp}(2)\)</span> random variable. We used this R code:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4997326</code></pre>
-</div>
-</div>
-<p>(Because Monte Carlo estimation is random, this won’t be the <em>exact</em> same estimate we had before, of course.)</p>
-<p>So if we want to investigate the error, we can use the sample variance of these samples. We will use the sample variance function <code>var()</code> to calculate the sample variance.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>var_est <span class="ot">&lt;-</span> <span class="fu">var</span>(samples)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>MSEest  <span class="ot">&lt;-</span> var_est <span class="sc">/</span> n</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>RMSEest <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(MSEest)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(var_est, MSEest, RMSEest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.497426e-01 2.497426e-07 4.997425e-04</code></pre>
-</div>
-</div>
-<p>The first number is <code>var_est</code> <span class="math inline">\(= 0.25\)</span>, the sample variance of our <span class="math inline">\(\phi(x_i)\)</span>s: <span class="math display">\[ s^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(x_i) - \widehat{\theta}_n^{\mathrm{MC}}\big)^2 . \]</span> This should be a good estimate of the true variance <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span>. In calculating this, we used R’s <code>var()</code> function, which calculate the sample variance of some data.</p>
-<p>The second number is <code>MSEest</code> <span class="math inline">\(= 2.5\times 10^{-7}\)</span>, our estimate of the mean-square error. Since <span class="math inline">\(\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(\phi(X))\)</span>, then <span class="math inline">\(\frac{1}{n} s^2\)</span> should be a good estimate of the MSE.</p>
-<p>The third number is <code>RMSEest</code> <span class="math inline">\(= 5\times 10^{-4}\)</span> our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.</p>
-</div>
-<p><strong>Next time:</strong> <em>We’ll continue analysing Monte Carlo error, with more examples.</em></p>
+<section id="example" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="example"><span class="header-section-number">6.3</span> Example</h2>
+<p><strong>Next time:</strong> <em>We continue our study of the antithetic variables method with more examples and analysis of the error.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
-<li><p>The Monte Carlo estimator is unbiased.</p></li>
-<li><p>The Monte Carlo estimator has mean-square error <span class="math inline">\(\Var(\phi(X))/n\)</span>, so the root-mean-square error scales like <span class="math inline">\(1/\sqrt{n}\)</span>.</p></li>
-<li><p>The mean-square error can be estimated by <span class="math inline">\(S^2 / n\)</span>, where <span class="math inline">\(S^2\)</span> is the sample variance of <span class="math inline">\(\phi(X)\)</span>.</p></li>
+<li><p>Estimation is helped by combining individual estimates that are negatively correlated.</p></li>
+<li><p>For antithetic variables Monte Carlo estimation, which take pairs of non-independent variables <span class="math inline">\(X, X'\)</span>, to get the estimator <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) . \]</span></p></li>
 </ul>
-<p>On <a href="../problems/P1.html"><strong>Problem Sheet 1</strong></a>, you should now be able to answers Questions 1–6, except 2(c).</p>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.2.2.</p>
+<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.3.2.</p>
+
+
 </div>
-
-
 </section>
 
 </main> <!-- /main -->
@@ -791,13 +700,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L02-mc-uses.html" class="pagination-link" aria-label="Uses of Monte Carlo">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span>
+      <a href="../lectures/L05-cv.html" class="pagination-link" aria-label="Control variate">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L04-mc-error-2.html" class="pagination-link" aria-label="Monte Carlo error II: practice">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/P1.html" class="pagination-link" aria-label="Problem Sheet 1">
+        <span class="nav-page-text">Problem Sheet 1</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

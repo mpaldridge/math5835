@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../problems/P1.html" rel="next">
+<link href="../lectures/L06-antithetic-1.html" rel="next">
 <link href="../lectures/L04-mc-error-2.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -217,6 +217,12 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../lectures/L06-antithetic-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../problems/P1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 1</span></a>
   </div>
@@ -228,8 +234,16 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#variance-reduction" id="toc-variance-reduction" class="nav-link active" data-scroll-target="#variance-reduction"><span class="header-section-number">5.1</span> Variance reduction</a></li>
+  <li><a href="#control-variate-estimation" id="toc-control-variate-estimation" class="nav-link" data-scroll-target="#control-variate-estimation"><span class="header-section-number">5.2</span> Control variate estimation</a></li>
+  <li><a href="#error-of-control-variate-estimate" id="toc-error-of-control-variate-estimate" class="nav-link" data-scroll-target="#error-of-control-variate-estimate"><span class="header-section-number">5.3</span> Error of control variate estimate</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -261,55 +275,39 @@ window.Quarto = {
 \newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
 </div>
-<!--
-## Variance reduction
-
-Let's recap where we've got to. The Monte Carlo estimator of $\theta = \Exg \phi(X)$ is $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i), $$ where $X_1, X_2, \dots, X_n$ are IID random samples from $X$. The mean-square error of this estimator is $${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . $$
-If we want a more accurate estimate, we can just take more samples $n$. But the problem is that the root-mean-square error scales like $1/\sqrt{n}$. To double the accuracy, we need four times as many samples; for one more decimal place of accuracy, we need one hundred times as many samples.
-
-Are there other ways we could reduce the error of Monte Carlo estimation, so we need fewer samples? That is, can we use some mathematical ingenuity to adapt the Monte Carlo estimate to one with a smaller error?
-
-Well, the mean-square error is the variance divided by $n$. So if we can't (or don't want to) increase $n$, perhaps we can *decrease* the *variance* instead? Strategies to do this are called **variance reduction strategies**. In this module, we will look at three variance reduction strategies:
-
--   **Control variate:** We can "anchor" our estimate of $\Exg \phi(X)$ to a similar but easier-to-calculate value $\Exg \psi(X)$. (This lecture)
-
--   **Antithetic variables:** Instead of using independent samples, we could use correlated samples. If the correlation is negative this can improve our estimate. (Lectures 6 and 7)
-
--   **Importance sampling:** Instead of sampling from $X$, sample from some other more suitable distribution instead, then readjust the answer we get. (Lectures 8 and 9)
-
-## Control variate estimation
-
-In last Friday's lecture, I polled the class on this question: *Estimate the average time it takes to fly from London to Washington D.C.*
-
-* The actual answer is: 8 hours and 29 minutes.
-
-* The mean guess for the class was: 7 hours and 37 minutes (52 minutes too little)
-
-* The root-mean-square error for the guesses was: 133 minutes
-
-After you'd guessed, I gave the following hint: *Hint: The average time it takes to fly from London to New York is 8 hours and 10 minutes.* After the hint:
-
-* The mean guess for the class was: 8 hours and 45 minutes (16 minutes too much)
-
-* The root-mean-square error for the guesses was: 49 minutes
-
-So after the hint, the error of the class was reduced by 63%.
-
-Why did the hint help? We were trying to estimate $\theta^{\mathrm{DC}}$, the distance to D.C. But that's a big number, and the first estimates had a big error (over an hour, on average). After the hint, I expect most people thought something like this: "The answer $\theta^{\mathrm{DC}}$ is going to be similar to the $\theta^{\mathrm{NY}} =$ 8:10 to New York, but Washington D.C. is a bit further, so I should increase the number a bit, but not too much."
-
-To be more mathematical, we could write $$\theta^{\mathrm{DC}} = \theta^{\mathrm{DC}} + \big(\theta^{\mathrm{NY}} - \theta^{\mathrm{NY}}\big)= \underbrace{\big(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\big)}_{\text{small}} + \underbrace{\theta^{\mathrm{NY}}\vphantom{\big)}}_{\text{known}} . $$ In that equation, the second term, $\theta^{\mathrm{NY}} =$ 8:10 was completely known, so had error 0, while the first term $\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}$ (actually 19 minutes) was a small number, so only had a small error.
-
-This idea of improving an estimate by "anchoring" it to some known value is called **controlled estimation**. It is a very useful idea in statistics (and in life!).
-
-We can apply this idea to Monte Carlo estimation too. Suppose we are trying to estimate $\theta = \Exg \phi(X)$. We could look for a function $\psi$ that is similar to $\phi$ (at least for the values of $x$ that have high probability for the random variable $X$), but where we know for certain what $\Exg \psi(X)$ is. Then we can write $$ \theta = \Exg \phi(X) = \Exg \big(\phi(X) - \psi(X) + \psi(X)\big) = \underbrace{\Exg\big(\phi(X) - \psi(X)\big)}_{\text{estimate this with Monte Carlo}} + \underbrace{\Exg \psi(X)\vphantom{\big)}}_{\text{known}} . $$
-
-Here, $\psi(X)$ is known as the **control variate**.
-
-::: {#def-MCest}
-Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Let $\psi$ be a function such that $\eta = \Exg\psi(X)$ is known. Suppose that $X_1, X_2, \dots, X_n$ are a random sample from $X$. Then the **control variate Monte Carlo estimate** $\widehat\theta_n^{\mathrm{CV}}$ of $\theta$ is $$ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta . $$
-:::
-
--->
+<section id="variance-reduction" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="variance-reduction"><span class="header-section-number">5.1</span> Variance reduction</h2>
+<p>Let’s recap where we’ve got to. The Monte Carlo estimator of <span class="math inline">\(\theta = \Exg \phi(X)\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i), \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are IID random samples from <span class="math inline">\(X\)</span>. The mean-square error of this estimator is <span class="math display">\[{\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . \]</span> If we want a more accurate estimate, we can just take more samples <span class="math inline">\(n\)</span>. But the problem is that the root-mean-square error scales like <span class="math inline">\(1/\sqrt{n}\)</span>. To double the accuracy, we need four times as many samples; for one more decimal place of accuracy, we need one hundred times as many samples.</p>
+<p>Are there other ways we could reduce the error of Monte Carlo estimation, so we need fewer samples? That is, can we use some mathematical ingenuity to adapt the Monte Carlo estimate to one with a smaller error?</p>
+<p>Well, the mean-square error is the variance divided by <span class="math inline">\(n\)</span>. So if we can’t (or don’t want to) increase <span class="math inline">\(n\)</span>, perhaps we can <em>decrease</em> the <em>variance</em> instead? Strategies to do this are called <strong>variance reduction strategies</strong>. In this module, we will look at three variance reduction strategies:</p>
+<ul>
+<li><p><strong>Control variate:</strong> We can “anchor” our estimate of <span class="math inline">\(\Exg \phi(X)\)</span> to a similar but easier-to-calculate value <span class="math inline">\(\Exg \psi(X)\)</span>. (This lecture)</p></li>
+<li><p><strong>Antithetic variables:</strong> Instead of using independent samples, we could use correlated samples. If the correlation is negative this can improve our estimate. (Lectures 6 and 7)</p></li>
+<li><p><strong>Importance sampling:</strong> Instead of sampling from <span class="math inline">\(X\)</span>, sample from some other more suitable distribution instead, then readjust the answer we get. (Lectures 8 and 9)</p></li>
+</ul>
+</section>
+<section id="control-variate-estimation" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="control-variate-estimation"><span class="header-section-number">5.2</span> Control variate estimation</h2>
+<p>In last Friday’s lecture, I polled the class on this question: <em>Estimate the average time it takes to fly from London to Washington D.C.</em></p>
+<ul>
+<li><p>The actual answer is: 8 hours and 29 minutes.</p></li>
+<li><p>The mean guess for the class was: 7 hours and 37 minutes (52 minutes too little)</p></li>
+<li><p>The root-mean-square error for the guesses was: 133 minutes</p></li>
+</ul>
+<p>After you’d guessed, I gave the following hint: <em>Hint: The average time it takes to fly from London to New York is 8 hours and 10 minutes.</em> After the hint:</p>
+<ul>
+<li><p>The mean guess for the class was: 8 hours and 45 minutes (16 minutes too much)</p></li>
+<li><p>The root-mean-square error for the guesses was: 49 minutes</p></li>
+</ul>
+<p>So after the hint, the error of the class was reduced by 63%.</p>
+<p>Why did the hint help? We were trying to estimate <span class="math inline">\(\theta^{\mathrm{DC}}\)</span>, the distance to D.C. But that’s a big number, and the first estimates had a big error (over an hour, on average). After the hint, I expect most people thought something like this: “The answer <span class="math inline">\(\theta^{\mathrm{DC}}\)</span> is going to be similar to the <span class="math inline">\(\theta^{\mathrm{NY}} =\)</span> 8:10 to New York, but Washington D.C. is a bit further, so I should increase the number a bit, but not too much.”</p>
+<p>To be more mathematical, we could write <span class="math display">\[\theta^{\mathrm{DC}} = \theta^{\mathrm{DC}} + \big(\theta^{\mathrm{NY}} - \theta^{\mathrm{NY}}\big)= \underbrace{\big(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\big)}_{\text{small}} + \underbrace{\theta^{\mathrm{NY}}\vphantom{\big)}}_{\text{known}} . \]</span> In that equation, the second term, <span class="math inline">\(\theta^{\mathrm{NY}} =\)</span> 8:10 was completely known, so had error 0, while the first term <span class="math inline">\(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\)</span> (actually 19 minutes) was a small number, so only had a small error.</p>
+<p>This idea of improving an estimate by “anchoring” it to some known value is called <strong>controlled estimation</strong>. It is a very useful idea in statistics (and in life!).</p>
+<p>We can apply this idea to Monte Carlo estimation too. Suppose we are trying to estimate <span class="math inline">\(\theta = \Exg \phi(X)\)</span>. We could look for a function <span class="math inline">\(\psi\)</span> that is similar to <span class="math inline">\(\phi\)</span> (at least for the values of <span class="math inline">\(x\)</span> that have high probability for the random variable <span class="math inline">\(X\)</span>), but where we know for certain what <span class="math inline">\(\Exg \psi(X)\)</span> is. Then we can write <span class="math display">\[ \theta = \Exg \phi(X) = \Exg \big(\phi(X) - \psi(X) + \psi(X)\big) = \underbrace{\Exg\big(\phi(X) - \psi(X)\big)}_{\text{estimate this with Monte Carlo}} + \underbrace{\Exg \psi(X)\vphantom{\big)}}_{\text{known}} . \]</span></p>
+<p>Here, <span class="math inline">\(\psi(X)\)</span> is known as the <strong>control variate</strong>.</p>
+<div id="def-MCest" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 5.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(\psi\)</span> be a function such that <span class="math inline">\(\eta = \Exg\psi(X)\)</span> is known. Suppose that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are a random sample from <span class="math inline">\(X\)</span>. Then the <strong>control variate Monte Carlo estimate</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{CV}}\)</span> of <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta . \]</span></p>
+</div>
 <div id="exm-control" class="theorem example">
 <p><span class="theorem-title"><strong>Example 5.1</strong></span> Let’s try to estimate <span class="math inline">\(\Ex \cos(X)\)</span>, where <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span> is a standard normal distribution.</p>
 <p>We could do this the “usual” Monte Carlo way.</p>
@@ -358,74 +356,63 @@ Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)
 </div>
 </div>
 </div>
-<!--
-
-## Error of control variate estimate
-
-What is the error in a control variate estimate?
-
-::: {#thm-CVerr}
-Let $X$ be a random variable, $\phi$ a function, and $\theta = \Exg\phi(X)$. Let $\psi$ be a function such that $\eta \Exg\psi(X)$ is known. Let $$ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta$$ be the control variate Monte Carlo estimator of $\theta$. Then:
-
-1.  $\widehat{\theta}_n^{\mathrm{CV}}$ is unbiased, in that $\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = 0$.
-
-2.  The variance of of $\widehat{\theta}_n^{\mathrm{MC}}$ is ${\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}$.
-
-3.  The mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is ${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}$.
-
-4.  The root-mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is ${\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{\sqrt{n}} \operatorname{sd}\big(\phi(X) - \psi(X)\big)}$.
-:::
-
-::: {.proof}
-This is very similar to @thm-MCerr, so we'll just sketch the important differences.
-
-In part 1, we have
-\begin{align*}
+</section>
+<section id="error-of-control-variate-estimate" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="error-of-control-variate-estimate"><span class="header-section-number">5.3</span> Error of control variate estimate</h2>
+<p>What is the error in a control variate estimate?</p>
+<div id="thm-CVerr" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 5.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(\psi\)</span> be a function such that <span class="math inline">\(\eta \Exg\psi(X)\)</span> is known. Let <span class="math display">\[ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta\]</span> be the control variate Monte Carlo estimator of <span class="math inline">\(\theta\)</span>. Then:</p>
+<ol type="1">
+<li><p><span class="math inline">\(\widehat{\theta}_n^{\mathrm{CV}}\)</span> is unbiased, in that <span class="math inline">\(\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = 0\)</span>.</p></li>
+<li><p>The variance of of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}\)</span>.</p></li>
+<li><p>The mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}\)</span>.</p></li>
+<li><p>The root-mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{\sqrt{n}} \operatorname{sd}\big(\phi(X) - \psi(X)\big)}\)</span>.</p></li>
+</ol>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>This is very similar to <a href="L03-mc-error-1.html#thm-MCerr" class="quarto-xref">Theorem&nbsp;<span>3.2</span></a>, so we’ll just sketch the important differences.</p>
+<p>In part 1, we have <span class="math display">\[\begin{align*}
 \Exg \widehat{\theta}_n^{\mathrm{CV}}
-  &= \Exg \left(\frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big)\right) + \eta \\
-  &= \frac{1}{n}\Exg \left(\sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big)\right) + \eta \\
-  &= \frac{n}{n}\Exg\big(\phi(X) - \psi(X)\big) + \eta \\
-  &= \Exg\phi(X) - \Exg\psi(X) + \eta \\
-  &= \Exg\phi(X) ,
-\end{align*}
-since $\eta = \Exg\psi(X)$. So the estimator is unbiased.
-
-For part 2, remembering that $\eta = \Exg \psi(X)$ is a constant, so doesn't affect the variance, we have \begin{align*}
+  &amp;= \Exg \left(\frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big)\right) + \eta \\
+  &amp;= \frac{1}{n}\Exg \left(\sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big)\right) + \eta \\
+  &amp;= \frac{n}{n}\Exg\big(\phi(X) - \psi(X)\big) + \eta \\
+  &amp;= \Exg\phi(X) - \Exg\psi(X) + \eta \\
+  &amp;= \Exg\phi(X) ,
+\end{align*}\]</span> since <span class="math inline">\(\eta = \Exg\psi(X)\)</span>. So the estimator is unbiased.</p>
+<p>For part 2, remembering that <span class="math inline">\(\eta = \Exg \psi(X)\)</span> is a constant, so doesn’t affect the variance, we have <span class="math display">\[\begin{align*}
 \Var \big(\widehat{\theta}_n^{\mathrm{CV}}\big)
-&= \Var \left(\frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta \right) \\
-&= \Big( \frac{1}{n}\Big)^2 \Var \left(\sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) \right) \\
-&= \frac{n}{n^2} \Var \big(\phi(X) - \psi(X)\big) \\
-&= \frac{1}{n} \Var \big(\phi(X) - \psi(X)\big) .
-\end{align*}
-
-Parts 3 and 4 follow in the usual way.
-:::
-
-This tells us that a control variate Monte Carlo estimate is good when the variance of $\phi(X) - \psi(X)$. This variance is likely to be small if $\phi(X) - \psi(X)$ is usually small -- although, to be more precise, it's more important for $\phi(X) - \psi(X)$ to be *consistent*, rather than small per se.
--->
+&amp;= \Var \left(\frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta \right) \\
+&amp;= \Big( \frac{1}{n}\Big)^2 \Var \left(\sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) \right) \\
+&amp;= \frac{n}{n^2} \Var \big(\phi(X) - \psi(X)\big) \\
+&amp;= \frac{1}{n} \Var \big(\phi(X) - \psi(X)\big) .
+\end{align*}\]</span></p>
+<p>Parts 3 and 4 follow in the usual way.</p>
+</div>
+<p>This tells us that a control variate Monte Carlo estimate is good when the variance of <span class="math inline">\(\phi(X) - \psi(X)\)</span>. This variance is likely to be small if <span class="math inline">\(\phi(X) - \psi(X)\)</span> is usually small – although, to be more precise, it’s more important for <span class="math inline">\(\phi(X) - \psi(X)\)</span> to be <em>consistent</em>, rather than small per se.</p>
+<p>As before, we can’t usually calculate the variance <span class="math inline">\(\Var(\phi(X) - \psi(X))\)</span> exactly, but we can estimate it from the samples. Again, we use the sample variance <span class="math display">\[S^2 = \frac{1}{n-1}\sum_{i=1}^n \Big(\big(\phi(X_i) - \psi(X_i)\big) - \big(\widehat\theta_n^{\mathrm{CV}} + \eta\big)\Big)^2 , \]</span> and estimate the MSE and RMSE by <span class="math inline">\(S^2 / n\)</span> and <span class="math inline">\(S / \sqrt{n}\)</span> respectively.</p>
 <div id="exm-control2" class="theorem example">
 <p><span class="theorem-title"><strong>Example 5.2</strong></span> We return to <a href="#exm-control" class="quarto-xref">Example&nbsp;<span>5.1</span></a>, where we were estimating <span class="math inline">\(\Ex \cos(X)\)</span> for <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span>.</p>
-<p>The naive Monte Carlo estimate had variance and root-mean-square error</p>
+<p>The naive Monte Carlo estimate had mean-square and root-mean-square error</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">cos</span>(x)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>MCvar <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">phi</span>(samples))</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MCvar, <span class="fu">sqrt</span>(MCvar <span class="sc">/</span> n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>MC_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">phi</span>(samples)) <span class="sc">/</span> n</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MC_MSE, <span class="fu">sqrt</span>(MC_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2002768809 0.0004475231</code></pre>
+<pre><code>[1] 2.002769e-07 4.475231e-04</code></pre>
 </div>
 </div>
 <p>The variance and root-mean-square error of our control variate estimate, on the other hand, are</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>psi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="dv">1</span> <span class="sc">-</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>CVvar <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">phi</span>(samples) <span class="sc">-</span> <span class="fu">psi</span>(samples))</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(CVvar, <span class="fu">sqrt</span>(CVvar <span class="sc">/</span> n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>CV_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">phi</span>(samples) <span class="sc">-</span> <span class="fu">psi</span>(samples)) <span class="sc">/</span> n</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(CV_MSE, <span class="fu">sqrt</span>(CV_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0932774097 0.0003054135</code></pre>
+<pre><code>[1] 9.327741e-08 3.054135e-04</code></pre>
 </div>
 </div>
-<p>This was a success! The variance roughly halved, from <span class="math inline">\(0.2\)</span> to <span class="math inline">\(0.09\)</span>. This meant the root-mean-square went down by about a third, from <span class="math inline">\(4.5\times 10^{-4}\)</span> to <span class="math inline">\(3.1\times 10^{-4}\)</span>.</p>
+<p>This was a success! The mean-square error roughly halved, from <span class="math inline">\(2\times 10^{-7}\)</span> to <span class="math inline">\(9.3\times 10^{-8}\)</span>. This meant the root-mean-square went down by about a third, from <span class="math inline">\(4.5\times 10^{-4}\)</span> to <span class="math inline">\(3.1\times 10^{-4}\)</span>. This is the same amount of error reduction as we would get from doubling <span class="math inline">\(n\)</span>, which we got “for free” by using the control variate.</p>
 </div>
 <p><strong>Next time:</strong> <em>We look at our second variance reduction technique: antithetic variables.</em></p>
 <div class="mysummary">
@@ -433,12 +420,13 @@ This tells us that a control variate Monte Carlo estimate is good when the varia
 <ul>
 <li><p>Variance reduction techniques attempt to improve on Monte Carlo estimation making the variance smaller.</p></li>
 <li><p>If we know <span class="math inline">\(\eta = \Exg \psi(X)\)</span>, then the control variate Monte Carlo estimate is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta.\]</span></p></li>
-<li><p>The variance of the control variate Monte Carlo estimate is <span class="math display">\[{\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}.\]</span></p></li>
+<li><p>The mean-square error of the control variate Monte Carlo estimate is <span class="math display">\[{\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}.\]</span></p></li>
 </ul>
 <p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.3.3.</p>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -868,8 +856,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../problems/P1.html" class="pagination-link" aria-label="Problem Sheet 1">
-        <span class="nav-page-text">Problem Sheet 1</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L06-antithetic-1.html" class="pagination-link" aria-label="Antithetic variables I">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -2,11 +2,9 @@
 
 {{< include ../_header.qmd >}}
 
-<!--
 ## Variance reduction
 
-Let's recap where we've got to. The Monte Carlo estimator of $\theta = \Exg \phi(X)$ is $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i), $$ where $X_1, X_2, \dots, X_n$ are IID random samples from $X$. The mean-square error of this estimator is $${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . $$
-If we want a more accurate estimate, we can just take more samples $n$. But the problem is that the root-mean-square error scales like $1/\sqrt{n}$. To double the accuracy, we need four times as many samples; for one more decimal place of accuracy, we need one hundred times as many samples.
+Let's recap where we've got to. The Monte Carlo estimator of $\theta = \Exg \phi(X)$ is $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i), $$ where $X_1, X_2, \dots, X_n$ are IID random samples from $X$. The mean-square error of this estimator is $${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . $$ If we want a more accurate estimate, we can just take more samples $n$. But the problem is that the root-mean-square error scales like $1/\sqrt{n}$. To double the accuracy, we need four times as many samples; for one more decimal place of accuracy, we need one hundred times as many samples.
 
 Are there other ways we could reduce the error of Monte Carlo estimation, so we need fewer samples? That is, can we use some mathematical ingenuity to adapt the Monte Carlo estimate to one with a smaller error?
 
@@ -22,17 +20,17 @@ Well, the mean-square error is the variance divided by $n$. So if we can't (or d
 
 In last Friday's lecture, I polled the class on this question: *Estimate the average time it takes to fly from London to Washington D.C.*
 
-* The actual answer is: 8 hours and 29 minutes.
+-   The actual answer is: 8 hours and 29 minutes.
 
-* The mean guess for the class was: 7 hours and 37 minutes (52 minutes too little)
+-   The mean guess for the class was: 7 hours and 37 minutes (52 minutes too little)
 
-* The root-mean-square error for the guesses was: 133 minutes
+-   The root-mean-square error for the guesses was: 133 minutes
 
 After you'd guessed, I gave the following hint: *Hint: The average time it takes to fly from London to New York is 8 hours and 10 minutes.* After the hint:
 
-* The mean guess for the class was: 8 hours and 45 minutes (16 minutes too much)
+-   The mean guess for the class was: 8 hours and 45 minutes (16 minutes too much)
 
-* The root-mean-square error for the guesses was: 49 minutes
+-   The root-mean-square error for the guesses was: 49 minutes
 
 So after the hint, the error of the class was reduced by 63%.
 
@@ -50,11 +48,9 @@ Here, $\psi(X)$ is known as the **control variate**.
 Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Let $\psi$ be a function such that $\eta = \Exg\psi(X)$ is known. Suppose that $X_1, X_2, \dots, X_n$ are a random sample from $X$. Then the **control variate Monte Carlo estimate** $\widehat\theta_n^{\mathrm{CV}}$ of $\theta$ is $$ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta . $$
 :::
 
--->
 ::: {#exm-control}
 {{< include ../examples/L05-1-control.qmd >}}
 :::
-<!--
 
 ## Error of control variate estimate
 
@@ -72,19 +68,17 @@ Let $X$ be a random variable, $\phi$ a function, and $\theta = \Exg\phi(X)$. Let
 4.  The root-mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is ${\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{\sqrt{n}} \operatorname{sd}\big(\phi(X) - \psi(X)\big)}$.
 :::
 
-::: {.proof}
+::: proof
 This is very similar to @thm-MCerr, so we'll just sketch the important differences.
 
-In part 1, we have
-\begin{align*}
+In part 1, we have \begin{align*}
 \Exg \widehat{\theta}_n^{\mathrm{CV}}
   &= \Exg \left(\frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big)\right) + \eta \\
   &= \frac{1}{n}\Exg \left(\sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big)\right) + \eta \\
   &= \frac{n}{n}\Exg\big(\phi(X) - \psi(X)\big) + \eta \\
   &= \Exg\phi(X) - \Exg\psi(X) + \eta \\
   &= \Exg\phi(X) ,
-\end{align*}
-since $\eta = \Exg\psi(X)$. So the estimator is unbiased.
+\end{align*} since $\eta = \Exg\psi(X)$. So the estimator is unbiased.
 
 For part 2, remembering that $\eta = \Exg \psi(X)$ is a constant, so doesn't affect the variance, we have \begin{align*}
 \Var \big(\widehat{\theta}_n^{\mathrm{CV}}\big)
@@ -98,7 +92,10 @@ Parts 3 and 4 follow in the usual way.
 :::
 
 This tells us that a control variate Monte Carlo estimate is good when the variance of $\phi(X) - \psi(X)$. This variance is likely to be small if $\phi(X) - \psi(X)$ is usually small -- although, to be more precise, it's more important for $\phi(X) - \psi(X)$ to be *consistent*, rather than small per se.
--->
+
+As before, we can't usually calculate the variance $\Var(\phi(X) - \psi(X))$ exactly, but we can estimate it from the samples. Again, we use the sample variance
+$$S^2 = \frac{1}{n-1}\sum_{i=1}^n \Big(\big(\phi(X_i) - \psi(X_i)\big) - \big(\widehat\theta_n^{\mathrm{CV}} + \eta\big)\Big)^2 , $$
+and estimate the MSE and RMSE by $S^2 / n$ and $S / \sqrt{n}$ respectively.
 
 ::: {#exm-control2}
 {{< include ../examples/L05-2-control2.qmd >}}
@@ -106,16 +103,14 @@ This tells us that a control variate Monte Carlo estimate is good when the varia
 
 **Next time:** *We look at our second variance reduction technique: antithetic variables.*
 
-::: {.mysummary}
+::: mysummary
 **Summary:**
 
-* Variance reduction techniques attempt to improve on Monte Carlo estimation making the variance smaller.
+-   Variance reduction techniques attempt to improve on Monte Carlo estimation making the variance smaller.
 
-* If we know $\eta = \Exg \psi(X)$, then the  control variate Monte Carlo estimate is
-$$ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta.$$
+-   If we know $\eta = \Exg \psi(X)$, then the control variate Monte Carlo estimate is $$ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta.$$
 
-* The variance of the control variate Monte Carlo estimate is 
-$${\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}.$$
+-   The mean-square error of the control variate Monte Carlo estimate is $${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}.$$
 
 **Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 3.3.3.
 :::
