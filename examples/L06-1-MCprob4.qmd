@@ -13,8 +13,8 @@ Can we improve this estimate with an antithetic variable? Well, if $Z$ is a stan
 
 ```{r}
 n <- 1e6
-samples_a <- rnorm(n / 2)
-samples_b <- -samples_a
-AVest <- (1 / n) * sum((samples_a > 2) + (samples_b > 2))
+samples1 <- rnorm(n / 2)
+samples2 <- -samples1
+AVest <- (1 / n) * sum((samples1 > 2) + (samples2 > 2))
 AVest
 ```

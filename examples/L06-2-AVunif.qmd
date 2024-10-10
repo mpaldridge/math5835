@@ -1,0 +1,22 @@
+Let's consider estimating $\mathbb E \sin U$, where $U$ is continuous uniform on $[0,1]$.
+
+The basic Monte Carlo estimate is
+
+```{r}
+n <- 1e6
+samples <- runif(n)
+MCest <- mean(sin(samples))
+MCest
+```
+
+We used `runif(n, min, max)` to generate $n$ samples on the interval $[\mathtt{min}, \mathtt{max}]$. However, if you omit the `min` and `max` arguments, then R assumes the default values `min = 0`, `max = 1`, which is what we want here.
+
+If $U$ is uniform on $[0,1]$, then $1 - U$ is also uniform on $[0,1]$. We could try using that as an antithetic variable.
+
+```{r}
+n <- 1e6
+samples1 <- runif(n / 2)
+samples2 <- 1 - samples1
+AVest <- (1 / n) * sum(sin(samples1) + sin(samples2))
+AVest
+```
