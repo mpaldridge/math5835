@@ -1,7 +1,7 @@
 # Antithetic variables I
 
 {{< include ../_header.qmd >}}
-<!--
+
 ## Estimation with correlation
 
 This lecture and the next, we will be looking at our second variance reduction method for Monte Carlo estimation: the use of antithetic variables." The word "antithetic" refers to using negative correlation to reduce the variance an estimator.
@@ -30,13 +30,14 @@ We can compare this with the variance $\frac12 \sigma^2$ from the independent-sa
 
 ## Monte Carlo with antithetic variables
 
-We have seen that negative correlation helps improve estimation from $n=2$ samples. How can we make this work in our favour for Monte Carlo simulation with more samples?
+We have seen that negative correlation helps improve estimation from $n=2$ samples. How can we make this work in our favour for Monte Carlo simulation with many more samples?
 
 We will look at the idea of **antithetic pairs**. So instead of taking $n$ samples
 $$ X_1, X_2, \dots, X_n $$
 that are all independent of each other, we will take $n/2$ pairs of samples
-$$ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X'_{n/2})  $$
-Here, *within* each pair, $X_i$ and $X_i'$ will *not* be independent, but *between* different pairs $i \neq j$, $(X_i, X_i')$ and $(X_j, X'_j)$ *will* be independent.
+$$ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X'_{n/2}) . $$
+(Here, $n/2$ pairs means $n$ samples over all.)
+*Within* each pair, $X_i$ and $X_i'$ will *not* be independent, but *between* different pairs $i \neq j$, $(X_i, X_i')$ and $(X_j, X'_j)$ *will* be independent.
 
 ::: {#def-AV}
 Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Let $X'$ have the same distribution as $X$ (but not necessarily be independent of it). Suppose that $(X_1, X_1')$, $(X_2, X_2')$, $\dots$, $(X_{n/2}, X'_{n/2})$ are pairs of random samples from $(X, X')$. Then the **antithetic variables Monte Carlo estimator** $\widehat\theta_n^{\mathrm{AV}}$ of $\theta$ is
@@ -48,7 +49,7 @@ $$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{2} \left( \frac{1}{n/2} \sum_{i=1
 which highlights that it is the mean of the estimator from the $X_i$s and the the estimator from the $X'_i$s.
 
 ## Example
--->
+
 
 ::: {#exm-MCprob4}
 {{< include ../examples/L06-1-MCprob4.qmd >}}
@@ -57,13 +58,13 @@ which highlights that it is the mean of the estimator from the $X_i$s and the th
 ::: {#exm-AV}
 {{< include ../examples/L06-2-AVunif.qmd >}}
 :::
-<!--
+
 We have taken $n/2$ pairs of samples, because that means we have $n/2 \times 2 = n$ samples over all, which seems like a fair comparison. This is certainly the case if generating the sample and generating its antithetic pair cost roughly the same in terms of time (or energy, or money). However, if generating the first variate of each pair is slow, but then generating the second antithetic variate is much quicker, it might be a fairer comparison to take a full $n$ pairs.
 
 More generally, you might look might put a cost $c_1$ on each first variate and $c_2$ on the antithetic pair. Then one can compare a cost of $c_1n$ for standard Monte Carlo with $n$ samples to a cost of $(c_1 + c_2)m$ for antithetic variables Monte Carlo with $m$ pairs.
 
 Are these antithetic variables estimate an improvement on the basic Monte Carlo estimate? We'll find out next time.
--->
+
 **Next time:** *We continue our study of the antithetic variables method with more examples and analysis of the error.*
 
 ::: {.mysummary}

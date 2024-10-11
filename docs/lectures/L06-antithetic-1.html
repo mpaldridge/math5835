@@ -234,8 +234,16 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#estimation-with-correlation" id="toc-estimation-with-correlation" class="nav-link active" data-scroll-target="#estimation-with-correlation"><span class="header-section-number">6.1</span> Estimation with correlation</a></li>
+  <li><a href="#monte-carlo-with-antithetic-variables" id="toc-monte-carlo-with-antithetic-variables" class="nav-link" data-scroll-target="#monte-carlo-with-antithetic-variables"><span class="header-section-number">6.2</span> Monte Carlo with antithetic variables</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">6.3</span> Example</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -267,54 +275,28 @@ window.Quarto = {
 \newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
 </div>
-<!--
-## Estimation with correlation
-
-This lecture and the next, we will be looking at our second variance reduction method for Monte Carlo estimation: the use of antithetic variables." The word "antithetic" refers to using negative correlation to reduce the variance an estimator.
-
-Let's start with the simple example of estimating an expectation from $n = 2$ samples. Suppose $Y$ has expectation $\mu = \Ex Y$ and variance $\Var(Y) = \sigma^2$. Suppose $Y_1$ and $Y_2$ are independent samples from $Y$. Then the Monte Carlo estimator is
-$$ \overline Y = \tfrac12(Y_1 + Y_2) . $$
-This estimator is unbiased, since
-$$ \Ex \overline Y = \Ex \big(\tfrac12(Y_1 + Y_2)\big) = \tfrac12 ( \Ex Y_1 + \Ex Y_2 ) = \tfrac12 (\mu + \mu) = \mu . $$
-Thus the mean-square error equals the variance, which is
-$$ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) \big)= \tfrac14 (\sigma^2 + \sigma^2) = \tfrac12 \sigma^2 . $$
-
-But what if $Y_1$ and $Y_2$ still have the same distribution as $Y$ but now are *not* independent? The expectation is still the same, so the estimator is still unbiased. But the variance (and hence mean-square error) is now
-$$ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) + 2 \Cov(Y_1, Y_2) \big) . $$
-Write $\rho$ for the correlation
-$$ \rho = \Corr(Y_1, Y_2) = \frac{\Cov(Y_1, Y_2)}{\sqrt{\Var(Y_1) \Var(Y_2)}} = \frac{\Cov(Y_1, Y_2)}{\sqrt{\sigma^2 \times \sigma^2}} = \frac{\Cov(Y_1, Y_2)}{\sigma^2} . $$
-(Remember that $-1 \leq \rho \leq +1$.)
-Then the variance is 
-$$ \Var \big( \overline Y\big) = \tfrac14 ( \sigma^2 + \sigma^2 + 2 \rho \sigma^2 ) = \frac{1+\rho}{2} \,\sigma^2 . $$
-
-We can compare this with the variance $\frac12 \sigma^2$ from the independent-sample case:
-
-* If $Y_1$ and $Y_2$ are **positively correlated**, in that $\rho > 0$, then the variance, and hence the mean-square error, has got bigger. This means the estimator is worse. This is because, with positive correlation, errors compound each other -- if one sample is bigger than average, then the other one is likely to be bigger than average too; while if one sample is smaller than average, then the other one is likely to be smaller than average too.
-
-* If $Y_1$ and $Y_2$ are **negatively correlated**, in that $\rho < 0$, then the variance, and hence the mean-square error, has got smaller. This means the estimator is better. This is because, with negative correlation, errors compensate for each other -- if one sample is bigger than average, then the other one is likely to be smaller than average, which will help "cancel out" the error.
-
-
-## Monte Carlo with antithetic variables
-
-We have seen that negative correlation helps improve estimation from $n=2$ samples. How can we make this work in our favour for Monte Carlo simulation with more samples?
-
-We will look at the idea of **antithetic pairs**. So instead of taking $n$ samples
-$$ X_1, X_2, \dots, X_n $$
-that are all independent of each other, we will take $n/2$ pairs of samples
-$$ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X'_{n/2})  $$
-Here, *within* each pair, $X_i$ and $X_i'$ will *not* be independent, but *between* different pairs $i \neq j$, $(X_i, X_i')$ and $(X_j, X'_j)$ *will* be independent.
-
-::: {#def-AV}
-Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Let $X'$ have the same distribution as $X$ (but not necessarily be independent of it). Suppose that $(X_1, X_1')$, $(X_2, X_2')$, $\dots$, $(X_{n/2}, X'_{n/2})$ are pairs of random samples from $(X, X')$. Then the **antithetic variables Monte Carlo estimator** $\widehat\theta_n^{\mathrm{AV}}$ of $\theta$ is
-$$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) .$$
-:::
-
-The expression above for $\widehat{\theta}_n^{\mathrm{AV}}$ makes it clear that that this is a mean of the sum from each pair. Alternatively, we can rewrite the estimator as
-$$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{2} \left( \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i) + \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i') \right) , $$
-which highlights that it is the mean of the estimator from the $X_i$s and the the estimator from the $X'_i$s.
-
-## Example
--->
+<section id="estimation-with-correlation" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="estimation-with-correlation"><span class="header-section-number">6.1</span> Estimation with correlation</h2>
+<p>This lecture and the next, we will be looking at our second variance reduction method for Monte Carlo estimation: the use of antithetic variables.” The word “antithetic” refers to using negative correlation to reduce the variance an estimator.</p>
+<p>Let’s start with the simple example of estimating an expectation from <span class="math inline">\(n = 2\)</span> samples. Suppose <span class="math inline">\(Y\)</span> has expectation <span class="math inline">\(\mu = \Ex Y\)</span> and variance <span class="math inline">\(\Var(Y) = \sigma^2\)</span>. Suppose <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are independent samples from <span class="math inline">\(Y\)</span>. Then the Monte Carlo estimator is <span class="math display">\[ \overline Y = \tfrac12(Y_1 + Y_2) . \]</span> This estimator is unbiased, since <span class="math display">\[ \Ex \overline Y = \Ex \big(\tfrac12(Y_1 + Y_2)\big) = \tfrac12 ( \Ex Y_1 + \Ex Y_2 ) = \tfrac12 (\mu + \mu) = \mu . \]</span> Thus the mean-square error equals the variance, which is <span class="math display">\[ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) \big)= \tfrac14 (\sigma^2 + \sigma^2) = \tfrac12 \sigma^2 . \]</span></p>
+<p>But what if <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> still have the same distribution as <span class="math inline">\(Y\)</span> but now are <em>not</em> independent? The expectation is still the same, so the estimator is still unbiased. But the variance (and hence mean-square error) is now <span class="math display">\[ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) + 2 \Cov(Y_1, Y_2) \big) . \]</span> Write <span class="math inline">\(\rho\)</span> for the correlation <span class="math display">\[ \rho = \Corr(Y_1, Y_2) = \frac{\Cov(Y_1, Y_2)}{\sqrt{\Var(Y_1) \Var(Y_2)}} = \frac{\Cov(Y_1, Y_2)}{\sqrt{\sigma^2 \times \sigma^2}} = \frac{\Cov(Y_1, Y_2)}{\sigma^2} . \]</span> (Remember that <span class="math inline">\(-1 \leq \rho \leq +1\)</span>.) Then the variance is <span class="math display">\[ \Var \big( \overline Y\big) = \tfrac14 ( \sigma^2 + \sigma^2 + 2 \rho \sigma^2 ) = \frac{1+\rho}{2} \,\sigma^2 . \]</span></p>
+<p>We can compare this with the variance <span class="math inline">\(\frac12 \sigma^2\)</span> from the independent-sample case:</p>
+<ul>
+<li><p>If <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are <strong>positively correlated</strong>, in that <span class="math inline">\(\rho &gt; 0\)</span>, then the variance, and hence the mean-square error, has got bigger. This means the estimator is worse. This is because, with positive correlation, errors compound each other – if one sample is bigger than average, then the other one is likely to be bigger than average too; while if one sample is smaller than average, then the other one is likely to be smaller than average too.</p></li>
+<li><p>If <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are <strong>negatively correlated</strong>, in that <span class="math inline">\(\rho &lt; 0\)</span>, then the variance, and hence the mean-square error, has got smaller. This means the estimator is better. This is because, with negative correlation, errors compensate for each other – if one sample is bigger than average, then the other one is likely to be smaller than average, which will help “cancel out” the error.</p></li>
+</ul>
+</section>
+<section id="monte-carlo-with-antithetic-variables" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="monte-carlo-with-antithetic-variables"><span class="header-section-number">6.2</span> Monte Carlo with antithetic variables</h2>
+<p>We have seen that negative correlation helps improve estimation from <span class="math inline">\(n=2\)</span> samples. How can we make this work in our favour for Monte Carlo simulation with many more samples?</p>
+<p>We will look at the idea of <strong>antithetic pairs</strong>. So instead of taking <span class="math inline">\(n\)</span> samples <span class="math display">\[ X_1, X_2, \dots, X_n \]</span> that are all independent of each other, we will take <span class="math inline">\(n/2\)</span> pairs of samples <span class="math display">\[ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X'_{n/2}) . \]</span> (Here, <span class="math inline">\(n/2\)</span> pairs means <span class="math inline">\(n\)</span> samples over all.) <em>Within</em> each pair, <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_i'\)</span> will <em>not</em> be independent, but <em>between</em> different pairs <span class="math inline">\(i \neq j\)</span>, <span class="math inline">\((X_i, X_i')\)</span> and <span class="math inline">\((X_j, X'_j)\)</span> <em>will</em> be independent.</p>
+<div id="def-AV" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 6.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(X'\)</span> have the same distribution as <span class="math inline">\(X\)</span> (but not necessarily be independent of it). Suppose that <span class="math inline">\((X_1, X_1')\)</span>, <span class="math inline">\((X_2, X_2')\)</span>, <span class="math inline">\(\dots\)</span>, <span class="math inline">\((X_{n/2}, X'_{n/2})\)</span> are pairs of random samples from <span class="math inline">\((X, X')\)</span>. Then the <strong>antithetic variables Monte Carlo estimator</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{AV}}\)</span> of <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) .\]</span></p>
+</div>
+<p>The expression above for <span class="math inline">\(\widehat{\theta}_n^{\mathrm{AV}}\)</span> makes it clear that that this is a mean of the sum from each pair. Alternatively, we can rewrite the estimator as <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{2} \left( \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i) + \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i') \right) , \]</span> which highlights that it is the mean of the estimator from the <span class="math inline">\(X_i\)</span>s and the the estimator from the <span class="math inline">\(X'_i\)</span>s.</p>
+</section>
+<section id="example" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="example"><span class="header-section-number">6.3</span> Example</h2>
 <div id="exm-MCprob4" class="theorem example">
 <p><span class="theorem-title"><strong>Example 6.1</strong></span> Recall <a href="L02-mc-uses.html#exm-MCprob" class="quarto-xref">Example&nbsp;<span>2.1</span></a> (continued in <a href="L04-mc-error-2.html#exm-MCprob2" class="quarto-xref">Example&nbsp;<span>4.1</span></a> and <a href="L04-mc-error-2.html#exm-MCprob3" class="quarto-xref">Example&nbsp;<span>4.2</span></a>). Here, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span> for <span class="math inline">\(Z\)</span> a standard normal.</p>
 <p>The basic Monte Carlo estimate was</p>
@@ -364,13 +346,9 @@ which highlights that it is the mean of the estimator from the $X_i$s and the th
 </div>
 </div>
 </div>
-<!--
-We have taken $n/2$ pairs of samples, because that means we have $n/2 \times 2 = n$ samples over all, which seems like a fair comparison. This is certainly the case if generating the sample and generating its antithetic pair cost roughly the same in terms of time (or energy, or money). However, if generating the first variate of each pair is slow, but then generating the second antithetic variate is much quicker, it might be a fairer comparison to take a full $n$ pairs.
-
-More generally, you might look might put a cost $c_1$ on each first variate and $c_2$ on the antithetic pair. Then one can compare a cost of $c_1n$ for standard Monte Carlo with $n$ samples to a cost of $(c_1 + c_2)m$ for antithetic variables Monte Carlo with $m$ pairs.
-
-Are these antithetic variables estimate an improvement on the basic Monte Carlo estimate? We'll find out next time.
--->
+<p>We have taken <span class="math inline">\(n/2\)</span> pairs of samples, because that means we have <span class="math inline">\(n/2 \times 2 = n\)</span> samples over all, which seems like a fair comparison. This is certainly the case if generating the sample and generating its antithetic pair cost roughly the same in terms of time (or energy, or money). However, if generating the first variate of each pair is slow, but then generating the second antithetic variate is much quicker, it might be a fairer comparison to take a full <span class="math inline">\(n\)</span> pairs.</p>
+<p>More generally, you might look might put a cost <span class="math inline">\(c_1\)</span> on each first variate and <span class="math inline">\(c_2\)</span> on the antithetic pair. Then one can compare a cost of <span class="math inline">\(c_1n\)</span> for standard Monte Carlo with <span class="math inline">\(n\)</span> samples to a cost of <span class="math inline">\((c_1 + c_2)m\)</span> for antithetic variables Monte Carlo with <span class="math inline">\(m\)</span> pairs.</p>
+<p>Are these antithetic variables estimate an improvement on the basic Monte Carlo estimate? We’ll find out next time.</p>
 <p><strong>Next time:</strong> <em>We continue our study of the antithetic variables method with more examples and analysis of the error.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
@@ -383,6 +361,7 @@ Are these antithetic variables estimate an improvement on the basic Monte Carlo 
 
 
 </div>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
