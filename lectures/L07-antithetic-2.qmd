@@ -1,16 +1,28 @@
 # Antithetic variables II
 
-::: {.hidden}
-$$\newcommand{\Exg}{\operatorname{\mathbb{E}}} 
-\newcommand{\Ex}{\mathbb{E}} 
-\newcommand{\Ind}{\mathbb{I}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}$$
-:::
+{{< include ../_header.qmd >}}
 
 
 ## Error with antithetic variables
+
+Recall from last time the antithetic variables Monte Carlo estimator. We take sample pairs
+$$ (X_1, X'2), (X_2, X'2), \dots, (X_{n/2}, X_{n/2}') , $$
+where samples are independent between different pairs but *not* independent within the same pair. The estimator of $\theta = \Ex \phi(X)$ is
+$$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) .$$
+We hope this is better than the standard Monte Carlo estimator if $\phi(X)$ and $\phi(X')$ are negatively correlated.
+
+::: {#thm-AVerr}
+Let $X$ be a random variable, $\phi$ a function, and $\theta = \Exg\phi(X)$. Let $X'$ have the same distribution as $X$, and write $\rho = \operatorname{Corr}(\phi(X_i),\phi(X'_i))$. Let $$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) + \phi(X_i')\big) $$ be the antithetic variables Monte Carlo estimator of $\theta$. Then:
+
+1.  $\widehat{\theta}_n^{\mathrm{AV}}$ is unbiased, in that $\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = 0$.
+
+2.  The variance of of $\widehat{\theta}_n^{\mathrm{AV}}$ is $$ \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{n/2} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). $$
+
+3.  The mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{n/2} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). $$
+
+4.  The root-mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{n/2} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{\sqrt{1+\rho}}{\sqrt{n}}\sqrt{\Var\big(\phi(X)\big)}. $$
+:::
+:::
 
 ## Another example
 

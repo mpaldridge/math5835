@@ -48,7 +48,7 @@ The expression above for $\widehat{\theta}_n^{\mathrm{AV}}$ makes it clear that 
 $$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{2} \left( \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i) + \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i') \right) , $$
 which highlights that it is the mean of the estimator from the $X_i$s and the the estimator from the $X'_i$s.
 
-## Example
+## Examples
 
 
 ::: {#exm-MCprob4}
