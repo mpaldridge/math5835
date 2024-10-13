@@ -55,7 +55,7 @@ which highlights that it is the mean of the estimator from the $X_i$s and the th
 {{< include ../examples/L06-1-MCprob4.qmd >}}
 :::
 
-::: {#exm-AV}
+::: {#exm-AVunif}
 {{< include ../examples/L06-2-AVunif.qmd >}}
 :::
 

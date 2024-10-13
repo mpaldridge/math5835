@@ -6,74 +6,99 @@
 ## Error with antithetic variables
 
 Recall from last time the antithetic variables Monte Carlo estimator. We take sample pairs
-$$ (X_1, X'2), (X_2, X'2), \dots, (X_{n/2}, X_{n/2}') , $$
+$$ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X_{n/2}') , $$
 where samples are independent between different pairs but *not* independent within the same pair. The estimator of $\theta = \Ex \phi(X)$ is
 $$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) .$$
 We hope this is better than the standard Monte Carlo estimator if $\phi(X)$ and $\phi(X')$ are negatively correlated.
 
 ::: {#thm-AVerr}
-Let $X$ be a random variable, $\phi$ a function, and $\theta = \Exg\phi(X)$. Let $X'$ have the same distribution as $X$, and write $\rho = \operatorname{Corr}(\phi(X_i),\phi(X'_i))$. Let $$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) + \phi(X_i')\big) $$ be the antithetic variables Monte Carlo estimator of $\theta$. Then:
+Let $X$ be a random variable, $\phi$ a function, and $\theta = \Exg\phi(X)$. Let $X'$ have the same distribution as $X$, and write $\rho = \operatorname{Corr}(\phi(X_i),\phi(X'_i))$. Let $$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X_i')\big) $$ be the antithetic variables Monte Carlo estimator of $\theta$. Then:
 
 1.  $\widehat{\theta}_n^{\mathrm{AV}}$ is unbiased, in that $\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = 0$.
 
-2.  The variance of of $\widehat{\theta}_n^{\mathrm{AV}}$ is $$ \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{n/2} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). $$
+2.  The variance of of $\widehat{\theta}_n^{\mathrm{AV}}$ is $$ \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). $$
 
-3.  The mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{n/2} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). $$
+3.  The mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). $$
 
-4.  The root-mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{n/2} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{\sqrt{1+\rho}}{\sqrt{n}}\sqrt{\Var\big(\phi(X)\big)}. $$
-:::
-:::
-
-## Another example
-
-::: {#exm-AVest2}
-Let $Z \sim \operatorname{N}(0,1)$ be a standard normal, and suppose we wish to estimate $\theta = \mathbb P(1 \leq Z \leq 3)$.
-
-We could do this with standard Monte Carlo estimation of the indicator function $\Ind_[1,3]$.
-
-```{r, cache = TRUE}
-n <- 1e6
-samples <- rnorm(n)
-MCest <- mean(samples >= 1 & samples <= 3)
-MCest
-```
-
-But perhaps we can improve on it with an antithetic pair. Remember that $Z'$ should still have the same distribution $Z' \sim \operatorname{N}(0, 1)$, but shouldn't just be independent of $Z$. Well, if $Z$ is standard normal, then its "mirror image" $Z' = -Z$ is standard normal too. Maybe that will work?
-
-```{r, cache = TRUE}
-n <- 1e6
-samples1 <- rnorm(n/2)
-samples2 <- -samples1
-AVest1 <- mean(samples1 >= 1 & samples1 <= 3)
-AVest2 <- mean(samples2 >= 1 & samples2 <= 3)
-AVest <- mean(c(AVest1, AVest2))
-AVest
-```
+4.  The root-mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is $$ \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{\sqrt{2n}} \sqrt{\operatorname{Var}\big(\phi(X) + \phi(X')\big)} = \frac{\sqrt{1+\rho}}{\sqrt{n}}\sqrt{\Var\big(\phi(X)\big)}. $$
 :::
 
-Note that, in this code, I found it more convenient to calculate the antithetic variables estimator grouped as
-$$\widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) = \frac{1}{2} \left( \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i) + \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i')\right) , $$
-which is clearly equivalent.
+In points 2, 3 and 4, generally the first expression, involving the variance $\operatorname{Var}(\phi(X) + \phi(X'))$, is the most convenient for computation. We can estimate this easily from data using the sample variance in the usual way (as we will in the examples below).
 
-Was our antithetic variables method better? It depends on whether $Y = \Ind_{[1,3]}(Z)$ and $Y' = \Ind_{[1,3]}(-Z)$ are negatively correlated or not. The covariance here is
-$$ \Cov(Y, Y') = \Exg YY' - (\Ex Y)(\Ex Y') . $$
-We know that $\Ex Y = \Exg\Ind_{[1,3]}(Z) = \mathbb P(1 \leq Z \leq 3) = \theta$ and $\Ex Y' = \Exg\Ind_{[1,3]}(-Z) = \mathbb P(1 \leq Z \leq 3) = \theta$ too, since $Z$ and $-Z$ both have the same distribution.
+The second expression, involving the correlation $\rho$, is usually clearer for understanding. Comparing these to the same results for the standard Monte Carlo estimator (@thm-MCerr), we see that the antithetic variables method is an improvement (that is, has a smaller mean-square error) when $\rho < 0$, but is worse when $\rho > 0$. This proves that negative correlation improves out estimator.
 
-What about $\Exg YY'$? Well $Y Y' = \Ind_{[1,3]}(Z) \Ind_{[1,3]}(-Z)$ is 1 if and only if both $Z \in [1,3]$ (making the first term 1) *and* $-Z \in [1,3]$ (making the second term 1). Otherwise, at least one of the terms is 0, so the whole thing is 0. But it's impossible for both $Z$ to be in $[1,3]$ *and* $-Z$ to be in $[1,3]$; after all, if $Z \in [1, 3]$ then $-Z$ must be in $[-3,-1]$. So $\Ind_{[1,3]}(Z) \Ind_{[1,3]}(-Z)$ is always 0, so $\Exg YY' = \Exg \Ind_{[1,3]}(Z) \Ind_{[1,3]}(-Z) = 0$ too.
+::: {.proof}
+For unbiasedness, we have
+$$ \Ex \widehat{\theta}_n^{\mathrm{AV}} = \Ex \left(\frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X_i')\big)\right) = \frac{1}{n} \,\frac{n}{2} \big(\Exg\phi(X) + \Exg \phi(X')) = \frac{1}{2}(\theta+ \theta) = \theta ,$$
+since $X'$ has the same distribution as $X$.
 
-So the covariance is
-$$ \Cov(Y, Y') = \Exg YY' - (\Ex Y)(\Ex Y') = 0 - \theta \times \theta = -\theta^2 $$
+For the other three points, each of the first expressions follows straightforwardly in essentially the same way. (You can fill in the details yourself, if you need to.) For the second expressions, we have
+\begin{align*}
+\Var \big(\phi(X) + \phi(X')\big)
+&= \Var\big(\phi(X)\big) + \Var\big(\phi(X')\big) + 2\operatorname{Cov}\big(\phi(X),\phi(X')\big) \\
+&= \Var\big(\phi(X)\big) + \Var\big(\phi(X')\big) + 2\rho\sqrt{\Var\big(\phi(X)\big) \Var\big(\phi(X')\big)} \\
+&= \Var\big(\phi(X)\big) + \Var\big(\phi(X)\big) + 2\rho\sqrt{\Var\big(\phi(X)\big) \Var\big(\phi(X)\big)} \\
+&= 2(1+\rho)\Var\big(\phi(X)\big) .
+\end{align*}
+The results then follow.
+:::
 
-So the covariance is negative, which means the correlation is negative too. So our pairs really are antithetic, so we really have improved our estimator.
+## Examples
 
-We can calculate the correlation in terms of $\theta$. Hopefully you remember that the variance of a Bernoulli$(\theta)$ random variable is $\theta(1-\theta)$. (If not, you might like to get a scrap of paper and prove it -- it should only take 30 seconds.) So the correlation is
-$$ \rho = \Corr(Y, Y') = \frac{\Cov(Y, Y')}{\sqrt{\Var(Y)\Var(Y')}} 
-= \frac{-\theta^2}{\theta(1-\theta)} = - \frac{\theta}{1-\theta} . $$
+Let's return to the two examples we tried last time.
 
-Since we estimated $\theta \approx 0.157$, that suggests that the correlation was roughly $-0.187$.
+::: {#exm-MCprob5}
+{{< include ../examples/L07-1-MCprob5.qmd >}}
+:::
+
+::: {#exm-AV}
+{{< include ../examples/L07-2-AVunif2.qmd >}}
+:::
 
 ## Finding antithetic variables
 
-**Next time:** *We come to the third variance reduction scheme: importance sampling.*
+Antithetic variables can provide a huge advantage compared to standard Monte Carlo, as we saw in the second example above. The downside is that it can often be difficult to *find* an appropriate antithetic variable.
+
+To even be able to *try* the antithetic variables method, we need to find a random variable $X'$ with the same distribution as $X$ that isn't merely an independent copy. Both the examples we have seen of this use a symmetric distribution; that is, a distribution $X$ such that $X' = a - X$ has the same distribution as $X$, for some $a$.
+
+* We saw that if $X \sim \operatorname{N}(0, 1)$ is a standard normal distribution, then $X' = -X \sim \operatorname{N}(0, 1)$ too. More generally, if $X\sim \operatorname{N}(\mu, \sigma^2)$, then $X' = 2\mu - X \sim \operatorname{N}(\mu, \sigma^2)$ can be used as an antithetic variable.
+
+* We saw that if $U \sim \operatorname{U}[0, 1]$ is a continuous uniform distribution on $[0,1]$, then $U' = 1-U \sim \operatorname{U}[0, 1]$ too. More generally, if $X\sim \operatorname{U}[a, b]$, then $X' = (a + b) - X \sim \operatorname{U}[a, b]$ can be used as an antithetic variable.
+
+Later, when we study the inverse transform method (in Lecture 13) we will see another, more general, way to generate antithetic variables.
+
+But to be a *good* antithetic variable, we need $\phi(X)$ and $\phi(X')$ to be negatively correlated too -- preferably strongly so. Often, this is a matter of trial-and-error -- it's difficult to set out hard principles. But there are some results that try to formalise the idea that "nice functions of negatively correlated random variables are themselves negatively correlated", which can be useful. We give one example of such a result here.
+
+::: {#thm-neg}
+Let $U \sim \operatorname{U}[0, 1]$ and $U' = 1 - U$. Let $\phi$ be a monotonically increasing function. Then $\phi(U)$ and $\phi'(U)$ are negatively correlated, in that $\operatorname{Cov}\big(\phi(U), \phi(U')\big) \leq 0$.
+:::
+
+::: {.proof}
+The covariance in question is
+$$ \operatorname{Cov}\big(\phi(U), \phi(U')\big) = \Exg \phi(U)\phi(1-U) - \big(\Exg\phi(U)\big) \big(\Exg\phi(1-U)\big) . $$
+
+A cunning trick is to introduce an IID copy of $U$; let's call it $V$. The first term in the above expression, $\Exg \phi(U)\phi(1-U)$, could also be written as $\Exg \phi(V)\phi(1-V)$; while the second term in the above expression, $\big(\Exg\phi(U)\big) \big(\Exg\phi(1-U)\big)$ could also be written as $\big(\Exg\phi(V)\big) \big(\Exg\phi(1-U)\big)$ or $\big(\Exg\phi(U)\big) \big(\Exg\phi(1-V)\big)$.
+
+Taking advantage of these alternatives, we have
+\begin{align*}
+\operatorname{Cov}\big(\phi(U), \phi(U')\big)
+&= \tfrac12 \big(\Exg \phi(U)\phi(1-U) + \Exg \phi(V)\phi(1-V) \big) \\
+& \qquad {}- \tfrac12 \Big(\big(\Exg\phi(V)\big) \big(\Exg\phi(1-U)\big) - \big(\Exg\phi(U)\big) \big(\Exg\phi(1-V)\big) \Big) \\
+&= \tfrac12 \Ex \big( \phi(U)\phi(1-U) + \phi(V)\phi(1-V) - \phi(V)\phi(1-U) \phi(U)\phi(1-V) \big) \\
+&= \tfrac12 \Ex \big(\phi(U) - \phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big) .
+\end{align*}
+In the first equality, we replaced each term by two of its alternatives, so multiplied by a half to take account for the doubled copies. In the second equality, we took advantage of the independence between $U$ and $V$ to take the expectation all the way outside. The third equality was simply factorising inside the expectation.
+
+We now claim that the expectation in the final line above is negative. In fact, we have a stronger result: $$\big(\phi(U) - \phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big)$${#eq-cross}
+is *always* negative, so its expectation certainly is. To see this, think separately of the two cases $U \leq V$ and $U \geq V$.
+
+* If $U \geq V$, then $\phi(U) \geq \phi(V)$ too, since $\phi$ is increasing. But, also this means that $1-V \geq 1-U$, so $\phi(1 - V) \geq \phi(1-U)$. This means that, in @eq-cross, the first term is positive and the second term is negative, so the product is negative.
+
+* If $U \leq V$, then $\phi(U) \leq \phi(V)$ too, since $\phi$ is increasing. But, also this means that $1-V \leq 1-U$, so $\phi(1 - V) \leq \phi(1-U)$. This means that, in @eq-cross, the first term is negative and the second term is positive, so the product is negative.
+
+This completes the proof.
+:::
+
+**Next time:** *We come to the third, and most important, variance reduction scheme: importance sampling.*
 
 **Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 3.3.2.

@@ -227,6 +227,12 @@ window.Quarto = {
  <span class="menu-text">Problem Sheet 1</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L07-antithetic-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -241,7 +247,7 @@ window.Quarto = {
   <ul>
   <li><a href="#estimation-with-correlation" id="toc-estimation-with-correlation" class="nav-link active" data-scroll-target="#estimation-with-correlation"><span class="header-section-number">6.1</span> Estimation with correlation</a></li>
   <li><a href="#monte-carlo-with-antithetic-variables" id="toc-monte-carlo-with-antithetic-variables" class="nav-link" data-scroll-target="#monte-carlo-with-antithetic-variables"><span class="header-section-number">6.2</span> Monte Carlo with antithetic variables</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">6.3</span> Example</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">6.3</span> Examples</a></li>
   </ul>
 </nav>
     </div>
@@ -295,8 +301,8 @@ window.Quarto = {
 </div>
 <p>The expression above for <span class="math inline">\(\widehat{\theta}_n^{\mathrm{AV}}\)</span> makes it clear that that this is a mean of the sum from each pair. Alternatively, we can rewrite the estimator as <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{2} \left( \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i) + \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i') \right) , \]</span> which highlights that it is the mean of the estimator from the <span class="math inline">\(X_i\)</span>s and the the estimator from the <span class="math inline">\(X'_i\)</span>s.</p>
 </section>
-<section id="example" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="example"><span class="header-section-number">6.3</span> Example</h2>
+<section id="examples" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="examples"><span class="header-section-number">6.3</span> Examples</h2>
 <div id="exm-MCprob4" class="theorem example">
 <p><span class="theorem-title"><strong>Example 6.1</strong></span> Recall <a href="L02-mc-uses.html#exm-MCprob" class="quarto-xref">Example&nbsp;<span>2.1</span></a> (continued in <a href="L04-mc-error-2.html#exm-MCprob2" class="quarto-xref">Example&nbsp;<span>4.1</span></a> and <a href="L04-mc-error-2.html#exm-MCprob3" class="quarto-xref">Example&nbsp;<span>4.2</span></a>). Here, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span> for <span class="math inline">\(Z\)</span> a standard normal.</p>
 <p>The basic Monte Carlo estimate was</p>
@@ -306,7 +312,7 @@ window.Quarto = {
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest   <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022713</code></pre>
+<pre><code>[1] 0.022911</code></pre>
 </div>
 </div>
 <p>Can we improve this estimate with an antithetic variable? Well, if <span class="math inline">\(Z\)</span> is a standard normal, then <span class="math inline">\(Z' = -Z\)</span> is also standard normal and is not independent of <span class="math inline">\(Z\)</span>. So maybe that could work as an antithetic variable. Let’s try</p>
@@ -317,11 +323,11 @@ window.Quarto = {
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>AVest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>((samples1 <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">+</span> (samples2 <span class="sc">&gt;</span> <span class="dv">2</span>))</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>AVest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022743</code></pre>
+<pre><code>[1] 0.022929</code></pre>
 </div>
 </div>
 </div>
-<div id="exm-AV" class="theorem example">
+<div id="exm-AVunif" class="theorem example">
 <p><span class="theorem-title"><strong>Example 6.2</strong></span> Let’s consider estimating <span class="math inline">\(\mathbb E \sin U\)</span>, where <span class="math inline">\(U\)</span> is continuous uniform on <span class="math inline">\([0,1]\)</span>.</p>
 <p>The basic Monte Carlo estimate is</p>
 <div class="cell">
@@ -330,7 +336,7 @@ window.Quarto = {
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">sin</span>(samples))</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4596232</code></pre>
+<pre><code>[1] 0.4599953</code></pre>
 </div>
 </div>
 <p>We used <code>runif(n, min, max)</code> to generate <span class="math inline">\(n\)</span> samples on the interval <span class="math inline">\([\mathtt{min}, \mathtt{max}]\)</span>. However, if you omit the <code>min</code> and <code>max</code> arguments, then R assumes the default values <code>min = 0</code>, <code>max = 1</code>, which is what we want here.</p>
@@ -342,7 +348,7 @@ window.Quarto = {
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>AVest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>(<span class="fu">sin</span>(samples1) <span class="sc">+</span> <span class="fu">sin</span>(samples2))</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>AVest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4597191</code></pre>
+<pre><code>[1] 0.4597048</code></pre>
 </div>
 </div>
 </div>

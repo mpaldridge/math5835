@@ -19,7 +19,7 @@ book:
         - lectures/L05-cv.qmd
         - lectures/L06-antithetic-1.qmd
         - problems/P1.qmd
-#        - lectures/L07-antithetic-2.qmd
+        - lectures/L07-antithetic-2.qmd
 #        - lectures/L08-is-1.qmd
 #        - lectures/L09-is-2.qmd
 #    - part: "Random number generation"
