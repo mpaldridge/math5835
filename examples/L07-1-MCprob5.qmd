@@ -21,7 +21,7 @@ AV_RMSE <- sqrt(var((samples1 > 2) + (samples2 > 2)) / (2 * n))
 c(AVest, AV_RMSE)
 ```
 
-This looked like it made very little difference -- perhaps a small improvement. This can be confirmed by looking at the sample correlation.
+This looked like it made very little difference -- perhaps a small improvement. This can be confirmed by looking at the sample correlation with R's `cor()` function.
 
 ```{r}
 cor(samples1 > 2, samples2 > 2)

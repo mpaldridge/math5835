@@ -353,8 +353,8 @@ window.Quarto = {
 </div>
 </div>
 <p>We have taken <span class="math inline">\(n/2\)</span> pairs of samples, because that means we have <span class="math inline">\(n/2 \times 2 = n\)</span> samples over all, which seems like a fair comparison. This is certainly the case if generating the sample and generating its antithetic pair cost roughly the same in terms of time (or energy, or money). However, if generating the first variate of each pair is slow, but then generating the second antithetic variate is much quicker, it might be a fairer comparison to take a full <span class="math inline">\(n\)</span> pairs.</p>
-<p>More generally, you might look might put a cost <span class="math inline">\(c_1\)</span> on each first variate and <span class="math inline">\(c_2\)</span> on the antithetic pair. Then one can compare a cost of <span class="math inline">\(c_1n\)</span> for standard Monte Carlo with <span class="math inline">\(n\)</span> samples to a cost of <span class="math inline">\((c_1 + c_2)m\)</span> for antithetic variables Monte Carlo with <span class="math inline">\(m\)</span> pairs.</p>
-<p>Are these antithetic variables estimate an improvement on the basic Monte Carlo estimate? We’ll find out next time.</p>
+<p>More generally, you might put a cost <span class="math inline">\(c_1\)</span> on each first variate and <span class="math inline">\(c_2\)</span> on each antithetic pair. Then one can compare a cost of <span class="math inline">\(c_1n\)</span> for standard Monte Carlo with <span class="math inline">\(n\)</span> samples to a cost of <span class="math inline">\((c_1 + c_2)m\)</span> for antithetic variables Monte Carlo with <span class="math inline">\(m\)</span> pairs.</p>
+<p>Are these antithetic variables estimates an improvement on the basic Monte Carlo estimate? We’ll find out next time.</p>
 <p><strong>Next time:</strong> <em>We continue our study of the antithetic variables method with more examples and analysis of the error.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>

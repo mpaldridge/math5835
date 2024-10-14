@@ -61,9 +61,9 @@ which highlights that it is the mean of the estimator from the $X_i$s and the th
 
 We have taken $n/2$ pairs of samples, because that means we have $n/2 \times 2 = n$ samples over all, which seems like a fair comparison. This is certainly the case if generating the sample and generating its antithetic pair cost roughly the same in terms of time (or energy, or money). However, if generating the first variate of each pair is slow, but then generating the second antithetic variate is much quicker, it might be a fairer comparison to take a full $n$ pairs.
 
-More generally, you might look might put a cost $c_1$ on each first variate and $c_2$ on the antithetic pair. Then one can compare a cost of $c_1n$ for standard Monte Carlo with $n$ samples to a cost of $(c_1 + c_2)m$ for antithetic variables Monte Carlo with $m$ pairs.
+More generally, you might put a cost $c_1$ on each first variate and $c_2$ on each antithetic pair. Then one can compare a cost of $c_1n$ for standard Monte Carlo with $n$ samples to a cost of $(c_1 + c_2)m$ for antithetic variables Monte Carlo with $m$ pairs.
 
-Are these antithetic variables estimate an improvement on the basic Monte Carlo estimate? We'll find out next time.
+Are these antithetic variables estimates an improvement on the basic Monte Carlo estimate? We'll find out next time.
 
 **Next time:** *We continue our study of the antithetic variables method with more examples and analysis of the error.*
 

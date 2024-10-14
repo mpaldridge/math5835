@@ -21,9 +21,9 @@ AV_RMSE <- sqrt(var(sin(samples1) + sin(samples2)) / (2 * n))
 c(AVest, AV_RMSE)
 ```
 
-This time, we see a big improvement: the root-mean-square error has gone down by a whole order of magnitude, from $`{r} signif(MC_RMSE, 1)`$ to $`{r} signif(AV_RMSE, 1)`$.
+This time, we see a big improvement: the root-mean-square error has gone down by a whole order of magnitude, from $`{r} signif(MC_RMSE, 1)`$ to $`{r} signif(AV_RMSE, 1)`$. It would normally take 100 times as many samples to reduce the RMSE by a factor of 10, but we've got the extra 99 million samples for free by using antithetic variables!
 
-The benefit here can be confirmed by looking at the samples correlation.
+The benefit here can be confirmed by looking at the sample correlation.
 
 ```{r}
 cor(sin(samples1), sin(samples2))
