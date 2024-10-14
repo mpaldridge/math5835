@@ -2,7 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
-
+<!--
 ## Error with antithetic variables
 
 Recall from last time the antithetic variables Monte Carlo estimator. We take sample pairs
@@ -46,7 +46,7 @@ The results then follow.
 ## Examples
 
 Let's return to the two examples we tried last time.
-
+-->
 ::: {#exm-MCprob5}
 {{< include ../examples/L07-1-MCprob5.qmd >}}
 :::
@@ -54,7 +54,7 @@ Let's return to the two examples we tried last time.
 ::: {#exm-AV}
 {{< include ../examples/L07-2-AVunif2.qmd >}}
 :::
-
+<!--
 ## Finding antithetic variables
 
 Antithetic variables can provide a huge advantage compared to standard Monte Carlo, as we saw in the second example above. The downside is that it can often be difficult to *find* an appropriate antithetic variable.
@@ -72,6 +72,8 @@ But to be a *good* antithetic variable, we need $\phi(X)$ and $\phi(X')$ to be n
 ::: {#thm-neg}
 Let $U \sim \operatorname{U}[0, 1]$ and $U' = 1 - U$. Let $\phi$ be a monotonically increasing function. Then $\phi(U)$ and $\phi'(U)$ are negatively correlated, in that $\operatorname{Cov}\big(\phi(U), \phi(U')\big) \leq 0$.
 :::
+
+If I were to just write out the proof of this theorem, the proof would be fairly short and easy to understand. But it would be difficult to understand *why* I had taken the steps I had. So I will try to explain why each of the steps in the proof is a natural one -- although doing so may make the proof seem longer and more complicated than it really is.
 
 ::: {.proof}
 The covariance in question is
@@ -98,7 +100,19 @@ is *always* negative, so its expectation certainly is. To see this, think separa
 
 This completes the proof.
 :::
+-->
 
 **Next time:** *We come to the third, and most important, variance reduction scheme: importance sampling.*
 
+::: {.mysummary}
+**Summary:**
+
+* The antithetic variables estimator is unbiased and has mean-square error
+$$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). $$
+
+* Let $U \sim \operatorname{U}[0, 1]$ and $\phi$ is monotonically increasing, the $\phi(U)$ and $\phi(1-U)$ are negatively correlated.
+
+On Thursdays lecture, we will be discussing your answers to [**Problem Sheet 1**](#P1).
+
 **Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 3.3.2.
+:::

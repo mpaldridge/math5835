@@ -239,16 +239,8 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#error-with-antithetic-variables" id="toc-error-with-antithetic-variables" class="nav-link active" data-scroll-target="#error-with-antithetic-variables"><span class="header-section-number">7.1</span> Error with antithetic variables</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">7.2</span> Examples</a></li>
-  <li><a href="#finding-antithetic-variables" id="toc-finding-antithetic-variables" class="nav-link" data-scroll-target="#finding-antithetic-variables"><span class="header-section-number">7.3</span> Finding antithetic variables</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -280,34 +272,51 @@ window.Quarto = {
 \newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
 </div>
-<section id="error-with-antithetic-variables" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="error-with-antithetic-variables"><span class="header-section-number">7.1</span> Error with antithetic variables</h2>
-<p>Recall from last time the antithetic variables Monte Carlo estimator. We take sample pairs <span class="math display">\[ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X_{n/2}') , \]</span> where samples are independent between different pairs but <em>not</em> independent within the same pair. The estimator of <span class="math inline">\(\theta = \Ex \phi(X)\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) .\]</span> We hope this is better than the standard Monte Carlo estimator if <span class="math inline">\(\phi(X)\)</span> and <span class="math inline">\(\phi(X')\)</span> are negatively correlated.</p>
-<div id="thm-AVerr" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 7.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(X'\)</span> have the same distribution as <span class="math inline">\(X\)</span>, and write <span class="math inline">\(\rho = \operatorname{Corr}(\phi(X_i),\phi(X'_i))\)</span>. Let <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X_i')\big) \]</span> be the antithetic variables Monte Carlo estimator of <span class="math inline">\(\theta\)</span>. Then:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\widehat{\theta}_n^{\mathrm{AV}}\)</span> is unbiased, in that <span class="math inline">\(\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = 0\)</span>.</p></li>
-<li><p>The variance of of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{AV}}\)</span> is <span class="math display">\[ \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). \]</span></p></li>
-<li><p>The mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math display">\[ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). \]</span></p></li>
-<li><p>The root-mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math display">\[ \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{\sqrt{2n}} \sqrt{\operatorname{Var}\big(\phi(X) + \phi(X')\big)} = \frac{\sqrt{1+\rho}}{\sqrt{n}}\sqrt{\Var\big(\phi(X)\big)}. \]</span></p></li>
-</ol>
-</div>
-<p>In points 2, 3 and 4, generally the first expression, involving the variance <span class="math inline">\(\operatorname{Var}(\phi(X) + \phi(X'))\)</span>, is the most convenient for computation. We can estimate this easily from data using the sample variance in the usual way (as we will in the examples below).</p>
-<p>The second expression, involving the correlation <span class="math inline">\(\rho\)</span>, is usually clearer for understanding. Comparing these to the same results for the standard Monte Carlo estimator (<a href="L03-mc-error-1.html#thm-MCerr" class="quarto-xref">Theorem&nbsp;<span>3.2</span></a>), we see that the antithetic variables method is an improvement (that is, has a smaller mean-square error) when <span class="math inline">\(\rho &lt; 0\)</span>, but is worse when <span class="math inline">\(\rho &gt; 0\)</span>. This proves that negative correlation improves out estimator.</p>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>For unbiasedness, we have <span class="math display">\[ \Ex \widehat{\theta}_n^{\mathrm{AV}} = \Ex \left(\frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X_i')\big)\right) = \frac{1}{n} \,\frac{n}{2} \big(\Exg\phi(X) + \Exg \phi(X')) = \frac{1}{2}(\theta+ \theta) = \theta ,\]</span> since <span class="math inline">\(X'\)</span> has the same distribution as <span class="math inline">\(X\)</span>.</p>
-<p>For the other three points, each of the first expressions follows straightforwardly in essentially the same way. (You can fill in the details yourself, if you need to.) For the second expressions, we have <span class="math display">\[\begin{align*}
+<!--
+## Error with antithetic variables
+
+Recall from last time the antithetic variables Monte Carlo estimator. We take sample pairs
+$$ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X_{n/2}') , $$
+where samples are independent between different pairs but *not* independent within the same pair. The estimator of $\theta = \Ex \phi(X)$ is
+$$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) .$$
+We hope this is better than the standard Monte Carlo estimator if $\phi(X)$ and $\phi(X')$ are negatively correlated.
+
+::: {#thm-AVerr}
+Let $X$ be a random variable, $\phi$ a function, and $\theta = \Exg\phi(X)$. Let $X'$ have the same distribution as $X$, and write $\rho = \operatorname{Corr}(\phi(X_i),\phi(X'_i))$. Let $$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X_i')\big) $$ be the antithetic variables Monte Carlo estimator of $\theta$. Then:
+
+1.  $\widehat{\theta}_n^{\mathrm{AV}}$ is unbiased, in that $\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = 0$.
+
+2.  The variance of of $\widehat{\theta}_n^{\mathrm{AV}}$ is $$ \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). $$
+
+3.  The mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). $$
+
+4.  The root-mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is $$ \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{\sqrt{2n}} \sqrt{\operatorname{Var}\big(\phi(X) + \phi(X')\big)} = \frac{\sqrt{1+\rho}}{\sqrt{n}}\sqrt{\Var\big(\phi(X)\big)}. $$
+:::
+
+In points 2, 3 and 4, generally the first expression, involving the variance $\operatorname{Var}(\phi(X) + \phi(X'))$, is the most convenient for computation. We can estimate this easily from data using the sample variance in the usual way (as we will in the examples below).
+
+The second expression, involving the correlation $\rho$, is usually clearer for understanding. Comparing these to the same results for the standard Monte Carlo estimator (@thm-MCerr), we see that the antithetic variables method is an improvement (that is, has a smaller mean-square error) when $\rho < 0$, but is worse when $\rho > 0$. This proves that negative correlation improves out estimator.
+
+::: {.proof}
+For unbiasedness, we have
+$$ \Ex \widehat{\theta}_n^{\mathrm{AV}} = \Ex \left(\frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X_i')\big)\right) = \frac{1}{n} \,\frac{n}{2} \big(\Exg\phi(X) + \Exg \phi(X')) = \frac{1}{2}(\theta+ \theta) = \theta ,$$
+since $X'$ has the same distribution as $X$.
+
+For the other three points, each of the first expressions follows straightforwardly in essentially the same way. (You can fill in the details yourself, if you need to.) For the second expressions, we have
+\begin{align*}
 \Var \big(\phi(X) + \phi(X')\big)
-&amp;= \Var\big(\phi(X)\big) + \Var\big(\phi(X')\big) + 2\operatorname{Cov}\big(\phi(X),\phi(X')\big) \\
-&amp;= \Var\big(\phi(X)\big) + \Var\big(\phi(X')\big) + 2\rho\sqrt{\Var\big(\phi(X)\big) \Var\big(\phi(X')\big)} \\
-&amp;= \Var\big(\phi(X)\big) + \Var\big(\phi(X)\big) + 2\rho\sqrt{\Var\big(\phi(X)\big) \Var\big(\phi(X)\big)} \\
-&amp;= 2(1+\rho)\Var\big(\phi(X)\big) .
-\end{align*}\]</span> The results then follow.</p>
-</div>
-</section>
-<section id="examples" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="examples"><span class="header-section-number">7.2</span> Examples</h2>
-<p>Let’s return to the two examples we tried last time.</p>
+&= \Var\big(\phi(X)\big) + \Var\big(\phi(X')\big) + 2\operatorname{Cov}\big(\phi(X),\phi(X')\big) \\
+&= \Var\big(\phi(X)\big) + \Var\big(\phi(X')\big) + 2\rho\sqrt{\Var\big(\phi(X)\big) \Var\big(\phi(X')\big)} \\
+&= \Var\big(\phi(X)\big) + \Var\big(\phi(X)\big) + 2\rho\sqrt{\Var\big(\phi(X)\big) \Var\big(\phi(X)\big)} \\
+&= 2(1+\rho)\Var\big(\phi(X)\big) .
+\end{align*}
+The results then follow.
+:::
+
+## Examples
+
+Let's return to the two examples we tried last time.
+-->
 <div id="exm-MCprob5" class="theorem example">
 <p><span class="theorem-title"><strong>Example 7.1</strong></span> In <a href="L06-antithetic-1.html#exm-MCprob4" class="quarto-xref">Example&nbsp;<span>6.1</span></a>, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span> for <span class="math inline">\(Z\)</span> a standard normal.</p>
 <p>The basic Monte Carlo estimate and its root-mean-square error are</p>
@@ -318,7 +327,7 @@ window.Quarto = {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MC_RMSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">/</span> n)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MCest, MC_RMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0227870000 0.0001492239</code></pre>
+<pre><code>[1] 0.0225920000 0.0001485989</code></pre>
 </div>
 </div>
 <p>We then used <span class="math inline">\(Z' = -Z\)</span> as an antithetic variable. its root-mean-square error are</p>
@@ -330,14 +339,14 @@ window.Quarto = {
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>AV_RMSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>((samples1 <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">+</span> (samples2 <span class="sc">&gt;</span> <span class="dv">2</span>)) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> n))</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(AVest, AV_RMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0228490000 0.0001476648</code></pre>
+<pre><code>[1] 0.0227100000 0.0001472364</code></pre>
 </div>
 </div>
 <p>This looked like it made very little difference – perhaps a small improvement. This can be confirmed by looking at the sample correlation.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(samples1 <span class="sc">&gt;</span> <span class="dv">2</span>, samples2 <span class="sc">&gt;</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.02338327</code></pre>
+<pre><code>[1] -0.02323712</code></pre>
 </div>
 </div>
 <p>We see there was a very small but negative correlation: the variance, and hence the mean-square error, was reduced by about 2%.</p>
@@ -352,7 +361,7 @@ window.Quarto = {
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>MC_RMSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(<span class="fu">sin</span>(samples)) <span class="sc">/</span> n)</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MCest, MC_RMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4601180588 0.0002478952</code></pre>
+<pre><code>[1] 0.459211568 0.000247734</code></pre>
 </div>
 </div>
 <p>We then used <span class="math inline">\(U' = 1 - U\)</span> as an antithetic variable</p>
@@ -364,7 +373,7 @@ window.Quarto = {
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>AV_RMSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(<span class="fu">sin</span>(samples1) <span class="sc">+</span> <span class="fu">sin</span>(samples2)) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> n))</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(AVest, AV_RMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4596760966 0.0000248325</code></pre>
+<pre><code>[1] 4.596740e-01 2.483349e-05</code></pre>
 </div>
 </div>
 <p>This time, we see a big improvement: the root-mean-square error has gone down by a whole order of magnitude, from <span class="math inline">\(2\times 10^{-4}\)</span> to <span class="math inline">\(2\times 10^{-5}\)</span>.</p>
@@ -372,47 +381,70 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">sin</span>(samples1), <span class="fu">sin</span>(samples2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.9899601</code></pre>
+<pre><code>[1] -0.9899602</code></pre>
 </div>
 </div>
 <p>That’s a very large negative correlation, which shows why the antithetic variables made such a huge improvement.</p>
 </div>
-</section>
-<section id="finding-antithetic-variables" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="finding-antithetic-variables"><span class="header-section-number">7.3</span> Finding antithetic variables</h2>
-<p>Antithetic variables can provide a huge advantage compared to standard Monte Carlo, as we saw in the second example above. The downside is that it can often be difficult to <em>find</em> an appropriate antithetic variable.</p>
-<p>To even be able to <em>try</em> the antithetic variables method, we need to find a random variable <span class="math inline">\(X'\)</span> with the same distribution as <span class="math inline">\(X\)</span> that isn’t merely an independent copy. Both the examples we have seen of this use a symmetric distribution; that is, a distribution <span class="math inline">\(X\)</span> such that <span class="math inline">\(X' = a - X\)</span> has the same distribution as <span class="math inline">\(X\)</span>, for some <span class="math inline">\(a\)</span>.</p>
-<ul>
-<li><p>We saw that if <span class="math inline">\(X \sim \operatorname{N}(0, 1)\)</span> is a standard normal distribution, then <span class="math inline">\(X' = -X \sim \operatorname{N}(0, 1)\)</span> too. More generally, if <span class="math inline">\(X\sim \operatorname{N}(\mu, \sigma^2)\)</span>, then <span class="math inline">\(X' = 2\mu - X \sim \operatorname{N}(\mu, \sigma^2)\)</span> can be used as an antithetic variable.</p></li>
-<li><p>We saw that if <span class="math inline">\(U \sim \operatorname{U}[0, 1]\)</span> is a continuous uniform distribution on <span class="math inline">\([0,1]\)</span>, then <span class="math inline">\(U' = 1-U \sim \operatorname{U}[0, 1]\)</span> too. More generally, if <span class="math inline">\(X\sim \operatorname{U}[a, b]\)</span>, then <span class="math inline">\(X' = (a + b) - X \sim \operatorname{U}[a, b]\)</span> can be used as an antithetic variable.</p></li>
-</ul>
-<p>Later, when we study the inverse transform method (in Lecture 13) we will see another, more general, way to generate antithetic variables.</p>
-<p>But to be a <em>good</em> antithetic variable, we need <span class="math inline">\(\phi(X)\)</span> and <span class="math inline">\(\phi(X')\)</span> to be negatively correlated too – preferably strongly so. Often, this is a matter of trial-and-error – it’s difficult to set out hard principles. But there are some results that try to formalise the idea that “nice functions of negatively correlated random variables are themselves negatively correlated”, which can be useful. We give one example of such a result here.</p>
-<div id="thm-neg" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 7.2</strong></span> Let <span class="math inline">\(U \sim \operatorname{U}[0, 1]\)</span> and <span class="math inline">\(U' = 1 - U\)</span>. Let <span class="math inline">\(\phi\)</span> be a monotonically increasing function. Then <span class="math inline">\(\phi(U)\)</span> and <span class="math inline">\(\phi'(U)\)</span> are negatively correlated, in that <span class="math inline">\(\operatorname{Cov}\big(\phi(U), \phi(U')\big) \leq 0\)</span>.</p>
-</div>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>The covariance in question is <span class="math display">\[ \operatorname{Cov}\big(\phi(U), \phi(U')\big) = \Exg \phi(U)\phi(1-U) - \big(\Exg\phi(U)\big) \big(\Exg\phi(1-U)\big) . \]</span></p>
-<p>A cunning trick is to introduce an IID copy of <span class="math inline">\(U\)</span>; let’s call it <span class="math inline">\(V\)</span>. The first term in the above expression, <span class="math inline">\(\Exg \phi(U)\phi(1-U)\)</span>, could also be written as <span class="math inline">\(\Exg \phi(V)\phi(1-V)\)</span>; while the second term in the above expression, <span class="math inline">\(\big(\Exg\phi(U)\big) \big(\Exg\phi(1-U)\big)\)</span> could also be written as <span class="math inline">\(\big(\Exg\phi(V)\big) \big(\Exg\phi(1-U)\big)\)</span> or <span class="math inline">\(\big(\Exg\phi(U)\big) \big(\Exg\phi(1-V)\big)\)</span>.</p>
-<p>Taking advantage of these alternatives, we have <span class="math display">\[\begin{align*}
+<!--
+## Finding antithetic variables
+
+Antithetic variables can provide a huge advantage compared to standard Monte Carlo, as we saw in the second example above. The downside is that it can often be difficult to *find* an appropriate antithetic variable.
+
+To even be able to *try* the antithetic variables method, we need to find a random variable $X'$ with the same distribution as $X$ that isn't merely an independent copy. Both the examples we have seen of this use a symmetric distribution; that is, a distribution $X$ such that $X' = a - X$ has the same distribution as $X$, for some $a$.
+
+* We saw that if $X \sim \operatorname{N}(0, 1)$ is a standard normal distribution, then $X' = -X \sim \operatorname{N}(0, 1)$ too. More generally, if $X\sim \operatorname{N}(\mu, \sigma^2)$, then $X' = 2\mu - X \sim \operatorname{N}(\mu, \sigma^2)$ can be used as an antithetic variable.
+
+* We saw that if $U \sim \operatorname{U}[0, 1]$ is a continuous uniform distribution on $[0,1]$, then $U' = 1-U \sim \operatorname{U}[0, 1]$ too. More generally, if $X\sim \operatorname{U}[a, b]$, then $X' = (a + b) - X \sim \operatorname{U}[a, b]$ can be used as an antithetic variable.
+
+Later, when we study the inverse transform method (in Lecture 13) we will see another, more general, way to generate antithetic variables.
+
+But to be a *good* antithetic variable, we need $\phi(X)$ and $\phi(X')$ to be negatively correlated too -- preferably strongly so. Often, this is a matter of trial-and-error -- it's difficult to set out hard principles. But there are some results that try to formalise the idea that "nice functions of negatively correlated random variables are themselves negatively correlated", which can be useful. We give one example of such a result here.
+
+::: {#thm-neg}
+Let $U \sim \operatorname{U}[0, 1]$ and $U' = 1 - U$. Let $\phi$ be a monotonically increasing function. Then $\phi(U)$ and $\phi'(U)$ are negatively correlated, in that $\operatorname{Cov}\big(\phi(U), \phi(U')\big) \leq 0$.
+:::
+
+If I were to just write out the proof of this theorem, the proof would be fairly short and easy to understand. But it would be difficult to understand *why* I had taken the steps I had. So I will try to explain why each of the steps in the proof is a natural one -- although doing so may make the proof seem longer and more complicated than it really is.
+
+::: {.proof}
+The covariance in question is
+$$ \operatorname{Cov}\big(\phi(U), \phi(U')\big) = \Exg \phi(U)\phi(1-U) - \big(\Exg\phi(U)\big) \big(\Exg\phi(1-U)\big) . $$
+
+A cunning trick is to introduce an IID copy of $U$; let's call it $V$. The first term in the above expression, $\Exg \phi(U)\phi(1-U)$, could also be written as $\Exg \phi(V)\phi(1-V)$; while the second term in the above expression, $\big(\Exg\phi(U)\big) \big(\Exg\phi(1-U)\big)$ could also be written as $\big(\Exg\phi(V)\big) \big(\Exg\phi(1-U)\big)$ or $\big(\Exg\phi(U)\big) \big(\Exg\phi(1-V)\big)$.
+
+Taking advantage of these alternatives, we have
+\begin{align*}
 \operatorname{Cov}\big(\phi(U), \phi(U')\big)
-&amp;= \tfrac12 \big(\Exg \phi(U)\phi(1-U) + \Exg \phi(V)\phi(1-V) \big) \\
-&amp; \qquad {}- \tfrac12 \Big(\big(\Exg\phi(V)\big) \big(\Exg\phi(1-U)\big) - \big(\Exg\phi(U)\big) \big(\Exg\phi(1-V)\big) \Big) \\
-&amp;= \tfrac12 \Ex \big( \phi(U)\phi(1-U) + \phi(V)\phi(1-V) - \phi(V)\phi(1-U) \phi(U)\phi(1-V) \big) \\
-&amp;= \tfrac12 \Ex \big(\phi(U) - \phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big) .
-\end{align*}\]</span> In the first equality, we replaced each term by two of its alternatives, so multiplied by a half to take account for the doubled copies. In the second equality, we took advantage of the independence between <span class="math inline">\(U\)</span> and <span class="math inline">\(V\)</span> to take the expectation all the way outside. The third equality was simply factorising inside the expectation.</p>
-<p>We now claim that the expectation in the final line above is negative. In fact, we have a stronger result: <span id="eq-cross"><span class="math display">\[\big(\phi(U) - \phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big) \tag{7.1}\]</span></span> is <em>always</em> negative, so its expectation certainly is. To see this, think separately of the two cases <span class="math inline">\(U \leq V\)</span> and <span class="math inline">\(U \geq V\)</span>.</p>
-<ul>
-<li><p>If <span class="math inline">\(U \geq V\)</span>, then <span class="math inline">\(\phi(U) \geq \phi(V)\)</span> too, since <span class="math inline">\(\phi\)</span> is increasing. But, also this means that <span class="math inline">\(1-V \geq 1-U\)</span>, so <span class="math inline">\(\phi(1 - V) \geq \phi(1-U)\)</span>. This means that, in <a href="#eq-cross" class="quarto-xref">Equation&nbsp;<span>7.1</span></a>, the first term is positive and the second term is negative, so the product is negative.</p></li>
-<li><p>If <span class="math inline">\(U \leq V\)</span>, then <span class="math inline">\(\phi(U) \leq \phi(V)\)</span> too, since <span class="math inline">\(\phi\)</span> is increasing. But, also this means that <span class="math inline">\(1-V \leq 1-U\)</span>, so <span class="math inline">\(\phi(1 - V) \leq \phi(1-U)\)</span>. This means that, in <a href="#eq-cross" class="quarto-xref">Equation&nbsp;<span>7.1</span></a>, the first term is negative and the second term is positive, so the product is negative.</p></li>
-</ul>
-<p>This completes the proof.</p>
-</div>
+&= \tfrac12 \big(\Exg \phi(U)\phi(1-U) + \Exg \phi(V)\phi(1-V) \big) \\
+& \qquad {}- \tfrac12 \Big(\big(\Exg\phi(V)\big) \big(\Exg\phi(1-U)\big) - \big(\Exg\phi(U)\big) \big(\Exg\phi(1-V)\big) \Big) \\
+&= \tfrac12 \Ex \big( \phi(U)\phi(1-U) + \phi(V)\phi(1-V) - \phi(V)\phi(1-U) \phi(U)\phi(1-V) \big) \\
+&= \tfrac12 \Ex \big(\phi(U) - \phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big) .
+\end{align*}
+In the first equality, we replaced each term by two of its alternatives, so multiplied by a half to take account for the doubled copies. In the second equality, we took advantage of the independence between $U$ and $V$ to take the expectation all the way outside. The third equality was simply factorising inside the expectation.
+
+We now claim that the expectation in the final line above is negative. In fact, we have a stronger result: $$\big(\phi(U) - \phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big)$${#eq-cross}
+is *always* negative, so its expectation certainly is. To see this, think separately of the two cases $U \leq V$ and $U \geq V$.
+
+* If $U \geq V$, then $\phi(U) \geq \phi(V)$ too, since $\phi$ is increasing. But, also this means that $1-V \geq 1-U$, so $\phi(1 - V) \geq \phi(1-U)$. This means that, in @eq-cross, the first term is positive and the second term is negative, so the product is negative.
+
+* If $U \leq V$, then $\phi(U) \leq \phi(V)$ too, since $\phi$ is increasing. But, also this means that $1-V \leq 1-U$, so $\phi(1 - V) \leq \phi(1-U)$. This means that, in @eq-cross, the first term is negative and the second term is positive, so the product is negative.
+
+This completes the proof.
+:::
+-->
 <p><strong>Next time:</strong> <em>We come to the third, and most important, variance reduction scheme: importance sampling.</em></p>
+<div class="mysummary">
+<p><strong>Summary:</strong></p>
+<ul>
+<li><p>The antithetic variables estimator is unbiased and has mean-square error <span class="math display">\[ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). \]</span></p></li>
+<li><p>Let <span class="math inline">\(U \sim \operatorname{U}[0, 1]\)</span> and <span class="math inline">\(\phi\)</span> is monotonically increasing, the <span class="math inline">\(\phi(U)\)</span> and <span class="math inline">\(\phi(1-U)\)</span> are negatively correlated.</p></li>
+</ul>
+<p>On Thursdays lecture, we will be discussing your answers to <a href="../problems/P1.html"><strong>Problem Sheet 1</strong></a>.</p>
 <p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.3.2.</p>
+</div>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
