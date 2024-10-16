@@ -115,6 +115,8 @@ integrand <- function(x) 1 / (x + 0.1)
 samples1 <- runif(n, 0, 5)
 mean(5 * integrand(samples1))
 ```
+
+(In fact, the true answer is $\log(5.1) - \log(0.1) = 3.932$, so it looks like this is working correctly.)
 :::
 ::::
 
@@ -127,29 +129,47 @@ mean(5 * integrand(samples1))
 ```{r h2-graph}
 #| code-fold: true
 curve(
-  integrand, n = 1001, from = -0.05, to = 6,
+  integrand, n = 1001, from = 0, to = 5,
   col = "blue", lwd = 3,
-  xlab = "x", ylab = "integrand h(x)", xlim = c(0,5), ylim = c(0, 10)
+  xlab = "x", ylab = "integrand h(x)", xlim = c(0,5)
 )
-curve(4*dexp(x, 1), add = TRUE)
 abline(h = 0)
 ```
 
-We see that we get a much bigger contribution to the integral from values near 0. So a random variable that picks values nearer to 0 more often should give a more accurate result for moderate $n$. I'm going to pick an exponential distribution with rate 1.
+We see that we get a much bigger contribution to the integral from values near 0. So a random variable that picks values nearer to 0 more often might have a chance of giving a more accurate result.
+
+<!--*(I now have a bit of admission to make. I set this question before actually checking the answers. When I came to solve this problem, I found it surprisingly difficult to beat the uniform distribution! If you tried another distribution, and seemed to get an estimate near 3.93, you should consider that a good enough answer to this question -- even if the mean-square error was quite large.)*-->
+
+I decided to try an exponential distribution with rate 1, which should sample the smaller values of $x$ more often.
 
 ```{r}
-pdf <- function(x) dexp(x, 2)
+pdf <- function(x) dexp(x, 1)
 phi <- function(x) (integrand(x) / pdf(x)) * (x <= 5)
-samples2 <- rexp(n, 2)
+
+samples2 <- rexp(n, 1)
 mean(phi(samples2))
 ```
 
-Is this an improvement or not? We can find out by looking at the variance (or, equivalently, the mean-square or root-mean-square error).
+(I had to include `x <= 5` in the expression for $\phi$, because my exponential distribution will sometimes take samples above 5, but they should count as 0 in an estimate for the integral between 0 and 5.)
+
+To see whether or not this was an improvement, I estimated the mean-square error.
 
 ```{r}
-var(5 * integrand(samples1))
-var(phi(samples2))
+var(5 * integrand(samples1)) / n
+var(phi(samples2)) / n
 ```
+
+I found that I had reduced the mean-square error by roughly a factor of 5.
+<!--
+```{r}
+pdf <- function(x) dbeta(x / 5, 1, 2) / 5
+phi <- function(x) integrand(x) / pdf(x)
+
+samples2 <- 5 * rbeta(n, 1, 2)
+mean(phi(samples2))
+```
+-->
+
 :::
 ::::
 :::::
@@ -211,7 +231,7 @@ mean(samples^2.1)
 **(b)**   Estimate $\mathbb EX^{2.1}$ using $X^2$ as a control variate. (You may recall that if $Y$ is exponential with rate $\lambda$ then $\mathbb EY^2 = 2/\lambda^2$.)
 
 ::: {.myanswers}
-*Solution.* We have $\Ex X^2 = 2$. So, re-using the same sample as before (you don't have to do this), our R code is as follows.
+*Solution.* We have $\Ex X^2 = 2$. So, re-using the same sample as before (you don't have to do this -- you could take new samples), our R code is as follows.
 
 ```{r}
 mean(samples^2.1 - samples^2) + 2
@@ -223,18 +243,18 @@ mean(samples^2.1 - samples^2) + 2
 **(c)**   Which method is better?
 
 ::: {.myanswers}
-*Solution.* The better answer is the one with the smaller varaince (or, equivalently, mean-square or root-mean-square error).
+*Solution.* The better answer is the one with the smaller mean-square error.
 
 For the basic method,
 
 ```{r}
-var(samples^2.1)
+var(samples^2.1) / n
 ```
 
 For the control variate method,
 
 ```{r}
-var(samples^2.1 - samples^2)
+var(samples^2.1 - samples^2) / n
 ```
 
 So the control variates method is much, much better.
