@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; Monte Carlo error II: practice – MATH5835M Statistical Computing</title>
+<title>8&nbsp; Importance sampling I – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L05-cv.html" rel="next">
-<link href="../lectures/L03-mc-error-1.html" rel="prev">
+<link href="../problems/solutions.html" rel="next">
+<link href="../lectures/L07-antithetic-2.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +111,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L04-mc-error-2.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L08-is-1.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -205,7 +171,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L04-mc-error-2.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L04-mc-error-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></span></a>
   </div>
 </li>
@@ -235,7 +201,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L08-is-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L08-is-1.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span></a>
   </div>
 </li>
@@ -252,23 +218,15 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#recap" id="toc-recap" class="nav-link active" data-scroll-target="#recap"><span class="header-section-number">4.1</span> Recap</a></li>
-  <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals"><span class="header-section-number">4.2</span> Confidence intervals</a></li>
-  <li><a href="#how-many-samples-do-i-need" id="toc-how-many-samples-do-i-need" class="nav-link" data-scroll-target="#how-many-samples-do-i-need"><span class="header-section-number">4.3</span> How many samples do I need?</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L04-mc-error-2.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L08-is-1.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></h1>
 </div>
 
 
@@ -293,124 +251,80 @@ window.Quarto = {
 \newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
 </div>
-<section id="recap" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="recap"><span class="header-section-number">4.1</span> Recap</h2>
-<p>Let’s recap where we’ve got to. We know that the Monte Carlo estimator for <span class="math inline">\(\theta = \Exg \phi(X)\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) .\]</span> Last time, we saw that the Monte Carlo estimator is unbiased, and that its mean-square and root-mean-square errors are <span class="math display">\[ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) \qquad \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . \]</span> We saw that these themselves can be estimated as <span class="math inline">\(S^2/n\)</span> and <span class="math inline">\(S/\sqrt{n}\)</span> respectively, where <span class="math inline">\(S^2\)</span> is the sample variance of the <span class="math inline">\(\phi(X_i)\)</span>s.</p>
-<p>Let’s do one more example before moving on.</p>
-<div id="exm-MCprob2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 4.1</strong></span> In <a href="L02-mc-uses.html#exm-MCprob" class="quarto-xref">Example&nbsp;<span>2.1</span></a>, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span>, where <span class="math inline">\(Z\)</span> is a standard normal.</p>
-<p>Our code was</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022686</code></pre>
-</div>
-</div>
-<p>So our root-mean-square error can be approximated as</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>RMSEest <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">/</span> n)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>RMSEest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0001489005</code></pre>
-</div>
-</div>
-</div>
-</section>
-<section id="confidence-intervals" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">4.2</span> Confidence intervals</h2>
-<p>So far, we have described our error tolerance in terms of the MSE or RMSE. But we could have talked about “confidence intervals” or “margins of error” instead. This might be easier to understand for non-mathematicians, for whom “root-mean-square error” doesn’t really mean anything.</p>
-<p>Here, we will want to appeal to the central limit theorem approximation. A bit more probability revision: Let <span class="math inline">\(Y_1, Y_2, \dots\)</span> be IID again, with expectation <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>. Write <span class="math inline">\(\overline Y_n\)</span> for the mean. We’ve already reminded ourselves that <span class="math inline">\(\mathbb E \overline Y_n = \mu\)</span> and <span class="math inline">\(\Var(\overline{Y}_n) = \sigma^2/n\)</span>. But the <strong>central limit theorem</strong> says that the distribution of <span class="math inline">\(\overline Y_n\)</span> is approximately normally distributed with those parameters, so <span class="math inline">\(\overline Y_n \approx \operatorname{N}(\mu, \sigma^2/n)\)</span> when <span class="math inline">\(n\)</span> is large. (This is an informal statement of the central limit theorem: you probably know some more formal ways to more precisely state the it, but this will do for us.)</p>
-<p>Recall that, in the normal distribution <span class="math inline">\(\operatorname{N}(\mu, \sigma^2)\)</span>, we expect to be within <span class="math inline">\(1.96\)</span> standard deviations of the mean with 95% probability. More generally, the interval <span class="math inline">\([\mu - q_{1-\alpha/2}\sigma, \mu + q_{1-\alpha/2}\sigma]\)</span>, where <span class="math inline">\(q_{1-\alpha/2}\)</span> is the <span class="math inline">\((1- \frac{\alpha}{2})\)</span>-quantile of the normal distribution, contains the true value with probability approximately <span class="math inline">\(1 - \alpha\)</span>.</p>
-<p>We can form an approximate confidence interval for a Monte Carlo estimate using this idea. We have our Monte Carlo estimator <span class="math inline">\(\widehat{\theta}_n^\mathrm{MC}\)</span> as our estimator of the <span class="math inline">\(\mu\)</span> parameter, and our estimator of the root-mean-square error <span class="math inline">\(S/\sqrt{n}\)</span> as our estimator of the <span class="math inline">\(\sigma\)</span> parameter. So our confidence interval is estimated as <span class="math display">\[\bigg[ \widehat{\theta}_n^\mathrm{MC} - q_{1-\alpha/2}\,\frac{S}{\sqrt{n}}, \ \widehat{\theta}_n^\mathrm{MC} + q_{1-\alpha/2}\,\frac{S}{\sqrt{n}} \bigg] . \]</span></p>
-<div id="exm-MCprob3" class="theorem example">
-<p><span class="theorem-title"><strong>Example 4.2</strong></span> We continue the example of <a href="L02-mc-uses.html#exm-MCprob" class="quarto-xref">Example&nbsp;<span>2.1</span></a> and <a href="#exm-MCprob2" class="quarto-xref">Example&nbsp;<span>4.1</span></a>, where we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span> for <span class="math inline">\(Z\)</span> a standard normal.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>MCest   <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>RMSEest <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">/</span> n)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022735</code></pre>
-</div>
-</div>
-<p>Our confidence interval is estimates as follows</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>quant <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MCest <span class="sc">-</span> quant <span class="sc">*</span> RMSEest, MCest <span class="sc">+</span> quant <span class="sc">*</span> RMSEest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.02244285 0.02302715</code></pre>
-</div>
-</div>
-</div>
-</section>
-<section id="how-many-samples-do-i-need" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="how-many-samples-do-i-need"><span class="header-section-number">4.3</span> How many samples do I need?</h2>
-<p>In our examples we’ve picked the number of samples <span class="math inline">\(n\)</span> for our estimator, then approximated the error based on that. But we could do things the other way around – fix an error tolerance that we’re willing to deal with, then work out what sample size we need to achieve it.</p>
-<p>We know that the root-mean-square error is <span class="math display">\[ \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} \]</span> So if we want to get the RMSE down to <span class="math inline">\(\epsilon\)</span>, say, then this shows that we need <span class="math display">\[ n = \frac{1}{\epsilon^2} \Var\big(\phi(X)\big) . \]</span></p>
-<p>We still have a problem here, though. We (usually) don’t know <span class="math inline">\(\Var(\phi(X))\)</span>. But we can’t even <em>estimate</em> <span class="math inline">\(\Var(\phi(X))\)</span> until we’ve already taken the samples. But we can use this idea with a three-step process:</p>
-<ol type="1">
-<li><p>Run an initial “pilot” Monte Carlo algorithm with a small number of samples <span class="math inline">\(n\)</span>. Use the results of the “pilot” to estimate the variance <span class="math inline">\(S^2 \approx \Var(\phi(X))\)</span>. We want <span class="math inline">\(n\)</span> small enough that this runs very quickly, but big enough that we get a reasonably OK estimate of the variance.</p></li>
-<li><p>Pick a desired RMSE accuracy <span class="math inline">\(\epsilon\)</span>. We now know that we require roughly <span class="math inline">\(N = S^2 / \epsilon^2\)</span> samples to get our desired accuracy.</p></li>
-<li><p>Run the “real” Monte Carlo algorithm with this big number of samples <span class="math inline">\(N\)</span>. We will put up with this being quite slow, because we know we’re definitely going to get the error tolerance we need.</p></li>
-</ol>
-<p>(We could potentially use further steps, where we now check the variance with the “real” big-<span class="math inline">\(N\)</span> samples, and, if we learn we had underestimated in Step 1, take even more samples to correct for this.)</p>
-<div id="exm-MC22" class="theorem example">
-<p><span class="theorem-title"><strong>Example 4.3</strong></span> Let’s try this with <a href="L01-mc-intro.html#exm-MC2" class="quarto-xref">Example&nbsp;<span>1.2</span></a> from before. We were trying to estimate <span class="math inline">\(\mathbb{E}(\sin X)\)</span>, where <span class="math inline">\(X \sim \operatorname{N}(1, 2^2)\)</span>.</p>
-<p>We’ll start with just <span class="math inline">\(n = 1000\)</span> samples, for our pilot study.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>n_pilot <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_pilot, <span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>var_est <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">sin</span>(samples))</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>var_est</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4900872</code></pre>
-</div>
-</div>
-<p>This was very quick! We won’t have got a super-accurate estimate of <span class="math inline">\(\mathbb E\phi(X)\)</span>, but we have a reasonable idea of roughly what <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span> is. This will allow us to pick out “real” sample size in order to get a root-mean-square error of <span class="math inline">\(10^{-4}\)</span>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>epsilon <span class="ot">&lt;-</span> <span class="fl">1e-4</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>n_real  <span class="ot">&lt;-</span> <span class="fu">round</span>(var_est <span class="sc">/</span> epsilon<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>n_real</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 49008721</code></pre>
-</div>
-</div>
-<p>This tells us that we will need about 50 million samples! This is a lot, but now we know we’re going to get the accuracy we want, so it’s worth it. (In this particular case, 50 million samples will only take a few second on a modern computer. But generally, once we know our code works and we know how many samples we will need for the desired accuracy, this is the sort of thing that we could leave running overnight or whatever.)</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_real, <span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">sin</span>(samples))</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1139167</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>RMSEest <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(<span class="fu">sin</span>(samples)) <span class="sc">/</span> n_real)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>RMSEest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 9.968996e-05</code></pre>
-</div>
-</div>
-<p>This was very slow, of course. But we see that we have indeed got our Monte Carlo estimate to (near enough) the desired accuracy.</p>
-</div>
-<p>Generally, if we want a more accurate Monte Carlo estimator, we can just take more samples. But the equation <span class="math display">\[ n = \frac{1}{\epsilon^2} \Var\big(\phi(X)\big) \]</span> is actually quite bad news. To get an RMSE of <span class="math inline">\(\epsilon\)</span> we need order <span class="math inline">\(1/\epsilon^2\)</span> samples. That’s not good. Think of it like this: to <em>double</em> the accuracy we need to <em>quadruple</em> the number of samples. Even worse: to get “one more decimal place of accuracy” means dividing <span class="math inline">\(\epsilon\)</span> by ten; but that means multiplying the number of samples by one hundred!</p>
-<p>More samples take more time, and cost more energy and money. Wouldn’t it be nice to have some better ways of increasing the accuracy of a Monte Carlo estimate besides just taking more and more samples?</p>
-<p><strong>Next time:</strong> <em>We begin our study of clever “variance reduction” methods for Monte Carlo estimation.</em></p>
-<div class="mysummary">
-<p><strong>Summary:</strong></p>
-<ul>
-<li><p>We can approximate confidence intervals for a Monte Carlo estimate by using a normal approximation.</p></li>
-<li><p>To get the root-mean-square error below <span class="math inline">\(\epsilon\)</span> we need <span class="math inline">\(n = \Var(\phi(X))/\epsilon^2\)</span> samples.</p></li>
-<li><p>We can use a two-step process, where a small “pilot” Monte Carlo estimation allows us to work out how many samples we will need for the big “real” estimation.</p></li>
-</ul>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsections 3.2.2–3.2.4.</p>
-</div>
+<!--
+## Sampling from other distributions
+
+So far, we have looked at estimating $\Exg \phi(X)$ using samples $X_1, X_2, \dots, X_n$ that are from the same distribution as $X$. **Importance sampling** is based on the idea of taking samples $Y_1, Y_2, \dots, Y_n$ from some *different* distribution $Y$, but then making an appropriate adjustment, so that we're still estimating $\Exg \psi(X)$.
+
+Why might we want to do this? There are two main reasons:
+
+* First, we might not be able to sample from $X$, so we might be forced into sampling from some other distribution $Y$ instead. So far, $X$ has always been a nice pleasant distribution, like a normal, exponential or continuous uniform distribution, for which we can use R's built-in sampling function. But what if $X$ were instead a very unusual or awkward distribution? In that case, we might not be able to sample directly from $X$, so would be forced into sampling from a different distribution instead.
+
+* Second, we might prefer to sample from a distribution other than $Y$. This might be the case if $\phi(x)$ varies a lot over different values of $x$. There might be some areas of $x$ where it's very important to get an accurate estimation, because they contribute a lot to $\Exg\phi(X)$, so we'd like to "oversample" (take lots of samples) there; meanwhile, other areas of $x$ where it is not very important to get an accurate estimation, because they contribute very little to $\Exg\phi(X)$, so we don't mind "undersampling" (taking relatively few samples) there. Then we could sample instead from a distribution $Y$ that concentrate on the most important areas for $\phi$; although we'll need to make sure to adjust our estimator by "down-weighting" the places that we have oversampled.
+
+Consider, for example, trying to estimate $\Exg\phi(X)$ where $X$ is uniform on $[0, 20]$ and $\phi$ is the function shown below.
 
 
-</section>
+
+
+::: {.cell}
+
+```{.r .cell-code  code-fold="true" code-summary="Code for drawing this graph"}
+phi <- function(x) sin(5 * x) / (5 * x)
+curve(
+  phi, n = 10001, from = 0, to = 20,
+  lwd = 3, col = "blue",
+  xlab = "x", ylab = expression(phi(x)), ylim = c(-0.2, 1)
+)
+abline(h = 0)
+```
+
+::: {.cell-output-display}
+![](L08-is-1_files/figure-html/importance-1.svg){width=672}
+:::
+:::
+
+
+
+
+We can see that what happens for small $x$ -- say, for $x$ between 0 and 2, or so -- will have an important effect on the value of $\Exg \phi(X)$, because that where $\phi$ has the biggest (absolute) values. But what happens for large $x$ -- say for $x \geq 10$ or so -- will be much less important for estimating $\Exg\phi(X)$. So it seems wasteful to have all values in $[0, 20]$ to be sampled equally, and it would seem to make sense to take more samples from small values of $x$.
+
+This is all very well in practice, but how exactly should we down-weight those over-sampled areas?
+
+Let's start by thinking of just $n = 1$ single sample. We want to estimate $\Exg \phi(X)$. Let's assume that $X$ is continuous with probability density function $X$. (Throughout this lecture and the next, we will assume all our random variables are continuous. The arguments for discrete random variables are very similar -- just swap probability density functions with probability mass functions and integrals with sums. You can fill in the details yourself, if you like.) Then we are trying to estimate
+$$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(X)\,f(x)\,\mathrm{d}x . $$
+
+Now suppose we sample from some other continuous distribution $Y$, with PDF $g$. If we estimate $\Exg \psi(Y)$, say, for some function $\psi$, then we are estimating
+$$\Exg \psi(Y) = \int_{-\infty}^{+\infty} \psi(y)\,g(y) \, \mathrm{d}y = \int_{-\infty}^{+\infty} \psi(x)\,g(x) \, \mathrm{d}x . $$
+(In the second equality, we merely changed the dummy variable from $y$ to $x$, as we are at liberty to do.)
+
+But we want to be estimating $\Exg\phi(X)$, not $\Exg\psi(Y)$. So we will need to pick $\psi$ such that
+$$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(X)\,f(x)\,\mathrm{d}x = \int_{-\infty}^{+\infty} \psi(x)\,g(x) \, \mathrm{d}x = \Exg \psi(Y) . $$
+So we need to pick $\psi$ such that
+$\phi(x)\,f(x) = \psi(X)\,g(x)$. That means that we should take
+$$\psi(x) = \frac{\phi(x) f(x)}{g(x)} . $$
+
+So we could build a Monte Carlo estimate for $\Exg \phi(X)$ instead as a Monte Carlo estimate for 
+$$ \Exg \psi(Y) = \Exg \frac{\phi(Y)\,f(Y)}{g(Y)} . $$
+
+There is one other thing: we need to be careful of division by $0$ errors. So we should make sure that $g$ is only 0 when $f$ is 0. In other words, if it's possible for $X$ to take some value, then it must be possible for $Y$ to take that value too.
+
+We are finally ready to define our estimator.
+
+::: {#def-IS}
+Let $X$ be a continuous random variable with probability density function $f$, let $\phi$ be a function, and write $\theta = \Exg\phi(X)$. Let $Y$ be a continuous random variable with probability desnity function $g$, where $g(x) > 0$ for all $x$ where $f(x) > 0$. Then the **importance sampling Monte Carlo estimator** $\widehat\theta_n^{\mathrm{IS}}$ of $\theta$ is
+$$ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^{n} \phi(Y_i) \, \frac{f(Y_i)}{g(Y_i)}  ,$$
+where $Y_1, Y_2, \dots, Y_n$ is an independent random sample from $Y$.
+:::
+
+We can think of this as taking a weighted mean of the $\phi(Y_i)$s, where the weights are $f(Y_i)/g(Y_i)$. So if a value is much more likely under $Y$ than under $X$, then it gets a low weight; while if a value is less likely under $Y$ than under $X$, then it gets a high weight. Thus we see that the weighting compensates for values that are likely to be over- or under-sampled.
+
+## Rejection
+
+## Importance sampling: definition
+-->
+
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -835,13 +749,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L03-mc-error-1.html" class="pagination-link" aria-label="Monte Carlo error I: theory">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span>
+      <a href="../lectures/L07-antithetic-2.html" class="pagination-link" aria-label="Antithetic variables II">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L05-cv.html" class="pagination-link" aria-label="Control variate">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
+        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -64,6 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../lectures/L08-is-1.html" rel="next">
 <link href="../problems/P1.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -232,8 +233,20 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L08-is-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../problems/solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Solutions</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -282,7 +295,7 @@ window.Quarto = {
 </div>
 <section id="error-with-antithetic-variables" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="error-with-antithetic-variables"><span class="header-section-number">7.1</span> Error with antithetic variables</h2>
-<p>Recall from last time the antithetic variables Monte Carlo estimator. We take sample pairs <span class="math display">\[ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X_{n/2}') , \]</span> where samples are independent between different pairs but <em>not</em> independent within the same pair. The estimator of <span class="math inline">\(\theta = \Ex \phi(X)\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) .\]</span> We hope this is better than the standard Monte Carlo estimator if <span class="math inline">\(\phi(X)\)</span> and <span class="math inline">\(\phi(X')\)</span> are negatively correlated.</p>
+<p>Recall from last time the antithetic variables Monte Carlo estimator. We take sample pairs <span class="math display">\[ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X_{n/2}') , \]</span> where samples are independent between different pairs but <em>not</em> independent within the same pair. The estimator of <span class="math inline">\(\theta = \Exg \phi(X)\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) .\]</span> We hope this is better than the standard Monte Carlo estimator if <span class="math inline">\(\phi(X)\)</span> and <span class="math inline">\(\phi(X')\)</span> are negatively correlated.</p>
 <div id="thm-AVerr" class="theorem">
 <p><span class="theorem-title"><strong>Theorem 7.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(X'\)</span> have the same distribution as <span class="math inline">\(X\)</span>, and write <span class="math inline">\(\rho = \operatorname{Corr}(\phi(X_i),\phi(X'_i))\)</span>. Let <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X_i')\big) \]</span> be the antithetic variables Monte Carlo estimator of <span class="math inline">\(\theta\)</span>. Then:</p>
 <ol type="1">
@@ -848,6 +861,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../lectures/L08-is-1.html" class="pagination-link" aria-label="Importance sampling I">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

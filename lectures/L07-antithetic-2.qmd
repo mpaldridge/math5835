@@ -7,7 +7,7 @@
 
 Recall from last time the antithetic variables Monte Carlo estimator. We take sample pairs
 $$ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X_{n/2}') , $$
-where samples are independent between different pairs but *not* independent within the same pair. The estimator of $\theta = \Ex \phi(X)$ is
+where samples are independent between different pairs but *not* independent within the same pair. The estimator of $\theta = \Exg \phi(X)$ is
 $$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) .$$
 We hope this is better than the standard Monte Carlo estimator if $\phi(X)$ and $\phi(X')$ are negatively correlated.
 

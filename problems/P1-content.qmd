@@ -1,22 +1,20 @@
 {{< include ../_header.qmd >}}
 
-::::: {.myq}
+::::::: myq
 **1.**      Let $X$ be uniform on $[-1,2]$.
 
-:::: {.subq}
-**(a)**   By hand, calculate the exact value of $\Ex X^4$.
+:::: subq
+**(a)**   By hand, calculate the exact value of $\mathbb E X^4$.
 
-::: {.myanswers}
-*Solution.*
-
-$$\int_{-1}^2 x^4\,\frac{1}{2-(-1)}\,\mathrm{d}x = \tfrac13 \Big[\tfrac15x^5\Big]_{-1}^2 = \tfrac13\Big(\tfrac{32}{5}-\big(-\tfrac15\big)\Big) = \tfrac{33}{15} = \tfrac{11}{5} = 2.2$$
+::: myanswers
+*Solution.* The PDF of $X$ is $\frac{1}{2-(-1)}$ = $\frac{1}{3}$ between $-1$ and $2$. So $$\mathbb E X^4 = \int_{-1}^2 x^4\,\tfrac{1}{3}\,\mathrm{d}x = \Big[\tfrac1{15}x^5\Big]_{-1}^2 = \tfrac1{15}\big(32 - (-1)\big) = \tfrac{33}{15} = \tfrac{11}{5} = 2.2 .$$
 :::
 ::::
 
-:::: {.subq}
-**(b)**   Using R, calculate a Monte Carlo estimate for $\Ex X^4$.
+:::: subq
+**(b)**   Using R, calculate a Monte Carlo estimate for $\mathbb E X^4$.
 
-::: {.myanswers}
+::: myanswers
 *Solution.* I used the R code
 
 ```{r}
@@ -26,13 +24,13 @@ mean(samples^4)
 ```
 :::
 ::::
-:::::
+:::::::
 
-:::: {.myq}
-**2.**      Let $X$ and $Y$ both be standard normal distributions. Compute a Monte Carlo estimate of $\Exg \max\{X,Y\}$. (You may wish to investigate R's `pmax()` function.)
+:::: myq
+**2.**      Let $X$ and $Y$ both be standard normal distributions. Compute a Monte Carlo estimate of $\mathbb E  \max\{X,Y\}$. (You may wish to investigate R's `pmax()` function.)
 
-::: {.myanswers}
-*Solution.* By looking at `?pmax` (or maybe searching on Google) I discovered that `pmax()` gives the "parallel maxima" of two (or more vectors). That is the first element is the maximum of all the first elements of the vectors; the second element is the maximum of all the second elements of the vectors; and so on.
+::: myanswers
+*Solution.* By looking at `?pmax` (or maybe searching on Google) I discovered that `pmax()` gives the "parallel maxima" of two (or more vectors). That is, the first element is the maximum of all the first elements of the vectors; the second element is the maximum of all the second elements of the vectors; and so on.
 
 So I used the R code
 
@@ -45,68 +43,68 @@ mean(pmax(xsamples, ysamples))
 :::
 ::::
 
-::::: {.myq}
-**3.**      You are trapped alone on an island. All you have with you is a tin can (radius $r$) and a cardboard box (side lengths $2r \times 2r$) that it fits snugly inside. You put the can inside the box [left picture].
+::::::::: myq
+**3.**      You are trapped alone on an island. All you have with you is a tin can (radius $r$) and a cardboard box (side lengths $2r \times 2r$) that it fits snugly inside. You put the can inside the box \[left picture\].
 
-When it starts raining, each raindrop that falls in the cardboard box might fall into the tin can [middle picture], or might fall into the corners of the box outside the can [right picture].
+When it starts raining, each raindrop that falls in the cardboard box might fall into the tin can \[middle picture\], or might fall into the corners of the box outside the can \[right picture\].
 
-![](P1-can-box.svg){width=600}
+![](P1-can-box.svg){width="600"}
 
-:::: {.subq}
+:::: subq
 **(a)**   Using R, simulate rainfall into the box. You may take units such that $r = 1$. Estimate the probability $\theta$ that a uniformly-random raindrop that falls in the cardboard box falls into the tin can also.
 
-::: {.myanswers}
-*Solution.* I set things up so that the box is $[-1, 1]^2$, centered at the origin. This means that the inside of the can is the set of points is those $(x,y)$ such that $x^2 + y^2 \leq 1$.
+::: myanswers
+*Solution.* I set things up so that the box is $[-r, r]^2$, centred at the origin $(0,0)$. This means that the inside of the can is the set of points $(x,y)$ such that $x^2 + y^2 \leq r^2$.
 
 ```{r}
+r <- 1
 n <- 1e6
-rain_x <- runif(n, -1, 1)
-rain_y <- runif(n, -1, 1)
-in_box <- function(x, y) x^2 + y^2 <= 1
-mean(in_box(rain_x, rain_y))
+rain_x <- runif(n, -r, r)
+rain_y <- runif(n, -r, r)
+in_can <- function(x, y) x^2 + y^2 <= r^2
+mean(in_can(rain_x, rain_y))
 ```
 :::
 ::::
 
-:::: {.subq}
+:::: subq
 **(b)**   Calculate exactly the probability $\theta$.
 
-::: {.myanswers}
-*Solution.* The area of the box is $2r \times 2r = 4r^2$. The area of the can is $\pi r^2$. So the probability a raindrop landing in the box lands in the can is
-$$ \frac{\text{area of can}}{\text{area of box}} = \frac{\pi r^2}{4r^2} = \frac{\pi}{4} \approx 0.785. $$
+::: myanswers
+*Solution.* The area of the box is $2r \times 2r = 4r^2$. The area of the can is $\pi r^2$. So the probability a raindrop landing in the box lands in the can is $$ \theta = \frac{\text{area of can}}{\text{area of box}} = \frac{\pi r^2}{4r^2} = \frac{\pi}{4} \approx 0.785. $$
 :::
 ::::
 
-:::: {.subq}
+:::: subq
 **(c)**   You realise that, despite being trapped all alone on the island, you now have a way of approximating the value of $\pi$. If you want to calculate $\pi$ to 6 decimal places, roughly how many raindrops do you need to fall into the box?
 
-::: {.myanswers}
-*Solution.* The phrase "to 6 decimal places" isn't a precise mathematical one. I'm going to interpret this as getting the root-mean-square error below $10^{-6}$. If you interpret it slightly differently that's fine -- for example, getting the width of a 95% confidence interval below $10^{-6}$ could be another, slightly stricter, criterion.
+::: myanswers
+*Solution.* The phrase "to 6 decimal places" isn't a precise mathematical one. I'm going to interpret this as getting the root-mean-square error for $4\hat\theta$, the estimator of $\pi$, below $10^{-6}$. (If you interpret it slightly differently that's fine -- for example, getting the width of a 95% confidence interval below $10^{-6}$ could be another, slightly stricter, criterion.) Since $\operatorname{RMSE}(4\theta) = 4\operatorname{RMSE}(\theta)$, that means I need the root-mean-square error for $\theta$ down to $0.25 \times 10^{-6} = 2.5 \times 10^{-7}$.
 
-One could work this out by hand. Since the variance of a Bernoulli random variable is $p(1-p)$, the mean-square error of our estimator is
-$$ \frac{\frac{\pi}{4}(1 - \frac{\pi}{4})}{n} \approx \frac{0.169}{n} . $$
-So we need
-$$n = \frac{0.169}{(10^{-6})^2} \approx 169 \text{ billion} . $$
+One could work this out by hand. Since the variance of a Bernoulli random variable is $p(1-p)$, the mean-square error of our estimator is $$ \frac{\frac{\pi}{4}(1 - \frac{\pi}{4})}{n} \approx \frac{0.169}{n} . $$ So we need $$n = \frac{0.169}{(2.5 \times 10^{-7})^2} \approx 2.70 \times 10^{12} \approx 2.7 \text{ trillion} . $$
 
-That said, if we are trapped on our desert island, maybe we don't know what $\frac{\pi}{4}(1 - \frac{\pi}{4})$ is. In that case we could do this using the can and the box. Our estimate of the variance is
+But, trapped on my desert island, I don't know what $\pi$ is, so I can't calculate $\frac{\pi}{4}(1 - \frac{\pi}{4})$ exactly. However, provided I remember remember that $\pi \approx 3$, that would be good enough for a very rough estimate $n \approx {}$ 3 trillion.
+
+Alternatively, I could use the sample variance from the first 1000 raindrops, say.
 
 ```{r}
-var_est <- var(in_box(rain_x, rain_y))
-var_est / (1e-6)^2
+n_small <- 1000
+var_est <- var(in_can(rain_x[1:n_small], rain_y[1:n_small]))
+var_est / (2.5e-7)^2
 ```
 
-We will probably spend a long time waiting for that much rain!
+I will probably spend a long time waiting for that much rain!
 :::
 ::::
-:::::
+:::::::::
 
-::::: {.myq}
+::::::: myq
 **4.**      Let $h(x) = 1/(x + 0.1)$. We wish to estimate $\int_0^5 h(x) \, \mathrm{d}x$ using a Monte Carlo method.
 
-:::: {.subq}
+:::: subq
 **(a)**   Estimate the integral using $X$ uniform on $[0,5]$.
 
-:::{.myanswers}
+::: myanswers
 *Solution.*
 
 ```{r}
@@ -118,10 +116,10 @@ mean(5 * integrand(samples1))
 :::
 ::::
 
-:::: {.subq}
+:::: subq
 **(b)**   Can you come up with a choice of $X$ that improves on the estimate from (a)?
 
-::: {.myanswers}
+::: myanswers
 *Solution.* Let's look at a graph of the integrand $h$.
 
 ```{r h2-graph}
@@ -131,34 +129,39 @@ curve(
   col = "blue", lwd = 3,
   xlab = "x", ylab = "integrand h(x)", xlim = c(0,5), ylim = c(0, 10)
 )
-curve(4*dexp(x, 1), add = TRUE)
 abline(h = 0)
 ```
 
 We see that we get a much bigger contribution to the integral from values near 0. So a random variable that picks values nearer to 0 more often should give a more accurate result for moderate $n$. I'm going to pick an exponential distribution with rate 1.
 
 ```{r}
-pdf <- function(x) dexp(x, 2)
+pdf <- function(x) dexp(x, 1)
 phi <- function(x) (integrand(x) / pdf(x)) * (x <= 5)
-samples2 <- rexp(n, 2)
+samples2 <- rexp(n, 1)
 mean(phi(samples2))
 ```
 
-Is this an improvement or not? We can find out by looking at the variance (or, equivalently, the mean-square or root-mean-square error).
+Note the inclusion of `x <= 5` in line 2. This is because we want to count as 0 any samples outside the limits $[0,5]$ of the integration. (If you picked a normal distribution, say, you need to zero-out any samples below 0 too, but that doesn't happen with my exponential distribution.)
+
+Is this an improvement or not? We can find out by looking at the mean-square error.
 
 ```{r}
-var(5 * integrand(samples1))
-var(phi(samples2))
+var(5 * integrand(samples1)) / n
+var(phi(samples2)) / n
 ```
 :::
-::::
-:::::
 
-:::: {.myq}
+This is a clear improvement: the mean-square error has improved by roughly a factor of 5 (equivalent to taking 5 times as many samples).
+
+*(It's OK if your method ended up being worse than the standard estimator, as long as it got an estimate close to 3.93. I actually found this question quite difficult, and had to try quite a few distributions before finding that the Exp(1) distribution worked. A bit more experimentation suggested Exp(0.8) works a little better still. I'm sure even better choices exist that I didn't find.)*
+::::
+:::::::
+
+:::: myq
 **5.**      When calculating a Monte Carlo estimate $\frac{1}{n} \sum_{i=1}^n \phi(x_i)$, one might wish to first generate the $n$ samples $(x_1, x_2, \dots, x_n)$ and store them, and only then, after all samples are generated, finally calculate the estimate. However, when $n$ is extremely large, storing all $n$ samples uses up a lot of space in a computer's memory. Describe (in words, in R code, or in a mixture of the two) how the Monte Carlo estimate could be produced using much less memory.
 
-::: {.myanswers}
-*Solution.* The idea is to keep a "running total" of the $\phi(x_i)$s. Then we only have to store that running total, not all the samples. Once this has been done $n$ times, then divide by $n$ to get the estimate.
+::: myanswers
+*Solution.* The idea is to keep a "running total" of the $\phi(x_i)$s. Then we only have to store that running total, not the values of all the samples. Once this has been done $n$ times, then divide by $n$ to get the estimate.
 
 In R code, this might be something like
 
@@ -177,28 +180,25 @@ MCest <- total / n
 :::
 ::::
 
-:::: {.myq}
+:::: myq
 **6.**      Show that the indicator functions $\mathbb I_A(X)$ and $\mathbb I_B(X)$ have correlation 0 if and only if the events $\{X \in A\}$ and $\{X \in B\}$ are independent.
 
-::: {.myanswers}
-*Solution.* Recall that two random variables $U$, $V$ have correlation 0 if and only if their covariance $\Cov(U,V) = \Ex UV - (\Ex U)(\Ex V)$ is 0 too.
+::: myanswers
+*Solution.* Recall that two random variables $U$, $V$ have correlation 0 if and only if their covariance $\operatorname{Cov}(U,V) = \mathbb E  UV - (\mathbb E  U)(\mathbb E  V)$ is 0 too.
 
-We know that $\Exg\Ind_A(X) = \mathbb P(X \in A)$ and $\Exg \Ind_B(Y) = \mathbb P(X \in B)$. What about $\Exg \Ind_A(X) \Ind_B(X)$? Well, $\Ind_A(x) \Ind_B(x)$ is 1 if and only if *both* indicator functions equal 1, which is if and only if both $x \in A$ and $x \in B$. So $\Exg \Ind_A(X) \Ind_B(X) = \mathbb P(X \in A \text{ and } X \in B)$.
+We know that $\mathbb E \,\mathbb I_A(X) = \mathbb P(X \in A)$ and $\mathbb E \, \mathbb I_B(Y) = \mathbb P(X \in B)$. What about $\mathbb E \, \mathbb I_A(X) \mathbb I_B(X)$? Well, $\mathbb I_A(x) \mathbb I_B(x)$ is 1 if and only if *both* indicator functions equal 1, which is if and only if both $x \in A$ and $x \in B$. So $\mathbb E \, \mathbb I_A(X) \mathbb I_B(X) = \mathbb P(X \in A \text{ and } X \in B)$.
 
-So the covariance is
-$$ \Cov \big(\Ind_A(X), \Ind_B(X) \big) = \mathbb P(X \in A \text{ and } X \in B) - \mathbb P(X \in A)\, \mathbb P(X \in B) . $$
-If this is 0, then $\mathbb P(X \in A \text{ and } X \in B) = \mathbb P(X \in A)\, \mathbb P(X \in B)$, which is precisely the definition of those two events being independent.
+So the covariance is $$ \operatorname{Cov} \big(\mathbb I_A(X), \mathbb I_B(X) \big) = \mathbb P(X \in A \text{ and } X \in B) - \mathbb P(X \in A)\, \mathbb P(X \in B) . $$ If this is 0, then $\mathbb P(X \in A \text{ and } X \in B) = \mathbb P(X \in A)\, \mathbb P(X \in B)$, which is precisely the definition of those two events being independent.
 :::
 ::::
 
-
-::::: {.myq}
+::::::::: myq
 **7.**      Let $X$ be an exponential distribution with rate 1.
 
-:::: {.subq}
+:::: subq
 **(a)**   Estimate $\mathbb EX^{2.1}$ using the standard Monte Carlo method.
 
-::: {.myanswers}
+::: myanswers
 ```{r}
 n <- 1e6
 samples <- rexp(n, 1)
@@ -207,11 +207,11 @@ mean(samples^2.1)
 :::
 ::::
 
-:::: {.subq}
+:::: subq
 **(b)**   Estimate $\mathbb EX^{2.1}$ using $X^2$ as a control variate. (You may recall that if $Y$ is exponential with rate $\lambda$ then $\mathbb EY^2 = 2/\lambda^2$.)
 
-::: {.myanswers}
-*Solution.* We have $\Ex X^2 = 2$. So, re-using the same sample as before (you don't have to do this), our R code is as follows.
+::: myanswers
+*Solution.* We have $\mathbb E X^2 = 2 / 1^2 = 2$. So, re-using the same sample as before (you could take new samples, if you prefer), our R code is as follows.
 
 ```{r}
 mean(samples^2.1 - samples^2) + 2
@@ -219,39 +219,41 @@ mean(samples^2.1 - samples^2) + 2
 :::
 ::::
 
-:::: {.subq}
+:::: subq
 **(c)**   Which method is better?
 
-::: {.myanswers}
-*Solution.* The better answer is the one with the smaller varaince (or, equivalently, mean-square or root-mean-square error).
+::: myanswers
+*Solution.* The better answer is the one with the smaller mean-square error.
 
-For the basic method,
+For the basic method, we estimate the MSE as
 
 ```{r}
-var(samples^2.1)
+var(samples^2.1) / n
 ```
 
 For the control variate method,
 
 ```{r}
-var(samples^2.1 - samples^2)
+var(samples^2.1 - samples^2) / n
 ```
 
-So the control variates method is much, much better.
+So the control variates method is much, much better: about 2500 times better, in terms of the MSE, or as effective as 2500 times as many samples.
 :::
 ::::
-:::::
+:::::::::
 
-:::: {.myq}
+:::: myq
 **8.**      Let $Z$ be a standard normal distribution. A statistician has been investigating Monte Carlo estimates of $\mathbb EZ^k$ for different positive integers values of $k$. Her colleague suggests using $Z' = -Z$ as an antithetic variable. Without running any R code, explain whether or not this is a good idea **(a)** when $k$ is even; **(b)** when $k$ is odd.
 
-::: {.myanswers}
+::: myanswers
 *Solution.*
 
-**(a)** When $k$ is even, we have $Z^k = (-Z)^k$. So the antithetic variables method just repeats each sample twice. This is obviously no benefit at all, and just wastes time. Indeed, we have perfect positive correlation $\rho = +1$, which is the "worst-case scenario".
+**(a)** When $k$ is even, we have $Z^k = (-Z)^k$. So the antithetic variables method just repeats each sample twice. This is obviously no benefit at all, and just wastes time.
 
-**(b)** When $k$ is odd, we have $Z^k = -(-Z)^k$. In this case we know that $\Ex Z^k = 0$, because the results for positive $z$ exactly balance out those for negative $z$, so no Monte Carlo sampling is necessary. If our statistician has somehow forgotten that, though, she will get a pleasant surprise! After just two samples, she will get the estimate
-$$\frac{1}{2} \big(Z_1^k + (-Z_1)^k \big) = \frac{1}{2} (Z_1^k - Z_1^k) = 0 ,$$
-Thereby getting the result exactly right. Indeed, we have perfect negative correlation $\rho = -1$, which is the "best-case scenario".
+Indeed, we have perfect positive correlation $\rho = +1$ between $Z^k$ and $(Z')^k = Z^k$. Since the mean-square error is $\frac{1+\rho}{n}\operatorname{Var}(Z^k)$, having $\rho = +1$ is twice as bad as standard Monte Carlo estimation: the "worst-case scenario".
+
+**(b)** When $k$ is odd, we have $Z^k = -(-Z)^k$. In this case we know that $\mathbb E Z^k = 0$, because the results for positive $z$ exactly balance out those for negative $z$, so no Monte Carlo sampling is necessary. If our statistician has somehow forgotten that, though, she will get a pleasant surprise! After just one pair samples, she will get the estimate $$\frac{1}{2} \big(Z_1^k + (Z_1')^k \big) = \frac{1}{2} \big(Z_1^k + (-Z_1)^k \big) = \frac{1}{2} (Z_1^k - Z_1^k) = 0 ,$$ thereby getting the result exactly right!
+
+Indeed, here we have perfect negative correlation $\rho = -1$ between $Z^k$ and $(Z')^k = -Z^k$. Since the mean-square error is $\frac{1+\rho}{n}\operatorname{Var}(Z^k)$, having $\rho = -1$ gives a perfect estimator with $0$ error: the "best-case scenario".
 :::
 ::::
