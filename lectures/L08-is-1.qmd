@@ -1,16 +1,16 @@
 # Importance sampling I
 
 {{< include ../_header.qmd >}}
-<!--
+
 ## Sampling from other distributions
 
-So far, we have looked at estimating $\Exg \phi(X)$ using samples $X_1, X_2, \dots, X_n$ that are from the same distribution as $X$. **Importance sampling** is based on the idea of taking samples $Y_1, Y_2, \dots, Y_n$ from some *different* distribution $Y$, but then making an appropriate adjustment, so that we're still estimating $\Exg \psi(X)$.
+So far, we have looked at estimating $\Exg \phi(X)$ using samples $X_1, X_2, \dots, X_n$ that are from the same distribution as $X$. **Importance sampling** is based on the idea of taking samples $Y_1, Y_2, \dots, Y_n$ from some *different* distribution $Y$, but then making an appropriate adjustment, so that we're still estimating $\Exg \phi(X)$.
 
 Why might we want to do this? There are two main reasons:
 
-* First, we might not be able to sample from $X$, so we might be forced into sampling from some other distribution $Y$ instead. So far, $X$ has always been a nice pleasant distribution, like a normal, exponential or continuous uniform distribution, for which we can use R's built-in sampling function. But what if $X$ were instead a very unusual or awkward distribution? In that case, we might not be able to sample directly from $X$, so would be forced into sampling from a different distribution instead.
+* First, we might not be able to sample from $X$, so we might be forced into sampling from some other distribution $Y$ instead. So far, $X$ has always been a nice pleasant distribution, like a normal, exponential or continuous uniform distribution, for which we can use R's built-in sampling function. But what if $X$ were instead a very unusual or awkward distribution? In that case, we might not be able to sample directly from $X$, so would be forced into sampling from a different distribution.
 
-* Second, we might prefer to sample from a distribution other than $Y$. This might be the case if $\phi(x)$ varies a lot over different values of $x$. There might be some areas of $x$ where it's very important to get an accurate estimation, because they contribute a lot to $\Exg\phi(X)$, so we'd like to "oversample" (take lots of samples) there; meanwhile, other areas of $x$ where it is not very important to get an accurate estimation, because they contribute very little to $\Exg\phi(X)$, so we don't mind "undersampling" (taking relatively few samples) there. Then we could sample instead from a distribution $Y$ that concentrate on the most important areas for $\phi$; although we'll need to make sure to adjust our estimator by "down-weighting" the places that we have oversampled.
+* Second, we might *prefer* to sample from a distribution other than $Y$. This might be the case if $\phi(x)$ varies a lot over different values of $x$. There might be some areas of $x$ where it's very important to get an accurate estimation, because they contribute a lot to $\Exg\phi(X)$, so we'd like to "oversample" (take lots of samples) there; meanwhile, other areas of $x$ where it is not very important to get an accurate estimation, because they contribute very little to $\Exg\phi(X)$, so we don't mind "undersampling" (taking relatively few samples) there. Then we could sample instead from a distribution $Y$ that concentrates on the most important areas for $\phi$; although we'll need to make sure to adjust our estimator by "down-weighting" the places that we have oversampled.
 
 Consider, for example, trying to estimate $\Exg\phi(X)$ where $X$ is uniform on $[0, 20]$ and $\phi$ is the function shown below.
 
@@ -29,7 +29,7 @@ We can see that what happens for small $x$ -- say, for $x$ between 0 and 2, or s
 
 This is all very well in practice, but how exactly should we down-weight those over-sampled areas?
 
-Let's start by thinking of just $n = 1$ single sample. We want to estimate $\Exg \phi(X)$. Let's assume that $X$ is continuous with probability density function $X$. (Throughout this lecture and the next, we will assume all our random variables are continuous. The arguments for discrete random variables are very similar -- just swap probability density functions with probability mass functions and integrals with sums. You can fill in the details yourself, if you like.) Then we are trying to estimate
+Let's start by thinking of just $n = 1$ single sample. We want to estimate $\Exg \phi(X)$. Let's assume that $X$ is continuous with probability density function $f$. (Throughout this lecture and the next, we will assume all our random variables are continuous. The arguments for discrete random variables are very similar -- just swap probability density functions with probability mass functions and integrals with sums. You can fill in the details yourself, if you like.) Then we are trying to estimate
 $$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(X)\,f(x)\,\mathrm{d}x . $$
 
 Now suppose we sample from some other continuous distribution $Y$, with PDF $g$. If we estimate $\Exg \psi(Y)$, say, for some function $\psi$, then we are estimating
@@ -52,12 +52,13 @@ We are finally ready to define our estimator.
 ::: {#def-IS}
 Let $X$ be a continuous random variable with probability density function $f$, let $\phi$ be a function, and write $\theta = \Exg\phi(X)$. Let $Y$ be a continuous random variable with probability desnity function $g$, where $g(x) > 0$ for all $x$ where $f(x) > 0$. Then the **importance sampling Monte Carlo estimator** $\widehat\theta_n^{\mathrm{IS}}$ of $\theta$ is
 $$ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^{n} \phi(Y_i) \, \frac{f(Y_i)}{g(Y_i)}  ,$$
-where $Y_1, Y_2, \dots, Y_n$ is an independent random sample from $Y$.
+where $Y_1, Y_2, \dots, Y_n$ are independent random samples from $Y$.
 :::
 
 We can think of this as taking a weighted mean of the $\phi(Y_i)$s, where the weights are $f(Y_i)/g(Y_i)$. So if a value is much more likely under $Y$ than under $X$, then it gets a low weight; while if a value is less likely under $Y$ than under $X$, then it gets a high weight. Thus we see that the weighting compensates for values that are likely to be over- or under-sampled.
 
-## Rejection
+Note that if we set $g$ equal to $f$, and therefore sample from $X = Y$, we get back the standard Monte Carlo estimator.
 
-## Importance sampling: definition
--->
+## Examples
+
+## Errors in importance sampling
