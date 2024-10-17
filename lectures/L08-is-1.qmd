@@ -2,6 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
+<!--
 ## Sampling from other distributions
 
 So far, we have looked at estimating $\Exg \phi(X)$ using samples $X_1, X_2, \dots, X_n$ that are from the same distribution as $X$. **Importance sampling** is based on the idea of taking samples $Y_1, Y_2, \dots, Y_n$ from some *different* distribution $Y$, but then making an appropriate adjustment, so that we're still estimating $\Exg \phi(X)$.
@@ -50,8 +51,8 @@ There is one other thing: we need to be careful of division by $0$ errors. So we
 We are finally ready to define our estimator.
 
 ::: {#def-IS}
-Let $X$ be a continuous random variable with probability density function $f$, let $\phi$ be a function, and write $\theta = \Exg\phi(X)$. Let $Y$ be a continuous random variable with probability desnity function $g$, where $g(x) > 0$ for all $x$ where $f(x) > 0$. Then the **importance sampling Monte Carlo estimator** $\widehat\theta_n^{\mathrm{IS}}$ of $\theta$ is
-$$ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^{n} \phi(Y_i) \, \frac{f(Y_i)}{g(Y_i)}  ,$$
+Let $X$ be a continuous random variable with probability density function $f$, let $\phi$ be a function, and write $\theta = \Exg\phi(X)$. Let $Y$ be a continuous random variable with probability desnity function $g$, where $g(y) > 0$ for all $y$ where $f(y) > 0$. Then the **importance sampling Monte Carlo estimator** $\widehat\theta_n^{\mathrm{IS}}$ of $\theta$ is
+$$ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^{n} \frac{f(Y_i)}{g(Y_i)}\, \phi(Y_i)   ,$$
 where $Y_1, Y_2, \dots, Y_n$ are independent random samples from $Y$.
 :::
 
@@ -59,6 +60,55 @@ We can think of this as taking a weighted mean of the $\phi(Y_i)$s, where the we
 
 Note that if we set $g$ equal to $f$, and therefore sample from $X = Y$, we get back the standard Monte Carlo estimator.
 
-## Examples
-
+## Example
+-->
+::: {#exm-IS1}
+{{< include ../examples/L08-1-IS1.qmd >}}
+:::
+<!--
 ## Errors in importance sampling
+
+The following theorem should not by now be a surprise.
+
+::: {#thm-Iserr}
+Let $X$ be a continuous random variable with probability density function $f$, let $\phi$ be a function, and write $\theta = \Exg\phi(X)$. Let $Y$ another continuous random variable with probability density function with probability density function $g$, such that $g(y) = 0$ only when $f(y) = 0$. Let $$ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)}\,\phi(Y_i)  $$ be the importance sampling Monte Carlo estimator of $\theta$. Then:
+
+1.  $\widehat{\theta}_n^{\mathrm{IS}}$ is unbiased, in that $\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = 0$.
+
+2.  The variance of of $\widehat{\theta}_n^{\mathrm{IS}}$ is $$ \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right). $$
+
+3.  The mean-square error of $\widehat{\theta}_n^{\mathrm{IS}}$ is $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . $$
+
+4.  The root-mean-square error of $\widehat{\theta}_n^{\mathrm{IS}}$ is $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{\sqrt{n}} \,\sqrt{\operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right)}. $$
+:::
+
+::: {.proof}
+Part 1 follows essentially the same argument as our discussion at the beginning of this lecture. We have
+$$ \Ex \left( \frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)}\,\phi(Y_i) \right) = \frac{1}{n}\, n\, \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) = \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) . $$
+But
+$$ \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) = \int_{-\infty}^{+\infty} \frac{f(y)}{g(y)}\,\phi(y)\,g(y)\,\mathrm{d}y = \int_{-\infty}^{+\infty} \phi(y) \, f(y) \, \mathrm{d}y = \Exg \phi(X) . $$
+This last step is because $f$ is the PDF of $X$; it doesn't matter whether the dummy variable in the integration is $x$ or $y$. Hence the estimator is unbiased.
+
+Parts 2 to 4 follow in the usual way.
+:::
+
+As we are now used to, we can estimate the variance using the sample variance.
+-->
+::: {#exm-IS2}
+{{< include ../examples/L08-2-IS2.qmd >}}
+:::
+
+**Next time:** *We continue our study of importance sampling by considering how to pick a good distribution $Y$. This will complete (for now) our study of Monte Carlo estimation.*
+
+::: {.mysummary}
+**Summary:**
+
+* Importance sampling estimates $\Exg \phi(X)$ by sampling from a different distribution $Y$.
+
+* The importance sampling estimator is ${\displaystyle \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)}\,\phi(Y_i)}$.
+
+* The importance sampling estimator is unbiased with mean-square error
+$$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . $$
+
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 3.3.1.
+:::

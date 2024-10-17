@@ -18,9 +18,9 @@ Let $X$ be a random variable, $\phi$ a function, and $\theta = \Exg\phi(X)$. Let
 
 2.  The variance of of $\widehat{\theta}_n^{\mathrm{AV}}$ is $$ \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). $$
 
-3.  The mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). $$
+3.  The mean-square error of $\widehat{\theta}_n^{\mathrm{AV}}$ is $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). $$
 
-4.  The root-mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is $$ \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{\sqrt{2n}} \sqrt{\operatorname{Var}\big(\phi(X) + \phi(X')\big)} = \frac{\sqrt{1+\rho}}{\sqrt{n}}\sqrt{\Var\big(\phi(X)\big)}. $$
+4.  The root-mean-square error of $\widehat{\theta}_n^{\mathrm{AV}}$ is $$ \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{\sqrt{2n}} \sqrt{\operatorname{Var}\big(\phi(X) + \phi(X')\big)} = \frac{\sqrt{1+\rho}}{\sqrt{n}}\sqrt{\Var\big(\phi(X)\big)}. $$
 :::
 
 In points 2, 3 and 4, generally the first expression, involving the variance $\operatorname{Var}(\phi(X) + \phi(X'))$, is the most convenient for computation. We can estimate this easily from data using the sample variance in the usual way (as we will in the examples below).

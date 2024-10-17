@@ -1,0 +1,24 @@
+We continue @exm-IS1, where we are estimating $\mathbb P(X > 4)$ for $X \sim \operatorname{N}(0,1)$.
+
+For the standard Monte Carlo method, we estimate the root-mean-square error as
+
+```{r}
+n <- 1e5
+MC_MSE <- var(rnorm(n) > 4) / n
+sqrt(MC_MSE)
+```
+
+As before, this still varies a lot, but it seems to be about $2 \times 10^{-5}$.
+
+For the importance sampling method, we estimate the mean-square error as
+
+```{r}
+n <- 1e5
+pdf_x <- function(y) dnorm(y, 0, 1)
+pdf_y <- function(y) dnorm(y, 0, 4)
+samples_y <- rnorm(n, 0, 4)
+IS_MSE <- var((pdf_x(samples_y) / pdf_y(samples_y)) * (samples_y > 4)) / n
+sqrt(IS_MSE)
+```
+
+This is about $6 \times 10^{-7}$. This is about 33 times smaller than for the standard method: equivalent to taking about 1000 times as many samples. That's a huge improvement, which demonstrates the strength of importance sampling.
