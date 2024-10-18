@@ -14,7 +14,7 @@ For the importance sampling method, we estimate the mean-square error as
 
 ```{r}
 n <- 1e5
-pdf_x <- function(y) dnorm(y, 0, 1)
+pdf_x <- function(x) dnorm(x, 0, 1)
 pdf_y <- function(y) dnorm(y, 4, 1)
 samples_y <- rnorm(n, 4, 1)
 IS_MSE <- var((pdf_x(samples_y) / pdf_y(samples_y)) * (samples_y > 4)) / n
