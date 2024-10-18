@@ -13,22 +13,22 @@ MCest
 
 We see a big range of values. I get different results each time I run it, but anything between $1 \times 10^{-5}$ and $8 \times 10^{-5}$, and even $0$, comes out fairly regularly as the estimate. The problem is that $X > 4$ is a very rare event -- it only comes out a handful of times (perhaps 0 to 8) out of the 100,000 samples. This means our estimate is (on average) quite inaccurate.
 
-It would be better not to sample from $X$, but rather to sample from a distribution that is greater than 4 a more reasonably proportion of the time. Let's stick with a normal distribution with standard deviation 1, but try increasing the mean. Let's try importance sampling $Y \sim \operatorname{N}(4,1)$.
+It would be better not to sample from $X$, but rather to sample from a distribution that is greater than 4 a better proportion of the time. We could try anything for this distribution $Y$, but to keep things simple, I'm going to stick with a normal distribution with standard deviation 1. I'll want to increase the mean, though, so that we sample values bigger than 4 more often. Let's try importance sampling with $Y \sim \operatorname{N}(4,1)$.
 
 The PDFs of $X \sim \operatorname{N}(0,1)$ and $Y \sim \operatorname{N}(4,1)$ are
 $$f(x) = \frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 x^2\big) \qquad g(y) = \frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 (y-4)^2\big) , $$
 so the relevant weighting of a sample $y$ is
 $$ \frac{f(y)}{g(y)} = \frac{\exp\big(-\tfrac12 y^2\big)}{\exp\big(-\tfrac12 (y-4)^2\big)} = \exp \big(\tfrac12\big(-y^2 + (y-4)^2\big)\big) = \exp(-4y+8) .  $$
 So our importance sampling estimate will be
-$$ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^n \mathrm{e}^{-4y +8} \, \mathbb I_{[4,\infty)}(Y_i) . $$
+$$ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^n \mathrm{e}^{-4Y_i +8} \, \mathbb I_{[4,\infty)}(Y_i) . $$
 
-Let's try this in R. Although we could use the function $\mathrm{e}^{-4y+8}$, I'll do this by using the ratios of the PDFs directly in R (just in case I made a mistake...).
+Let's try this in R. Although we could use the function $\mathrm{e}^{-4y+8}$ for the weights, I'll do this by using the ratios of the PDFs directly in R (just in case I made a mistake...).
 
 ```{r}
 n <- 1e5
 pdf_x <- function(y) dnorm(y, 0, 1)
-pdf_y <- function(y) dnorm(y, 0, 4)
-samples_y <- rnorm(n, 0, 4)
+pdf_y <- function(y) dnorm(y, 4, 1)
+samples_y <- rnorm(n, 4, 1)
 ISest <- mean((pdf_x(samples_y) / pdf_y(samples_y)) * (samples_y > 4))
 ISest
 ```

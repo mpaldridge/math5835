@@ -2,7 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
-<!--
+
 ## Sampling from other distributions
 
 So far, we have looked at estimating $\Exg \phi(X)$ using samples $X_1, X_2, \dots, X_n$ that are from the same distribution as $X$. **Importance sampling** is based on the idea of taking samples $Y_1, Y_2, \dots, Y_n$ from some *different* distribution $Y$, but then making an appropriate adjustment, so that we're still estimating $\Exg \phi(X)$.
@@ -30,21 +30,21 @@ We can see that what happens for small $x$ -- say, for $x$ between 0 and 2, or s
 
 This is all very well in practice, but how exactly should we down-weight those over-sampled areas?
 
-Let's start by thinking of just $n = 1$ single sample. We want to estimate $\Exg \phi(X)$. Let's assume that $X$ is continuous with probability density function $f$. (Throughout this lecture and the next, we will assume all our random variables are continuous. The arguments for discrete random variables are very similar -- just swap probability density functions with probability mass functions and integrals with sums. You can fill in the details yourself, if you like.) Then we are trying to estimate
-$$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(X)\,f(x)\,\mathrm{d}x . $$
+Think about estimating $\Exg \phi(X)$. Let's assume that $X$ is continuous with probability density function $f$. (Throughout this lecture and the next, we will assume all our random variables are continuous. The arguments for discrete random variables are very similar -- just swap probability density functions with probability mass functions and integrals with sums. You can fill in the details yourself, if you like.) Then we are trying to estimate
+$$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x = \int_{-\infty}^{+\infty} \phi(y)\,f(y)\,\mathrm{d}y . $$
+(In the second equality, we merely changed the "dummy variable" from $x$ to $y$, as we are at liberty to do.)
 
 Now suppose we sample from some other continuous distribution $Y$, with PDF $g$. If we estimate $\Exg \psi(Y)$, say, for some function $\psi$, then we are estimating
 $$\Exg \psi(Y) = \int_{-\infty}^{+\infty} \psi(y)\,g(y) \, \mathrm{d}y = \int_{-\infty}^{+\infty} \psi(x)\,g(x) \, \mathrm{d}x . $$
-(In the second equality, we merely changed the dummy variable from $y$ to $x$, as we are at liberty to do.)
 
 But we want to be estimating $\Exg\phi(X)$, not $\Exg\psi(Y)$. So we will need to pick $\psi$ such that
-$$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(X)\,f(x)\,\mathrm{d}x = \int_{-\infty}^{+\infty} \psi(x)\,g(x) \, \mathrm{d}x = \Exg \psi(Y) . $$
+$$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(y)\,f(y)\,\mathrm{d}y = \int_{-\infty}^{+\infty} \psi(y)\,g(y) \, \mathrm{d}y = \Exg \psi(Y) . $$
 So we need to pick $\psi$ such that
-$\phi(x)\,f(x) = \psi(X)\,g(x)$. That means that we should take
-$$\psi(x) = \frac{\phi(x) f(x)}{g(x)} . $$
+$\phi(y)\,f(y) = \psi(y)\,g(y)$. That means that we should take
+$$\psi(y) = \frac{\phi(y) f(y)}{g(y)} = \frac{f(y)}{g(y)}\,\phi(y). $$
 
 So we could build a Monte Carlo estimate for $\Exg \phi(X)$ instead as a Monte Carlo estimate for 
-$$ \Exg \psi(Y) = \Exg \frac{\phi(Y)\,f(Y)}{g(Y)} . $$
+$$ \Exg \psi(Y) = \Exg \left(\frac{f(Y)}{g(Y)}\,\phi(Y) \right) . $$
 
 There is one other thing: we need to be careful of division by $0$ errors. So we should make sure that $g$ is only 0 when $f$ is 0. In other words, if it's possible for $X$ to take some value, then it must be possible for $Y$ to take that value too.
 
@@ -56,16 +56,14 @@ $$ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^{n} \frac{f(Y_i)}{g
 where $Y_1, Y_2, \dots, Y_n$ are independent random samples from $Y$.
 :::
 
-We can think of this as taking a weighted mean of the $\phi(Y_i)$s, where the weights are $f(Y_i)/g(Y_i)$. So if a value is much more likely under $Y$ than under $X$, then it gets a low weight; while if a value is less likely under $Y$ than under $X$, then it gets a high weight. Thus we see that the weighting compensates for values that are likely to be over- or under-sampled.
-
-Note that if we set $g$ equal to $f$, and therefore sample from $X = Y$, we get back the standard Monte Carlo estimator.
+We can think of this as taking a weighted mean of the $\phi(Y_i)$s, where the weights are $f(Y_i)/g(Y_i)$. So if a value $y$ is more likely under $Y$ than under $X$, then $g(y)$ is big compared to $f(y)$, so $f(y)/g(y)$ is small, and $y$ gets a low weight. If a value $y$ is less likely under $Y$ than under $X$, then $g(y)$ is small compared to $f(y)$, so $f(y) / g(y)$ is big, and it gets a high weight. Thus we see that the weighting compensates for values that are likely to be over- or under-sampled.
 
 ## Example
--->
+
 ::: {#exm-IS1}
 {{< include ../examples/L08-1-IS1.qmd >}}
 :::
-<!--
+
 ## Errors in importance sampling
 
 The following theorem should not by now be a surprise.
@@ -79,7 +77,7 @@ Let $X$ be a continuous random variable with probability density function $f$, l
 
 3.  The mean-square error of $\widehat{\theta}_n^{\mathrm{IS}}$ is $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . $$
 
-4.  The root-mean-square error of $\widehat{\theta}_n^{\mathrm{IS}}$ is $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{\sqrt{n}} \,\sqrt{\operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right)}. $$
+4.  The root-mean-square error of $\widehat{\theta}_n^{\mathrm{IS}}$ is $$ \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{\sqrt{n}} \,\sqrt{\operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right)}. $$
 :::
 
 ::: {.proof}
@@ -93,12 +91,12 @@ Parts 2 to 4 follow in the usual way.
 :::
 
 As we are now used to, we can estimate the variance using the sample variance.
--->
+
 ::: {#exm-IS2}
 {{< include ../examples/L08-2-IS2.qmd >}}
 :::
 
-**Next time:** *We continue our study of importance sampling by considering how to pick a good distribution $Y$. This will complete (for now) our study of Monte Carlo estimation.*
+**Next time:** *We continue our study of importance sampling -- and complete our study of Monte Carlo estimation -- by considering how to pick a good distribution $Y$.*
 
 ::: {.mysummary}
 **Summary:**
@@ -109,6 +107,8 @@ As we are now used to, we can estimate the variance using the sample variance.
 
 * The importance sampling estimator is unbiased with mean-square error
 $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . $$
+
+**[Solutions](#solutions)** are now available for Problem Sheet 1.
 
 **Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 3.3.1.
 :::
