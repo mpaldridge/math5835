@@ -96,7 +96,7 @@ As we are now used to, we can estimate the variance using the sample variance.
 {{< include ../examples/L08-2-IS2.qmd >}}
 :::
 
-**Next time:** *We continue our study of importance sampling -- and complete our study of Monte Carlo estimation -- by considering how to pick a good distribution $Y$.*
+**Next time:** *We continue our study of importance sampling -- and complete our study of Monte Carlo estimation, for now -- by considering how to pick a good distribution $Y$.*
 
 ::: {.mysummary}
 **Summary:**
