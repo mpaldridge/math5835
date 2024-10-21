@@ -264,8 +264,6 @@ window.Quarto = {
    
   <ul>
   <li><a href="#bonus-example" id="toc-bonus-example" class="nav-link active" data-scroll-target="#bonus-example"><span class="header-section-number">9.1</span> Bonus example</a></li>
-  <li><a href="#picking-a-good-distribution" id="toc-picking-a-good-distribution" class="nav-link" data-scroll-target="#picking-a-good-distribution"><span class="header-section-number">9.2</span> Picking a good distribution</a></li>
-  <li><a href="#monte-carlo-summary" id="toc-monte-carlo-summary" class="nav-link" data-scroll-target="#monte-carlo-summary"><span class="header-section-number">9.3</span> Monte Carlo summary</a></li>
   </ul>
 </nav>
     </div>
@@ -299,17 +297,27 @@ window.Quarto = {
 \newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
 </div>
-<section id="bonus-example" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="bonus-example"><span class="header-section-number">9.1</span> Bonus example</h2>
-</section>
-<section id="picking-a-good-distribution" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="picking-a-good-distribution"><span class="header-section-number">9.2</span> Picking a good distribution</h2>
-<p>We’ve now seen that importance sampling can be a very powerful tool, when used well. But how should pick a good distribution <span class="math inline">\(Y\)</span> to sample from?</p>
-<p>Let’s examine the mean-square error more carefully: <span class="math display">\[ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . \]</span> So our goal is to try and pick <span class="math inline">\(Y\)</span> such that <span class="math inline">\(\frac{f(Y)}{g(Y)}\phi(Y)\)</span> has low variance. (We also, of course, want to be able to sample from <span class="math inline">\(Y\)</span>.)</p>
-<p>The best possible choice, then, would be to pick <span class="math inline">\(Y\)</span> such that <span class="math inline">\(\frac{f(Y)}{g(Y)}\phi(Y)\)</span> is constant – and therefore has zero variance! If <span class="math inline">\(\phi\)</span> is non-negative, then it seems like we should pick <span class="math inline">\(Y\)</span> such that its probability density function is <span class="math inline">\(g(y) \propto f(y)\phi(y)\)</span>. (Here, <span class="math inline">\(\propto\)</span> is the `proportional to’ symbol.) That is, to have <span class="math display">\[ g(y) = \frac{1}{Z} f(y)\phi(y) , \]</span> for some constant <span class="math inline">\(Z\)</span>. Then <span class="math inline">\(\frac{f(Y)}{g(Y)}\phi(Y) = Z\)</span> is a constant, has zero variance, and we have a perfect estimator!</p>
-<p>What is this constant <span class="math inline">\(Z\)</span>? Well, <span class="math inline">\(g\)</span> is a PDF, so it has to integrate. So we will need to have <span class="math display">\[ 1 = \int_{-\infty}^{+\infty} g(y)\, \mathrm{d}y = \int_{-\infty}^{+\infty} \frac{1}{Z} f(y)\phi(y) \, \mathrm{d}y = \frac{1}{Z} \int_{-\infty}^{+\infty} f(x)\phi(x) \, \mathrm{d}x = \frac{1}{Z} \,\Exg\phi(X) . \]</span> (We did the `switching the dummy variable from <span class="math inline">\(y\)</span> to <span class="math inline">\(x\)</span> thing again.) So <span class="math inline">\(Z = \Exg \phi(X)\)</span>. But that’s no good – <span class="math inline">\(\theta = \Exg \phi(X)\)</span> was the thing we were trying to estimate. If we knew that, we wouldn’t have to do Monte Carlo estimation to start with!</p>
-<p>So, as much as we would like to, we can’t use this `perfect’ ideal distribution <span class="math inline">\(Y\)</span>. More generally, if <span class="math inline">\(\phi\)</span> is not always non-negative, it can be shown that <span class="math inline">\(g(y) \propto f(y)\,|\phi(y)|\)</span> would be the best possible distribution, but this has the same problems.</p>
-<p>However, we can still be guided by this idea – we would like <span class="math inline">\(g(y)\)</span> to be as close to proportional to <span class="math inline">\(f(y) \phi(y)\)</span> (or <span class="math inline">\(|f(y) \phi(y)|\)</span>) as we can manage, so that <span class="math inline">\(\frac{f(y)}{g(y)}\phi(y)\)</span> is close to being constant, so hopefully has low variance. This tells us that <span class="math inline">\(Y\)</span> should be likely – that is, <span class="math inline">\(g(y)\)</span> should be big – where both <span class="math inline">\(f\)</span> and <span class="math inline">\(|\phi|\)</span> are both big – that is, where <span class="math inline">\(X\)</span> is likely and also <span class="math inline">\(\phi\)</span> is big in absolute value. While <span class="math inline">\(Y\)</span> should be unlikely where both <span class="math inline">\(X\)</span> is unlikely and <span class="math inline">\(\phi\)</span> is small in absolute value.</p>
+<!--
+## Picking a good distribution
+
+We've now seen that importance sampling can be a very powerful tool, when used well. But how should pick a good distribution $Y$ to sample from?
+
+Let's examine the mean-square error more carefully:
+$$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . $$
+So our goal is to try and pick $Y$ such that $\frac{f(Y)}{g(Y)}\phi(Y)$ has low variance. (We also, of course, want to be able to sample from $Y$.)
+
+The best possible choice, then, would be to pick $Y$ such that $\frac{f(Y)}{g(Y)}\phi(Y)$ is constant -- and therefore has zero variance! If $\phi$ is non-negative, then it seems like we should pick $Y$ such that its probability density function is $g(y) \propto f(y)\phi(y)$. (Here, $\propto$ is the "proportional to" symbol.) That is, to have
+$$ g(y) = \frac{1}{Z} f(y)\phi(y) , $$
+for some constant $Z$. Then $\frac{f(Y)}{g(Y)}\phi(Y) = Z$ is a constant, has zero variance, and we have a perfect estimator!
+
+What is this constant $Z$? Well, $g$ is a PDF, so it has to integrate. So we will need to have
+$$ 1 = \int_{-\infty}^{+\infty} g(y)\, \mathrm{d}y = \int_{-\infty}^{+\infty} \frac{1}{Z} f(y)\phi(y) \, \mathrm{d}y = \frac{1}{Z} \int_{-\infty}^{+\infty} f(x)\phi(x) \, \mathrm{d}x = \frac{1}{Z} \Exg\phi(X) . $$
+(We did the "switching the dummy variable from $y$ to $x$" thing again.) So $Z = \Exg \phi(X)$. But that's no good: $\theta = \Exg \phi(X)$ was the thing we were trying to estimate in the first place. If we knew that, we wouldn't have to do Monte Carlo estimation to start with!
+
+So, as much as we would like to, we can't use this "perfect" ideal distribution $Y$. More generally, if $\phi$ is not always non-negative, it can be shown that $g(y) \propto f(y)\,|\phi(y)| = |f(x)\,\phi(x)|$ would be the best possible distribution, but this has the same problems.
+
+However, we can still be guided by this idea -- we would like $g(y)$ to be as close to proportional to $f(y) \phi(y)$ (or $|f(y) \phi(y)|$) as we can manage, so that $\frac{f(y)}{g(y)}\phi(y)$ is close to being constant, so hopefully has low variance. This tells us that $Y$ should be likely -- that is, $g(y)$ should be big -- where both $f$ and $|\phi|$ are both big -- that is, where $X$ is likely and also $\phi$ is big in absolute value. While $Y$ should be unlikely where both $X$ is unlikely and $\phi$ is small in absolute value.
+-->
 <div id="exm-IS3" class="theorem example">
 <p><span class="theorem-title"><strong>Example 9.1</strong></span> Let’s look again at <a href="L08-is-1.html#exm-IS1" class="quarto-xref">Example&nbsp;<span>8.1</span></a> (continued in <a href="L08-is-1.html#exm-IS2" class="quarto-xref">Example&nbsp;<span>8.2</span></a>), where we wanted to estimate <span class="math inline">\(\mathbb P(X &gt; 4) = \Exg\Ind_{(4,\infty)}(X)\)</span> for <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span>. We found are estimator was enormously improved when we used instead <span class="math inline">\(Y \sim \operatorname{N}(4,1)\)</span>.</p>
 <p>In the figure below, the blue line is <span class="math display">\[f(y)\,\phi(y) = f(y)\,\Ind_{(4,\infty)}(y) = \begin{cases} \displaystyle\frac{1}{\sqrt{2\pi}} \,\mathrm{e}^{-y^2/2} &amp; y &gt; 4 \\ 0 &amp; y \leq 4 \end{cases} \]</span> (scaled up, otherwise it would be so close to the axis line you wouldn’t see it).</p>
@@ -332,7 +340,7 @@ window.Quarto = {
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"topright"</span>,</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"f(y)"</span>, phi, <span class="st">"(y) [scaled]"</span>)), <span class="st">"N(0, 1)"</span>, <span class="st">"N(4, 1)"</span>),</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"f(y)"</span>, varphi, <span class="st">"(y) [scaled]"</span>)), <span class="st">"N(0, 1)"</span>, <span class="st">"N(4, 1)"</span>),</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"black"</span>, <span class="st">"red"</span>)</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -344,12 +352,122 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>We have noted that a good distribution will have a PDF that is big when <span class="math inline">\(f(x)\phi(x)\)</span> (the blue line) is big. Clearly the red line is much better at this then the black line, which is the importance sampling method was so much better here.</p>
+<p>We have noted that a good distribution will have a PDF that is big when <span class="math inline">\(f(x)\phi(x)\)</span> (the blue line) is big. Clearly the red line is much better at this then the black line, which is why the importance sampling method was so much better here.</p>
 <p>There’s scope to do better here, though. Perhaps an asymmetric distribution with a much more quickly-decaying left-tail might be good – for example, a shifted exponential <span class="math inline">\(4 + \operatorname{Exp}(\lambda)\)</span> might be worth investigating. Or a thinner, spikier distribution, such as a normal with smaller standard deviation. In both cases, though, we have to be careful – because it’s the ratio <span class="math inline">\(f(y)/g(y)\)</span>, we still have to be a bit careful about what happens when both <span class="math inline">\(f(y)\)</span> and <span class="math inline">\(g(y)\)</span> are small <em>absolutely</em>, in case one is <em>proportionally</em> much bigger than the other.</p>
 </div>
-</section>
-<section id="monte-carlo-summary" class="level2" data-number="9.3">
-<h2 data-number="9.3" class="anchored" data-anchor-id="monte-carlo-summary"><span class="header-section-number">9.3</span> Monte Carlo summary</h2>
+<p>Aside from the exact theory, in the absence of any better idea, choosing <span class="math inline">\(Y\)</span> to be “in the same distribution family as <span class="math inline">\(X\)</span> but with different parameters” is often a reasonable thing to try. For example:</p>
+<ul>
+<li><p>If <span class="math inline">\(X \sim \operatorname{N}(\mu, \sigma^2)\)</span>, then try <span class="math inline">\(Y \sim \operatorname{N}(\nu, \sigma^2)\)</span> for some other value <span class="math inline">\(\nu\)</span>.</p></li>
+<li><p>If <span class="math inline">\(X \sim \operatorname{Exp}(\lambda)\)</span>, then try <span class="math inline">\(Y \sim \operatorname{N}(\mu)\)</span> for some other value <span class="math inline">\(\mu\)</span>.</p></li>
+</ul>
+<section id="bonus-example" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="bonus-example"><span class="header-section-number">9.1</span> Bonus example</h2>
+<div id="exm-ISnew" class="theorem example">
+<p><span class="theorem-title"><strong>Example 9.2</strong></span> <em>Let <span class="math inline">\(X \sim \operatorname{U}[0, 10]\)</span> be an uniform distribution, so <span class="math inline">\(f(x) = \frac{1}{10}\)</span> for <span class="math inline">\(0 \leq x \leq 10\)</span>, and let $(x) = ^{-|x-8|}Estimate $(X).</em></p>
+<p>The standard Monte Carlo estimator and its RMSE are as follows</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">abs</span>(x <span class="sc">-</span> <span class="dv">8</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">phi</span>(samples))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>MC_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">phi</span>(samples)) <span class="sc">/</span> n</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MCest, <span class="fu">sqrt</span>(MC_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1863843908 0.0002536575</code></pre>
+</div>
+</div>
+<p>Maybe we can improve on this using importance sampling. Let’s have a look at a graph of <span class="math inline">\(f(y)\,\phi(y)\)</span> (blue line).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dunif</span>(x, <span class="dv">0</span>, <span class="dv">10</span>) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">abs</span>(x <span class="sc">-</span> <span class="dv">8</span>)), <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">10</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">3</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">xlab =</span> <span class="st">"y"</span>, <span class="at">ylab =</span> <span class="st">""</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dnorm</span>(x, <span class="dv">8</span>, <span class="dv">2</span>)<span class="sc">*</span><span class="fl">0.36</span>, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">to =</span> <span class="dv">11</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"topleft"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"f(y)"</span>, varphi, <span class="st">"(y)"</span>)), <span class="st">"N(8, 4) [scaled]"</span>),</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L09-is-2_files/figure-html/propto2-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>After some experimentation, I decided that <span class="math inline">\(Y \sim \operatorname(8, 2^2)\)</span> (red line; not to same scale) seemed to work quite well, in <span class="math inline">\(g(y)\)</span> being roughly proportional to <span class="math inline">\(f(y)\,\phi(y)\)</span>. I was tempted to take the standard deviation less than 2, the get the red curve a bit tighter. But I discovered that <span class="math inline">\(f(y)/g(y)\)</span> got very large for <span class="math inline">\(y\)</span> near 0, due to the left tale decaying to quickly. The following graph shows <span class="math inline">\(\frac{f(x)}{g(x)} \phi(x)\)</span>, and shows that the spike at 0 is now under control compared to the “main spike” at <span class="math inline">\(y = 8\)</span>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dunif</span>(x, <span class="dv">0</span>, <span class="dv">10</span>) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">abs</span>(x <span class="sc">-</span> <span class="dv">8</span>)) <span class="sc">/</span> <span class="fu">dnorm</span>(x, <span class="dv">8</span>, <span class="dv">2</span>), <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">to =</span> <span class="dv">12</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">3</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">11</span>), <span class="at">xlab =</span> <span class="st">"y"</span>, <span class="at">ylab =</span> <span class="st">""</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L09-is-2_files/figure-html/propto3-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>So our importance sampling estimate is as follows.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">abs</span>(x <span class="sc">-</span> <span class="dv">8</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pdf_x <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dunif</span>(x, <span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>pdf_y <span class="ot">&lt;-</span> <span class="cf">function</span>(y) <span class="fu">dnorm</span>(y, <span class="dv">8</span>, <span class="dv">2</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">8</span>, <span class="dv">2</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>ISest <span class="ot">&lt;-</span> <span class="fu">mean</span>((<span class="fu">pdf_x</span>(samples) <span class="sc">/</span> <span class="fu">pdf_y</span>(samples)) <span class="sc">*</span> <span class="fu">phi</span>(samples))</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>IS_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>((<span class="fu">pdf_x</span>(samples) <span class="sc">/</span> <span class="fu">pdf_y</span>(samples)) <span class="sc">*</span> <span class="fu">phi</span>(samples)) <span class="sc">/</span> n</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(ISest, <span class="fu">sqrt</span>(IS_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1864286978 0.0001351437</code></pre>
+</div>
+</div>
+<p>We see that the RMSE has roughly halved, which is the equivalent of taking four times as many samples.</p>
+</div>
+<!--
+## Monte Carlo summary
+
+This is our last lecture on Monte Carlo estimation -- at least for now, and at least in its standard form. So let's end this section of the module by summarising the estimators we have learned about. We have been learning how to estimate $\theta = \Exg \phi(X)$
+
+* The **standard Monte Carlo estimator** simple takes a sample mean of $\phi(X_i)$, where $X_i$ are independent random samples from $X$.
+
+* The **control variate** Monte Carlo estimator "anchors" the estimator to some known value $\eta = \Exg \psi(X)$, for a function $\psi$ that is "similar to $\phi$, but easier to calculate the expectation exactly".
+
+* The **antithetic variables** Monte Carlo estimator uses pairs of samples $(X_i, X'_i)$ that both have the same distribution as $X$, but where $\phi(X)$ and $\phi(X')$ have negative correlation $\rho < 0$.
+
+* The **importance sampling** Monte Carlo estimator samples not from $X$, with PDF $f$, but from a different distribution $Y$, with PDF $Y$. The distribution $Y$ is chosen to oversample from the most important values, but then gives lower weight to those samples.
+
+|  | **Estimator** | **MSE** |
+|:--:|:--:|:--:|
+| **Standard Monte Carlo** | ${\displaystyle\frac{1}{n} \sum_{i=1}^n \phi(X_i)}$ | ${\displaystyle\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$ |
+| **Control variate** | ${\displaystyle\frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big)} + \eta$ | ${\displaystyle\frac{1}{n} \operatorname{Var}\big(\phi(X_i) - \psi(X_i)\big)}$ |
+| **Antithetic variables** | ${\displaystyle\frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X_i')\big)}$ | ${\displaystyle\frac{1}{2n} \operatorname{Var}\big(\phi(X_i) + \phi(X_i')\big)}$ ${\displaystyle {}= \frac{1+\rho}{n} \,\operatorname{Var}\big(\phi(X)\big)}$ |
+| **Importance sampling** | ${\displaystyle\frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)}\,\phi(X_i)}$ | ${\displaystyle\frac{1}{n} \operatorname{Var}\left(\frac{f(Y_i)}{g(Y_i)}\,\phi(X_i)\right)}$ |
+-->
+<p>&nbsp;</p>
+<p><strong>Next time:</strong> <em>We begin the second section of the module, on random number generation.</em></p>
+<div class="mysummary">
+<p><strong>Summary:</strong></p>
+<ul>
+<li>A good importance sampling distribution <span class="math inline">\(Y\)</span> is one whose PDF <span class="math inline">\(g(y)\)</span> is roughly proportional to <span class="math inline">\(|f(y)\,\phi(y)|\)</span>. Equivalently, <span class="math inline">\(\frac{f(y)}{g(y)}|\phi(y)|\)</span> is approximately constant.</li>
+</ul>
+<p>Problem Sheet 2 should be available soon.</p>
+<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.3.1.</p>
+</div>
 
 
 </section>
