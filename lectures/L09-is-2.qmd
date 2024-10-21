@@ -1,33 +1,25 @@
 # Importance sampling II
 
 {{< include ../_header.qmd >}}
-<!--
+
 ## Picking a good distribution
 
 We've now seen that importance sampling can be a very powerful tool, when used well. But how should pick a good distribution $Y$ to sample from?
 
-Let's examine the mean-square error more carefully:
-$$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . $$
-So our goal is to try and pick $Y$ such that $\frac{f(Y)}{g(Y)}\phi(Y)$ has low variance. (We also, of course, want to be able to sample from $Y$.)
+Let's examine the mean-square error more carefully: $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . $$ So our goal is to try and pick $Y$ such that $\frac{f(Y)}{g(Y)}\phi(Y)$ has low variance. (We also, of course, want to be able to sample from $Y$.)
 
-The best possible choice, then, would be to pick $Y$ such that $\frac{f(Y)}{g(Y)}\phi(Y)$ is constant -- and therefore has zero variance! If $\phi$ is non-negative, then it seems like we should pick $Y$ such that its probability density function is $g(y) \propto f(y)\phi(y)$. (Here, $\propto$ is the "proportional to" symbol.) That is, to have
-$$ g(y) = \frac{1}{Z} f(y)\phi(y) , $$
-for some constant $Z$. Then $\frac{f(Y)}{g(Y)}\phi(Y) = Z$ is a constant, has zero variance, and we have a perfect estimator!
+The best possible choice, then, would be to pick $Y$ such that $\frac{f(Y)}{g(Y)}\phi(Y)$ is constant -- and therefore has zero variance! If $\phi$ is non-negative, then it seems like we should pick $Y$ such that its probability density function is $g(y) \propto f(y)\phi(y)$. (Here, $\propto$ is the "proportional to" symbol.) That is, to have $$ g(y) = \frac{1}{Z} f(y)\phi(y) , $$ for some constant $Z$. Then $\frac{f(Y)}{g(Y)}\phi(Y) = Z$ is a constant, has zero variance, and we have a perfect estimator!
 
-What is this constant $Z$? Well, $g$ is a PDF, so it has to integrate. So we will need to have
-$$ 1 = \int_{-\infty}^{+\infty} g(y)\, \mathrm{d}y = \int_{-\infty}^{+\infty} \frac{1}{Z} f(y)\phi(y) \, \mathrm{d}y = \frac{1}{Z} \int_{-\infty}^{+\infty} f(x)\phi(x) \, \mathrm{d}x = \frac{1}{Z} \Exg\phi(X) . $$
-(We did the "switching the dummy variable from $y$ to $x$" thing again.) So $Z = \Exg \phi(X)$. But that's no good: $\theta = \Exg \phi(X)$ was the thing we were trying to estimate in the first place. If we knew that, we wouldn't have to do Monte Carlo estimation to start with!
+What is this constant $Z$? Well, $g$ is a PDF, so it has to integrate. So we will need to have $$ 1 = \int_{-\infty}^{+\infty} g(y)\, \mathrm{d}y = \int_{-\infty}^{+\infty} \frac{1}{Z} f(y)\phi(y) \, \mathrm{d}y = \frac{1}{Z} \int_{-\infty}^{+\infty} f(x)\phi(x) \, \mathrm{d}x = \frac{1}{Z} \Exg\phi(X) . $$ (We did the "switching the dummy variable from $y$ to $x$" thing again.) So $Z = \Exg \phi(X)$. But that's no good: $\theta = \Exg \phi(X)$ was the thing we were trying to estimate in the first place. If we knew that, we wouldn't have to do Monte Carlo estimation to start with!
 
 So, as much as we would like to, we can't use this "perfect" ideal distribution $Y$. More generally, if $\phi$ is not always non-negative, it can be shown that $g(y) \propto f(y)\,|\phi(y)| = |f(x)\,\phi(x)|$ would be the best possible distribution, but this has the same problems.
 
 However, we can still be guided by this idea -- we would like $g(y)$ to be as close to proportional to $f(y) \phi(y)$ (or $|f(y) \phi(y)|$) as we can manage, so that $\frac{f(y)}{g(y)}\phi(y)$ is close to being constant, so hopefully has low variance. This tells us that $Y$ should be likely -- that is, $g(y)$ should be big -- where both $f$ and $|\phi|$ are both big -- that is, where $X$ is likely and also $\phi$ is big in absolute value. While $Y$ should be unlikely where both $X$ is unlikely and $\phi$ is small in absolute value.
--->
+
 ::: {#exm-IS3}
 Let's look again at @exm-IS1 (continued in @exm-IS2), where we wanted to estimate $\mathbb P(X > 4) = \Exg\Ind_{(4,\infty)}(X)$ for $X \sim \operatorname{N}(0,1)$. We found are estimator was enormously improved when we used instead $Y \sim \operatorname{N}(4,1)$.
 
-In the figure below, the blue line is
-$$f(y)\,\phi(y) = f(y)\,\Ind_{(4,\infty)}(y) = \begin{cases} \displaystyle\frac{1}{\sqrt{2\pi}} \,\mathrm{e}^{-y^2/2} & y > 4 \\ 0 & y \leq 4 \end{cases} $$
-(scaled up, otherwise it would be so close to the axis line you wouldn't see it).
+In the figure below, the blue line is $$f(y)\,\phi(y) = f(y)\,\Ind_{(4,\infty)}(y) = \begin{cases} \displaystyle\frac{1}{\sqrt{2\pi}} \,\mathrm{e}^{-y^2/2} & y > 4 \\ 0 & y \leq 4 \end{cases} $$ (scaled up, otherwise it would be so close to the axis line you wouldn't see it).
 
 The black line is the PDF $f(y)$ of the original distribution $X \sim \operatorname{N}(0,1)$, while the red line is the PDF $g(y)$ of our importance distribution $Y \sim \operatorname{N}(4,1)$.
 
@@ -60,14 +52,14 @@ There's scope to do better here, though. Perhaps an asymmetric distribution with
 
 Aside from the exact theory, in the absence of any better idea, choosing $Y$ to be "in the same distribution family as $X$ but with different parameters" is often a reasonable thing to try. For example:
 
-* If $X \sim \operatorname{N}(\mu, \sigma^2)$, then try $Y \sim \operatorname{N}(\nu, \sigma^2)$ for some other value $\nu$.
+-   If $X \sim \operatorname{N}(\mu, \sigma^2)$, then try $Y \sim \operatorname{N}(\nu, \sigma^2)$ for some other value $\nu$.
 
-* If $X \sim \operatorname{Exp}(\lambda)$, then try $Y \sim \operatorname{N}(\mu)$ for some other value $\mu$.
+-   If $X \sim \operatorname{Exp}(\lambda)$, then try $Y \sim \operatorname{Exp}(\mu)$ for some other value $\mu$.
 
 ## Bonus example
 
 ::: {#exm-ISnew}
-*Let $X \sim \operatorname{U}[0, 10]$ be an uniform distribution, so $f(x) = \frac{1}{10}$ for $0 \leq x \leq 10$, and let $\phi(x) = \exp^{-|x-8|}Estimate $\Exg\phi(X).*
+*Let* $X \sim \operatorname{U}[0, 10]$ be an uniform distribution, so $f(x) = \frac{1}{10}$ for $0 \leq x \leq 10$, and let \$\\phi(x) = \\mathrm{e}\^{-\|x-8\|}\$. Estimate \$\Exg\phi(X).
 
 The standard Monte Carlo estimator and its RMSE are as follows
 
@@ -127,34 +119,34 @@ c(ISest, sqrt(IS_MSE))
 
 We see that the RMSE has roughly halved, which is the equivalent of taking four times as many samples.
 :::
-<!--
+
 ## Monte Carlo summary
 
 This is our last lecture on Monte Carlo estimation -- at least for now, and at least in its standard form. So let's end this section of the module by summarising the estimators we have learned about. We have been learning how to estimate $\theta = \Exg \phi(X)$
 
-* The **standard Monte Carlo estimator** simple takes a sample mean of $\phi(X_i)$, where $X_i$ are independent random samples from $X$.
+-   The **standard Monte Carlo estimator** simple takes a sample mean of $\phi(X_i)$, where $X_i$ are independent random samples from $X$.
 
-* The **control variate** Monte Carlo estimator "anchors" the estimator to some known value $\eta = \Exg \psi(X)$, for a function $\psi$ that is "similar to $\phi$, but easier to calculate the expectation exactly".
+-   The **control variate** Monte Carlo estimator "anchors" the estimator to some known value $\eta = \Exg \psi(X)$, for a function $\psi$ that is "similar to $\phi$, but easier to calculate the expectation exactly".
 
-* The **antithetic variables** Monte Carlo estimator uses pairs of samples $(X_i, X'_i)$ that both have the same distribution as $X$, but where $\phi(X)$ and $\phi(X')$ have negative correlation $\rho < 0$.
+-   The **antithetic variables** Monte Carlo estimator uses pairs of samples $(X_i, X'_i)$ that both have the same distribution as $X$, but where $\phi(X)$ and $\phi(X')$ have negative correlation $\rho < 0$.
 
-* The **importance sampling** Monte Carlo estimator samples not from $X$, with PDF $f$, but from a different distribution $Y$, with PDF $Y$. The distribution $Y$ is chosen to oversample from the most important values, but then gives lower weight to those samples.
+-   The **importance sampling** Monte Carlo estimator samples not from $X$, with PDF $f$, but from a different distribution $Y$, with PDF $Y$. The distribution $Y$ is chosen to oversample from the most important values, but then gives lower weight to those samples.
 
-|  | **Estimator** | **MSE** |
-|:--:|:--:|:--:|
+|   | **Estimator** | **MSE** |
+|:----------------------:|:----------------------:|:----------------------:|
 | **Standard Monte Carlo** | ${\displaystyle\frac{1}{n} \sum_{i=1}^n \phi(X_i)}$ | ${\displaystyle\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$ |
 | **Control variate** | ${\displaystyle\frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big)} + \eta$ | ${\displaystyle\frac{1}{n} \operatorname{Var}\big(\phi(X_i) - \psi(X_i)\big)}$ |
 | **Antithetic variables** | ${\displaystyle\frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X_i')\big)}$ | ${\displaystyle\frac{1}{2n} \operatorname{Var}\big(\phi(X_i) + \phi(X_i')\big)}$ ${\displaystyle {}= \frac{1+\rho}{n} \,\operatorname{Var}\big(\phi(X)\big)}$ |
 | **Importance sampling** | ${\displaystyle\frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)}\,\phi(X_i)}$ | ${\displaystyle\frac{1}{n} \operatorname{Var}\left(\frac{f(Y_i)}{g(Y_i)}\,\phi(X_i)\right)}$ |
--->
+
  
 
 **Next time:** *We begin the second section of the module, on random number generation.*
 
-::: {.mysummary}
+::: mysummary
 **Summary:**
 
-* A good importance sampling distribution $Y$ is one whose PDF $g(y)$ is roughly proportional to $|f(y)\,\phi(y)|$. Equivalently, $\frac{f(y)}{g(y)}|\phi(y)|$ is approximately constant.
+-   A good importance sampling distribution $Y$ is one whose PDF $g(y)$ is roughly proportional to $|f(y)\,\phi(y)|$. Equivalently, $\frac{f(y)}{g(y)}|\phi(y)|$ is approximately constant.
 
 Problem Sheet 2 should be available soon.
 
