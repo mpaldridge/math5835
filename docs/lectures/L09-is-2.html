@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>6&nbsp; Antithetic variables I – MATH5835M Statistical Computing</title>
+<title>9&nbsp; Importance sampling II – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../problems/P1.html" rel="next">
-<link href="../lectures/L05-cv.html" rel="prev">
+<link href="../problems/solutions.html" rel="next">
+<link href="../lectures/L08-is-1.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L06-antithetic-1.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L09-is-2.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Importance sampling II</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -217,7 +217,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L06-antithetic-1.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L06-antithetic-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span></a>
   </div>
 </li>
@@ -241,7 +241,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L09-is-2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L09-is-2.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Importance sampling II</span></span></a>
   </div>
 </li>
@@ -263,18 +263,18 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#estimation-with-correlation" id="toc-estimation-with-correlation" class="nav-link active" data-scroll-target="#estimation-with-correlation"><span class="header-section-number">6.1</span> Estimation with correlation</a></li>
-  <li><a href="#monte-carlo-with-antithetic-variables" id="toc-monte-carlo-with-antithetic-variables" class="nav-link" data-scroll-target="#monte-carlo-with-antithetic-variables"><span class="header-section-number">6.2</span> Monte Carlo with antithetic variables</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">6.3</span> Examples</a></li>
+  <li><a href="#bonus-example" id="toc-bonus-example" class="nav-link active" data-scroll-target="#bonus-example"><span class="header-section-number">9.1</span> Bonus example</a></li>
+  <li><a href="#picking-a-good-distribution" id="toc-picking-a-good-distribution" class="nav-link" data-scroll-target="#picking-a-good-distribution"><span class="header-section-number">9.2</span> Picking a good distribution</a></li>
+  <li><a href="#monte-carlo-summary" id="toc-monte-carlo-summary" class="nav-link" data-scroll-target="#monte-carlo-summary"><span class="header-section-number">9.3</span> Monte Carlo summary</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L06-antithetic-1.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L09-is-2.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Importance sampling II</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></h1>
+<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Importance sampling II</span></h1>
 </div>
 
 
@@ -299,92 +299,59 @@ window.Quarto = {
 \newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
 </div>
-<section id="estimation-with-correlation" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="estimation-with-correlation"><span class="header-section-number">6.1</span> Estimation with correlation</h2>
-<p>This lecture and the next, we will be looking at our second variance reduction method for Monte Carlo estimation: the use of antithetic variables.” The word “antithetic” refers to using negative correlation to reduce the variance an estimator.</p>
-<p>Let’s start with the simple example of estimating an expectation from <span class="math inline">\(n = 2\)</span> samples. Suppose <span class="math inline">\(Y\)</span> has expectation <span class="math inline">\(\mu = \Ex Y\)</span> and variance <span class="math inline">\(\Var(Y) = \sigma^2\)</span>. Suppose <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are independent samples from <span class="math inline">\(Y\)</span>. Then the Monte Carlo estimator is <span class="math display">\[ \overline Y = \tfrac12(Y_1 + Y_2) . \]</span> This estimator is unbiased, since <span class="math display">\[ \Ex \overline Y = \Ex \big(\tfrac12(Y_1 + Y_2)\big) = \tfrac12 ( \Ex Y_1 + \Ex Y_2 ) = \tfrac12 (\mu + \mu) = \mu . \]</span> Thus the mean-square error equals the variance, which is <span class="math display">\[ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) \big)= \tfrac14 (\sigma^2 + \sigma^2) = \tfrac12 \sigma^2 . \]</span></p>
-<p>But what if <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> still have the same distribution as <span class="math inline">\(Y\)</span> but now are <em>not</em> independent? The expectation is still the same, so the estimator is still unbiased. But the variance (and hence mean-square error) is now <span class="math display">\[ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) + 2 \Cov(Y_1, Y_2) \big) . \]</span> Write <span class="math inline">\(\rho\)</span> for the correlation <span class="math display">\[ \rho = \Corr(Y_1, Y_2) = \frac{\Cov(Y_1, Y_2)}{\sqrt{\Var(Y_1) \Var(Y_2)}} = \frac{\Cov(Y_1, Y_2)}{\sqrt{\sigma^2 \times \sigma^2}} = \frac{\Cov(Y_1, Y_2)}{\sigma^2} . \]</span> (Remember that <span class="math inline">\(-1 \leq \rho \leq +1\)</span>.) Then the variance is <span class="math display">\[ \Var \big( \overline Y\big) = \tfrac14 ( \sigma^2 + \sigma^2 + 2 \rho \sigma^2 ) = \frac{1+\rho}{2} \,\sigma^2 . \]</span></p>
-<p>We can compare this with the variance <span class="math inline">\(\frac12 \sigma^2\)</span> from the independent-sample case:</p>
-<ul>
-<li><p>If <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are <strong>positively correlated</strong>, in that <span class="math inline">\(\rho &gt; 0\)</span>, then the variance, and hence the mean-square error, has got bigger. This means the estimator is worse. This is because, with positive correlation, errors compound each other – if one sample is bigger than average, then the other one is likely to be bigger than average too; while if one sample is smaller than average, then the other one is likely to be smaller than average too.</p></li>
-<li><p>If <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are <strong>negatively correlated</strong>, in that <span class="math inline">\(\rho &lt; 0\)</span>, then the variance, and hence the mean-square error, has got smaller. This means the estimator is better. This is because, with negative correlation, errors compensate for each other – if one sample is bigger than average, then the other one is likely to be smaller than average, which will help “cancel out” the error.</p></li>
-</ul>
+<section id="bonus-example" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="bonus-example"><span class="header-section-number">9.1</span> Bonus example</h2>
 </section>
-<section id="monte-carlo-with-antithetic-variables" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="monte-carlo-with-antithetic-variables"><span class="header-section-number">6.2</span> Monte Carlo with antithetic variables</h2>
-<p>We have seen that negative correlation helps improve estimation from <span class="math inline">\(n=2\)</span> samples. How can we make this work in our favour for Monte Carlo simulation with many more samples?</p>
-<p>We will look at the idea of <strong>antithetic pairs</strong>. So instead of taking <span class="math inline">\(n\)</span> samples <span class="math display">\[ X_1, X_2, \dots, X_n \]</span> that are all independent of each other, we will take <span class="math inline">\(n/2\)</span> pairs of samples <span class="math display">\[ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X'_{n/2}) . \]</span> (Here, <span class="math inline">\(n/2\)</span> pairs means <span class="math inline">\(n\)</span> samples over all.) <em>Within</em> each pair, <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_i'\)</span> will <em>not</em> be independent, but <em>between</em> different pairs <span class="math inline">\(i \neq j\)</span>, <span class="math inline">\((X_i, X_i')\)</span> and <span class="math inline">\((X_j, X'_j)\)</span> <em>will</em> be independent.</p>
-<div id="def-AV" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 6.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(X'\)</span> have the same distribution as <span class="math inline">\(X\)</span> (but not necessarily be independent of it). Suppose that <span class="math inline">\((X_1, X_1')\)</span>, <span class="math inline">\((X_2, X_2')\)</span>, <span class="math inline">\(\dots\)</span>, <span class="math inline">\((X_{n/2}, X'_{n/2})\)</span> are pairs of random samples from <span class="math inline">\((X, X')\)</span>. Then the <strong>antithetic variables Monte Carlo estimator</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{AV}}\)</span> of <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) .\]</span></p>
+<section id="picking-a-good-distribution" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="picking-a-good-distribution"><span class="header-section-number">9.2</span> Picking a good distribution</h2>
+<p>We’ve now seen that importance sampling can be a very powerful tool, when used well. But how should pick a good distribution <span class="math inline">\(Y\)</span> to sample from?</p>
+<p>Let’s examine the mean-square error more carefully: <span class="math display">\[ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . \]</span> So our goal is to try and pick <span class="math inline">\(Y\)</span> such that <span class="math inline">\(\frac{f(Y)}{g(Y)}\phi(Y)\)</span> has low variance. (We also, of course, want to be able to sample from <span class="math inline">\(Y\)</span>.)</p>
+<p>The best possible choice, then, would be to pick <span class="math inline">\(Y\)</span> such that <span class="math inline">\(\frac{f(Y)}{g(Y)}\phi(Y)\)</span> is constant – and therefore has zero variance! If <span class="math inline">\(\phi\)</span> is non-negative, then it seems like we should pick <span class="math inline">\(Y\)</span> such that its probability density function is <span class="math inline">\(g(y) \propto f(y)\phi(y)\)</span>. (Here, <span class="math inline">\(\propto\)</span> is the `proportional to’ symbol.) That is, to have <span class="math display">\[ g(y) = \frac{1}{Z} f(y)\phi(y) , \]</span> for some constant <span class="math inline">\(Z\)</span>. Then <span class="math inline">\(\frac{f(Y)}{g(Y)}\phi(Y) = Z\)</span> is a constant, has zero variance, and we have a perfect estimator!</p>
+<p>What is this constant <span class="math inline">\(Z\)</span>? Well, <span class="math inline">\(g\)</span> is a PDF, so it has to integrate. So we will need to have <span class="math display">\[ 1 = \int_{-\infty}^{+\infty} g(y)\, \mathrm{d}y = \int_{-\infty}^{+\infty} \frac{1}{Z} f(y)\phi(y) \, \mathrm{d}y = \frac{1}{Z} \int_{-\infty}^{+\infty} f(x)\phi(x) \, \mathrm{d}x = \frac{1}{Z} \,\Exg\phi(X) . \]</span> (We did the `switching the dummy variable from <span class="math inline">\(y\)</span> to <span class="math inline">\(x\)</span> thing again.) So <span class="math inline">\(Z = \Exg \phi(X)\)</span>. But that’s no good – <span class="math inline">\(\theta = \Exg \phi(X)\)</span> was the thing we were trying to estimate. If we knew that, we wouldn’t have to do Monte Carlo estimation to start with!</p>
+<p>So, as much as we would like to, we can’t use this `perfect’ ideal distribution <span class="math inline">\(Y\)</span>. More generally, if <span class="math inline">\(\phi\)</span> is not always non-negative, it can be shown that <span class="math inline">\(g(y) \propto f(y)\,|\phi(y)|\)</span> would be the best possible distribution, but this has the same problems.</p>
+<p>However, we can still be guided by this idea – we would like <span class="math inline">\(g(y)\)</span> to be as close to proportional to <span class="math inline">\(f(y) \phi(y)\)</span> (or <span class="math inline">\(|f(y) \phi(y)|\)</span>) as we can manage, so that <span class="math inline">\(\frac{f(y)}{g(y)}\phi(y)\)</span> is close to being constant, so hopefully has low variance. This tells us that <span class="math inline">\(Y\)</span> should be likely – that is, <span class="math inline">\(g(y)\)</span> should be big – where both <span class="math inline">\(f\)</span> and <span class="math inline">\(|\phi|\)</span> are both big – that is, where <span class="math inline">\(X\)</span> is likely and also <span class="math inline">\(\phi\)</span> is big in absolute value. While <span class="math inline">\(Y\)</span> should be unlikely where both <span class="math inline">\(X\)</span> is unlikely and <span class="math inline">\(\phi\)</span> is small in absolute value.</p>
+<div id="exm-IS3" class="theorem example">
+<p><span class="theorem-title"><strong>Example 9.1</strong></span> Let’s look again at <a href="L08-is-1.html#exm-IS1" class="quarto-xref">Example&nbsp;<span>8.1</span></a> (continued in <a href="L08-is-1.html#exm-IS2" class="quarto-xref">Example&nbsp;<span>8.2</span></a>), where we wanted to estimate <span class="math inline">\(\mathbb P(X &gt; 4) = \Exg\Ind_{(4,\infty)}(X)\)</span> for <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span>. We found are estimator was enormously improved when we used instead <span class="math inline">\(Y \sim \operatorname{N}(4,1)\)</span>.</p>
+<p>In the figure below, the blue line is <span class="math display">\[f(y)\,\phi(y) = f(y)\,\Ind_{(4,\infty)}(y) = \begin{cases} \displaystyle\frac{1}{\sqrt{2\pi}} \,\mathrm{e}^{-y^2/2} &amp; y &gt; 4 \\ 0 &amp; y \leq 4 \end{cases} \]</span> (scaled up, otherwise it would be so close to the axis line you wouldn’t see it).</p>
+<p>The black line is the PDF <span class="math inline">\(f(y)\)</span> of the original distribution <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span>, while the red line is the PDF <span class="math inline">\(g(y)\)</span> of our importance distribution <span class="math inline">\(Y \sim \operatorname{N}(4,1)\)</span>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dnorm</span>(x, <span class="dv">0</span>, <span class="dv">1</span>), <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="sc">-</span><span class="fl">2.5</span>, <span class="at">to =</span> <span class="fl">7.5</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">7</span>), <span class="at">xlab =</span> <span class="st">"y"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.7</span>), <span class="at">ylab =</span> <span class="st">""</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dnorm</span>(x, <span class="dv">4</span>, <span class="dv">1</span>), <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="sc">-</span><span class="fl">2.5</span>, <span class="at">to =</span> <span class="fl">7.5</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">3</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dnorm</span>(x, <span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">*</span> (x <span class="sc">&gt;</span> <span class="dv">4</span>) <span class="sc">*</span> <span class="dv">5000</span>, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="sc">-</span><span class="fl">2.5</span>, <span class="at">to =</span> <span class="fl">7.5</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">3</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"topright"</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"f(y)"</span>, phi, <span class="st">"(y) [scaled]"</span>)), <span class="st">"N(0, 1)"</span>, <span class="st">"N(4, 1)"</span>),</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"black"</span>, <span class="st">"red"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L09-is-2_files/figure-html/propto-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<p>The expression above for <span class="math inline">\(\widehat{\theta}_n^{\mathrm{AV}}\)</span> makes it clear that that this is a mean of the sum from each pair. Alternatively, we can rewrite the estimator as <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{2} \left( \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i) + \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i') \right) , \]</span> which highlights that it is the mean of the estimator from the <span class="math inline">\(X_i\)</span>s and the the estimator from the <span class="math inline">\(X'_i\)</span>s.</p>
+</div>
+</div>
+<p>We have noted that a good distribution will have a PDF that is big when <span class="math inline">\(f(x)\phi(x)\)</span> (the blue line) is big. Clearly the red line is much better at this then the black line, which is the importance sampling method was so much better here.</p>
+<p>There’s scope to do better here, though. Perhaps an asymmetric distribution with a much more quickly-decaying left-tail might be good – for example, a shifted exponential <span class="math inline">\(4 + \operatorname{Exp}(\lambda)\)</span> might be worth investigating. Or a thinner, spikier distribution, such as a normal with smaller standard deviation. In both cases, though, we have to be careful – because it’s the ratio <span class="math inline">\(f(y)/g(y)\)</span>, we still have to be a bit careful about what happens when both <span class="math inline">\(f(y)\)</span> and <span class="math inline">\(g(y)\)</span> are small <em>absolutely</em>, in case one is <em>proportionally</em> much bigger than the other.</p>
+</div>
 </section>
-<section id="examples" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="examples"><span class="header-section-number">6.3</span> Examples</h2>
-<div id="exm-MCprob4" class="theorem example">
-<p><span class="theorem-title"><strong>Example 6.1</strong></span> Recall <a href="L02-mc-uses.html#exm-MCprob" class="quarto-xref">Example&nbsp;<span>2.1</span></a> (continued in <a href="L04-mc-error-2.html#exm-MCprob2" class="quarto-xref">Example&nbsp;<span>4.1</span></a> and <a href="L04-mc-error-2.html#exm-MCprob3" class="quarto-xref">Example&nbsp;<span>4.2</span></a>). Here, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span> for <span class="math inline">\(Z\)</span> a standard normal.</p>
-<p>The basic Monte Carlo estimate was</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest   <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022911</code></pre>
-</div>
-</div>
-<p>Can we improve this estimate with an antithetic variable? Well, if <span class="math inline">\(Z\)</span> is a standard normal, then <span class="math inline">\(Z' = -Z\)</span> is also standard normal and is not independent of <span class="math inline">\(Z\)</span>. So maybe that could work as an antithetic variable. Let’s try</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>samples1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>samples2 <span class="ot">&lt;-</span> <span class="sc">-</span>samples1</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>AVest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>((samples1 <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">+</span> (samples2 <span class="sc">&gt;</span> <span class="dv">2</span>))</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>AVest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022929</code></pre>
-</div>
-</div>
-</div>
-<div id="exm-AVunif" class="theorem example">
-<p><span class="theorem-title"><strong>Example 6.2</strong></span> Let’s consider estimating <span class="math inline">\(\mathbb E \sin U\)</span>, where <span class="math inline">\(U\)</span> is continuous uniform on <span class="math inline">\([0,1]\)</span>.</p>
-<p>The basic Monte Carlo estimate is</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">sin</span>(samples))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4599953</code></pre>
-</div>
-</div>
-<p>We used <code>runif(n, min, max)</code> to generate <span class="math inline">\(n\)</span> samples on the interval <span class="math inline">\([\mathtt{min}, \mathtt{max}]\)</span>. However, if you omit the <code>min</code> and <code>max</code> arguments, then R assumes the default values <code>min = 0</code>, <code>max = 1</code>, which is what we want here.</p>
-<p>If <span class="math inline">\(U\)</span> is uniform on <span class="math inline">\([0,1]\)</span>, then <span class="math inline">\(1 - U\)</span> is also uniform on <span class="math inline">\([0,1]\)</span>. We could try using that as an antithetic variable.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>samples1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>samples2 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> samples1</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>AVest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>(<span class="fu">sin</span>(samples1) <span class="sc">+</span> <span class="fu">sin</span>(samples2))</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>AVest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4597048</code></pre>
-</div>
-</div>
-</div>
-<p>We have taken <span class="math inline">\(n/2\)</span> pairs of samples, because that means we have <span class="math inline">\(n/2 \times 2 = n\)</span> samples over all, which seems like a fair comparison. This is certainly the case if generating the sample and generating its antithetic pair cost roughly the same in terms of time (or energy, or money). However, if generating the first variate of each pair is slow, but then generating the second antithetic variate is much quicker, it might be a fairer comparison to take a full <span class="math inline">\(n\)</span> pairs.</p>
-<p>More generally, you might put a cost <span class="math inline">\(c_1\)</span> on each first variate and <span class="math inline">\(c_2\)</span> on each antithetic pair. Then one can compare a cost of <span class="math inline">\(c_1n\)</span> for standard Monte Carlo with <span class="math inline">\(n\)</span> samples to a cost of <span class="math inline">\((c_1 + c_2)m\)</span> for antithetic variables Monte Carlo with <span class="math inline">\(m\)</span> pairs.</p>
-<p>Are these antithetic variables estimates an improvement on the basic Monte Carlo estimate? We’ll find out next time.</p>
-<p><strong>Next time:</strong> <em>We continue our study of the antithetic variables method with more examples and analysis of the error.</em></p>
-<div class="mysummary">
-<p><strong>Summary:</strong></p>
-<ul>
-<li><p>Estimation is helped by combining individual estimates that are negatively correlated.</p></li>
-<li><p>For antithetic variables Monte Carlo estimation, we take pairs of non-independent variables <span class="math inline">\((X, X')\)</span>, to get the estimator <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) . \]</span></p></li>
-</ul>
-<p>On <a href="../problems/P1.html"><strong>Problem Sheet 1</strong></a>, you should now be able to answer all questions. You should work through this problem sheet in advance of the problems class on <em>Thursday 17 October</em>.</p>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.3.2.</p>
+<section id="monte-carlo-summary" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="monte-carlo-summary"><span class="header-section-number">9.3</span> Monte Carlo summary</h2>
 
 
-</div>
 </section>
 
 </main> <!-- /main -->
@@ -810,13 +777,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L05-cv.html" class="pagination-link" aria-label="Control variate">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></span>
+      <a href="../lectures/L08-is-1.html" class="pagination-link" aria-label="Importance sampling I">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../problems/P1.html" class="pagination-link" aria-label="Problem Sheet 1">
-        <span class="nav-page-text">Problem Sheet 1</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
+        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
