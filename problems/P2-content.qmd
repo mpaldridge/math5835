@@ -1,0 +1,83 @@
+{{< include ../_header.qmd >}}
+
+:::::: {.myq}
+**1.**      *[2018 exam, Question 4]* 
+
+::::: {.subq}
+**(a)**   Suppose it is desired to estimate the value of an integral
+$$ \theta = \int_0^1 h(x)\,\mathrm{d}x $$
+by Monte Carlo integration
+
+:::: {.subq}
+        **i.**   By splitting $h(x) = \phi(x)f(x)$, where $f$ is a probability density function, describe how the Monte Carlo method of estimating $\theta$ works.
+::::
+
+:::: {.subq}
+        **ii.**  Let $\widehat\theta_n$ be the Monte Carlo estimate based on $n$ simulations. Find the expectation and variance of $\widehat\theta_n$, as a function of $n$.
+::::
+
+:::: {.subq}
+        **iii.**  What guidelines can be given for the choice of $f$ in practice?
+::::
+:::::
+
+::::: {.subq}
+**(b)**  Consider evaluation the integral
+$$ \int_0^1 x^2\,\mathrm{d}x $$
+by Monte Carlo integration using $f(x) = \Ind_{[0,1]}(x)$. Write down the Monte Carlo estimator $\widehat\theta_n$.
+
+Explain how antithetic variables can be used in this situation, and justify briefly why their use here is guaranteed to improve efficiency.
+
+For $U \sim \operatorname{U}[0,1]$, use the results
+$$\Ex U^2 = \tfrac13 \qquad \Ex U^4 = \tfrac15 \qquad \Ex U^2(1-U)^2 = \tfrac{1}{30} $$
+to find the correlation between $U^2$ and $(1-U)^2$. Hence, or otherwise, confirm that using antithetic variables reduces the variance of the Monte Carlo estimator by a factor of 8.
+
+(You may use without proof any results about the variance of antithetic variable estimates, but you should clearly state any results you are using.)
+:::::
+::::::
+
+::::: {.myq}
+**2.**     Let $X \sim \operatorname{N}(0,1)$. Consider importance sampling estimation for the probability $\mathbb P(3 \leq X \leq 4)$ using samples $Y_i$ from the following sample distributions: **(i)** $Y \sim \operatorname{N}(1,1)$; **(ii)** $Y \sim \operatorname{N}(2,1)$; **(iii)** $Y \sim \operatorname{N}(3.5,1)$; **(iv)** $Y \sim 3 + \operatorname{Exp}(1)$.
+
+Each of these four distributions gives rise to a different importance sampling method. Our aim is to compare the resulting estimates.
+
+:::: {.subq}
+**(a)**  For each of the four methods, estimate the variance $\Var\big(\frac{f(Y)}{g(Y)}\,\phi(Y)\big)$. Which of these four methods gives the best results?
+::::
+
+:::: {.subq}
+**(b)**  Determine a good estimate for $\mathbb P(3 \leq X \leq 4)$, and discuss the accuracy of your estimate.
+::::
+
+:::: {.subq}
+**(c)**  For each of the four methods, approximate how many samples from $Y$ are required to reduce the root-mean-square error of the estimate of $\mathbb P(3 \leq X \leq 4)$ to 1%?
+::::
+:::::
+
+::::: {.myq}
+**3.**     *[2017 exam, Question 3]*
+
+:::: {.subq}
+**(a)**  Defining any notation you use, write down the basic Monte Carlo estimator $\widehat\theta_n^{\mathrm{MS}}$ and the importance sampling estimator $\widehat\theta_n^{\mathrm{IS}}$ for an expectation of the form $\Exg \phi(X)$, where $X$ is a random variable with probability density function $f$.
+
+What is the advantage of importance sampling over the standard Monte Carlo method?
+::::
+
+:::: {.subq}
+**(b)**  Prove that both the basic Monte Carlo and importance sampling estimates from part (a) are unbiased.
+::::
+
+:::: {.subq}
+**(c)**  Show that the variance of the importance sampling estimator is given by
+$$ \Var\big(\widehat\theta_n^{\mathrm{IS}}\big) = \frac{1}{n}\int_{-\infty}^{+\infty} \frac{f(y)^2 \phi(y)^2}{g(y)}\,\mathrm{d}y - \frac{1}{n}\big(\Exg \phi(X)\big)^2 . $$
+::::
+
+:::: {.subq}
+**(d)**  Let $X \sim \operatorname{N}(0,2)$ and $a \in \mathbb R$. We want to estimate $c = \Ex \big(\sqrt{2}\exp(-(X-a)^2/4)\big)$, using importance sampling with samples $Y \sim \operatorname{N}(\mu, 1)$ for some $\mu \in \mathbb R$. Using the result from part (c), or otherwise, show that in the case the variance of the importance sampling estimator $\widehat\theta_n^{\mathrm{IS}}$  is given by
+$$ \Var\big(\widehat\theta_n^{\mathrm{IS}}\big) = \frac{\exp(\mu^2 - 2a\mu) - c^2}{n} . $$
+
+For fixed $n$ and $a$, find the value of $\mu$ for which the importance sampling estimator has the smallest mean-square error. Comment on the result.
+::::
+:::::
+
+*Questions on random number generation will follow later.*
