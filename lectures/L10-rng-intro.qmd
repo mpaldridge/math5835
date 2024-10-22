@@ -1,1 +1,56 @@
 # Generating random numbers
+
+## Why generate random numbers?
+
+So far in this module, we have made a lot of use of generating random numbers. Specifically, when performing Monte Carlo estimation, we have used lots of samples from the distribution of $X$. We did this using R's built-in functions for random number generation, like `runif()`, `rnorm()`, `rexp()`, and so on.
+
+In this part of the module, we are interested in these questions:
+
+* How do the random number generation functions in R actually *work*?
+
+* What if we want to sample from a distribution for which R doesn't have a built-in function -- how can we do that?
+
+It turns out that this will break down into two questions that we can treat largely separately:
+
+1. How do we generate some randomness? We usually think of this as generating $U \sim \operatorname{U}[0,1]$, a uniform random number between 0 and 1. (We will look at this today and in the next lecture.)
+
+2. How do we manipulate that uniform randomness $U$ to get it to behave like the particular distribution $X$ that we want to sample? (We will look at this in Lectures 12--16.)
+
+## Numbers on computers
+
+We start be considering the question of how to generate a uniform random number between 0 and 1.
+
+The first thing to notice is that computers do not perfectly store exact real numbers -- that's impossible! Instead, it stores a number to a certain number of decimal places. To be more precise, computers stores numbers in *binary*, that is written as a sequence of 0s and 1s. In the presentation here, we will somewhat simplify matters -- computer science experts will be able to spot where I'm lying, or "gently smoothing out the truth".
+
+A number between 0 and 1 can be stored as a 32-bit binary number: that is a number like
+
+```
+0. 00110100 11110100 10001111 10011001
+```
+
+A string $0.x_1x_2\cdots x_{31}x_{32}$ represents the number
+$$ x = \sum_{i=1}^{32} x_i 2^{-i} . $$
+So the number above represents
+$$ 2^{-3} + 2^{-4} + 2^{-6} + \dots + 2^{-29} + 2^{-32} = 0.20685670361854135990142822265625.$$
+
+So, really, we want one of the following:
+
+* A sequence of 32 to 0s and 1s (each 50:50 likely to be 0 or 1 and independent of each other). This then represents a number in its binary expansion, as above.
+   * More generally, we want a string of some amount of 0s and 1s. 
+
+* A integer at random between $0$ and $2^{32} - 1$, which we can then divide by $2^{32}$ to get a number between $0$ and $1$.
+   * More generally, we want an integer at random between $0$ and $m$ for some $m$.
+
+There are two ways we can do this. First, we can use **true physical randomness**. Second, we can use **computer-generated "pseudorandomness"**.  
+
+{{< video https://www.youtube.com/embed/1cUUfMeOijg >}}
+
+
+# Pseudorandom number generators
+
+A **pseudorandom number generator** (**PRNG**) is a computer program that outputs a sequence of numbers that appear to be random. Of course, the numbers are not *actually* random -- a computer program also performs exactly what you tell it to, the same every time. But for a PRNG -- or at least for a good PRNG -- there should be no obvious patterns in the sequence of numbers produced, so they should act for all practical purposes *as if* they were random numbers. ("Pseudo" is a prefix that means something like "appears to be, even though it's not".)
+
+Many PRNGs work by applying a recurrence. Suppose we want (pseudo)random integers between $0$ and $m-1$. Then we have a **seed** $x_0$, which behaves as a starting point for the sequence, and a function $f$ from $\{0, 1, \dots, m-1\}$ to $\{0, 1, \dots, m-1\}$. Then the sequence would be
+$$ \begin{align} x_0& & x_1 &= f(x_0) & x_2 &= f(x_1) = f(f(x_0)) \\
+x_3 &= f(x_2) = f(f(f(x_0))) & x_4 &= f(x_3) = f(f(f(f(x_0)))) & \cdots& \end{align} $$
+and so on. So starting from $x_0$, we apply $f$ to get the next number in the sequence $f(x_0) = x_1$. Then we apply $f$ to *that*, to get the next point $x_2 = f(x_1)$. Then apply $f$ to *that* to get the next
