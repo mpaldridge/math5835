@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../problems/solutions.html" rel="next">
+<link href="../lectures/L10-rng-intro.html" rel="next">
 <link href="../lectures/L08-is-1.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -247,6 +247,29 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Random number generation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L10-rng-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generating random numbers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../problems/P2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Problem Sheet 2</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../problems/solutions.html" class="sidebar-item-text sidebar-link">
@@ -363,7 +386,7 @@ window.Quarto = {
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>MC_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">phi</span>(samples)) <span class="sc">/</span> n</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MCest, <span class="fu">sqrt</span>(MC_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1863843908 0.0002536575</code></pre>
+<pre><code>[1] 0.1863397228 0.0002534953</code></pre>
 </div>
 </div>
 <p>Maybe we can improve on this using importance sampling. Let’s have a look at a graph of <span class="math inline">\(f(y)\,\phi(y)\)</span> (blue line).</p>
@@ -393,7 +416,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>After some experimentation, I decided that <span class="math inline">\(Y \sim \operatorname(8, 2^2)\)</span> (red line; not to same scale) seemed to work quite well, in <span class="math inline">\(g(y)\)</span> being roughly proportional to <span class="math inline">\(f(y)\,\phi(y)\)</span>. I was tempted to take the standard deviation less than 2, the get the red curve a bit tighter. But I discovered that <span class="math inline">\(f(y)/g(y)\)</span> got very large for <span class="math inline">\(y\)</span> near 0, due to the left tale decaying to quickly. The following graph shows <span class="math inline">\(\frac{f(x)}{g(x)} \phi(x)\)</span>, and shows that the spike at 0 is now under control compared to the “main spike” at <span class="math inline">\(y = 8\)</span>.</p>
+<p>After some experimentation, I decided that <span class="math inline">\(Y \sim \operatorname{N}(8, 2^2)\)</span> (red line; not to same scale) seemed to work quite well, in <span class="math inline">\(g(y)\)</span> being roughly proportional to <span class="math inline">\(f(y)\,\phi(y)\)</span>. I was tempted to take the standard deviation less than 2, the get the red curve a bit tighter. But I discovered that <span class="math inline">\(f(y)/g(y)\)</span> got very large for <span class="math inline">\(y\)</span> near 0, due to the left tail of <span class="math inline">\(g\)</span> decaying too quickly. The following graph shows <span class="math inline">\(\frac{f(x)}{g(x)} \phi(x)\)</span>, and shows that the spike at 0 is now under control compared to the “main spike” at <span class="math inline">\(y = 8\)</span>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code for drawing this graph</summary>
@@ -423,7 +446,7 @@ window.Quarto = {
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>IS_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>((<span class="fu">pdf_x</span>(samples) <span class="sc">/</span> <span class="fu">pdf_y</span>(samples)) <span class="sc">*</span> <span class="fu">phi</span>(samples)) <span class="sc">/</span> n</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(ISest, <span class="fu">sqrt</span>(IS_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1864286978 0.0001351437</code></pre>
+<pre><code>[1] 0.1864660680 0.0001351119</code></pre>
 </div>
 </div>
 <p>We see that the RMSE has roughly halved, which is the equivalent of taking four times as many samples.</p>
@@ -481,7 +504,7 @@ window.Quarto = {
 <ul>
 <li>A good importance sampling distribution <span class="math inline">\(Y\)</span> is one whose PDF <span class="math inline">\(g(y)\)</span> is roughly proportional to <span class="math inline">\(|f(y)\,\phi(y)|\)</span>. Equivalently, <span class="math inline">\(\frac{f(y)}{g(y)}|\phi(y)|\)</span> is approximately constant.</li>
 </ul>
-<p>Problem Sheet 2 should be available soon.</p>
+<p>You should now be able to answer Questions 1–3 on <a href="../problems/P2.html"><strong>Problem Sheet 2</strong></a>.</p>
 <p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.3.1.</p>
 </div>
 
@@ -916,8 +939,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
-        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L10-rng-intro.html" class="pagination-link" aria-label="Generating random numbers">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generating random numbers</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
