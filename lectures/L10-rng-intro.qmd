@@ -1,56 +1,99 @@
 # Generating random numbers
 
+::: {.mysummary}
+Please complete the [**mid-semester survey**](https://forms.office.com/e/vp9uSWUAxi?or)!
+:::
+
 ## Why generate random numbers?
 
-So far in this module, we have made a lot of use of generating random numbers. Specifically, when performing Monte Carlo estimation, we have used lots of samples from the distribution of $X$. We did this using R's built-in functions for random number generation, like `runif()`, `rnorm()`, `rexp()`, and so on.
+So far in this module, we have made a lot of use of generating random numbers -- for us, this has been when performing Monte Carlo estimation. We will also need random numbers for many other purposes later in the module. There are lots of other situations in statistics, mathematics and data science where we want to use random numbers to help us solve problems. But where do we get these random numbers from?
+
+When performing Monte Carlo estimation, we have used lots of samples from the distribution of some random variable $X$. We did this using R's built-in functions for random number generation, like `runif()`, `rnorm()`, `rexp()`, and so on.
 
 In this part of the module, we are interested in these questions:
 
-* How do the random number generation functions in R actually *work*?
+* How do these random number generation functions in R actually *work*?
 
 * What if we want to sample from a distribution for which R doesn't have a built-in function -- how can we do that?
 
 It turns out that this will break down into two questions that we can treat largely separately:
 
-1. How do we generate some randomness? We usually think of this as generating $U \sim \operatorname{U}[0,1]$, a uniform random number between 0 and 1. (We will look at this today and in the next lecture.)
+1. How do we generate some randomness -- any randomness -- in the first place? We usually think of this as generating $U \sim \operatorname{U}[0,1]$, a uniform random number between 0 and 1. (We will look at this today and in the next lecture.)
 
-2. How do we manipulate that uniform randomness $U$ to get it to behave like the particular distribution $X$ that we want to sample? (We will look at this in Lectures 12--16.)
+2. How do we manipulate that uniform randomness $U$ to get it to behave like the particular distribution $X$ that we want to sample from? (We will look at this in Lectures 12--16.)
 
-## Numbers on computers
+## Random numbers on computers
 
-We start be considering the question of how to generate a uniform random number between 0 and 1.
+We start by considering the question of how to generate a uniform random number between 0 and 1.
 
-The first thing to notice is that computers do not perfectly store exact real numbers -- that's impossible! Instead, it stores a number to a certain number of decimal places. To be more precise, computers stores numbers in *binary*, that is written as a sequence of 0s and 1s. In the presentation here, we will somewhat simplify matters -- computer science experts will be able to spot where I'm lying, or "gently smoothing out the truth".
+The first thing to know is that computers do not perfectly store exact real numbers in decimals of unending length -- that's impossible! Instead, it stores a number to a certain accuracy, in terms of the number of decimal places. To be more precise, computers store numbers in *binary*; that is, written as a sequence of 0s and 1s. (In the presentation here, we will somewhat simplify matters -- computer science experts will be able to spot where I'm lying, or "gently smoothing out the truth".)
 
-A number between 0 and 1 can be stored as a 32-bit binary number: that is a number like
-
+A number between 0 and 1 could be (approximately) stored as a 32-bit binary number, for example. A 32-bit number is a number like
 ```
 0. 00110100 11110100 10001111 10011001
 ```
-
+that is "0." followed by a string of 32 binary digits, or "bits" (0s and 1s).
 A string $0.x_1x_2\cdots x_{31}x_{32}$ represents the number
 $$ x = \sum_{i=1}^{32} x_i 2^{-i} . $$
 So the number above represents
-$$ 2^{-3} + 2^{-4} + 2^{-6} + \dots + 2^{-29} + 2^{-32} = 0.20685670361854135990142822265625.$$
+$$ \begin{align} &0\times 2^{-1} + 0 \times 2^{-2} + 1 \times 2^{-3} + \cdots + 0 \times 2^{-31} + 1 \times 2^{-32} \\ &\qquad\qquad {}=2^{-3} + 2^{-4} + 2^{-6} + \dots + 2^{-29} + 2^{-32} \\ &\qquad\qquad {}= 0.20685670361854135990142822265625.\end{align}$$
 
-So, really, we want one of the following:
+We could generate such a 32-bit (or, more generally, $b$-bit) number in two different ways:
 
-* A sequence of 32 to 0s and 1s (each 50:50 likely to be 0 or 1 and independent of each other). This then represents a number in its binary expansion, as above.
-   * More generally, we want a string of some amount of 0s and 1s. 
+* A sequence of 32 0s and 1s (each being 50:50 likely to be 0 or 1 and each being independent of the others). This then represents a number in its binary expansion, as above.
+   * Or, more generally, we want a string of $b$ 0s and 1s. 
 
 * A integer at random between $0$ and $2^{32} - 1$, which we can then divide by $2^{32}$ to get a number between $0$ and $1$.
-   * More generally, we want an integer at random between $0$ and $m$ for some $m$.
+   * Or, more generally, we want a random integer between $0$ and $m - 1$ for some $m$, which we can then divide by $m$. Usually $m = 2^b$ for some $b$, to give a $b$-bit number.
 
-There are two ways we can do this. First, we can use **true physical randomness**. Second, we can use **computer-generated "pseudorandomness"**.  
+There are two ways we can do this. First, we can use **true physical randomness**. Second, we can use **computer-generated "pseudorandomness"**.
+
+True physical randomness means randomness by some real-life random process. For example, you could toss a coin 32 times, and write down "1" each time it lands heads and "0" each time it lands tails: this would give a random 32-bit number. While this will be genuinely random, it is, of course, very slow if you need a large amount of randomness. For example, when we have done Monte Carlo estimation, we have often used one million random numbers in about 1 second -- it's obviously completely infeasible to toss 32 million coins that quickly!
+
+For a greater amount of physical randomness more quickly, one could look at times between the decay of radioactive particles, thermal noise in electrical circuits, the behaviour of photons in a laser beam, and so on. But these are quite expensive, and even these may not be quick enough for some applications.
+
+Here's a cool video by the YouTuber [Tom Scott](https://www.youtube.com/@TomScottGo) about an internet company that uses a wall of lava lamps for their true physical randomness:
 
 {{< video https://www.youtube.com/embed/1cUUfMeOijg >}}
 
+## PRNGs
 
-# Pseudorandom number generators
+A **pseudorandom number generator** (**PRNG**) is a computer program that outputs a sequence of numbers that appear to be random. Of course, the numbers are not *actually* random -- a computer program always performs exactly what you tell it to, exactly the same every time. But for a PRNG -- or at least for a good PRNG -- there should be no obvious patterns in the sequence of numbers produced, so they should act for all practical purposes *as if* they were random numbers. ("Pseudo" is a prefix that means something like "appears to be, even though it's not".)
 
-A **pseudorandom number generator** (**PRNG**) is a computer program that outputs a sequence of numbers that appear to be random. Of course, the numbers are not *actually* random -- a computer program also performs exactly what you tell it to, the same every time. But for a PRNG -- or at least for a good PRNG -- there should be no obvious patterns in the sequence of numbers produced, so they should act for all practical purposes *as if* they were random numbers. ("Pseudo" is a prefix that means something like "appears to be, even though it's not".)
+Many pseudorandom number generators work by applying a recurrence. Suppose we want (pseudo)random integers between $0$ and $m-1$. Then we have a **seed** $x_1$, which behaves as a starting point for the sequence, and a function $f$ from $\{0, 1, \dots, m-1\}$ to $\{0, 1, \dots, m-1\}$. Then starting from $x_1$, we apply $f$ to get the next number in the sequence $f(x_1) = x_2$. Then we apply $f$ to *that*, to get the next point $x_3 = f(x_2)$. Then apply $f$ to *that* to get the next number, and so on. So the sequence would be
+$$ \begin{align} x_1& & x_2 &= f(x_1) & x_3 &= f(x_2) = f(f(x_1)) \\
+x_4 &= f(x_3) = f(f(f(x_1))) & &\cdots & x_{i+1} &= f(x_i) =f(f(\cdots (f(x_1))\cdots))\end{align} $$
+and so on.
 
-Many PRNGs work by applying a recurrence. Suppose we want (pseudo)random integers between $0$ and $m-1$. Then we have a **seed** $x_0$, which behaves as a starting point for the sequence, and a function $f$ from $\{0, 1, \dots, m-1\}$ to $\{0, 1, \dots, m-1\}$. Then the sequence would be
-$$ \begin{align} x_0& & x_1 &= f(x_0) & x_2 &= f(x_1) = f(f(x_0)) \\
-x_3 &= f(x_2) = f(f(f(x_0))) & x_4 &= f(x_3) = f(f(f(f(x_0)))) & \cdots& \end{align} $$
-and so on. So starting from $x_0$, we apply $f$ to get the next number in the sequence $f(x_0) = x_1$. Then we apply $f$ to *that*, to get the next point $x_2 = f(x_1)$. Then apply $f$ to *that* to get the next
+Some functions $f$ would be not produce a very random-looking sequence of numbers: think of a silly example like $f(x) = (x+1) \bmod m$, so $x_{i+1} = (x_i + 1) \bmod m$ just increases by 1 each time (before "wrapping around" back to 0 when it gets to $m$). But mathematicians have come up with lots of examples of functions $f$ which, for all possible practical purposes, seem to have outputs that appear just as random as an actual random sequence.
+
+One example of such a function $f$ would be $f(x) = (ax+c) \bmod m$, so $x_{i+1} = (ax_i + c)\bmod m$, which can be a very good PRNG for some values of $a$ and $c$. In this case, the PRNG is known as a **linear congruential generator** (or **LCG**). We'll talk more about LCGs in the next lecture.
+
+R's default method is of this form -- well, it's *almost* of this form. It actually uses a method called the [Mersenne Twister](https://en.wikipedia.org/wiki/Mersenne_Twister), which uses a recurrence of the form $x_{i+1} = (f(x_i) + i) \bmod m$ for a complicated function $f$; here the "plus $i$", where $i$ is the step number, means we have a slightly different update rule each timestep.
+
+But how do we pick the seed -- the starting point $x_1$? Normally, we use some true physical randomness to pick the seed. The benefit here is that just a small amount of true physical randomness can "start you off" by choosing the seed, and then the PRNG can produces huge amounts of pseudorandomness incredibly quickly. Indeed, that's what the wall of lava lamps in the video did -- the lava lamps were just for producing lots of seeds for the PRNGs.
+
+However, it is possible, and sometimes desirable, to set the seed "by hand". This is useful if you want to produce the same "random-looking" numbers as someone else (or yourself, previously). This is because if two people set the same seed $x_1$, then the numbers $x_2, x_3, \dots$ produced after that will still appear to be random, but because the process is completely deterministic after the seed is chosen, both people will actually produce exactly the same sequence of numbers. This can be useful for checking accuracy of code, for example.
+
+In R, by default, the seed is set based the current time on your computer, measured down to about 10 milliseconds. However, you can set the seed yourself, using `set.seed()`. For example, the following code sets the seed to be 123456, then generates 10 uniform pseudorandom numbers.
+
+```{r}
+set.seed(123456)
+runif(10)
+```
+
+Those numbers certainly appear to be random. But if you run those two lines of code on your computer, you should get exactly the same 10 numbers. That's because you will also start with the same seed 123456, and then R will run the same pseudorandom -- that is, completely deterministic -- function to generate the next 10 numbers.
+
+**Next time:** *We'll take a closer look at pseudorandom number generation using linear congruential generators.*
+
+::: {.mysummary}
+**Summary:**
+
+* Random number generation has two problems: how to generate uniform random numbers between 0 and 1, and who to convert these to your desired distribution.
+
+* Uniform random numbers can be generated from true physical randomness or using a pseudorandom number generator on a computer.
+
+* Linear congruential generators are a type of pseudorandom number generator.
+
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), introduction to Chapter 1 and introduction to Section 1.1.
+:::

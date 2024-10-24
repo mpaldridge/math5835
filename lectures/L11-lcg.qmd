@@ -1,1 +1,56 @@
 # LCGs
+<!--
+## Definition and examples
+
+Last lecture we introduced the idea of pseudorandom number generators (PRNGs), which are deterministic functions that produce a sequence of numbers that look for all practical purposes as if they are random.
+
+We introduced the idea of a recurrence, where we have a function $f$ and start with a seed $x_1$. We then produce a sequence through the recurrence $x_{i+1} = f(x_i)$. So $x_2 = f(x_1)$, $x_3 = f(x_2) = f(f(x_1))$, and so on.
+
+We briefly mentioned a class of such PRNGs called **linear congruential generators**, or **LCGs**. These generator integers between $0$ and $m-1$ using the recurrence function
+$$ f(x) = (ax + c) \bmod m , $$
+so
+$$ x_{i+1} = (ax_i + c) \bmod m . $$
+
+Here, "$\mathrm{mod}\ m$" means "modulo $m$"; that is, we are using modular arithmetic, where when we get to $m - 1$ we wrap back to 0 and start again. (Modular arithmetic is sometimes called "clock arithmetic", because hours of the day work modulo 12: for example, 3 hours after 11 o'clock is 2 o'clock, because $11 + 3 = 14 \equiv 2 \bmod m$.)
+
+In the LCG $x_{i+1} = (ax_i + c) \mod m$:
+
+* $m$ is called the **modulus**,
+
+* $a$ is called the **multiplier**,
+
+* $c$ is called the **increment**,
+
+* $x_1$, the starting point, is called the **seed**.
+
+examples by hand
+
+examples on computer
+
+Why is m = 2^n often?
+
+## Period of an LCG
+
+Why repeat? What is period, and why is large period good? Why is $m$ biggest possible.
+
+Hull--Dobell theorem; Hull--Dobell with $m = 2^b$.
+
+Hull--Dobell on examples
+
+## Statistical testing
+
+Brief discussion
+-->
+**Next time:** *We'll use our pseudorandom uniform $[0,1]$ random numbers to make random numbers with other discrete or uniform distributions.*
+
+::: {.mysummary}
+**Summary:**
+
+* Linear congruential generators are pseudorandom number generators based on the recurrence $x_{n+1} = (ax_n + c) \mod m$.
+
+* Any LCG will eventually repeat with periodic behaviour.
+
+* Conditions on $m$, $a$ and $c$ for an LCG to have the maximum possible period $m$ are given by the Hull--Dobell theorem.
+
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Section ??
+:::

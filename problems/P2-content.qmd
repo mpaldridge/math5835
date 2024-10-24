@@ -58,7 +58,7 @@ Each of these four distributions gives rise to a different importance sampling m
 **3.**     *[2017 exam, Question 3]*
 
 :::: {.subq}
-**(a)**  Defining any notation you use, write down the basic Monte Carlo estimator $\widehat\theta_n^{\mathrm{MS}}$ and the importance sampling estimator $\widehat\theta_n^{\mathrm{IS}}$ for an expectation of the form $\Exg \phi(X)$, where $X$ is a random variable with probability density function $f$.
+**(a)**  Defining any notation you use, write down the basic Monte Carlo estimator $\widehat\theta_n^{\mathrm{MC}}$ and the importance sampling estimator $\widehat\theta_n^{\mathrm{IS}}$ for an expectation of the form $\Exg \phi(X)$, where $X$ is a random variable with probability density function $f$.
 
 What is the advantage of importance sampling over the standard Monte Carlo method?
 ::::

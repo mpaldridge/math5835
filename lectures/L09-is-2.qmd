@@ -59,7 +59,7 @@ Aside from the exact theory, in the absence of any better idea, choosing $Y$ to 
 ## Bonus example
 
 ::: {#exm-ISnew}
-*Let* $X \sim \operatorname{U}[0, 10]$ be an uniform distribution, so $f(x) = \frac{1}{10}$ for $0 \leq x \leq 10$, and let \$\\phi(x) = \\mathrm{e}\^{-\|x-8\|}\$. Estimate \$\Exg\phi(X).
+*Let* $X \sim \operatorname{U}[0, 10]$ be an uniform distribution, so $f(x) = \frac{1}{10}$ for $0 \leq x \leq 10$, and let $\phi(x) = \mathrm{e}^{-|x-8|}$. Estimate $\Exg\phi(X)$.
 
 The standard Monte Carlo estimator and its RMSE are as follows
 
@@ -143,7 +143,7 @@ This is our last lecture on Monte Carlo estimation -- at least for now, and at l
 
 **Next time:** *We begin the second section of the module, on random number generation.*
 
-::: mysummary
+::: {.mysummary}
 **Summary:**
 
 -   A good importance sampling distribution $Y$ is one whose PDF $g(y)$ is roughly proportional to $|f(y)\,\phi(y)|$. Equivalently, $\frac{f(y)}{g(y)}|\phi(y)|$ is approximately constant.

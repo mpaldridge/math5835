@@ -25,7 +25,7 @@ book:
     - part: "Random number generation"
       chapters:
         - lectures/L10-rng-intro.qmd
-#        - lectures/L11-lcg.qmd
+        - lectures/L11-lcg.qmd
         - problems/P2.qmd
 #        - lectures/L12-uniform-discrete.qmd
 #        - lectures/L13-inverse.qmd
