@@ -1,0 +1,45 @@
+Of course, it doesn't make much sense to run LCGs by hand -- the whole purpose of LCGs is that they can produce lots of (pseudo)random numbers very fast. So we should run them on computers.
+
+The following R code sets up a function for sampling $n$ numbers from an LCG.
+
+```{r}
+lcg <- function(n, modulus, mult, incr, seed) {
+  samples <- rep(0, n)
+  samples[1] <- seed
+  for (i in 1:(n - 1)) {
+    samples[i + 1] <- (mult * samples[i] + incr) %% modulus
+  }
+  return(samples)
+}
+```
+
+In the fourth line, `%%` is R's "mod" operator.
+
+Let's look at two examples with modulus $m = 2^8 = 256$.
+
+First, let $a = 13$ be the multiplier, $c = 17$ be the increment, and $x_1 = 10$ be the seed.
+
+```{r lcg1}
+m <- 2^8
+sample1 <- lcg(100, m, 13, 17, 10)
+plot(sample1)
+```
+
+That looks like a pretty random collection of numbers to me.
+
+Second, we stick with $a = 13$ be the multiplier and $x_1 = 10$ as the seed, be decrease the increment by 1 to $c = 16$.
+
+```{r lcg2}
+sample2 <- lcg(100, m, 13, 16, 10)
+plot(sample2)
+```
+
+This doesn't seem as good. We can see there's some pattern where there are parallel downward sloping lines. And also there seems to be some sort of pattern *within* these downward sloping lines, sometimes with quite regularly-spaced points on those lines. And looking more closely, we can see that actually the pattern of numbers repeats exactly every 32 steps
+
+```{r}
+which(sample2 == 10)
+```
+
+so we only ever see 32 of the possible 256 values. This doesn't seem to look like a sequence of independent uniformly random points.
+
+So again, it seems like LCG *can* provide a good sequence of pseudorandom numbers, but it seems quite sensitive to a good choice of the parameters.
