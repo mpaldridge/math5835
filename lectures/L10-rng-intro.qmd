@@ -95,5 +95,5 @@ Those numbers certainly appear to be random. But if you run those two lines of c
 
 * Linear congruential generators are a type of pseudorandom number generator.
 
-**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), introduction to Chapter 1 and introduction to Section 1.1.
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), introduction to Chapter 1,  introduction to Section 1.1, and Subsection 1.1.3.
 :::

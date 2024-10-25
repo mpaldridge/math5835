@@ -80,4 +80,20 @@ For fixed $n$ and $a$, find the value of $\mu$ for which the importance sampling
 ::::
 :::::
 
-*Questions on random number generation will follow later.*
+::::: {.myq}
+**5.**     Consider the following LCGs with modulus $m = 2^8 = 256$:
+
+ (i) $a = 31$, $c = 47$;
+
+ (ii) $a = 21$, $c = 47$;
+
+ (iii) $a = 129$, $c = 47$.
+
+:::: {.subq}
+**(a)**  Without using a computer, work out which of these LCGs have a full period of 256.
+::::
+
+:::: {.subq}
+**(b)**  Which of these LCGs would make good pseudorandom number generators?
+::::
+:::::
