@@ -287,8 +287,16 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#definition-and-examples" id="toc-definition-and-examples" class="nav-link active" data-scroll-target="#definition-and-examples"><span class="header-section-number">11.1</span> Definition and examples</a></li>
+  <li><a href="#periods-of-lcgs" id="toc-periods-of-lcgs" class="nav-link" data-scroll-target="#periods-of-lcgs"><span class="header-section-number">11.2</span> Periods of LCGs</a></li>
+  <li><a href="#statistical-testing" id="toc-statistical-testing" class="nav-link" data-scroll-target="#statistical-testing"><span class="header-section-number">11.3</span> Statistical testing</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -312,51 +320,30 @@ window.Quarto = {
 </header>
 
 
-<!--
-## Definition and examples
-
-Last lecture we introduced the idea of pseudorandom number generators (PRNGs), which are deterministic functions that produce a sequence of numbers that look for all practical purposes as if they are random.
-
-We introduced the idea of a recurrence, where we have a function $f$ and start with a seed $x_1$. We then produce a sequence through the recurrence $x_{i+1} = f(x_i)$. So $x_2 = f(x_1)$, $x_3 = f(x_2) = f(f(x_1))$, and so on.
-
-We briefly mentioned a class of such PRNGs called **linear congruential generators**, or **LCGs**. These generator integers between $0$ and $m-1$ using the recurrence function
-$$ f(x) = (ax + c) \bmod m , $$
-so
-$$ x_{i+1} = (ax_i + c) \bmod m . $$
-
-Here, "$\mathrm{mod}\ m$" means "modulo $m$"; that is, we are using modular arithmetic, where when we get to $m - 1$ we wrap back to 0 and start again. (Modular arithmetic is sometimes called "clock arithmetic", because hours of the day work modulo 12: for example, 3 hours after 11 o'clock is 2 o'clock, because $11 + 3 = 14 \equiv 2 \bmod m$.)
-
-In the LCG $x_{i+1} = (ax_i + c) \bmod m$:
-
-* $m$ is called the **modulus**,
-
-* $a$ is called the **multiplier**,
-
-* $c$ is called the **increment**,
-
-* $x_1$, the starting point, is called the **seed**.
-
-::: {#exm-lcg-easy}
-Let us look at two simple LCGs with modulus $m = 2^4 = 16$.
-
-First, let $a = 5$ be the multiplier, $c = 3$ be the increment, and $x_1 = 1$ be the seed.
-Then we have
-$$ \begin{align} x_2 &= (5x_1 + 3) \bmod 16 = (5\times 1 + 3) \bmod 16 = 8 \bmod 16 = 8 \\
-x_3 &= (5x_2 + 3) \bmod 16 = (5\times 8 + 3) \bmod 16 = 43 \bmod 16 = 11 \\
-x_4 &= (5x_3 + 3) \bmod 16 = (5\times 1 + 3) \bmod 16 = 43 \bmod 58 = 10 , \end{align} $$
-and so on. The sequence continues $(1, 8, 11, 1, 5, 12, 15, 14, 9, 0, \dots)$. This looks pretty much like a random sequence of numbers between 0 and 15 to me -- I certainly don't see any obvious pattern.
-
-Second, let $a = 3$ be the multiplier, $c = 4$ be the increment, and $x_1 = 1$ be the seed.
-Then we have
-$$ \begin{align} x_2 &= (3x_1 + 2) \bmod 16 = (3\times 1 + 4) \bmod 16 = 7 \bmod 16 = 7 \\
-x_3 &= (3x_2 + 4) \bmod 16 = (3\times 7 + 4) \bmod 16 = 25 \bmod 16 = 9 . \end{align} $$
-But if we continue this, we find we get the sequence $(1, 7, 9, 15, 1, 7, 9, 15, 1, 7, \dots)$. This does not seem like a good random sequence -- we're just getting the same pattern of four numbers $(1, 7, 9, 15)$ repeating over and over again.
-
-The example illustrates that, while an LCG *can* provide a good sequence of pseudorandom numbers, we need to be careful with the parameters we choose.
-:::
--->
+<section id="definition-and-examples" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="definition-and-examples"><span class="header-section-number">11.1</span> Definition and examples</h2>
+<p>Last lecture we introduced the idea of pseudorandom number generators (PRNGs), which are deterministic functions that produce a sequence of numbers that look for all practical purposes as if they are random.</p>
+<p>We introduced the idea of a recurrence, where we have a function <span class="math inline">\(f\)</span> and start with a seed <span class="math inline">\(x_1\)</span>. We then produce a sequence through the recurrence <span class="math inline">\(x_{i+1} = f(x_i)\)</span>. So <span class="math inline">\(x_2 = f(x_1)\)</span>, <span class="math inline">\(x_3 = f(x_2) = f(f(x_1))\)</span>, and so on.</p>
+<p>We briefly mentioned a class of such PRNGs called <strong>linear congruential generators</strong>, or <strong>LCGs</strong>. An LCG generates integers between <span class="math inline">\(0\)</span> and <span class="math inline">\(m-1\)</span> using a recurrence function of the form <span class="math display">\[ f(x) = (ax + c) \bmod m , \]</span> so <span class="math display">\[ x_{i+1} = (ax_i + c) \bmod m . \]</span></p>
+<p>Here, “<span class="math inline">\(\mathrm{mod}\ m\)</span>” means “modulo <span class="math inline">\(m\)</span>”; that is, we are using modular arithmetic, where when we get to <span class="math inline">\(m - 1\)</span> we wrap back to 0 and start again. (Modular arithmetic is sometimes called “clock arithmetic”, because hours of the day work modulo 12: for example, 3 hours after 11 o’clock is 2 o’clock, because <span class="math inline">\(11 + 3 = 14 \equiv 2 \bmod m\)</span>.)</p>
+<p>In the LCG <span class="math inline">\(x_{i+1} = (ax_i + c) \bmod m\)</span>:</p>
+<ul>
+<li><p><span class="math inline">\(m\)</span> is called the <strong>modulus</strong>,</p></li>
+<li><p><span class="math inline">\(a\)</span> is called the <strong>multiplier</strong>,</p></li>
+<li><p><span class="math inline">\(c\)</span> is called the <strong>increment</strong>,</p></li>
+<li><p><span class="math inline">\(x_1\)</span>, the starting point, is called the <strong>seed</strong>.</p></li>
+</ul>
+<div id="exm-lcg-easy" class="theorem example">
+<p><span class="theorem-title"><strong>Example 11.1</strong></span> Let us look at two simple LCGs with modulus <span class="math inline">\(m = 2^4 = 16\)</span>.</p>
+<p>First, let <span class="math inline">\(a = 5\)</span> be the multiplier, <span class="math inline">\(c = 3\)</span> be the increment, and <span class="math inline">\(x_1 = 1\)</span> be the seed. Then we have <span class="math display">\[ \begin{align} x_2 &amp;= (5x_1 + 3) \bmod 16 = (5\times 1 + 3) \bmod 16 = 8 \bmod 16 = 8 \\
+x_3 &amp;= (5x_2 + 3) \bmod 16 = (5\times 8 + 3) \bmod 16 = 43 \bmod 16 = 11 \\
+x_4 &amp;= (5x_3 + 3) \bmod 16 = (5\times 1 + 3) \bmod 16 = 43 \bmod 58 = 10 , \end{align} \]</span> and so on. The sequence continues <span class="math inline">\((1, 8, 11, 1, 5, 12, 15, 14, 9, 0, \dots)\)</span>. This looks pretty much like a random sequence of numbers between 0 and 15 to me – I certainly don’t see any obvious pattern.</p>
+<p>Second, let <span class="math inline">\(a = 3\)</span> be the multiplier, <span class="math inline">\(c = 4\)</span> be the increment, and <span class="math inline">\(x_1 = 1\)</span> be the seed. Then we have <span class="math display">\[ \begin{align} x_2 &amp;= (3x_1 + 2) \bmod 16 = (3\times 1 + 4) \bmod 16 = 7 \bmod 16 = 7 \\
+x_3 &amp;= (3x_2 + 4) \bmod 16 = (3\times 7 + 4) \bmod 16 = 25 \bmod 16 = 9 . \end{align} \]</span> But if we continue this, we find we get the sequence <span class="math inline">\((1, 7, 9, 15, 1, 7, 9, 15, 1, 7, \dots)\)</span>. This does not seem like a good random sequence – we’re just getting the same pattern of four numbers <span class="math inline">\((1, 7, 9, 15)\)</span> repeating over and over again.</p>
+<p>The example illustrates that, while an LCG <em>can</em> provide a good sequence of pseudorandom numbers, we need to be careful with the parameters we choose.</p>
+</div>
 <div id="exm-lcg-hard" class="theorem example">
-<p><span class="theorem-title"><strong>Example 11.1</strong></span> Of course, it doesn’t make much sense to run LCGs by hand – the whole purpose of LCGs is that they can produce lots of (pseudo)random numbers very fast. So we should run them on computers.</p>
+<p><span class="theorem-title"><strong>Example 11.2</strong></span> Of course, it doesn’t make much sense to run LCGs by hand – the whole purpose of LCGs is that they can produce lots of (pseudo)random numbers very fast. So we should run them on computers.</p>
 <p>The following R code sets up a function for sampling <span class="math inline">\(n\)</span> numbers from an LCG.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>lcg <span class="ot">&lt;-</span> <span class="cf">function</span>(n, modulus, mult, incr, seed) {</span>
@@ -406,83 +393,56 @@ The example illustrates that, while an LCG *can* provide a good sequence of pseu
 <p>so we only ever see 32 of the possible 256 values. This doesn’t seem to look like a sequence of independent uniformly random points.</p>
 <p>So again, it seems like LCG <em>can</em> provide a good sequence of pseudorandom numbers, but it seems quite sensitive to a good choice of the parameters.</p>
 </div>
-<!--
-Is these examples, we've usually taken $m$ to be a power of 2. There are a few reasons for this:
-
--  We will want to divide each term in the sequence $x_i$ by $m$ to get a number between $[0,1]$. If our number will be stored as a $b$-bit numbers, then it is makes sense to have created $b$ bits (for an integer between $0$ and $m = 2^{b} - 1$) in the first place. This means every integer in $\{0, 1, \dots, m-1\}$ corresponds to exactly one $b$-bit number. Further this makes the division by $m = 2^b$ extremely simple: you simple add "0." (zero point...) at the front of the number!
-
--  Modular arithmetic modulo a power of 2 is very simple for a computer. For a number in binary, the value modulo $2^b$ is simply the last $b$ bits of the number. So `101101001` modulo $2^4$ is simply `1001`, the last four bits.
-
--  Having $m = 2^b$ (or, more generally, having $m$ being the product of lots of small prime factors) makes it easier to choose parameters such that the LCG is a good pseudorandom number generator ... as we shall see in the next section.
-
-## Periods of LCGs
-
-In an LCG, each number in the sequence depends only on the one before, since $x_{i+1} = (ax_i + c) \bmod m$. This means if we ever get a single "repeat" in our sequence -- that is, if we see a number we have seen at some point before -- then the whole sequence from that point on will copy what came before.
-
-For example, in the second part of @exm-lcg-easy, the sequence started $(1, 7, 9, 15, 1, \dots)$. As soon as we hit that repeat 1, we know we're going to see that patters $1, 7, 9, 15$ repeated forever. We say that this LCG has "period" 4. More generally, the **period** of an LCG is the smallest $k \geq 1$ such that $x_{i+k} = x_i$ for some $i$.
-
-We would like our LCGs to have a big period. If an LCG has a small period, it will not look random, as we will just repeat the same small number of values over and over again.
-
-The smallest possible period is 1. That would be an extraordinarily bad LCG, as it would just spit out the same number forever. The biggest possible period is $m$. That is because there are only $m$ possible values in $\{0, 1, \dots, m-1\}$; so after $m+1$ steps we must have had a repeat, by the [pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle). Having the maximum period $m$ is also called having "full period".
-
-Generally, the only way to find the period of an LCG is to run it for a long time, and see how long it takes to start repeating. But, conveniently, there *is* a very easy way to tell if an LCG has the maximum possible period $m$, thanks to a result of TE Hull and AR Dobell.
-
-::: {#thm-hd}
-## Hull--Dobell theorem
-
-Consider the linear congruential generator $x_{i+1} = (ax_i + c) \bmod m$. This LCG has period $m$ if and only if the following three conditions hold:
-
-1. $m$ and $c$ are coprime;
-
-1. $a - 1$ is divisible by all prime factors of $m$;
-
-1. if $m$ is divisible by 4, then $a - 1$ is divisible by 4.
-:::
-
-(We won't prove this here -- it's some pretty tricky number theory. But see Knuth, 
-*[The Art of Computer Programming](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1kmht9a/alma991012846439705181), Volume 2: Seminumerical algorithms*, Subsubsection 3.2.1.2 if you really want a proof.)
-
-If $m = 2^b$ is a power of 2 (with $b \geq 2$), then the three conditions simplify to a particularly pleasant form:
-
-1. $c$ is odd;
-
-1. $a - 1$ is even;
-
-1. $a - 1$ is divisible by 4.
-
-Of course, the third point on the list implies the second. So we only need to check two things: that $c$ is odd and that $a$ is $1 \bmod 4$.
-
-::: {#exm-periods}
-Let's go back to the earlier examples, and see if they have full periods or not.
-
-In the first LCG of @exm-lcg-easy, we had $m = 2^4$, $a = 5$ and $c = 3$. Here, $c$ is odd, and $a$ is $1 \bmod 4$. This LCG fulfils both conditions, so it has the maximum possible period of 16.
-
-In the second LCG of @exm-lcg-easy, we had $m = 2^4$, $a = 3$ and $c = 4$. Here, $c$ is even, and $a$ is $3 \bmod 4$. This LCG does not fulfil both the conditions -- in fact, it fails them both -- so it does not have the maximum possible period of 16. (We already saw that it in fact has period 4.)
-
-In the first LCG of @exm-lcg-hard, we had $m = 2^8$, $a = 13$ and $c = 17$. Here, $c$ is odd, and $a$ is $1 \bmod 4$. This LCG fulfils both conditions, so it has the maximum possible period of 256.
-
-In the second LCG of @exm-lcg-hard, we had $m = 2^8$, $a = 13$ and $c = 16$. Here, $c$ is even, and $a$ is $1 \bmod 4$. So although this LCG does fulfil the second condition, it does not fulfil the first, so it does not have the maximum possible period of 256. (We already saw that it in fact has period 32.)
-:::
-
-It normally a good idea to make sure your LCG has full period -- if it's so easy to ensure, then why not? (That said, a very large but not-quite-maximum period may be good enough. For example, if an LCG with modulus $2^{64}$ had a period of "only" $2^{60}$, that might well be enough: one million samples a second for one thousand years is only $2^{55}$ samples, so you'd never actually see a repeat.)
-
-But merely having full period (an a large modulus) isn't enough by itself to guarantee an LCG will make a good pseudorandom number generator. After all, the silly LCG $x_{i+1} = x_i + 1$ has full period, but the sequence $(\dots, 0, 1, 2, 3, \dots)$ will not look random.
-
-## Statistical testing
-
-Before being used properly, any pseudorandom number generator is subjected to a barrage of statistical tests, to check if its output seems to "look random". Alongside checking it has a very large period, the tester will want to check other things. For just a few examples:
-
-* For any $0 \leq a < b < m$, is the proportion of samples $a \leq x_{i} < b$ between $a$ and $b$ roughly equal to $(b - a)/m$.
-
-* Are there any patterns in the pairs of consecutive outputs $(x_i, x_{i+1})$ that display behaviour that "doesn't look independent"? What about other "low-dimensional" patterns in $(x_i, x_{i+1}, \dots, x_{i+k-1})$ for small $k$?
-
-* For a number $r$ dividing $m$ (that is, $r = 2^d$ for $d < b$, if $m = 2^b$) are there any patterns in $(x_i \bmod r)$? That is, does the sequence also seem random mod $r$ as well as mod $m$?
-
-There are huge batteries of such tests -- and even the best PRNGs might not pass every single one.
-
-LCGs were considered state-of-the-art until the late-90s or so. However, it was discovered that $m$ needs be very big and the number of samples used fairly small in order to pass some of the more stringent statistical tests of randomness. For example, it's suggested that $n = 1\,000\,000$ (one million) samples from an LCG with modulus $m = 2^{64}$ might be the limit before it starts "not looking random enough". Compared to other more modern methods (like the Mersenne Twister mentioned in the last lecture, discovered in 1997), this is requires quite a lot of computation for only a modest number of samples. So although LCGs are still admired for their simplicity, they have fallen out of favour for cutting-edge computational work.
-
--->
+<p>Is these examples, we’ve usually taken <span class="math inline">\(m\)</span> to be a power of 2. There are a few reasons for this:</p>
+<ul>
+<li><p>We will want to divide each term in the sequence <span class="math inline">\(x_i\)</span> by <span class="math inline">\(m\)</span> to get a number between <span class="math inline">\([0,1]\)</span>. If our number will be stored as a <span class="math inline">\(b\)</span>-bit numbers, then it is makes sense to have created <span class="math inline">\(b\)</span> bits (for an integer between <span class="math inline">\(0\)</span> and <span class="math inline">\(m = 2^{b} - 1\)</span>) in the first place. This means every integer in <span class="math inline">\(\{0, 1, \dots, m-1\}\)</span> corresponds to exactly one <span class="math inline">\(b\)</span>-bit number. Further this makes the division by <span class="math inline">\(m = 2^b\)</span> extremely simple: you simple add “0.” (zero point…) at the front of the number!</p></li>
+<li><p>Modular arithmetic modulo a power of 2 is very simple for a computer. For a number in binary, the value modulo <span class="math inline">\(2^b\)</span> is simply the last <span class="math inline">\(b\)</span> bits of the number. So <code>101101001</code> modulo <span class="math inline">\(2^4\)</span> is simply <code>1001</code>, the last four bits.</p></li>
+<li><p>Having <span class="math inline">\(m = 2^b\)</span> (or, more generally, having <span class="math inline">\(m\)</span> being the product of lots of small prime factors) makes it easier to choose parameters such that the LCG is a good pseudorandom number generator … as we shall see in the next section.</p></li>
+</ul>
+</section>
+<section id="periods-of-lcgs" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="periods-of-lcgs"><span class="header-section-number">11.2</span> Periods of LCGs</h2>
+<p>In an LCG, each number in the sequence depends only on the one before, since <span class="math inline">\(x_{i+1} = (ax_i + c) \bmod m\)</span>. This means if we ever get a single “repeat” in our sequence – that is, if we see a number we have seen at some point before – then the whole sequence from that point on will copy what came before.</p>
+<p>For example, in the second part of <a href="#exm-lcg-easy" class="quarto-xref">Example&nbsp;<span>11.1</span></a>, the sequence started <span class="math inline">\((1, 7, 9, 15, 1, \dots)\)</span>. As soon as we hit that repeat 1, we know we’re going to see that patters <span class="math inline">\(1, 7, 9, 15\)</span> repeated forever. We say that this LCG has “period” 4. More generally, the <strong>period</strong> of an LCG is the smallest <span class="math inline">\(k \geq 1\)</span> such that <span class="math inline">\(x_{i+k} = x_i\)</span> for some <span class="math inline">\(i\)</span>.</p>
+<p>We would like our LCGs to have a big period. If an LCG has a small period, it will not look random, as we will just repeat the same small number of values over and over again.</p>
+<p>The smallest possible period is 1. That would be an extraordinarily bad LCG, as it would just spit out the same number forever. The biggest possible period is <span class="math inline">\(m\)</span>. That is because there are only <span class="math inline">\(m\)</span> possible values in <span class="math inline">\(\{0, 1, \dots, m-1\}\)</span>; so after <span class="math inline">\(m+1\)</span> steps we must have had a repeat, by the <a href="https://en.wikipedia.org/wiki/Pigeonhole_principle">pigeonhole principle</a>. Having the maximum period <span class="math inline">\(m\)</span> is also called having “full period”.</p>
+<p>Generally, the only way to find the period of an LCG is to run it for a long time, and see how long it takes to start repeating. But, conveniently, there <em>is</em> a very easy way to tell if an LCG has the maximum possible period <span class="math inline">\(m\)</span>, thanks to a result of TE Hull and AR Dobell.</p>
+<div id="thm-hd" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 11.1 (Hull–Dobell theorem)</strong></span> Consider the linear congruential generator <span class="math inline">\(x_{i+1} = (ax_i + c) \bmod m\)</span>. This LCG has period <span class="math inline">\(m\)</span> if and only if the following three conditions hold:</p>
+<ol type="1">
+<li><p><span class="math inline">\(m\)</span> and <span class="math inline">\(c\)</span> are coprime;</p></li>
+<li><p><span class="math inline">\(a - 1\)</span> is divisible by all prime factors of <span class="math inline">\(m\)</span>;</p></li>
+<li><p>if <span class="math inline">\(m\)</span> is divisible by 4, then <span class="math inline">\(a - 1\)</span> is divisible by 4.</p></li>
+</ol>
+</div>
+<p>(We won’t prove this here – it’s some pretty tricky number theory. But see Knuth, <em><a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1kmht9a/alma991012846439705181">The Art of Computer Programming</a>, Volume 2: Seminumerical algorithms</em>, Subsubsection 3.2.1.2 if you really want a proof.)</p>
+<p>If <span class="math inline">\(m = 2^b\)</span> is a power of 2 (with <span class="math inline">\(b \geq 2\)</span>), then the three conditions simplify to a particularly pleasant form:</p>
+<ol type="1">
+<li><p><span class="math inline">\(c\)</span> is odd;</p></li>
+<li><p><span class="math inline">\(a - 1\)</span> is even;</p></li>
+<li><p><span class="math inline">\(a - 1\)</span> is divisible by 4.</p></li>
+</ol>
+<p>Of course, the third point on the list implies the second. So we only need to check two things: that <span class="math inline">\(c\)</span> is odd and that <span class="math inline">\(a\)</span> is <span class="math inline">\(1 \bmod 4\)</span> (that is, <span class="math inline">\(a\)</span> is one more than a multiple of 4).</p>
+<div id="exm-periods" class="theorem example">
+<p><span class="theorem-title"><strong>Example 11.3</strong></span> Let’s go back to the earlier examples, and see if they have full periods or not.</p>
+<p>In the first LCG of <a href="#exm-lcg-easy" class="quarto-xref">Example&nbsp;<span>11.1</span></a>, we had <span class="math inline">\(m = 2^4\)</span>, <span class="math inline">\(a = 5\)</span> and <span class="math inline">\(c = 3\)</span>. Here, <span class="math inline">\(c\)</span> is odd, and <span class="math inline">\(a = 4 + 1\)</span> is <span class="math inline">\(1 \bmod 4\)</span>. This LCG fulfils both conditions, so it has the maximum possible period of 16.</p>
+<p>In the second LCG of <a href="#exm-lcg-easy" class="quarto-xref">Example&nbsp;<span>11.1</span></a>, we had <span class="math inline">\(m = 2^4\)</span>, <span class="math inline">\(a = 3\)</span> and <span class="math inline">\(c = 4\)</span>. Here, <span class="math inline">\(c\)</span> is even, and <span class="math inline">\(a\)</span> is <span class="math inline">\(3 \bmod 4\)</span>. This LCG does not fulfil both the conditions – in fact, it fails them both – so it does not have the maximum possible period of 16. (We already saw that it in fact has period 4.)</p>
+<p>In the first LCG of <a href="#exm-lcg-hard" class="quarto-xref">Example&nbsp;<span>11.2</span></a>, we had <span class="math inline">\(m = 2^8\)</span>, <span class="math inline">\(a = 13\)</span> and <span class="math inline">\(c = 17\)</span>. Here, <span class="math inline">\(c\)</span> is odd, and <span class="math inline">\(a = 12 + 1\)</span> is <span class="math inline">\(1 \bmod 4\)</span>. This LCG fulfils both conditions, so it has the maximum possible period of 256.</p>
+<p>In the second LCG of <a href="#exm-lcg-hard" class="quarto-xref">Example&nbsp;<span>11.2</span></a>, we had <span class="math inline">\(m = 2^8\)</span>, <span class="math inline">\(a = 13\)</span> and <span class="math inline">\(c = 16\)</span>. Here, <span class="math inline">\(c\)</span> is even, and <span class="math inline">\(a = 12 + 1\)</span> is <span class="math inline">\(1 \bmod 4\)</span>. So although this LCG does fulfil the second condition, it does not fulfil the first, so it does not have the maximum possible period of 256. (We already saw that it in fact has period 32.)</p>
+</div>
+<p>It normally a good idea to make sure your LCG has full period – if it’s so easy to ensure, then why not? (That said, a very large but not-quite-maximum period may be good enough. For example, if an LCG with modulus <span class="math inline">\(2^{64}\)</span> had a period of “only” <span class="math inline">\(2^{60}\)</span>, that might well be enough: one million samples a second for one thousand years is only <span class="math inline">\(2^{55}\)</span> samples, so you’d never actually see a repeat.)</p>
+<p>But merely having full period (and a large modulus) isn’t enough by itself to guarantee an LCG will make a good pseudorandom number generator. After all, the silly LCG <span class="math inline">\(x_{i+1} = x_i + 1\)</span> has full period, but the sequence <span class="math display">\[(0, 1, 2, 3, \dots, m-2, m-1, 0, 1, 2, \dots)\]</span> will not look random.</p>
+</section>
+<section id="statistical-testing" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="statistical-testing"><span class="header-section-number">11.3</span> Statistical testing</h2>
+<p>Before being used properly, any pseudorandom number generator is subjected to a barrage of statistical tests, to check if its output seems to “look random”. Alongside checking it has a very large period, the tester will want to check other things. For just a few examples:</p>
+<ul>
+<li><p>For any <span class="math inline">\(0 \leq a &lt; b &lt; m\)</span>, is the proportion of samples <span class="math inline">\(a \leq x_{i} &lt; b\)</span> between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> roughly equal to <span class="math inline">\((b - a)/m\)</span>.</p></li>
+<li><p>Are there any patterns in the pairs of consecutive outputs <span class="math inline">\((x_i, x_{i+1})\)</span> that display behaviour that “doesn’t look independent”? What about other “low-dimensional” patterns in <span class="math inline">\((x_i, x_{i+1}, \dots, x_{i+k-1})\)</span> for small <span class="math inline">\(k\)</span>?</p></li>
+<li><p>For a number <span class="math inline">\(r\)</span> dividing <span class="math inline">\(m\)</span> (that is, <span class="math inline">\(r = 2^d\)</span> for <span class="math inline">\(d &lt; b\)</span>, if <span class="math inline">\(m = 2^b\)</span>) are there any patterns in <span class="math inline">\((x_i \bmod r)\)</span>? That is, does the sequence also seem random mod <span class="math inline">\(r\)</span> as well as mod <span class="math inline">\(m\)</span>?</p></li>
+</ul>
+<p>There are huge batteries of such tests – and even the best PRNGs might not pass every single one.</p>
+<p>LCGs were considered state-of-the-art until the late-90s or so. However, it was discovered that <span class="math inline">\(m\)</span> needs be very big and the number of samples used fairly small in order to pass some of the more stringent statistical tests of randomness. For example, it’s suggested that <span class="math inline">\(n = 1\,000\,000\)</span> (one million) samples from an LCG with modulus <span class="math inline">\(m = 2^{64}\)</span> might be the limit before it starts “not looking random enough”. Compared to other more modern methods (like R’s default, the Mersenne Twister mentioned in the last lecture, discovered in 1997), this is requires quite a lot of computation for only a modest number of samples. So although LCGs are still admired for their simplicity and elegance, they have fallen out of favour for cutting-edge computational work.</p>
 <p><strong>Next time:</strong> <em>We’ll use our pseudorandom uniform <span class="math inline">\([0,1]\)</span> random numbers to make random numbers with other discrete or uniform distributions.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
@@ -496,6 +456,7 @@ LCGs were considered state-of-the-art until the late-90s or so. However, it was 
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

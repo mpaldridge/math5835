@@ -1,12 +1,12 @@
 # LCGs
-<!--
+
 ## Definition and examples
 
 Last lecture we introduced the idea of pseudorandom number generators (PRNGs), which are deterministic functions that produce a sequence of numbers that look for all practical purposes as if they are random.
 
 We introduced the idea of a recurrence, where we have a function $f$ and start with a seed $x_1$. We then produce a sequence through the recurrence $x_{i+1} = f(x_i)$. So $x_2 = f(x_1)$, $x_3 = f(x_2) = f(f(x_1))$, and so on.
 
-We briefly mentioned a class of such PRNGs called **linear congruential generators**, or **LCGs**. These generator integers between $0$ and $m-1$ using the recurrence function
+We briefly mentioned a class of such PRNGs called **linear congruential generators**, or **LCGs**. An LCG generates integers between $0$ and $m-1$ using a recurrence function of the form
 $$ f(x) = (ax + c) \bmod m , $$
 so
 $$ x_{i+1} = (ax_i + c) \bmod m . $$
@@ -41,55 +41,11 @@ But if we continue this, we find we get the sequence $(1, 7, 9, 15, 1, 7, 9, 15,
 
 The example illustrates that, while an LCG *can* provide a good sequence of pseudorandom numbers, we need to be careful with the parameters we choose.
 :::
--->
+
 ::: {#exm-lcg-hard}
-Of course, it doesn't make much sense to run LCGs by hand -- the whole purpose of LCGs is that they can produce lots of (pseudo)random numbers very fast. So we should run them on computers.
-
-The following R code sets up a function for sampling $n$ numbers from an LCG.
-
-```{r}
-lcg <- function(n, modulus, mult, incr, seed) {
-  samples <- rep(0, n)
-  samples[1] <- seed
-  for (i in 1:(n - 1)) {
-    samples[i + 1] <- (mult * samples[i] + incr) %% modulus
-  }
-  return(samples)
-}
-```
-
-In the fourth line, `%%` is R's "mod" operator.
-
-Let's look at two examples with modulus $m = 2^8 = 256$.
-
-First, let $a = 13$ be the multiplier, $c = 17$ be the increment, and $x_1 = 10$ be the seed.
-
-```{r lcg1}
-m <- 2^8
-sample1 <- lcg(100, m, 13, 17, 10)
-plot(sample1)
-```
-
-That looks like a pretty random collection of numbers to me.
-
-Second, we stick with $a = 13$ be the multiplier and $x_1 = 10$ as the seed, be decrease the increment by 1 to $c = 16$.
-
-```{r lcg2}
-sample2 <- lcg(100, m, 13, 16, 10)
-plot(sample2)
-```
-
-This doesn't seem as good. We can see there's some pattern where there are parallel downward sloping lines. And also there seems to be some sort of pattern *within* these downward sloping lines, sometimes with quite regularly-spaced points on those lines. And looking more closely, we can see that actually the pattern of numbers repeats exactly every 32 steps
-
-```{r}
-which(sample2 == 10)
-```
-
-so we only ever see 32 of the possible 256 values. This doesn't seem to look like a sequence of independent uniformly random points.
-
-So again, it seems like LCG *can* provide a good sequence of pseudorandom numbers, but it seems quite sensitive to a good choice of the parameters.
+{{< include ../examples/L11-1-lcg-hard.qmd >}}
 :::
-<!--
+
 Is these examples, we've usually taken $m$ to be a power of 2. There are a few reasons for this:
 
 -  We will want to divide each term in the sequence $x_i$ by $m$ to get a number between $[0,1]$. If our number will be stored as a $b$-bit numbers, then it is makes sense to have created $b$ bits (for an integer between $0$ and $m = 2^{b} - 1$) in the first place. This means every integer in $\{0, 1, \dots, m-1\}$ corresponds to exactly one $b$-bit number. Further this makes the division by $m = 2^b$ extremely simple: you simple add "0." (zero point...) at the front of the number!
@@ -133,23 +89,23 @@ If $m = 2^b$ is a power of 2 (with $b \geq 2$), then the three conditions simpli
 
 1. $a - 1$ is divisible by 4.
 
-Of course, the third point on the list implies the second. So we only need to check two things: that $c$ is odd and that $a$ is $1 \bmod 4$.
+Of course, the third point on the list implies the second. So we only need to check two things: that $c$ is odd and that $a$ is $1 \bmod 4$ (that is, $a$ is one more than a multiple of 4).
 
 ::: {#exm-periods}
 Let's go back to the earlier examples, and see if they have full periods or not.
 
-In the first LCG of @exm-lcg-easy, we had $m = 2^4$, $a = 5$ and $c = 3$. Here, $c$ is odd, and $a$ is $1 \bmod 4$. This LCG fulfils both conditions, so it has the maximum possible period of 16.
+In the first LCG of @exm-lcg-easy, we had $m = 2^4$, $a = 5$ and $c = 3$. Here, $c$ is odd, and $a = 4 + 1$ is $1 \bmod 4$. This LCG fulfils both conditions, so it has the maximum possible period of 16.
 
 In the second LCG of @exm-lcg-easy, we had $m = 2^4$, $a = 3$ and $c = 4$. Here, $c$ is even, and $a$ is $3 \bmod 4$. This LCG does not fulfil both the conditions -- in fact, it fails them both -- so it does not have the maximum possible period of 16. (We already saw that it in fact has period 4.)
 
-In the first LCG of @exm-lcg-hard, we had $m = 2^8$, $a = 13$ and $c = 17$. Here, $c$ is odd, and $a$ is $1 \bmod 4$. This LCG fulfils both conditions, so it has the maximum possible period of 256.
+In the first LCG of @exm-lcg-hard, we had $m = 2^8$, $a = 13$ and $c = 17$. Here, $c$ is odd, and $a = 12 + 1$ is $1 \bmod 4$. This LCG fulfils both conditions, so it has the maximum possible period of 256.
 
-In the second LCG of @exm-lcg-hard, we had $m = 2^8$, $a = 13$ and $c = 16$. Here, $c$ is even, and $a$ is $1 \bmod 4$. So although this LCG does fulfil the second condition, it does not fulfil the first, so it does not have the maximum possible period of 256. (We already saw that it in fact has period 32.)
+In the second LCG of @exm-lcg-hard, we had $m = 2^8$, $a = 13$ and $c = 16$. Here, $c$ is even, and $a = 12 + 1$ is $1 \bmod 4$. So although this LCG does fulfil the second condition, it does not fulfil the first, so it does not have the maximum possible period of 256. (We already saw that it in fact has period 32.)
 :::
 
 It normally a good idea to make sure your LCG has full period -- if it's so easy to ensure, then why not? (That said, a very large but not-quite-maximum period may be good enough. For example, if an LCG with modulus $2^{64}$ had a period of "only" $2^{60}$, that might well be enough: one million samples a second for one thousand years is only $2^{55}$ samples, so you'd never actually see a repeat.)
 
-But merely having full period (an a large modulus) isn't enough by itself to guarantee an LCG will make a good pseudorandom number generator. After all, the silly LCG $x_{i+1} = x_i + 1$ has full period, but the sequence $(\dots, 0, 1, 2, 3, \dots)$ will not look random.
+But merely having full period (and a large modulus) isn't enough by itself to guarantee an LCG will make a good pseudorandom number generator. After all, the silly LCG $x_{i+1} = x_i + 1$ has full period, but the sequence $$(0, 1, 2, 3, \dots, m-2, m-1, 0, 1, 2, \dots)$$ will not look random.
 
 ## Statistical testing
 
@@ -163,9 +119,8 @@ Before being used properly, any pseudorandom number generator is subjected to a 
 
 There are huge batteries of such tests -- and even the best PRNGs might not pass every single one.
 
-LCGs were considered state-of-the-art until the late-90s or so. However, it was discovered that $m$ needs be very big and the number of samples used fairly small in order to pass some of the more stringent statistical tests of randomness. For example, it's suggested that $n = 1\,000\,000$ (one million) samples from an LCG with modulus $m = 2^{64}$ might be the limit before it starts "not looking random enough". Compared to other more modern methods (like the Mersenne Twister mentioned in the last lecture, discovered in 1997), this is requires quite a lot of computation for only a modest number of samples. So although LCGs are still admired for their simplicity, they have fallen out of favour for cutting-edge computational work.
+LCGs were considered state-of-the-art until the late-90s or so. However, it was discovered that $m$ needs be very big and the number of samples used fairly small in order to pass some of the more stringent statistical tests of randomness. For example, it's suggested that $n = 1\,000\,000$ (one million) samples from an LCG with modulus $m = 2^{64}$ might be the limit before it starts "not looking random enough". Compared to other more modern methods (like R's default, the Mersenne Twister mentioned in the last lecture, discovered in 1997), this is requires quite a lot of computation for only a modest number of samples. So although LCGs are still admired for their simplicity and elegance, they have fallen out of favour for cutting-edge computational work.
 
--->
 
 **Next time:** *We'll use our pseudorandom uniform $[0,1]$ random numbers to make random numbers with other discrete or uniform distributions.*
 
