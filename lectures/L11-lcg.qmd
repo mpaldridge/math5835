@@ -48,9 +48,9 @@ The example illustrates that, while an LCG *can* provide a good sequence of pseu
 
 Is these examples, we've usually taken $m$ to be a power of 2. There are a few reasons for this:
 
--  We will want to divide each term in the sequence $x_i$ by $m$ to get a number between $[0,1]$. If our number will be stored as a $b$-bit numbers, then it is makes sense to have created $b$ bits (for an integer between $0$ and $m = 2^{b} - 1$) in the first place. This means every integer in $\{0, 1, \dots, m-1\}$ corresponds to exactly one $b$-bit number. Further this makes the division by $m = 2^b$ extremely simple: you simple add "0." (zero point...) at the front of the number!
+-  We will want to divide each term in the sequence $x_i$ by $m$ to get a number between $[0,1]$. If our number will be stored as a $b$-bit number, then it is makes sense to have created $b$ bits (for an integer between $0$ and $m = 2^{b} - 1$) in the first place. This means every integer in $\{0, 1, \dots, m-1\}$ corresponds to exactly one $b$-bit number. Further this makes the division by $m = 2^b$ extremely simple: you simple add "0." (zero point...) at the front of the number!
 
--  Modular arithmetic modulo a power of 2 is very simple for a computer. For a number in binary, the value modulo $2^b$ is simply the last $b$ bits of the number. So `101101001` modulo $2^4$ is simply `1001`, the last four bits.
+-  Modular arithmetic modulo a power of 2 is very simple for a computer. For a number in binary, the value modulo $2^b$ is simply the last $b$ bits of the number. So `10111001` modulo $2^4$ is simply `1001`, the last four bits.
 
 -  Having $m = 2^b$ (or, more generally, having $m$ being the product of lots of small prime factors) makes it easier to choose parameters such that the LCG is a good pseudorandom number generator ... as we shall see in the next section.
 
