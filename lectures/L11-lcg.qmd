@@ -127,7 +127,7 @@ LCGs were considered state-of-the-art until the late-90s or so. However, it was 
 ::: {.mysummary}
 **Summary:**
 
-* Linear congruential generators are pseudorandom number generators based on the recurrence $x_{n+1} = (ax_n + c) \mod m$.
+* Linear congruential generators are pseudorandom number generators based on the recurrence $x_{n+1} = (ax_n + c) \bmod m$.
 
 * Any LCG will eventually repeat with periodic behaviour.
 
