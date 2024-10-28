@@ -74,7 +74,8 @@ $$ \Var\big(\widehat\theta_n^{\mathrm{IS}}\big) = \frac{1}{n}\int_{-\infty}^{+\i
 
 :::: {.subq}
 **(d)**  Let $X \sim \operatorname{N}(0,2)$ and $a \in \mathbb R$. We want to estimate $c = \Ex \big(\sqrt{2}\exp(-(X-a)^2/4)\big)$, using importance sampling with samples $Y \sim \operatorname{N}(\mu, 1)$ for some $\mu \in \mathbb R$. Using the result from part (c), or otherwise, show that in the case the variance of the importance sampling estimator $\widehat\theta_n^{\mathrm{IS}}$  is given by
-$$ \Var\big(\widehat\theta_n^{\mathrm{IS}}\big) = \frac{\exp(\mu^2 - 2a\mu) - c^2}{n} . $$
+$$ \Var\big(\widehat\theta_n^{\mathrm{IS}}\big) = \frac{\exp(\mu^2 - a\mu) - c^2}{n} . $$
+*[Note: This equation has changed since an earlier version of the question.]*
 
 For fixed $n$ and $a$, find the value of $\mu$ for which the importance sampling estimator has the smallest mean-square error. Comment on the result.
 ::::

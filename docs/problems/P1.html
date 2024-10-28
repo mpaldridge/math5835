@@ -358,7 +358,7 @@ display: none !important;
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.201916</code></pre>
+<pre><code>[1] 2.199236</code></pre>
 </div>
 </div>
 </div>
@@ -375,7 +375,7 @@ display: none !important;
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>ysamples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">pmax</span>(xsamples, ysamples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5632374</code></pre>
+<pre><code>[1] 0.5645173</code></pre>
 </div>
 </div>
 </div>
@@ -395,7 +395,7 @@ display: none !important;
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>in_box <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> y<span class="sc">^</span><span class="dv">2</span> <span class="sc">&lt;=</span> <span class="dv">1</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">in_box</span>(rain_x, rain_y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.785122</code></pre>
+<pre><code>[1] 0.785022</code></pre>
 </div>
 </div>
 </div>
@@ -416,7 +416,7 @@ display: none !important;
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>var_est <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">in_box</span>(rain_x, rain_y))</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>var_est <span class="sc">/</span> (<span class="fl">1e-6</span>)<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 168705613823</code></pre>
+<pre><code>[1] 168762628281</code></pre>
 </div>
 </div>
 <p>We will probably spend a long time waiting for that much rain!</p>
@@ -435,7 +435,7 @@ display: none !important;
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>samples1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">5</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">integrand</span>(samples1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.925967</code></pre>
+<pre><code>[1] 3.928643</code></pre>
 </div>
 </div>
 <p>(In fact, the true answer is <span class="math inline">\(\log(5.1) - \log(0.1) = 3.932\)</span>, so it looks like this is working correctly.)</p>
@@ -473,7 +473,7 @@ display: none !important;
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>samples2 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">1</span>)</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">phi</span>(samples2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.936713</code></pre>
+<pre><code>[1] 3.932641</code></pre>
 </div>
 </div>
 <p>(I had to include <code>x &lt;= 5</code> in the expression for <span class="math inline">\(\phi\)</span>, because my exponential distribution will sometimes take samples above 5, but they should count as 0 in an estimate for the integral between 0 and 5.)</p>
@@ -481,11 +481,11 @@ display: none !important;
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">integrand</span>(samples1)) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.349673e-05</code></pre>
+<pre><code>[1] 3.341696e-05</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(<span class="fu">phi</span>(samples2)) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.100181e-06</code></pre>
+<pre><code>[1] 6.064075e-06</code></pre>
 </div>
 </div>
 <p>I found that I had reduced the mean-square error by roughly a factor of 5. <!--
@@ -504,7 +504,7 @@ mean(phi(samples2))
 ::: {.cell-output .cell-output-stdout}
 
 ```
-[1] 3.931833
+[1] 3.925519
 ```
 
 
@@ -552,7 +552,7 @@ mean(phi(samples2))
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">1</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="fl">2.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.192614</code></pre>
+<pre><code>[1] 2.19966</code></pre>
 </div>
 </div>
 </div>
@@ -564,7 +564,7 @@ mean(phi(samples2))
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="fl">2.1</span> <span class="sc">-</span> samples<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.196733</code></pre>
+<pre><code>[1] 2.198221</code></pre>
 </div>
 </div>
 </div>
@@ -577,14 +577,14 @@ mean(phi(samples2))
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(samples<span class="sc">^</span><span class="fl">2.1</span>) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.753474e-05</code></pre>
+<pre><code>[1] 2.807748e-05</code></pre>
 </div>
 </div>
 <p>For the control variate method,</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(samples<span class="sc">^</span><span class="fl">2.1</span> <span class="sc">-</span> samples<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.706706e-07</code></pre>
+<pre><code>[1] 6.881275e-07</code></pre>
 </div>
 </div>
 <p>So the control variates method is much, much better.</p>

@@ -1,6 +1,6 @@
 # Uniform and discrete
-<!--
-We've seen how to generate uniform random variates $U \sim \operatorname{U}[0,1]$, either using true physical randomness or the output of a pseudorandom number generator. But in statistics -- whether performing  Monte Carlo estimation or anything else -- we typically want to sample from some other distribution $X$.
+
+We've seen how to generate uniform random variates $U \sim \operatorname{U}[0,1]$, either using true physical randomness or the output of a pseudorandom number generator. But in statistics -- whether performing Monte Carlo estimation or anything else -- we typically want to sample from some other distribution $X$.
 
 In the next five lectures, we will look at ways we can manipulate the uniform random variable $U$ to take on different distributions instead. We start today by looking at some important special cases.
 
@@ -11,7 +11,7 @@ We know how to generate $U \sim \operatorname{U}[0,1]$. But suppose we want to g
 Well, the original $U$ has "width" 1, and we want $X$ to have width $b - a$, so the first thing we should do is multiply by $(b-a)$. This gives us $(b-a)U$, which we expect should be uniform on $[0,b-a]$. Then we need to shift it, so it starts not a $0$ but at $a$; we can do this by adding $a$. This gives us $(b-a)U + a$, which should be uniform on $[0 + a, (b-a) + a] = [a, b]$. So $X = (b-a)U + a$ would seem to give us the desired $X \sim \operatorname{U}[a,b]$ random variable.
 
 We can check this seems to have worked by using a histogram, for example.
--->
+
 ::: {#exm-unif}
 Let $U \sim \operatorname{U}[0,1]$. We can generate $X \sim \operatorname{U}[3,5]$ by $X = 2U + 3$.
 
@@ -25,78 +25,85 @@ curve(dunif(x, 3, 5), add = TRUE, n = 1001, lwd = 2, col = "blue")
 
 Here, we used the `probability = TRUE` argument to the histogram function `hist()` to plot the density on the $y$-axis, rather than the raw number of samples. The density should match the probability density function of the random variable $X$. We drew the PDF of $X$ over the histogram in blue, and can see it is a superb match.
 :::
-<!--
+
 But what if we very formally wanted to *prove* that $X = (b-a)U + a$ definitely has the distribution $X \sim \operatorname{U}[a,b]$; how could we do that?
 
 The best way to give a formal proof of something like this is to use the **cumulative distribution function** (CDF). Recall that the CDF $F_Y$ of a distribution $Y$ is the function $F_Y(y) = \mathbb P(Y \leq y)$. One benefit of the CDF is it works equally well for both discrete and continuous random variables, so we don't need to give separate arguments for discrete and continuous cases.
 
-The CDF of the standard uniform distribution $U \sim \operatorname{U}[0,1]$ is
-$$ F_U(u) = \begin{cases} 0 & u < 0 \\ u & 0 \leq u \leq 1 \\ 1 & u > 1 , \end{cases} $$ {#eq-cdf-u}
-and the CDF of any uniform distribution $X \sim \operatorname{U}[a,b]$ is
-$$ F_X(x) = \begin{cases} 0 & x < a \\ \displaystyle\frac{x - a}{b-a} & a \leq x \leq b \\ 1 & x > b . \end{cases} $$  {#eq-cdf-x}
-So to show that $X = (b-a)U + a \sim \operatorname{U}[a,b]$, we take the fact that $U$ has the CDF in @eq-cdf-u and try to use it to show that $X$ has the CDF in @eq-cdf-x.
+The CDF of the standard uniform distribution $U \sim \operatorname{U}[0,1]$ is $$ F_U(u) = \begin{cases} 0 & u < 0 \\ u & 0 \leq u \leq 1 \\ 1 & u > 1 , \end{cases} $$ {#eq-cdf-u} and the CDF of any uniform distribution $X \sim \operatorname{U}[a,b]$ is $$ F_X(x) = \begin{cases} 0 & x < a \\ \displaystyle\frac{x - a}{b-a} & a \leq x \leq b \\ 1 & x > b . \end{cases} $$ {#eq-cdf-x} So to show that $X = (b-a)U + a \sim \operatorname{U}[a,b]$, we take the fact that $U$ has the CDF in @eq-cdf-u and try to use it to show that $X$ has the CDF in @eq-cdf-x.
 
-Indeed, we have
-$$ F_X(x) = \mathbb P(X \leq x) = \mathbb P\big((b-a)U + a \leq x\big) = \mathbb P \left( U \leq \frac{x - a}{b-a}\right) . $$
-But putting $u = (x - a)/(b - a)$ in @eq-cdf-u, does indeed give the CDF in @eq-cdf-x. Thw lower boundary $u < 0$ becomes $x < 0 \times (b-a) + a = a$; the upper boundary $u > b$ becomes $x > 1 \times(b-a) + a = b$; and, in between, the CDF $u$ becomes $(x - a)/(b - a)$. Thus we have proven that $X$ has the CDF of the $\operatorname{U}[a,b]$ distribution, as required.
+Indeed, we have $$ F_X(x) = \mathbb P(X \leq x) = \mathbb P\big((b-a)U + a \leq x\big) = \mathbb P \left( U \leq \frac{x - a}{b-a}\right) . $$ But putting $u = (x - a)/(b - a)$ in @eq-cdf-u, does indeed give the CDF in @eq-cdf-x. Thw lower boundary $u < 0$ becomes $x < 0 \times (b-a) + a = a$; the upper boundary $u > b$ becomes $x > 1 \times(b-a) + a = b$; and, in between, the CDF $u$ becomes $(x - a)/(b - a)$. Thus we have proven that $X$ has the CDF of the $\operatorname{U}[a,b]$ distribution, as required.
 
 ## Discrete random variables
 
-Suppose we want to simulate a Bernoulli trial; that is, a random variable $X$ that is 1 with probability $p$ and 0 with probability $1 - p$, for some $p$ with $0 < p < 1$. As ever, we only have a standard uniform  $U \sim \operatorname{U}[0,1]$ to work with. How can we form our Bernoulli trial?
+Suppose we want to simulate a Bernoulli trial; that is, a random variable $X$ that is 1 with probability $p$ and 0 with probability $1 - p$, for some $p$ with $0 < p < 1$. As ever, we only have a standard uniform $U \sim \operatorname{U}[0,1]$ to work with. How can we form our Bernoulli trial?
 
 Here are two possible ways:
 
-* If $U < p$, then take $X = 1$; while if $U \geq p$, take $X = 0$. Note that $\mathbb P(X = 1) = \mathbb P(U < p) = p$ and $\mathbb P(X = 0) = \mathbb P(U \geq p) = 1 - \mathbb P(U < p) = 1 - p$, as required.
+-   If $U < p$, then take $X = 1$; while if $U \geq p$, take $X = 0$. Note that $\mathbb P(X = 1) = \mathbb P(U < p) = p$ and $\mathbb P(X = 0) = \mathbb P(U \geq p) = 1 - \mathbb P(U < p) = 1 - p$, as required.
 
-* Alternatively: if $U \leq 1 -p$, take $X' = 0$; while if $U > p$, take $X' = 1$.
-     
+-   Alternatively: if $U \leq 1 -p$, take $X' = 0$; while if $U > p$, take $X' = 1$.
+
 The first method is just the second method with $U$ replaced by $1 - U$. Interestingly, that means we can generate two different Bernoulli trials $X$ and $X'$ from the same $U$, which will therefore be negatively correlated. Although there's unlikely to be any situation where a Bernoulli trial would be used in Monte Carlo estimation, in theory, the two versions $(X, X')$ generated from the same $U$ could potentially be used as antithetic variables.
 
 What about more general discrete random variables? Suppose a random variable takes values $x_1, x_2, \dots$ with probabilities $p_1, p_2, \dots$. We can think of these probabilities as splitting up the interval $[0,1]$ into subintervals of lengths $p_1, p_, \dots$, since these probabilities add up to 1.
 
-[picture]
+![](L12-numberline-1.svg){width="60%;" fig-align="center"}
 
 So the first interval is $I_1 = (0, p_1]$; the second interval is $(p_1, p_1 + p_2]$; the third intervals is $(p_1 + p_2, p_1 + p_2 + p_3]$, and so on. We then pick a point $U$ from $[0,1]$ uniformly at random, and whichever interval $I_i$ it is in, take the corresponding value $x_i$.
 
 In terms of the CDF, we have $F_X(x_i) = p_1 + p_2 + \cdots + p_i$, so the intervals are of the form $(F_X(x_{i-1}), F_X(x_i)]$. So we can think of this as rounding $F_X(U)$ up to the next $F_X(x_i)$, then taking that value $x_i$.
 
-[example]
+::: {#exm-binom}
+Consider generating a binomial distribution $X \sim \operatorname{Bin}(5, \frac12)$. The PMF and CDF are as shown below
 
+| **value** $x$ | $0$ | $1$ | $2$ | $3$ | $4$ |
+|:--------:|:--:|:--:|:--:|:--:|:--:|
+| **PMF** $p(x)$ | $\frac{1}{32}$ | $\frac{5}{32}$ | $\frac{10}{32}$ | $\frac{10}{32}$ | $\frac{5}{32}$ |
+| **CDF** $F_X(x)$ (fraction) | $\frac{1}{32}$ | $\frac{6}{32}$ | $\frac{16}{32}$ | $\frac{26}{32}$ | $\frac{31}{32}$ |
+| **CDF** $F_X(x)$ (decimal) | 0.03125 | 0.1875 | 0.5 | 0.8125 | 0.96875 |
+
+ 
+
+Suppose I want a sample from this, based on the uniform variate $u_1 = 0.7980$. We see that $u_1$ is bigger that $F_X(2) = 0.5$ (the upper end of the "2" interval) but less than $F_X(3) = 0.8125$ (the upper end of the "3" interval), so falls into the "3" interval. So our first binomial variate is $x_1 = 3$.
+
+If we then got the next uniform variate $u_2 = 0.4353$, we would see that $u_2$ is between $F_X(1) = 0.1875$ and $F_X(2) = 0.5$, so would take $x_2 = 2$ for our next binomial variate.
+:::
+
+<!--
 ## Inverse CDF
 
 The uniform and discrete examples we have both involved the cumulative distribution function $F_X(x) = \mathbb P(X \leq x)$. The CDF will be of central importance in generating general continuous random variables too (see the next lecture). In fact, it is the *inverse* of the CDF that will play a crucial role.
 
 It seems natural to define the inverse $F_X^{-1}$ of the CDF in just the same way we would define the inverse of any other function: that $F_X{^-1}(u)$ is the unique value $x$ such that $F_X(x) = u$.
 
-[picture]
+\[picture\]
 
 There are two problems with this definition. First, if there are intervals on the line where $X$ has probability zero, then all the $x$s in that interval have the same value of $F_X(x) = u$, so there is no "*unique* value $x$ such that $F_X(x) = u$. Second, if $X$ has any point masses, points $x$ with strictly positive probability, then $F_X$ may "jump past" the value $u$, so there is *no* value $x$ such that $F_X(u)$.
 
-[picture]
+\[picture\]
 
 It turns out that the best way to solve this is the following. For the first obstacle, if there are many points $x$, with $F_X(x) = u$ we take the smallest of them to be $F_X^{-1}(u)$. For the second obstacle, we "round down" by decreasing $u$ until we hit a point $x$ to be $F_X^{-1}(u)$. These two cases are illustrated below.
 
-[picture]
+\[picture\]
 
 These two awkward cases can be encapsulated in the following definition.
 
 ::: {#def-cdf-inv}
-Let $X$ be a random variable with cumulative distribution function $F_X(x) = \mathbb P(X \leq x)$. Then the **inverse cumulative distribution function** (inverse CDF) $F_X^{-1}$ is defined for $u \in (0,1)$ by
-$$ F^{-1}_X(u) = \inf \big \{x : F_X(x) \geq u \big\} . $$
+Let $X$ be a random variable with cumulative distribution function $F_X(x) = \mathbb P(X \leq x)$. Then the **inverse cumulative distribution function** (inverse CDF) $F_X^{-1}$ is defined for $u \in (0,1)$ by $$ F^{-1}_X(u) = \inf \big \{x : F_X(x) \geq u \big\} . $$
 :::
 
 You should check that you agree this definition matches the discussion above. (The "infimum", or "inf", is like "minimum", but allows for the possibility the minimum might not be achieved.) And remember it -- it's coming back in the next lecture!
 -->
-**Next time:** *Sampling from continuous distribution using the inverse CDF.*
 
-::: {.mysummary}
+**Next time:** *Sampling from continuous distribution using the CDF.*
+
+::: mysummary
 **Summary:**
 
-* If $U \sim \operatorname{U}[0,1]$, then $X = (b-a)U + a \sim \operatorname{U}[a,b]$.
+-   If $U \sim \operatorname{U}[0,1]$, then $X = (b-a)U + a \sim \operatorname{U}[a,b]$.
 
-* A discrete random variable can be generated by splitting $[0,1]$ into subintervals with lengths according to the probabilities, then picking a point from the interval at random.
-
-* The inverse cumulative distribution function is defined by
+-   A discrete random variable can be generated by splitting $[0,1]$ into subintervals with lengths according to the probabilities, then picking a point from the interval at random.
 
 Remember that your answers to [**Problem Sheet 2**](#P2) will be discussed in the problems class on **Thursday 31 October**.
 
