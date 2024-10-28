@@ -92,7 +92,7 @@ legend(
 )
 ```
 
-After some experimentation, I decided that $Y \sim \operatorname{N}(8, 2^2)$ (red line; not to same scale) seemed to work quite well, in $g(y)$ being roughly proportional to $f(y)\,\phi(y)$. I was tempted to take the standard deviation less than 2, the get the red curve a bit tighter. But I discovered that $f(y)/g(y)$ got very large for $y$ near 0, due to the left tail of $g$ decaying too quickly. The following graph shows $\frac{f(x)}{g(x)} \phi(x)$, and shows that the spike at 0 is now under control compared to the "main spike" at $y = 8$.
+After some experimentation, I decided that $Y \sim \operatorname{N}(8, 2^2)$ (red line; not to same scale) seemed to work quite well, in $g(y)$ being roughly proportional to $f(y)\,\phi(y)$. I was tempted to take the standard deviation less than 2, the get the red curve a bit tighter. But I discovered that $f(y)/g(y)$ got very large for $y$ near 0, due to the left tail of $g$ decaying too quickly. The following graph shows $\frac{f(y)}{g(y)} \phi(y)$, and shows that the spike at 0 is now under control compared to the "main spike" at $y = 8$.
 
 ```{r propto3}
 #| code-fold: true

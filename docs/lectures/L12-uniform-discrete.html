@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5&nbsp; Control variate – MATH5835M Statistical Computing</title>
+<title>12&nbsp; Uniform and discrete – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L06-antithetic-1.html" rel="next">
-<link href="../lectures/L04-mc-error-2.html" rel="prev">
+<link href="../problems/solutions.html" rel="next">
+<link href="../problems/P2.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L05-cv.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../lectures/L12-uniform-discrete.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -211,7 +211,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L05-cv.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L05-cv.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></span></a>
   </div>
 </li>
@@ -276,7 +276,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></span></a>
   </div>
 </li>
@@ -293,23 +293,15 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#variance-reduction" id="toc-variance-reduction" class="nav-link active" data-scroll-target="#variance-reduction"><span class="header-section-number">5.1</span> Variance reduction</a></li>
-  <li><a href="#control-variate-estimation" id="toc-control-variate-estimation" class="nav-link" data-scroll-target="#control-variate-estimation"><span class="header-section-number">5.2</span> Control variate estimation</a></li>
-  <li><a href="#error-of-control-variate-estimate" id="toc-error-of-control-variate-estimate" class="nav-link" data-scroll-target="#error-of-control-variate-estimate"><span class="header-section-number">5.3</span> Error of control variate estimate</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L05-cv.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../lectures/L12-uniform-discrete.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></h1>
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></h1>
 </div>
 
 
@@ -326,167 +318,112 @@ window.Quarto = {
 </header>
 
 
-<div class="hidden">
-<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
-\newcommand{\Ex}{\mathbb{E}}
-\newcommand{\Ind}{\mathbb{I}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
-</div>
-<section id="variance-reduction" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="variance-reduction"><span class="header-section-number">5.1</span> Variance reduction</h2>
-<p>Let’s recap where we’ve got to. The Monte Carlo estimator of <span class="math inline">\(\theta = \Exg \phi(X)\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i), \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are IID random samples from <span class="math inline">\(X\)</span>. The mean-square error of this estimator is <span class="math display">\[{\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . \]</span> If we want a more accurate estimate, we can just take more samples <span class="math inline">\(n\)</span>. But the problem is that the root-mean-square error scales like <span class="math inline">\(1/\sqrt{n}\)</span>. To double the accuracy, we need four times as many samples; for one more decimal place of accuracy, we need one hundred times as many samples.</p>
-<p>Are there other ways we could reduce the error of Monte Carlo estimation, so we need fewer samples? That is, can we use some mathematical ingenuity to adapt the Monte Carlo estimate to one with a smaller error?</p>
-<p>Well, the mean-square error is the variance divided by <span class="math inline">\(n\)</span>. So if we can’t (or don’t want to) increase <span class="math inline">\(n\)</span>, perhaps we can <em>decrease</em> the <em>variance</em> instead? Strategies to do this are called <strong>variance reduction strategies</strong>. In this module, we will look at three variance reduction strategies:</p>
-<ul>
-<li><p><strong>Control variate:</strong> We can “anchor” our estimate of <span class="math inline">\(\Exg \phi(X)\)</span> to a similar but easier-to-calculate value <span class="math inline">\(\Exg \psi(X)\)</span>. (This lecture)</p></li>
-<li><p><strong>Antithetic variables:</strong> Instead of using independent samples, we could use correlated samples. If the correlation is negative this can improve our estimate. (Lectures 6 and 7)</p></li>
-<li><p><strong>Importance sampling:</strong> Instead of sampling from <span class="math inline">\(X\)</span>, sample from some other more suitable distribution instead, then readjust the answer we get. (Lectures 8 and 9)</p></li>
-</ul>
-</section>
-<section id="control-variate-estimation" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="control-variate-estimation"><span class="header-section-number">5.2</span> Control variate estimation</h2>
-<p>In last Friday’s lecture, I polled the class on this question: <em>Estimate the average time it takes to fly from London to Washington D.C.</em></p>
-<ul>
-<li><p>The actual answer is: 8 hours and 29 minutes.</p></li>
-<li><p>The mean guess for the class was: 7 hours and 37 minutes (52 minutes too little)</p></li>
-<li><p>The root-mean-square error for the guesses was: 133 minutes</p></li>
-</ul>
-<p>After you’d guessed, I gave the following hint: <em>Hint: The average time it takes to fly from London to New York is 8 hours and 10 minutes.</em> After the hint:</p>
-<ul>
-<li><p>The mean guess for the class was: 8 hours and 45 minutes (16 minutes too much)</p></li>
-<li><p>The root-mean-square error for the guesses was: 49 minutes</p></li>
-</ul>
-<p>So after the hint, the error of the class was reduced by 63%.</p>
-<p>Why did the hint help? We were trying to estimate <span class="math inline">\(\theta^{\mathrm{DC}}\)</span>, the distance to D.C. But that’s a big number, and the first estimates had a big error (over an hour, on average). After the hint, I expect most people thought something like this: “The answer <span class="math inline">\(\theta^{\mathrm{DC}}\)</span> is going to be similar to the <span class="math inline">\(\theta^{\mathrm{NY}} =\)</span> 8:10 to New York, but Washington D.C. is a bit further, so I should increase the number a bit, but not too much.”</p>
-<p>To be more mathematical, we could write <span class="math display">\[\theta^{\mathrm{DC}} = \theta^{\mathrm{DC}} + \big(\theta^{\mathrm{NY}} - \theta^{\mathrm{NY}}\big)= \underbrace{\big(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\big)}_{\text{small}} + \underbrace{\theta^{\mathrm{NY}}\vphantom{\big)}}_{\text{known}} . \]</span> In that equation, the second term, <span class="math inline">\(\theta^{\mathrm{NY}} =\)</span> 8:10 was completely known, so had error 0, while the first term <span class="math inline">\(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\)</span> (actually 19 minutes) was a small number, so only had a small error.</p>
-<p>This idea of improving an estimate by “anchoring” it to some known value is called <strong>controlled estimation</strong>. It is a very useful idea in statistics (and in life!).</p>
-<p>We can apply this idea to Monte Carlo estimation too. Suppose we are trying to estimate <span class="math inline">\(\theta = \Exg \phi(X)\)</span>. We could look for a function <span class="math inline">\(\psi\)</span> that is similar to <span class="math inline">\(\phi\)</span> (at least for the values of <span class="math inline">\(x\)</span> that have high probability for the random variable <span class="math inline">\(X\)</span>), but where we know for certain what <span class="math inline">\(\Exg \psi(X)\)</span> is. Then we can write <span class="math display">\[ \theta = \Exg \phi(X) = \Exg \big(\phi(X) - \psi(X) + \psi(X)\big) = \underbrace{\Exg\big(\phi(X) - \psi(X)\big)}_{\text{estimate this with Monte Carlo}} + \underbrace{\Exg \psi(X)\vphantom{\big)}}_{\text{known}} . \]</span></p>
-<p>Here, <span class="math inline">\(\psi(X)\)</span> is known as the <strong>control variate</strong>.</p>
-<div id="def-MCest" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 5.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(\psi\)</span> be a function such that <span class="math inline">\(\eta = \Exg\psi(X)\)</span> is known. Suppose that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are a random sample from <span class="math inline">\(X\)</span>. Then the <strong>control variate Monte Carlo estimate</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{CV}}\)</span> of <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta . \]</span></p>
-</div>
-<div id="exm-control" class="theorem example">
-<p><span class="theorem-title"><strong>Example 5.1</strong></span> Let’s try to estimate <span class="math inline">\(\Ex \cos(X)\)</span>, where <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span> is a standard normal distribution.</p>
-<p>We could do this the “usual” Monte Carlo way.</p>
+<!--
+We've seen how to generate uniform random variates $U \sim \operatorname{U}[0,1]$, either using true physical randomness or the output of a pseudorandom number generator. But in statistics -- whether performing  Monte Carlo estimation or anything else -- we typically want to sample from some other distribution $X$.
+
+In the next five lectures, we will look at ways we can manipulate the uniform random variable $U$ to take on different distributions instead. We start today by looking at some important special cases.
+
+## Uniform random variables
+
+We know how to generate $U \sim \operatorname{U}[0,1]$. But suppose we want to generate $X \sim \operatorname{U}[a,b]$ instead, for some $a < b$; how can we do that.
+
+Well, the original $U$ has "width" 1, and we want $X$ to have width $b - a$, so the first thing we should do is multiply by $(b-a)$. This gives us $(b-a)U$, which we expect should be uniform on $[0,b-a]$. Then we need to shift it, so it starts not a $0$ but at $a$; we can do this by adding $a$. This gives us $(b-a)U + a$, which should be uniform on $[0 + a, (b-a) + a] = [a, b]$. So $X = (b-a)U + a$ would seem to give us the desired $X \sim \operatorname{U}[a,b]$ random variable.
+
+We can check this seems to have worked by using a histogram, for example.
+-->
+<div id="exm-unif" class="theorem example">
+<p><span class="theorem-title"><strong>Example 12.1</strong></span> Let <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>. We can generate <span class="math inline">\(X \sim \operatorname{U}[3,5]\)</span> by <span class="math inline">\(X = 2U + 3\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">cos</span>(x)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">phi</span>(samples))</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6066079</code></pre>
-</div>
-</div>
-<p>But we could see if we can do better with a control variate. But what should we pick for the control function <span class="math inline">\(\psi\)</span>? We want something that’s similar to <span class="math inline">\(\phi(x) = \cos(x)\)</span>, but where we can actually calculate the expectation.</p>
-<p>Here’s a suggestion. If we remember our <a href="https://en.wikipedia.org/wiki/Taylor_series">Taylor series</a>, we know that, for <span class="math inline">\(x\)</span> near <span class="math inline">\(0\)</span>, <span class="math display">\[ \cos x \approx 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots . \]</span> So how about taking the first two nonzero terms in the Taylor series <span class="math display">\[ \psi(x) = 1 - \frac{x^2}{2} . \]</span> That is quite close to <span class="math inline">\(\cos x\)</span>, at least for the values of <span class="math inline">\(x\)</span> near 0 that <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span> is most likely to take.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code for drawing this graph</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cos</span>(x), <span class="at">from =</span> <span class="sc">-</span><span class="fl">4.5</span>, <span class="at">to =</span> <span class="fl">4.5</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">3</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.2</span>,<span class="fl">1.2</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="dv">1</span> <span class="sc">-</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span>, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"cos x"</span>, <span class="fu">expression</span>(<span class="dv">1</span> <span class="sc">-</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span>)),</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Usamples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Xsamples <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> Usamples <span class="sc">+</span> <span class="dv">3</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(Xsamples, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">6</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.6</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dunif</span>(x, <span class="dv">3</span>, <span class="dv">5</span>), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="L05-cv_files/figure-html/taylor-1.svg" class="img-fluid figure-img" width="672"></p>
+<p><img src="L12-uniform-discrete_files/figure-html/unnamed-chunk-1-1.svg" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Not only that, but we know that for <span class="math inline">\(Y \sim \operatorname{N}(\mu, \sigma^2)\)</span> we have <span class="math inline">\(\Ex Y^2 = \mu^2 + \sigma^2\)</span>. So <span class="math display">\[ \Exg \psi(X) = \Exg \left(1 - \frac{X^2}{2} \right) = 1 - \frac{\Ex X^2}{2} = 1 - \frac{0^2 + 1}{2} = \frac12 . \]</span></p>
-<p>So our control variate estimate is:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>psi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="dv">1</span> <span class="sc">-</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>CVest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">phi</span>(samples) <span class="sc">-</span> <span class="fu">psi</span>(samples)) <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>CVest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6064711</code></pre>
+<p>Here, we used the <code>probability = TRUE</code> argument to the histogram function <code>hist()</code> to plot the density on the <span class="math inline">\(y\)</span>-axis, rather than the raw number of samples. The density should match the probability density function of the random variable <span class="math inline">\(X\)</span>. We drew the PDF of <span class="math inline">\(X\)</span> over the histogram in blue, and can see it is a superb match.</p>
 </div>
-</div>
-</div>
-</section>
-<section id="error-of-control-variate-estimate" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="error-of-control-variate-estimate"><span class="header-section-number">5.3</span> Error of control variate estimate</h2>
-<p>What is the error in a control variate estimate?</p>
-<div id="thm-CVerr" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 5.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(\psi\)</span> be a function such that <span class="math inline">\(\eta \Exg\psi(X)\)</span> is known. Let <span class="math display">\[ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta\]</span> be the control variate Monte Carlo estimator of <span class="math inline">\(\theta\)</span>. Then:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\widehat{\theta}_n^{\mathrm{CV}}\)</span> is unbiased, in that <span class="math inline">\(\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{CV}}\big) = 0\)</span>.</p></li>
-<li><p>The variance of of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{CV}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{CV}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}\)</span>.</p></li>
-<li><p>The mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{CV}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{CV}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}\)</span>.</p></li>
-<li><p>The root-mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{CV}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{CV}}\big) = \frac{1}{\sqrt{n}} \sqrt{\operatorname{Var}\big(\phi(X) - \psi(X)\big)}}\)</span>.</p></li>
-</ol>
-</div>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>This is very similar to <a href="L03-mc-error-1.html#thm-MCerr" class="quarto-xref">Theorem&nbsp;<span>3.2</span></a>, so we’ll just sketch the important differences.</p>
-<p>In part 1, we have <span class="math display">\[\begin{align*}
-\Exg \widehat{\theta}_n^{\mathrm{CV}}
-  &amp;= \Exg \left(\frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big)\right) + \eta \\
-  &amp;= \frac{1}{n}\Exg \left(\sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big)\right) + \eta \\
-  &amp;= \frac{n}{n}\Exg\big(\phi(X) - \psi(X)\big) + \eta \\
-  &amp;= \Exg\phi(X) - \Exg\psi(X) + \eta \\
-  &amp;= \Exg\phi(X) ,
-\end{align*}\]</span> since <span class="math inline">\(\eta = \Exg\psi(X)\)</span>. So the estimator is unbiased.</p>
-<p>For part 2, remembering that <span class="math inline">\(\eta = \Exg \psi(X)\)</span> is a constant, so doesn’t affect the variance, we have <span class="math display">\[\begin{align*}
-\Var \big(\widehat{\theta}_n^{\mathrm{CV}}\big)
-&amp;= \Var \left(\frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta \right) \\
-&amp;= \Big( \frac{1}{n}\Big)^2 \Var \left(\sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) \right) \\
-&amp;= \frac{n}{n^2} \Var \big(\phi(X) - \psi(X)\big) \\
-&amp;= \frac{1}{n} \Var \big(\phi(X) - \psi(X)\big) .
-\end{align*}\]</span></p>
-<p>Parts 3 and 4 follow in the usual way.</p>
-</div>
-<p>This tells us that a control variate Monte Carlo estimate is good when the variance of <span class="math inline">\(\phi(X) - \psi(X)\)</span>. This variance is likely to be small if <span class="math inline">\(\phi(X) - \psi(X)\)</span> is usually small – although, to be more precise, it’s more important for <span class="math inline">\(\phi(X) - \psi(X)\)</span> to be <em>consistent</em>, rather than small per se.</p>
-<p>As before, we can’t usually calculate the variance <span class="math inline">\(\Var(\phi(X) - \psi(X))\)</span> exactly, but we can estimate it from the samples. Again, we use the sample variance <span class="math display">\[S^2 = \frac{1}{n-1}\sum_{i=1}^n \Big(\big(\phi(X_i) - \psi(X_i)\big) - \big(\widehat\theta_n^{\mathrm{CV}} + \eta\big)\Big)^2 , \]</span> and estimate the MSE and RMSE by <span class="math inline">\(S^2 / n\)</span> and <span class="math inline">\(S / \sqrt{n}\)</span> respectively.</p>
-<div id="exm-control2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 5.2</strong></span> We return to <a href="#exm-control" class="quarto-xref">Example&nbsp;<span>5.1</span></a>, where we were estimating <span class="math inline">\(\Ex \cos(X)\)</span> for <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span>.</p>
-<p>The naive Monte Carlo estimate had mean-square and root-mean-square error</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">cos</span>(x)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>MC_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">phi</span>(samples)) <span class="sc">/</span> n</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MC_MSE, <span class="fu">sqrt</span>(MC_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.984850e-07 4.455166e-04</code></pre>
-</div>
-</div>
-<p>The variance and root-mean-square error of our control variate estimate, on the other hand, are</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>psi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="dv">1</span> <span class="sc">-</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>CV_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">phi</span>(samples) <span class="sc">-</span> <span class="fu">psi</span>(samples)) <span class="sc">/</span> n</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(CV_MSE, <span class="fu">sqrt</span>(CV_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 9.299204e-08 3.049460e-04</code></pre>
-</div>
-</div>
-<p>This was a success! The mean-square error roughly halved, from <span class="math inline">\(2\times 10^{-7}\)</span> to <span class="math inline">\(9.3\times 10^{-8}\)</span>. This meant the root-mean-square went down by about a third, from <span class="math inline">\(4.5\times 10^{-4}\)</span> to <span class="math inline">\(3\times 10^{-4}\)</span>.</p>
-<p>Halving the mean-square error would normally have required doubling the number of samples <span class="math inline">\(n\)</span>, so we have effectively doubled the sample size by using the control variate.</p>
-</div>
-<p><strong>Next time:</strong> <em>We look at our second variance reduction technique: antithetic variables.</em></p>
+<!--
+But what if we very formally wanted to *prove* that $X = (b-a)U + a$ definitely has the distribution $X \sim \operatorname{U}[a,b]$; how could we do that?
+
+The best way to give a formal proof of something like this is to use the **cumulative distribution function** (CDF). Recall that the CDF $F_Y$ of a distribution $Y$ is the function $F_Y(y) = \mathbb P(Y \leq y)$. One benefit of the CDF is it works equally well for both discrete and continuous random variables, so we don't need to give separate arguments for discrete and continuous cases.
+
+The CDF of the standard uniform distribution $U \sim \operatorname{U}[0,1]$ is
+$$ F_U(u) = \begin{cases} 0 & u < 0 \\ u & 0 \leq u \leq 1 \\ 1 & u > 1 , \end{cases} $$ {#eq-cdf-u}
+and the CDF of any uniform distribution $X \sim \operatorname{U}[a,b]$ is
+$$ F_X(x) = \begin{cases} 0 & x < a \\ \displaystyle\frac{x - a}{b-a} & a \leq x \leq b \\ 1 & x > b . \end{cases} $$  {#eq-cdf-x}
+So to show that $X = (b-a)U + a \sim \operatorname{U}[a,b]$, we take the fact that $U$ has the CDF in @eq-cdf-u and try to use it to show that $X$ has the CDF in @eq-cdf-x.
+
+Indeed, we have
+$$ F_X(x) = \mathbb P(X \leq x) = \mathbb P\big((b-a)U + a \leq x\big) = \mathbb P \left( U \leq \frac{x - a}{b-a}\right) . $$
+But putting $u = (x - a)/(b - a)$ in @eq-cdf-u, does indeed give the CDF in @eq-cdf-x. Thw lower boundary $u < 0$ becomes $x < 0 \times (b-a) + a = a$; the upper boundary $u > b$ becomes $x > 1 \times(b-a) + a = b$; and, in between, the CDF $u$ becomes $(x - a)/(b - a)$. Thus we have proven that $X$ has the CDF of the $\operatorname{U}[a,b]$ distribution, as required.
+
+## Discrete random variables
+
+Suppose we want to simulate a Bernoulli trial; that is, a random variable $X$ that is 1 with probability $p$ and 0 with probability $1 - p$, for some $p$ with $0 < p < 1$. As ever, we only have a standard uniform  $U \sim \operatorname{U}[0,1]$ to work with. How can we form our Bernoulli trial?
+
+Here are two possible ways:
+
+* If $U < p$, then take $X = 1$; while if $U \geq p$, take $X = 0$. Note that $\mathbb P(X = 1) = \mathbb P(U < p) = p$ and $\mathbb P(X = 0) = \mathbb P(U \geq p) = 1 - \mathbb P(U < p) = 1 - p$, as required.
+
+* Alternatively: if $U \leq 1 -p$, take $X' = 0$; while if $U > p$, take $X' = 1$.
+     
+The first method is just the second method with $U$ replaced by $1 - U$. Interestingly, that means we can generate two different Bernoulli trials $X$ and $X'$ from the same $U$, which will therefore be negatively correlated. Although there's unlikely to be any situation where a Bernoulli trial would be used in Monte Carlo estimation, in theory, the two versions $(X, X')$ generated from the same $U$ could potentially be used as antithetic variables.
+
+What about more general discrete random variables? Suppose a random variable takes values $x_1, x_2, \dots$ with probabilities $p_1, p_2, \dots$. We can think of these probabilities as splitting up the interval $[0,1]$ into subintervals of lengths $p_1, p_, \dots$, since these probabilities add up to 1.
+
+[picture]
+
+So the first interval is $I_1 = (0, p_1]$; the second interval is $(p_1, p_1 + p_2]$; the third intervals is $(p_1 + p_2, p_1 + p_2 + p_3]$, and so on. We then pick a point $U$ from $[0,1]$ uniformly at random, and whichever interval $I_i$ it is in, take the corresponding value $x_i$.
+
+In terms of the CDF, we have $F_X(x_i) = p_1 + p_2 + \cdots + p_i$, so the intervals are of the form $(F_X(x_{i-1}), F_X(x_i)]$. So we can think of this as rounding $F_X(U)$ up to the next $F_X(x_i)$, then taking that value $x_i$.
+
+[example]
+
+## Inverse CDF
+
+The uniform and discrete examples we have both involved the cumulative distribution function $F_X(x) = \mathbb P(X \leq x)$. The CDF will be of central importance in generating general continuous random variables too (see the next lecture). In fact, it is the *inverse* of the CDF that will play a crucial role.
+
+It seems natural to define the inverse $F_X^{-1}$ of the CDF in just the same way we would define the inverse of any other function: that $F_X{^-1}(u)$ is the unique value $x$ such that $F_X(x) = u$.
+
+[picture]
+
+There are two problems with this definition. First, if there are intervals on the line where $X$ has probability zero, then all the $x$s in that interval have the same value of $F_X(x) = u$, so there is no "*unique* value $x$ such that $F_X(x) = u$. Second, if $X$ has any point masses, points $x$ with strictly positive probability, then $F_X$ may "jump past" the value $u$, so there is *no* value $x$ such that $F_X(u)$.
+
+[picture]
+
+It turns out that the best way to solve this is the following. For the first obstacle, if there are many points $x$, with $F_X(x) = u$ we take the smallest of them to be $F_X^{-1}(u)$. For the second obstacle, we "round down" by decreasing $u$ until we hit a point $x$ to be $F_X^{-1}(u)$. These two cases are illustrated below.
+
+[picture]
+
+These two awkward cases can be encapsulated in the following definition.
+
+::: {#def-cdf-inv}
+Let $X$ be a random variable with cumulative distribution function $F_X(x) = \mathbb P(X \leq x)$. Then the **inverse cumulative distribution function** (inverse CDF) $F_X^{-1}$ is defined for $u \in (0,1)$ by
+$$ F^{-1}_X(u) = \inf \big \{x : F_X(x) \geq u \big\} . $$
+:::
+
+You should check that you agree this definition matches the discussion above. (The "infimum", or "inf", is like "minimum", but allows for the possibility the minimum might not be achieved.) And remember it -- it's coming back in the next lecture!
+-->
+<p><strong>Next time:</strong> <em>Sampling from continuous distribution using the inverse CDF.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
-<li><p>Variance reduction techniques attempt to improve on Monte Carlo estimation making the variance smaller.</p></li>
-<li><p>If we know <span class="math inline">\(\eta = \Exg \psi(X)\)</span>, then the control variate Monte Carlo estimate is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta.\]</span></p></li>
-<li><p>The mean-square error of the control variate Monte Carlo estimate is <span class="math display">\[{\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}.\]</span></p></li>
+<li><p>If <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>, then <span class="math inline">\(X = (b-a)U + a \sim \operatorname{U}[a,b]\)</span>.</p></li>
+<li><p>A discrete random variable can be generated by splitting <span class="math inline">\([0,1]\)</span> into subintervals with lengths according to the probabilities, then picking a point from the interval at random.</p></li>
+<li><p>The inverse cumulative distribution function is defined by</p></li>
 </ul>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.3.3.</p>
+<p>Remember that your answers to <a href="../problems/P2.html"><strong>Problem Sheet 2</strong></a> will be discussed in the problems class on <strong>Thursday 31 October</strong>.</p>
+<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Sections 1.2 and 1.3.</p>
 </div>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -911,13 +848,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L04-mc-error-2.html" class="pagination-link" aria-label="Monte Carlo error II: practice">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></span>
+      <a href="../problems/P2.html" class="pagination-link" aria-label="Problem Sheet 2">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Problem Sheet 2</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L06-antithetic-1.html" class="pagination-link" aria-label="Antithetic variables I">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
+        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

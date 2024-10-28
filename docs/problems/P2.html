@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../problems/solutions.html" rel="next">
+<link href="../lectures/L12-uniform-discrete.html" rel="next">
 <link href="../lectures/L11-lcg.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -240,6 +240,12 @@ window.Quarto = {
  <span class="menu-text">Problem Sheet 2</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -353,6 +359,15 @@ display: none !important;
 </div>
 </div>
 <div class="myq">
+<p><strong>4.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Answer the following question “by hand”, without using R. You may <em>check</em> your answer with R, if you wish.)</p>
+<div class="subq">
+<p><strong>(a)</strong>&nbsp;&nbsp;Consider the LCG with modulus <span class="math inline">\(m = 2^4 = 16\)</span>, multiplier <span class="math inline">\(a = 5\)</span>, and increment <span class="math inline">\(a = 8\)</span>. What is the period of this LCG when started from the seed <strong>(i)</strong> <span class="math inline">\(x_1 = 1\)</span>; <strong>(ii)</strong> <span class="math inline">\(x_1 = 2\)</span>?</p>
+</div>
+<div class="subq">
+<p><strong>(b)</strong> Consider the LCG with modulus <span class="math inline">\(m = 2^4 = 16\)</span>, multiplier <span class="math inline">\(a = 2\)</span>, and increment <span class="math inline">\(c = 4\)</span>. Start from the seed <span class="math inline">\(x_1 = 3\)</span>. <strong>(i)</strong> When do we first see a repeat output? <strong>(ii)</strong> What is the period?</p>
+</div>
+</div>
+<div class="myq">
 <p><strong>5.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider the following LCGs with modulus <span class="math inline">\(m = 2^8 = 256\)</span>:</p>
 <p>&nbsp;(i) <span class="math inline">\(a = 31\)</span>, <span class="math inline">\(c = 47\)</span>;</p>
 <p>&nbsp;(ii) <span class="math inline">\(a = 21\)</span>, <span class="math inline">\(c = 47\)</span>;</p>
@@ -362,6 +377,24 @@ display: none !important;
 </div>
 <div class="subq">
 <p><strong>(b)</strong>&nbsp;&nbsp;Which of these LCGs would make good pseudorandom number generators?</p>
+</div>
+</div>
+<div class="myq">
+<p><strong>6.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider an LCG with modulus <span class="math inline">\(m = 2^{10} = 1024\)</span>, multiplier <span class="math inline">\(a = 125\)</span>, and increment <span class="math inline">\(c = 5\)</span>. Using R:</p>
+<div class="subq">
+<p><strong>(a)</strong> Generate 200 outputs in <span class="math inline">\(\{0, 1, \dots, 1023\}\)</span> from this LCG, starting with the seed <span class="math inline">\(x_1 = 1\)</span>.</p>
+</div>
+<div class="subq">
+<p><strong>(b)</strong>&nbsp;&nbsp;Convert these to 200 outputs to pseudorandom uniform samples in <span class="math inline">\([0, 1]\)</span>.</p>
+</div>
+<div class="subq">
+<p><strong>(c)</strong>&nbsp;&nbsp;Using these samples, obtain a Monte Carlo estimate for <span class="math inline">\(\mathbb E\cos(U)\)</span>, where <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>.</p>
+</div>
+<div class="subq">
+<p><strong>(d)</strong>&nbsp;&nbsp;What is the root-mean-square error of your estimate?</p>
+</div>
+<div class="subq">
+<p><strong>(e)</strong>&nbsp;&nbsp;Repeat parts (a) to (d) for the LCG with the same <span class="math inline">\(m\)</span>, but now with multiplier <span class="math inline">\(a = 127\)</span> and increment <span class="math inline">\(c = 4\)</span>.</p>
 </div>
 </div>
 
@@ -795,8 +828,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
-        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L12-uniform-discrete.html" class="pagination-link" aria-label="Uniform and discrete">
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

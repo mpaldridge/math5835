@@ -274,6 +274,12 @@ window.Quarto = {
  <span class="menu-text">Problem Sheet 2</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -392,7 +398,7 @@ window.Quarto = {
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>MC_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">phi</span>(samples)) <span class="sc">/</span> n</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MCest, <span class="fu">sqrt</span>(MC_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1863843908 0.0002536575</code></pre>
+<pre><code>[1] 0.1863397228 0.0002534953</code></pre>
 </div>
 </div>
 <p>Maybe we can improve on this using importance sampling. Let’s have a look at a graph of <span class="math inline">\(f(y)\,\phi(y)\)</span> (blue line).</p>
@@ -422,7 +428,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>After some experimentation, I decided that <span class="math inline">\(Y \sim \operatorname{N}(8, 2^2)\)</span> (red line; not to same scale) seemed to work quite well, in <span class="math inline">\(g(y)\)</span> being roughly proportional to <span class="math inline">\(f(y)\,\phi(y)\)</span>. I was tempted to take the standard deviation less than 2, the get the red curve a bit tighter. But I discovered that <span class="math inline">\(f(y)/g(y)\)</span> got very large for <span class="math inline">\(y\)</span> near 0, due to the left tail of <span class="math inline">\(g\)</span> decaying too quickly. The following graph shows <span class="math inline">\(\frac{f(x)}{g(x)} \phi(x)\)</span>, and shows that the spike at 0 is now under control compared to the “main spike” at <span class="math inline">\(y = 8\)</span>.</p>
+<p>After some experimentation, I decided that <span class="math inline">\(Y \sim \operatorname{N}(8, 2^2)\)</span> (red line; not to same scale) seemed to work quite well, in <span class="math inline">\(g(y)\)</span> being roughly proportional to <span class="math inline">\(f(y)\,\phi(y)\)</span>. I was tempted to take the standard deviation less than 2, the get the red curve a bit tighter. But I discovered that <span class="math inline">\(f(y)/g(y)\)</span> got very large for <span class="math inline">\(y\)</span> near 0, due to the left tail of <span class="math inline">\(g\)</span> decaying too quickly. The following graph shows <span class="math inline">\(\frac{f(y)}{g(y)} \phi(y)\)</span>, and shows that the spike at 0 is now under control compared to the “main spike” at <span class="math inline">\(y = 8\)</span>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code for drawing this graph</summary>
@@ -452,7 +458,7 @@ window.Quarto = {
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>IS_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>((<span class="fu">pdf_x</span>(samples) <span class="sc">/</span> <span class="fu">pdf_y</span>(samples)) <span class="sc">*</span> <span class="fu">phi</span>(samples)) <span class="sc">/</span> n</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(ISest, <span class="fu">sqrt</span>(IS_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1864286978 0.0001351437</code></pre>
+<pre><code>[1] 0.1864660680 0.0001351119</code></pre>
 </div>
 </div>
 <p>We see that the RMSE has roughly halved, which is the equivalent of taking four times as many samples.</p>

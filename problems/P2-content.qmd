@@ -80,6 +80,19 @@ For fixed $n$ and $a$, find the value of $\mu$ for which the importance sampling
 ::::
 :::::
 
+:::: {.myq}
+**4.**     (Answer the following question "by hand", without using R. You may *check* your answer with R, if you wish.)
+
+::: {.subq}
+**(a)**  Consider the LCG with modulus $m = 2^4 = 16$, multiplier $a = 5$, and increment $a = 8$. What is the period of this LCG when started from the seed **(i)** $x_1 = 1$; **(ii)** $x_1 = 2$?
+:::
+
+::: {.subq}
+**(b)** Consider the LCG with modulus $m = 2^4 = 16$, multiplier $a = 2$, and increment $c = 4$. Start from the seed $x_1 = 3$. **(i)** When do we first see a repeat output? **(ii)** What is the period?
+:::
+
+::::
+
 ::::: {.myq}
 **5.**     Consider the following LCGs with modulus $m = 2^8 = 256$:
 
@@ -95,5 +108,29 @@ For fixed $n$ and $a$, find the value of $\mu$ for which the importance sampling
 
 :::: {.subq}
 **(b)**  Which of these LCGs would make good pseudorandom number generators?
+::::
+:::::
+
+::::: {.myq}
+**6.**     Consider an LCG with modulus $m = 2^{10} = 1024$, multiplier $a = 125$, and increment $c = 5$. Using R:
+
+:::: {.subq}
+**(a)** Generate 200 outputs in $\{0, 1, \dots, 1023\}$ from this LCG, starting with the seed $x_1 = 1$.
+::::
+
+:::: {.subq}
+**(b)**  Convert these to 200 outputs to pseudorandom uniform samples in $[0, 1]$.
+::::
+
+:::: {.subq}
+**(c)**  Using these samples, obtain a Monte Carlo estimate for $\mathbb E\cos(U)$, where $U \sim \operatorname{U}[0,1]$.
+::::
+
+:::: {.subq}
+**(d)**  What is the root-mean-square error of your estimate?
+::::
+
+:::: {.subq}
+**(e)**  Repeat parts (a) to (d) for the LCG with the same $m$, but now with multiplier $a = 127$ and increment $c = 4$.
 ::::
 :::::
