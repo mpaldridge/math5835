@@ -201,10 +201,10 @@ $$ \Var\big(\widehat\theta_n^{\mathrm{IS}}\big) = \frac{1}{n}\int_{-\infty}^{+\i
 ::: {.myanswers}
 *Solution.* First, note that 
 $$\begin{align} \Var \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right)
-&= \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right)^2 - \theta^2 \\
-&= \int_{-\infty}^{+\infty} \left(\frac{f(y)}{g(y)}\,\phi(y)\right)^2 g(y)\,\mathrm{d}y  - \theta^2\\
-&= \int_{-\infty}^{+\infty} \frac{f(y)^2}{g(y)^2}\,\phi(y)^2 \,g(y)\,\mathrm{d}y  - \theta^2\\
-&= \int_{-\infty}^{+\infty} \frac{f(y)^2}{g(y)}\,\phi(y)^2 \,\mathrm{d}y  - \theta^2 \end{align} $$
+&= \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right)^2 - \big(\Exg \phi(X)\big)^2 \\
+&= \int_{-\infty}^{+\infty} \left(\frac{f(y)}{g(y)}\,\phi(y)\right)^2 g(y)\,\mathrm{d}y  - \big(\Exg \phi(X)\big)^2\\
+&= \int_{-\infty}^{+\infty} \frac{f(y)^2}{g(y)^2}\,\phi(y)^2 \,g(y)\,\mathrm{d}y  - \big(\Exg \phi(X)\big)^2\\
+&= \int_{-\infty}^{+\infty} \frac{f(y)^2}{g(y)}\,\phi(y)^2 \,\mathrm{d}y  - \big(\Exg \phi(X)\big)^2 \end{align} $$
 Second, we have
 $$ \Var\big(\widehat\theta_n^{\mathrm{IS}}\big) = \Var \left(\frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)} \,\phi(Y_i) \right) = \frac{1}{n} \Var \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) . $$
 Putting these together proves the result.
@@ -225,14 +225,14 @@ f(y) &= \frac{1}{\sqrt{4\pi}} \exp\big(-\tfrac14 y^2 \big) \\
 g(y) &= \frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 (y-\mu)^2 \big) \\
 \phi(y) &= \sqrt{2} \exp\big(-\tfrac14 (y-a)^2 \big) .
 \end{align} $$
-Therefore, by a long algebra slog, we have
+Therefore, by a long and painful algebra slog, we have
 $$ \begin{align}
 \frac{f(y)^2 \phi(y)^2}{g(y)} &= \frac{\frac{1}{4\pi} \exp\big(-\tfrac12 y^2 \big)\times 2\exp\big(-\tfrac12 (y-a)^2 \big)}{\frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 (y-\mu)^2 \big)} \\
 &= \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y^2 + (y-a)^2 - (y-\mu)^2 \big)\Big) \\
 &= \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y^2 - 2(a - \mu)y + a^2 + \mu^2\big)\Big) \\
 &= \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big((y - (a - \mu))^2 - (a- \mu)^2 + a^2 - \mu^2\big)\Big) \\
 &= \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big((y - (a - \mu))^2 + 2a\mu - 2\mu^2 \big)\Big) \\
-&=  \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y - (a - \mu)\big)^2\Big)\exp(\mu^2 + 2a),
+&=  \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y - (a - \mu)\big)^2\Big)\exp(\mu^2 + a\mu),
 \end{align} $$
 where we 'completed the square' on the fourth line.
 Thus
@@ -240,7 +240,7 @@ $$ \begin{align}
 \int_{-\infty}^{+\infty} \frac{f(y)^2 \phi(y)^2}{g(y)}\,\mathrm{d}y
 &= \int_{-\infty}^{+\infty}  \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y - (a - \mu)\big)^2\Big)\exp(\mu^2 + 2a) \,\mathrm{d}y\\
 &= \exp(\mu^2 + 2a) \int_{-\infty}^{+\infty}  \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y - (a - \mu)\big)^2\Big)\,\mathrm{d}y \\
-&= \exp(\mu^2 + 2a) ,
+&= \exp(\mu^2 + a\mu) ,
 \end{align} $$
 since the big integral on the right is the integral of the PDF of a normal $\operatorname{N}(a-\mu, 1)$ distribution, so equals 1.
 

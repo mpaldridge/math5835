@@ -5,11 +5,11 @@
 display: none !important;
 }
 </style>
-<!--
+
 ::: {.mysummary}
-**[Full solutions](#solutions)** are now available.
+**[Full solutions](#P2-sols)** are now available.
 :::
--->
+
 
 ::: {.mysummary}
 This is Problem Sheet 2, which covers material from Lectures 7 to 11. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of **Thursday 31 October**. If you are stuck on any of the questions, you are welcome to discuss them with me in my office hours on Mondays at 1500.

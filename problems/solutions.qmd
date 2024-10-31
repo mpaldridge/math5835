@@ -1,8 +1,9 @@
 # Solutions {.unnumbered #solutions}
 
-# Problem Sheet 1
+# Problem Sheet 1 {.unnumbered #P1-sols}
 
 {{< include P1-content.qmd >}}
 
-# Problem Sheet 2
+# Problem Sheet 2 {.unnumbered #P2-sols}
 
+{{< include P2-content.qmd >}}

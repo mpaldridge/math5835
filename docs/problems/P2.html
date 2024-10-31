@@ -323,11 +323,9 @@ window.Quarto = {
 display: none !important;
 }
 </style>
-<!--
-::: {.mysummary}
-**[Full solutions](#solutions)** are now available.
-:::
--->
+<div class="mysummary">
+<p><strong><a href="solutions.html#P2-sols">Full solutions</a></strong> are now available.</p>
+</div>
 <div class="mysummary">
 <p>This is Problem Sheet 2, which covers material from Lectures 7 to 11. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of <strong>Thursday 31 October</strong>. If you are stuck on any of the questions, you are welcome to discuss them with me in my office hours on Mondays at 1500.</p>
 <p>This problem sheet is to help you practice material from the module. It is <em>not</em> for assessment and will not be marked.</p>
@@ -416,7 +414,7 @@ display: none !important;
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">signif</span>(<span class="fu">c</span>(var1, var2, var3, var4), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 8.52e-05 1.37e-05 6.57e-06 1.91e-06</code></pre>
+<pre><code>[1] 8.42e-05 1.42e-05 6.69e-06 1.92e-06</code></pre>
 </div>
 </div>
 <p>(For the fourth PDF, we used that the PDF of <span class="math inline">\(3 + Z\)</span> is <span class="math inline">\(f_Z(z-3)\)</span>.)</p>
@@ -433,7 +431,7 @@ display: none !important;
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>IS_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>((<span class="fu">pdf_x</span>(samples_y4) <span class="sc">/</span> <span class="fu">pdf_y4</span>(samples_y4)) <span class="sc">*</span> <span class="fu">phi</span>(samples_y4)) <span class="sc">/</span> n</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(ISest, <span class="fu">sqrt</span>(IS_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.309336e-03 1.380679e-06</code></pre>
+<pre><code>[1] 1.313002e-03 1.384902e-06</code></pre>
 </div>
 </div>
 <p>So our estimate is <span class="math inline">\(\widehat\theta = 0.00131\)</span>. Since the RMSE is three orders of magnitude less than the estimate, so the estimate is probably accurate to a couple of significant figures.</p>
@@ -447,7 +445,7 @@ display: none !important;
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>eps <span class="ot">&lt;-</span> <span class="fl">0.01</span> <span class="sc">*</span> ISest</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(var1, var2, var3, var4) <span class="sc">/</span> eps<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 497198  80024  38319  11119</code></pre>
+<pre><code>[1] 488251  82441  38786  11125</code></pre>
 </div>
 </div>
 </div>
@@ -476,10 +474,10 @@ display: none !important;
 <p><strong>(c)</strong>&nbsp;&nbsp;Show that the variance of the importance sampling estimator is given by <span class="math display">\[ \Var\big(\widehat\theta_n^{\mathrm{IS}}\big) = \frac{1}{n}\int_{-\infty}^{+\infty} \frac{f(y)^2 \phi(y)^2}{g(y)}\,\mathrm{d}y - \frac{1}{n}\big(\Exg \phi(X)\big)^2. \]</span></p>
 <div class="myanswers">
 <p><em>Solution.</em> First, note that <span class="math display">\[\begin{align} \Var \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right)
-&amp;= \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right)^2 - \theta^2 \\
-&amp;= \int_{-\infty}^{+\infty} \left(\frac{f(y)}{g(y)}\,\phi(y)\right)^2 g(y)\,\mathrm{d}y  - \theta^2\\
-&amp;= \int_{-\infty}^{+\infty} \frac{f(y)^2}{g(y)^2}\,\phi(y)^2 \,g(y)\,\mathrm{d}y  - \theta^2\\
-&amp;= \int_{-\infty}^{+\infty} \frac{f(y)^2}{g(y)}\,\phi(y)^2 \,\mathrm{d}y  - \theta^2 \end{align} \]</span> Second, we have <span class="math display">\[ \Var\big(\widehat\theta_n^{\mathrm{IS}}\big) = \Var \left(\frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)} \,\phi(Y_i) \right) = \frac{1}{n} \Var \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) . \]</span> Putting these together proves the result.</p>
+&amp;= \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right)^2 - \big(\Exg \phi(X)\big)^2 \\
+&amp;= \int_{-\infty}^{+\infty} \left(\frac{f(y)}{g(y)}\,\phi(y)\right)^2 g(y)\,\mathrm{d}y  - \big(\Exg \phi(X)\big)^2\\
+&amp;= \int_{-\infty}^{+\infty} \frac{f(y)^2}{g(y)^2}\,\phi(y)^2 \,g(y)\,\mathrm{d}y  - \big(\Exg \phi(X)\big)^2\\
+&amp;= \int_{-\infty}^{+\infty} \frac{f(y)^2}{g(y)}\,\phi(y)^2 \,\mathrm{d}y  - \big(\Exg \phi(X)\big)^2 \end{align} \]</span> Second, we have <span class="math display">\[ \Var\big(\widehat\theta_n^{\mathrm{IS}}\big) = \Var \left(\frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)} \,\phi(Y_i) \right) = \frac{1}{n} \Var \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) . \]</span> Putting these together proves the result.</p>
 </div>
 </div>
 <div class="subq">
@@ -489,18 +487,18 @@ display: none !important;
 f(y) &amp;= \frac{1}{\sqrt{4\pi}} \exp\big(-\tfrac14 y^2 \big) \\
 g(y) &amp;= \frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 (y-\mu)^2 \big) \\
 \phi(y) &amp;= \sqrt{2} \exp\big(-\tfrac14 (y-a)^2 \big) .
-\end{align} \]</span> Therefore, by a long algebra slog, we have <span class="math display">\[ \begin{align}
+\end{align} \]</span> Therefore, by a long and painful algebra slog, we have <span class="math display">\[ \begin{align}
 \frac{f(y)^2 \phi(y)^2}{g(y)} &amp;= \frac{\frac{1}{4\pi} \exp\big(-\tfrac12 y^2 \big)\times 2\exp\big(-\tfrac12 (y-a)^2 \big)}{\frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 (y-\mu)^2 \big)} \\
 &amp;= \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y^2 + (y-a)^2 - (y-\mu)^2 \big)\Big) \\
 &amp;= \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y^2 - 2(a - \mu)y + a^2 + \mu^2\big)\Big) \\
 &amp;= \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big((y - (a - \mu))^2 - (a- \mu)^2 + a^2 - \mu^2\big)\Big) \\
 &amp;= \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big((y - (a - \mu))^2 + 2a\mu - 2\mu^2 \big)\Big) \\
-&amp;=  \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y - (a - \mu)\big)^2\Big)\exp(\mu^2 + 2a),
+&amp;=  \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y - (a - \mu)\big)^2\Big)\exp(\mu^2 + a\mu),
 \end{align} \]</span> where we ‘completed the square’ on the fourth line. Thus <span class="math display">\[ \begin{align}
 \int_{-\infty}^{+\infty} \frac{f(y)^2 \phi(y)^2}{g(y)}\,\mathrm{d}y
 &amp;= \int_{-\infty}^{+\infty}  \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y - (a - \mu)\big)^2\Big)\exp(\mu^2 + 2a) \,\mathrm{d}y\\
 &amp;= \exp(\mu^2 + 2a) \int_{-\infty}^{+\infty}  \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y - (a - \mu)\big)^2\Big)\,\mathrm{d}y \\
-&amp;= \exp(\mu^2 + 2a) ,
+&amp;= \exp(\mu^2 + a\mu) ,
 \end{align} \]</span> since the big integral on the right is the integral of the PDF of a normal <span class="math inline">\(\operatorname{N}(a-\mu, 1)\)</span> distribution, so equals 1.</p>
 <p>Hence, we have proved the result.</p>
 </div>
