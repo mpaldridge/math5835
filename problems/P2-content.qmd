@@ -456,9 +456,9 @@ Thus the estimator is just keeping using the same 8 points over and over again. 
 So while the correct answer is $\mathbb EU = \sin 1 = 0.841$, this is in fact estimating
 $$ \begin{multline}
 \frac{1}{8} \bigg(\cos \frac{1}{2^{10}} + \cos \frac{131}{2^{10}} + \cos \frac{257}{2^{10}} + \cos \frac{899}{2^{10}} \\
-+ \cos \frac{513}{2^{10}} + \cos \frac{643}{2^{10}} + \cos \frac{769}{2^{10}} + \cos \frac{387}{2^{10}}\bigg) = 0.868 ,
++ \cos \frac{513}{2^{10}} + \cos \frac{643}{2^{10}} + \cos \frac{769}{2^{10}} + \cos \frac{387}{2^{10}}\bigg) = 0.868 
 \end{multline} $$
-(where the numerators are the 9 points visited by the LCG), which is not the correct answer.
+(where the numerators are the 8 values visited by the LCG), which is not the correct answer.
 :::
 ::::
 :::::

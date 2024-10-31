@@ -547,6 +547,50 @@
     ]
   },
   {
+    "objectID": "lectures/L13-inverse.html",
+    "href": "lectures/L13-inverse.html",
+    "title": "13  Inverse transform method",
+    "section": "",
+    "text": "13.1 Inverse CDF\nWe have started looking at how to transform a standard uniform random variable \\(U \\sim \\operatorname{U}[0,1]\\) into any other distribution \\(X\\).\nLast lecture, we saw how to do this for other uniform distributions and for discrete random variables. Booth involved the cumulative distribution function \\(F_X(x) = \\mathbb P(X \\leq x)\\). For generating a wider class of random variables (including continuous random variables) the CDF will continue to be important. In fact, it is the inverse of the CDF that will play a crucial role.\nIt seems natural to define the inverse \\(F_X^{-1}\\) of the CDF in just the same way we would define the inverse of any other function: that \\(F_X^{-1}(u)\\) is the unique value \\(x\\) such that \\(F_X(x) = u\\). This is illustrated in the graph below.\n[picture]\nThis definition works fine for a purely continuous distribution that doesn’t have any “gaps” in the set of values it can take. But for a general random variable, there are two problems with this definition.\n[picture]\nIt turns out that the best way to solve this is the following. For the first obstacle, if there are many points \\(x\\), with \\(F_X(x) = u\\) we take the smallest of them to be \\(F_X^{-1}(u)\\). For the second obstacle, we “round down” by decreasing \\(u\\) until we hit a point \\(x\\) to be \\(F_X^{-1}(u)\\). These two cases are illustrated below.\n[picture]\nThese two awkward cases can be encapsulated in the following definition.\nYou should check that you agree this definition matches the discussion above.",
+    "crumbs": [
+      "Random number generation",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Inverse transform method</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L13-inverse.html#inverse-cdf",
+    "href": "lectures/L13-inverse.html#inverse-cdf",
+    "title": "13  Inverse transform method",
+    "section": "",
+    "text": "If \\(X\\) has any point masses – points \\(x\\) with strictly positive probability \\(\\mathbb P(X = x) &gt; 0\\) of hitting that point exactly – then \\(F_X\\) may “jump past” the value \\(u\\), so there is no value \\(x\\) such that \\(F_X(u)\\). (See the blue line on the graph below.)\nIf there is an interval on the line where \\(X\\) has probability zero, then all the \\(x\\)s in that interval have the same value of \\(F_X(x) = u\\), so there is no “unique value \\(x\\) such that \\(F_X(x) = u\\). (See the red line on the graph below.)\n\n\n\n\n\n\nDefinition 13.1 Let \\(X\\) be a random variable with cumulative distribution function \\(F_X(x) = \\mathbb P(X \\leq x)\\). Then the inverse cumulative distribution function (inverse CDF) \\(F_X^{-1}\\) is defined for \\(u \\in (0,1)\\) by \\[ F^{-1}_X(u) = \\min \\big \\{x : F_X(x) \\geq u \\big\\} . \\]",
+    "crumbs": [
+      "Random number generation",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Inverse transform method</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L13-inverse.html#inverse-transform",
+    "href": "lectures/L13-inverse.html#inverse-transform",
+    "title": "13  Inverse transform method",
+    "section": "13.2 Inverse transform",
+    "text": "13.2 Inverse transform\nThe inverse transform method works like this: To generate \\(X\\), simply apply the inverse CDF \\(F_X^{-1}\\) to a standard uniform random variable \\(U\\).\n\nTheorem 13.1 Let \\(F\\) be a cumulative distribution function, and let \\(F^{-1}\\) be its inverse. Let \\(U \\sim \\operatorname{U}[0,1]\\). Then \\(X = F^{-1}(U)\\) has cumulative distribution function \\(F\\).\n\n\nProof. We need to show that \\(\\mathbb P(X \\leq x) = F(x)\\) when this is in \\((0,1)\\). The proof is very easy if \\(F\\) has no “gaps” or “jumps” as described above. Then, we simply have \\[ \\mathbb P(X \\leq x) = \\mathbb P\\big(F^{-1}(U) \\leq x\\big) = \\mathbb P\\big(U \\leq F(x)\\big) = F(x), \\] where we have simply “undone” the function \\(F^{-1}\\) and used that \\(\\mathbb P(U \\leq u) = u\\) for \\(u \\in (0,1)\\).\nFor the general case, we need to be just a little bit more careful ……. \\[ \\mathbb P(X \\leq x) = \\]\n\nThe method – known as the inverse transform method gives a simple way to generate any random variable \\(X\\) for which the inverse CDF \\(F_X^{-1}\\) can be computed easily.\nThis is not all random variable, however. In particular, the inverse CDF of the normal distribution does not have a closed form, so this does not give a way of sampling normal distributions. Later we’ll see other methods that allow us to sample from normal random variables.",
+    "crumbs": [
+      "Random number generation",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Inverse transform method</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L13-inverse.html#examples",
+    "href": "lectures/L13-inverse.html#examples",
+    "title": "13  Inverse transform method",
+    "section": "13.3 Examples",
+    "text": "13.3 Examples\nLet’s see some examples. The idea for all these problems is “Write \\(U = F(X)\\), then invert, to get \\(X = F^{-1}(U)\\).”\n\nExample 13.1 Let \\(X \\sim \\operatorname{Exp}(\\lambda)\\) be an exponential distribution with rate \\(\\lambda\\). This has PDF \\(f(x) = \\lambda \\ee^{-\\lambda x}\\) for \\(x \\geq 0\\) and CDF \\(F(x) = 1 - \\ee^{-\\lambda x}\\).\nWe write \\(U = F(X)\\) and invert it to make \\(X\\) the subject. So \\(U = 1 - \\ee^{-\\lambda X}\\), and therefore \\[ X = -\\frac{1}{\\lambda} \\log(1 - U) . \\]\nWe should check that this really does have an exponential distribution.\n\nrate &lt;- 0.5\nn &lt;- 1e5\nunif &lt;- runif(n)\nsamples &lt;- -(1 / rate) * log(1 - unif)\n\nhist(samples, probability = TRUE)\ncurve(dexp(x, rate), add = TRUE, col = \"blue\", lwd = 2)\n\n\n\n\n\n\n\n\nLooks like an accurate sample!\nSince \\(1 - U\\) has the same distribution as \\(U\\), it can be more convenient to simply write \\[ X' = -\\frac{1}{\\lambda} \\log U \\] instead.\nAlternatively, since \\(X\\) and \\(X'\\) are not independent and both have the same exponential distribution, they are a candidate to use as an antithetic pair in Monte Carlo estimation.\n\n\nExample 13.2 Consider \\(X\\) with PDF \\[ f(x) = \\frac{x}{\\gamma} \\,\\exp \\left(-\\frac{x^2}{2\\gamma}\\right)\\] for \\(x \\geq 0\\), and CDF \\[ F(x) = 1 - \\exp\\left(-\\frac{x^2}{2\\gamma}\\right) \\] This is known as the Rayleigh distribution with scale parameter \\(\\gamma\\).\nAgain, we write \\(U = F(X)\\) and invert. so \\[ U = 1 - \\exp\\left(-\\frac{X^2}{2\\gamma}\\right)  \\] so \\[ X = \\sqrt{-2\\gamma\\log(1-U)} . \\]\nAgain, \\(X' = \\sqrt{-2\\gamma\\log U}\\) is a slightly simpler expression, or could be used in an antithetic variables Monte Carlo approach.\n\n\nExample 13.3 Suppose \\(X \\sim \\operatorname{U}[a,b]\\), then \\[ F(x) = \\frac{x-a}{b-a} \\] (except for when \\(F(x) = 0\\) or \\(1\\)).\nWrite \\(U = F(X)\\) and invert. We get \\(X = (b-a)U + a\\). This is precisely the method for generating general uniform distributions that we saw in the last lecture.\n\n\nExample 13.4 Let \\(X\\) be discrete on the values \\(x_1, x_2, \\dots\\) with probabilities \\(p_1, p_2, \\dots\\). The CDF is \\[ F(x) = \\begin{cases} 0 & x &lt; x_1 \\\\\np_1 & x_1 \\leq x &lt; x_2 \\\\\np_1 + p_2 & x_2 \\leq x &lt; x_3 \\\\\np_1 + p_2 + p_3 & x_3 \\leq x &lt; x_4 \\\\\n\\cdots & \\cdots . \\end{cases} \\]\nRemembering the rule for “jumps” in the CDF, we see that the inverse CDF is \\[ F^{-1}(u) = \\begin{cases} x_1 & u &lt; p_1 \\\\\nx_2 & p_1 \\leq x &lt; p_1 + p_2 \\\\\nx_3 & p_1 + p_2 \\leq x &lt; p_1 + p_2 + p_3 \\\\\n\\cdots & \\cdots . \\end{cases} \\] Taking \\(X = F^{-1}(U)\\) gives the same method for generating discrete random variables as we discussed in the last lecture.\n\n\nExample 13.5 Consider a distribution with PDF \\[ f(x) = \\begin{cases} x^2 & 0 \\leq x \\leq 1 \\\\\n\\frac{2}{3} & 1 &lt; x \\leq 2 \\\\\n0 & \\text{otherwise.} \\end{cases} \\] Show how to sample \\(X\\) using a standard uniform random variable \\(U\\).\nThis is a standard sort of question. First we have to find the CDF, then we have to invert it.\nWe find the CDF from the PDF by integrating. For \\(0 \\leq x \\leq 1\\), we have \\[ F(x) = \\int_0^x f(y) \\, \\mathrm{d}y = \\int_0^x y^2 \\mathrm{d}y = \\tfrac13 x^3. \\] Then for \\(1 &lt; x \\leq 2\\), we have \\[ F(x) = F(1) + \\int_1^x f(y) \\, \\mathrm{d}y = \\tfrac13 + \\int_1^x \\tfrac23 \\mathrm{d}y = \\tfrac13 + \\tfrac23 x - \\tfrac23 = \\tfrac23 x - \\tfrac13 . \\]\nFor \\(0 \\leq U &lt; \\leq F(1) = \\tfrac13\\), we have \\(U = \\tfrac13 X^3\\), so \\(X = \\sqrt[3]{3U}\\). For \\(F(1) = \\tfrac13 &lt; U \\leq 1\\), we have \\(U = \\tfrac23 X - \\tfrac13\\), so \\(X = \\tfrac32 U + \\tfrac12\\). So the inverse transform is \\[ X = \\begin{cases} \\sqrt[3]{3U} & U \\leq \\frac13 \\\\ \\tfrac32 U + \\tfrac12 & U &gt; \\tfrac13 . \\end{cases} \\]",
+    "crumbs": [
+      "Random number generation",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Inverse transform method</span>"
+    ]
+  },
+  {
     "objectID": "problems/solutions.html",
     "href": "problems/solutions.html",
     "title": "Solutions",
