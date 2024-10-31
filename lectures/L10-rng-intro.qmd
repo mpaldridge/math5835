@@ -20,7 +20,7 @@ It turns out that this will break down into two questions that we can treat larg
 
 1. How do we generate some randomness -- any randomness -- in the first place? We usually think of this as generating $U \sim \operatorname{U}[0,1]$, a uniform random number between 0 and 1. (We will look at this today and in the next lecture.)
 
-2. How do we manipulate that uniform randomness $U$ to get it to behave like the particular distribution $X$ that we want to sample from? (We will look at this in Lectures 12--16.)
+2. How do we transform that uniform randomness $U$ to get it to behave like the particular distribution $X$ that we want to sample from? (We will look at this in Lectures 12--16.)
 
 ## Random numbers on computers
 
