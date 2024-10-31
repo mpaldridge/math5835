@@ -377,7 +377,7 @@ window.Quarto = {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">phi</span>(samples))</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6066079</code></pre>
+<pre><code>[1] 0.6061676</code></pre>
 </div>
 </div>
 <p>But we could see if we can do better with a control variate. But what should we pick for the control function <span class="math inline">\(\psi\)</span>? We want something that’s similar to <span class="math inline">\(\phi(x) = \cos(x)\)</span>, but where we can actually calculate the expectation.</p>
@@ -411,7 +411,7 @@ window.Quarto = {
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>CVest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">phi</span>(samples) <span class="sc">-</span> <span class="fu">psi</span>(samples)) <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>CVest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6064711</code></pre>
+<pre><code>[1] 0.6065323</code></pre>
 </div>
 </div>
 </div>
@@ -459,7 +459,7 @@ window.Quarto = {
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>MC_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">phi</span>(samples)) <span class="sc">/</span> n</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MC_MSE, <span class="fu">sqrt</span>(MC_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.984850e-07 4.455166e-04</code></pre>
+<pre><code>[1] 2.002769e-07 4.475231e-04</code></pre>
 </div>
 </div>
 <p>The variance and root-mean-square error of our control variate estimate, on the other hand, are</p>
@@ -468,10 +468,10 @@ window.Quarto = {
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>CV_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">phi</span>(samples) <span class="sc">-</span> <span class="fu">psi</span>(samples)) <span class="sc">/</span> n</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(CV_MSE, <span class="fu">sqrt</span>(CV_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 9.299204e-08 3.049460e-04</code></pre>
+<pre><code>[1] 9.327741e-08 3.054135e-04</code></pre>
 </div>
 </div>
-<p>This was a success! The mean-square error roughly halved, from <span class="math inline">\(2\times 10^{-7}\)</span> to <span class="math inline">\(9.3\times 10^{-8}\)</span>. This meant the root-mean-square went down by about a third, from <span class="math inline">\(4.5\times 10^{-4}\)</span> to <span class="math inline">\(3\times 10^{-4}\)</span>.</p>
+<p>This was a success! The mean-square error roughly halved, from <span class="math inline">\(2\times 10^{-7}\)</span> to <span class="math inline">\(9.3\times 10^{-8}\)</span>. This meant the root-mean-square went down by about a third, from <span class="math inline">\(4.5\times 10^{-4}\)</span> to <span class="math inline">\(3.1\times 10^{-4}\)</span>.</p>
 <p>Halving the mean-square error would normally have required doubling the number of samples <span class="math inline">\(n\)</span>, so we have effectively doubled the sample size by using the control variate.</p>
 </div>
 <p><strong>Next time:</strong> <em>We look at our second variance reduction technique: antithetic variables.</em></p>

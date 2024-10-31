@@ -1,1 +1,37 @@
 # Inverse transform method
+
+## Inverse CDF
+
+We have started looking at how to transform a standard uniform random variable $U \sim \operatorname{U}[0,1]$ into any other distribution $X$.
+
+Last lecture, we saw how to do this for other uniform distributions and for discrete random variables. Booth involved the cumulative distribution function $F_X(x) = \mathbb P(X \leq x)$. For generating a wider class of random variables (including continuous random variables) the CDF will continue to be important. In fact, it is the *inverse* of the CDF that will play a crucial role.
+
+It seems natural to define the inverse $F_X^{-1}$ of the CDF in just the same way we would define the inverse of any other function: that $F_X^{-1}(u)$ is the unique value $x$ such that $F_X(x) = u$. This is illustrated in the graph below.
+
+\[picture\]
+
+This definition works fine for a purely continuous distribution that doesn't have any "gaps" in the set of values it can take. But for a general random variable, there are two problems with this definition.
+
+1. If $X$ has any point masses -- points $x$ with strictly positive probability $\mathbb P(X = x) > 0$ of hitting that point exactly -- then $F_X$ may "jump past" the value $u$, so there is *no* value $x$ such that $F_X(u)$. (See the blue line on the graph below.)
+
+2. If there is an interval on the line where $X$ has probability zero, then all the $x$s in that interval have the same value of $F_X(x) = u$, so there is no "*unique* value $x$ such that $F_X(x) = u$. (See the red line on the graph below.)
+
+\[picture\]
+
+It turns out that the best way to solve this is the following. For the first obstacle, if there are many points $x$, with $F_X(x) = u$ we take the *smallest* of them to be $F_X^{-1}(u)$. For the second obstacle, we "round down" by decreasing $u$ until we hit a point $x$ to be $F_X^{-1}(u)$. These two cases are illustrated below.
+
+\[picture\]
+
+These two awkward cases can be encapsulated in the following definition.
+
+::: {#def-cdf-inv}
+Let $X$ be a random variable with cumulative distribution function $F_X(x) = \mathbb P(X \leq x)$. Then the **inverse cumulative distribution function** (inverse CDF) $F_X^{-1}$ is defined for $u \in (0,1)$ by
+$$ F^{-1}_X(u) = \inf \big \{x : F_X(x) \geq u \big\} . $$
+:::
+
+You should check that you agree this definition matches the discussion above. (The "infimum", or "inf", is like "minimum", but allows for the possibility the minimum might not be achieved.)
+
+
+## Inverse transform
+
+The inverse transform method works like this: To generate

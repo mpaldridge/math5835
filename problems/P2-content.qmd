@@ -377,22 +377,88 @@ Even though this has full period, there is a very clear non-random pattern. This
 **6.**     Consider an LCG with modulus $m = 2^{10} = 1024$, multiplier $a = 125$, and increment $c = 5$. Using R:
 
 :::: {.subq}
-**(a)** Generate 200 outputs in $\{0, 1, \dots, 1023\}$ from this LCG, starting with the seed $x_1 = 1$.
+**(a)** Generate 1000 outputs in $\{0, 1, \dots, 1023\}$ from this LCG, starting with the seed $x_1 = 1$.
+
+*[This question originally said 200 outputs, not 1000. It's fine if you answered that version, but the conclusions to the problem are less interesting that way.]*
+
+::: {.myanswers}
+*Solution.* Using the same `lcg()` function from Question 5, we have
+
+```{r}
+n <- 1000
+m <- 2^{10}
+seed <- 1
+samples1 <- lcg(n, m, 125, 5, seed)
+```
+:::
 ::::
 
 :::: {.subq}
 **(b)**  Convert these to 200 outputs to pseudorandom uniform samples in $[0, 1]$.
+
+::: {.myanswers}
+To do this, we simply divide the samples by $m$.
+
+```{r}
+samples1 <- samples1 / m
+```
+:::
 ::::
 
 :::: {.subq}
 **(c)**  Using these samples, obtain a Monte Carlo estimate for $\mathbb E\cos(U)$, where $U \sim \operatorname{U}[0,1]$.
+
+::: {.myanswers}
+*Solution.*
+
+```{r}
+mean(cos(samples1))
+```
+
+This is very close to the correct answer $\sin 1 = 0.8414$
+:::
 ::::
 
 :::: {.subq}
 **(d)**  What is the root-mean-square error of your estimate?
+
+::: {.myanswers}
+*Solution.*
+
+```{r}
+sqrt(var(cos(samples1)) / n)
+```
+:::
 ::::
 
 :::: {.subq}
 **(e)**  Repeat parts (a) to (d) for the LCG with the same $m$, but now with multiplier $a = 127$ and increment $c = 4$.
+
+::: {.myanswers}
+*Solution.*
+
+```{r}
+samples2 <- lcg(n, m, 127, 4, seed)
+samples2 <- samples2 / m
+mean(cos(samples2))
+sqrt(var(cos(samples2)) / n)
+```
+
+This does not seem to be quite accurate to the answer to $\sin 1 = 0.841$, and the reported RMSE to too small to account for the error.
+
+However, the problem is that this LCG is not actually a uniform (pseudo)random number generator -- it has period 8.
+
+```{r}
+plot(samples2)
+```
+
+Thus the estimator is just keeping using the same 8 points over and over again. So this is actually estimating $\mathbb E(\cos Y)$, where $Y$ is uniform on the 8 points actually visited by the LCG.
+So while the correct answer is $\mathbb EU = \sin 1 = 0.841$, this is in fact estimating
+$$ \begin{multline}
+\frac{1}{8} \bigg(\cos \frac{1}{2^{10}} + \cos \frac{131}{2^{10}} + \cos \frac{257}{2^{10}} + \cos \frac{899}{2^{10}} \\
++ \cos \frac{513}{2^{10}} + \cos \frac{643}{2^{10}} + \cos \frac{769}{2^{10}} + \cos \frac{387}{2^{10}}\bigg) = 0.868 ,
+\end{multline} $$
+(where the numerators are the 9 points visited by the LCG), which is not the correct answer.
+:::
 ::::
 :::::

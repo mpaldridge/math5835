@@ -352,7 +352,7 @@ window.Quarto = {
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.202239</code></pre>
+<pre><code>[1] 2.200859</code></pre>
 </div>
 </div>
 </div>
@@ -369,7 +369,7 @@ window.Quarto = {
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>ysamples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">pmax</span>(xsamples, ysamples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5648906</code></pre>
+<pre><code>[1] 0.5637339</code></pre>
 </div>
 </div>
 </div>
@@ -389,7 +389,7 @@ window.Quarto = {
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>in_box <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> y<span class="sc">^</span><span class="dv">2</span> <span class="sc">&lt;=</span> <span class="dv">1</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">in_box</span>(rain_x, rain_y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.784906</code></pre>
+<pre><code>[1] 0.785823</code></pre>
 </div>
 </div>
 </div>
@@ -410,7 +410,7 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>var_est <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">in_box</span>(rain_x, rain_y))</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>var_est <span class="sc">/</span> (<span class="fl">1e-6</span>)<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 168828739992</code></pre>
+<pre><code>[1] 168305380974</code></pre>
 </div>
 </div>
 <p>We will probably spend a long time waiting for that much rain!</p>
@@ -429,7 +429,7 @@ window.Quarto = {
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>samples1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">5</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">integrand</span>(samples1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.93898</code></pre>
+<pre><code>[1] 3.929335</code></pre>
 </div>
 </div>
 <p>(In fact, the true answer is <span class="math inline">\(\log(5.1) - \log(0.1) = 3.932\)</span>, so it looks like this is working correctly.)</p>
@@ -467,7 +467,7 @@ window.Quarto = {
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>samples2 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">1</span>)</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">phi</span>(samples2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.93244</code></pre>
+<pre><code>[1] 3.935744</code></pre>
 </div>
 </div>
 <p>(I had to include <code>x &lt;= 5</code> in the expression for <span class="math inline">\(\phi\)</span>, because my exponential distribution will sometimes take samples above 5, but they should count as 0 in an estimate for the integral between 0 and 5.)</p>
@@ -475,14 +475,15 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">integrand</span>(samples1)) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.387878e-05</code></pre>
+<pre><code>[1] 3.361979e-05</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(<span class="fu">phi</span>(samples2)) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.072919e-06</code></pre>
+<pre><code>[1] 6.073885e-06</code></pre>
 </div>
 </div>
 <p>I found that I had reduced the mean-square error by roughly a factor of 5. <!--
+
 
 
 ::: {.cell}
@@ -498,12 +499,13 @@ mean(phi(samples2))
 ::: {.cell-output .cell-output-stdout}
 
 ```
-[1] 3.923446
+[1] 3.931375
 ```
 
 
 :::
 :::
+
 
 
 --></p>
@@ -546,7 +548,7 @@ mean(phi(samples2))
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">1</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="fl">2.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.19999</code></pre>
+<pre><code>[1] 2.204066</code></pre>
 </div>
 </div>
 </div>
@@ -558,7 +560,7 @@ mean(phi(samples2))
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="fl">2.1</span> <span class="sc">-</span> samples<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.197787</code></pre>
+<pre><code>[1] 2.198793</code></pre>
 </div>
 </div>
 </div>
@@ -571,14 +573,14 @@ mean(phi(samples2))
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(samples<span class="sc">^</span><span class="fl">2.1</span>) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.775811e-05</code></pre>
+<pre><code>[1] 2.82498e-05</code></pre>
 </div>
 </div>
 <p>For the control variate method,</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(samples<span class="sc">^</span><span class="fl">2.1</span> <span class="sc">-</span> samples<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.743602e-07</code></pre>
+<pre><code>[1] 6.958636e-07</code></pre>
 </div>
 </div>
 <p>So the control variates method is much, much better.</p>
@@ -596,304 +598,6 @@ mean(phi(samples2))
 </section>
 <section id="problem-sheet-2" class="level1">
 <h1>Problem Sheet 2</h1>
-<div class="hidden">
-<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
-\newcommand{\Ex}{\mathbb{E}}
-\newcommand{\Ind}{\mathbb{I}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
-</div>
-<div class="myq">
-<p><strong>1.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>[2018 exam, Question 4]</em></p>
-<div class="subq">
-<p><strong>(a)</strong> &nbsp;&nbsp;Suppose it is desired to estimate the value of an integral <span class="math display">\[ \theta = \int_0^1 h(x)\,\mathrm{d}x \]</span> by Monte Carlo integration</p>
-<div class="subq">
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>i.</strong>&nbsp;&nbsp;&nbsp;By splitting <span class="math inline">\(h(x) = \phi(x)f(x)\)</span>, where <span class="math inline">\(f\)</span> is a probability density function, describe how the Monte Carlo method of estimating <span class="math inline">\(\theta\)</span> works.</p>
-<div class="myanswers">
-<p><em>Solution.</em> As suggested, we have <span class="math display">\[ \theta = \int_0^1 h(x)\,\mathrm{d}x = \int_0^1 \phi(x)\,f(x)\,\mathrm{d}x = \Exg \phi(X) ,\]</span> where <span class="math inline">\(X\)</span> is a random variable with PDF <span class="math inline">\(f\)</span>. To estimate this, we sample <span class="math inline">\(X_1, \dots, X_n\)</span> from <span class="math inline">\(X\)</span>, and use <span class="math display">\[ \widehat\theta_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) . \]</span></p>
-</div>
-</div>
-<div class="subq">
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>ii.</strong>&nbsp;&nbsp;Let <span class="math inline">\(\widehat\theta_n\)</span> be the Monte Carlo estimate based on <span class="math inline">\(n\)</span> simulations. Find the expectation and variance of <span class="math inline">\(\widehat\theta_n\)</span>, as a function of <span class="math inline">\(n\)</span>.</p>
-<div class="myanswers">
-<p><em>Solution.</em> As in lectures, we have <span class="math display">\[ \Exg \theta_n^{\mathrm{MC}} = \Ex \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i) \right) = \frac{1}{n}\,n\Exg\phi(X) = \Exg\phi(X) \]</span> and <span class="math display">\[ \Var\big((\theta_n^{\mathrm{MC}}\big) = \Var \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i) \right) = \frac{1}{n^2}\,n\Var\big(\phi(X)\big) = \frac{1}{n}\Var\big(\phi(X)\big) . \]</span></p>
-</div>
-</div>
-<div class="subq">
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>iii.</strong>&nbsp;&nbsp;What guidelines can be given for the choice of <span class="math inline">\(f\)</span> in practice?</p>
-<div class="myanswers">
-<p><em>Solution.</em> First, <span class="math inline">\(f\)</span> (or equivalently <span class="math inline">\(X\)</span>) should be easy to sample from. Second, we want to minimise <span class="math inline">\(\Var(\phi(X))\)</span>, so should pick <span class="math inline">\(f\)</span> approximately proportional to <span class="math inline">\(h\)</span>, so that <span class="math inline">\(\phi\)</span> is roughly constant, and therefore has low variance.</p>
-<p>In the absence of better options, <span class="math inline">\(X\)</span> being uniform on <span class="math inline">\([0, 1]\)</span> (so <span class="math inline">\(f(x) = 1\)</span> on this interval) is often not a bad choice.</p>
-</div>
-</div>
-</div>
-<div class="subq">
-<p><strong>(b)</strong>&nbsp;&nbsp;Consider evaluation the integral <span class="math display">\[ \int_0^1 x^2\,\mathrm{d}x \]</span> by Monte Carlo integration using <span class="math inline">\(f(x) = \Ind_{[0,1]}(x)\)</span>. Write down the Monte Carlo estimator <span class="math inline">\(\widehat\theta_n\)</span>.</p>
-<div class="myanswers">
-<p><em>Solution.</em> Since <span class="math inline">\(f(x) = 1\)</span> on this interval, we must take <span class="math inline">\(\phi(x) = x^2\)</span>. Thus the estimator is <span class="math display">\[\widehat\theta_n = \frac{1}{n} \sum_{i=1}^n X_i^2 ,\]</span> where <span class="math inline">\(X_i \sim \operatorname{U}[0,1]\)</span> are independent.</p>
-</div>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Explain how antithetic variables can be used in this situation, and justify briefly why their use here is guaranteed to improve efficiency.</p>
-<div class="myanswers">
-<p><em>Solution.</em> Antithetic variables attempt to reduce the variance in Monte Carlo estimation by using pairs of variables <span class="math inline">\((X_i, X'_i)\)</span> that both have the same distribution as <span class="math inline">\(X\)</span>, but where <span class="math inline">\(\phi(X)\)</span> and <span class="math inline">\(\phi(X')\)</span> are negatively correlated.</p>
-<p>In this situation, if <span class="math inline">\(X_i \sim \operatorname{U}[0,1]\)</span>, then <span class="math inline">\(X'_i = 1 - X_i\)</span> has this same distribution. The corresponding antithetic variable estimator is <span class="math display">\[\widehat\theta_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(X_i^2 + (1 - X_i)^2\big) .\]</span></p>
-<p>An anitithetic variables estimator always decreases the variance of a Monte Carlo estimator if the correlation (or, equivalently, the covariance) between <span class="math inline">\(\phi(X)\)</span> and <span class="math inline">\(\phi(X')\)</span> is negative. We saw in lectures that, if <span class="math inline">\(X \sim \operatorname{U}[0,1]\)</span> and <span class="math inline">\(\phi\)</span> is monotonically increasing, then <span class="math inline">\(\phi(X)\)</span> and <span class="math inline">\(\phi(1 - X)\)</span> have negative correlation. Since <span class="math inline">\(x^2\)</span> is increasing on <span class="math inline">\([0,1]\)</span>, that is the case here.</p>
-</div>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>, use the results <span class="math display">\[\Ex U^2 = \tfrac13 \qquad \Ex U^4 = \tfrac15 \qquad \Ex U^2(1-U)^2 = \tfrac{1}{30} \]</span> to find the correlation between <span class="math inline">\(U^2\)</span> and <span class="math inline">\((1-U)^2\)</span>. Hence, or otherwise, confirm that using antithetic variables reduces the variance of the Monte Carlo estimator by a factor of 8.</p>
-<div class="myanswers">
-<p><em>Solution.</em> We need to find the correlation between <span class="math inline">\(U^2\)</span> and <span class="math inline">\((1 - U)^2\)</span>, where <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>. The covariance is <span class="math display">\[ \operatorname{Cov}\big(U^2, (1-U)^2\big)
-= \Ex U^2(1-U)^2 - \big(\Ex U^2\big) \big(\Ex (1-U)^2\big)
-= \tfrac{1}{30} - \Big(\tfrac{1}{3}\Big)^2 = -\tfrac{7}{90} .\]</span> The variance are both <span class="math display">\[ \Var(U^2) = \Ex U^4 - \big(\Ex U^2\big)^2 = \tfrac15 - \Big(\tfrac{1}{3}\Big)^2 = \tfrac{4}{45} . \]</span> Hence, the correlation is <span class="math display">\[ \rho = \operatorname{Corr}\big(U^2, (1-U)^2\big) = \frac{-\frac{7}{90}}{\frac{4}{45}} = -\tfrac78 . \]</span></p>
-<p>The variance of the standard Monte Carlo estimator is <span class="math inline">\(\frac{1}{n}\Var(\phi(X))\)</span>, while the variance of the antithetic variables estimator is <span class="math inline">\(\frac{1+\rho}{n}\Var(\phi(X))\)</span>. So the variance changes by a factor of <span class="math inline">\(1 + \rho\)</span>, which here is <span class="math inline">\(1 - \frac{7}{8} = \frac{1}{8}\)</span>. So the variance reduces by a factor of 8, as claimed.</p>
-</div>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(You may use without proof any results about the variance of antithetic variable estimates, but you should clearly state any results you are using.)</p>
-</div>
-</div>
-<div class="myq">
-<p><strong>2.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span>. Consider importance sampling estimation for the probability <span class="math inline">\(\theta = \mathbb P(3 \leq X \leq 4)\)</span> using samples <span class="math inline">\(Y_i\)</span> from the following sample distributions: <strong>(i)</strong> <span class="math inline">\(Y \sim \operatorname{N}(1,1)\)</span>; <strong>(ii)</strong> <span class="math inline">\(Y \sim \operatorname{N}(2,1)\)</span>; <strong>(iii)</strong>&nbsp;<span class="math inline">\(Y \sim \operatorname{N}(3.5,1)\)</span>; <strong>(iv)</strong> <span class="math inline">\(Y \sim 3 + \operatorname{Exp}(1)\)</span>.</p>
-<p>Each of these four distributions gives rise to a different importance sampling method. Our aim is to compare the resulting estimates.</p>
-<div class="subq">
-<p><strong>(a)</strong>&nbsp;&nbsp;For each of the four methods, estimate the variance <span class="math inline">\(\Var\big(\frac{f(Y)}{g(Y)}\,\phi(Y)\big)\)</span>. Which of these four methods gives the best results?</p>
-<div class="myanswers">
-<p><em>Solution.</em> I used the following R code</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>phi   <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (x <span class="sc">&gt;=</span> <span class="dv">3</span>) <span class="sc">&amp;</span> (x <span class="sc">&lt;=</span> <span class="dv">4</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>pdf_x <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>pdf_y1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>samples_y1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>var1 <span class="ot">&lt;-</span> <span class="fu">var</span>((<span class="fu">pdf_x</span>(samples_y1) <span class="sc">/</span> <span class="fu">pdf_y1</span>(samples_y1)) <span class="sc">*</span> <span class="fu">phi</span>(samples_y1))</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>pdf_y2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="dv">2</span>, <span class="dv">1</span>)</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>samples_y2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">2</span>, <span class="dv">1</span>)</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>var2 <span class="ot">&lt;-</span> <span class="fu">var</span>((<span class="fu">pdf_x</span>(samples_y2) <span class="sc">/</span> <span class="fu">pdf_y2</span>(samples_y2)) <span class="sc">*</span> <span class="fu">phi</span>(samples_y2))</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>pdf_y3 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="fl">3.5</span>, <span class="dv">1</span>)</span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>samples_y3 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="fl">3.5</span>, <span class="dv">1</span>)</span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>var3 <span class="ot">&lt;-</span> <span class="fu">var</span>((<span class="fu">pdf_x</span>(samples_y3) <span class="sc">/</span> <span class="fu">pdf_y3</span>(samples_y3)) <span class="sc">*</span> <span class="fu">phi</span>(samples_y3))</span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>pdf_y4 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dexp</span>(x <span class="sc">-</span> <span class="dv">3</span>, <span class="dv">1</span>)</span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>samples_y4 <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">+</span> <span class="fu">rexp</span>(n, <span class="dv">1</span>)</span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>var4 <span class="ot">&lt;-</span> <span class="fu">var</span>((<span class="fu">pdf_x</span>(samples_y4) <span class="sc">/</span> <span class="fu">pdf_y4</span>(samples_y4)) <span class="sc">*</span> <span class="fu">phi</span>(samples_y4))</span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="fu">signif</span>(<span class="fu">c</span>(var1, var2, var3, var4), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 8.65e-05 1.40e-05 6.68e-06 1.92e-06</code></pre>
-</div>
-</div>
-<p>(For the fourth PDF, we used that the PDF of <span class="math inline">\(3 + Z\)</span> is <span class="math inline">\(f_Z(z-3)\)</span>.)</p>
-<p>We see that the fourth method <span class="math inline">\(3 + \operatorname{Exp}(1)\)</span> is the most accurate.</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(b)</strong>&nbsp;&nbsp;Determine a good estimate for <span class="math inline">\(\mathbb P(3 \leq X \leq 4)\)</span>, and discuss the accuracy of your estimate.</p>
-<div class="myanswers">
-<p><em>Solution.</em> We’ll use the fourth method, and boost the number of samples to one million.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>ISest <span class="ot">&lt;-</span> <span class="fu">mean</span>((<span class="fu">pdf_x</span>(samples_y4) <span class="sc">/</span> <span class="fu">pdf_y4</span>(samples_y4)) <span class="sc">*</span> <span class="fu">phi</span>(samples_y4))</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>IS_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>((<span class="fu">pdf_x</span>(samples_y4) <span class="sc">/</span> <span class="fu">pdf_y4</span>(samples_y4)) <span class="sc">*</span> <span class="fu">phi</span>(samples_y4)) <span class="sc">/</span> n</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(ISest, <span class="fu">sqrt</span>(IS_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.310251e-03 1.387297e-06</code></pre>
-</div>
-</div>
-<p>So our estimate is <span class="math inline">\(\widehat\theta = 0.00131\)</span>. Since the RMSE is three orders of magnitude less than the estimate, so the estimate is probably accurate to a couple of significant figures.</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(c)</strong>&nbsp;&nbsp;For each of the four methods, approximate how many samples from <span class="math inline">\(Y\)</span> are required to reduce the root-mean-square error of the estimate of <span class="math inline">\(\mathbb P(3 \leq X \leq 4)\)</span> to 1%?</p>
-<div class="myanswers">
-<p><em>Solution.</em> To get the error to 1% means an absolute error of roughly <span class="math inline">\(\epsilon = 0.01\widehat\theta\)</span>. Then we know that the required number of samples is <span class="math display">\[ n = \frac{\Var\big(\frac{f(Y)}{g(Y)}\phi(Y)\big)}{\epsilon^2} . \]</span></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>eps <span class="ot">&lt;-</span> <span class="fl">0.01</span> <span class="sc">*</span> ISest</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(var1, var2, var3, var4) <span class="sc">/</span> eps<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 503778  81273  38901  11211</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="myq">
-<p><strong>3.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>[2017 exam, Question 3]</em></p>
-<div class="subq">
-<p><strong>(a)</strong>&nbsp;&nbsp;Defining any notation you use, write down the basic Monte Carlo estimator <span class="math inline">\(\widehat\theta_n^{\mathrm{MC}}\)</span> and the importance sampling estimator <span class="math inline">\(\widehat\theta_n^{\mathrm{IS}}\)</span> for an expectation of the form <span class="math inline">\(\theta = \Exg \phi(X)\)</span>, where <span class="math inline">\(X\)</span> is a random variable with probability density function <span class="math inline">\(f\)</span>.</p>
-<p>What is the advantage of importance sampling over the standard Monte Carlo method?</p>
-<div class="myanswers">
-<p><em>Solution.</em> The basic Monte Carlo estimator is <span class="math display">\[ \widehat\theta_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n\phi(X_i) , \]</span> where the <span class="math inline">\(X_i\)</span> are independent random samples from <span class="math inline">\(X\)</span>.</p>
-<p>The basic importance sampling estimator is <span class="math display">\[ \widehat\theta_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)} \,\phi(Y_i) , \]</span> where the <span class="math inline">\(Y_i\)</span> are independent random samples from a random variable <span class="math inline">\(Y\)</span> with probability density function <span class="math inline">\(g\)</span>. We must have <span class="math inline">\(g(y) &gt; 0\)</span> whenever <span class="math inline">\(f(y) &gt; 0\)</span>.</p>
-<p>The main advantage of the importance sampling estimator is that can reduce the variance of the estimator by oversampling the most important areas of <span class="math inline">\(y\)</span>, but then downweighting those samples. Another advantage is that importance sampling can be used when it is difficult to sample from <span class="math inline">\(X\)</span>.</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(b)</strong>&nbsp;&nbsp;Prove that both the basic Monte Carlo and importance sampling estimates from part (a) are unbiased.</p>
-<div class="myanswers">
-<p><em>Solution.</em> For the standard Monte Carlo estimator, <span class="math display">\[ \Exg \theta_n^{\mathrm{MC}} = \Ex \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i) \right) = \frac{1}{n}\,n\Exg\phi(X) = \Exg\phi(X) = \theta .\]</span></p>
-<p>For the importance sampling estimator, first note that <span class="math display">\[ \mathbb E \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) = \int_{-\infty}^{+\infty} \frac{f(y)}{g(y)}\,\phi(y)\,g(y)\,\mathrm{d}y = \int_{-\infty}^{+\infty} \phi(y) \,f(y) \, \mathrm{d}y = \Exg\phi(X)  , \]</span> since <span class="math inline">\(f\)</span> is the PDF of <span class="math inline">\(X\)</span>. Hence <span class="math display">\[ \Exg \widehat\theta_n^{\mathrm{IS}} = \Exg \left(\frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)} \,\phi(Y_i) \right) = \frac{1}{n}\,n\,\Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) = \Exg \phi(X) = \theta. \]</span></p>
-<p>Hence, both estimators are unbiased.</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(c)</strong>&nbsp;&nbsp;Show that the variance of the importance sampling estimator is given by <span class="math display">\[ \Var\big(\widehat\theta_n^{\mathrm{IS}}\big) = \frac{1}{n}\int_{-\infty}^{+\infty} \frac{f(y)^2 \phi(y)^2}{g(y)}\,\mathrm{d}y - \frac{1}{n}\big(\Exg \phi(X)\big)^2. \]</span></p>
-<div class="myanswers">
-<p><em>Solution.</em> First, note that <span class="math display">\[\begin{align} \Var \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right)
-&amp;= \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right)^2 - \theta^2 \\
-&amp;= \int_{-\infty}^{+\infty} \left(\frac{f(y)}{g(y)}\,\phi(y)\right)^2 g(y)\,\mathrm{d}y  - \theta^2\\
-&amp;= \int_{-\infty}^{+\infty} \frac{f(y)^2}{g(y)^2}\,\phi(y)^2 \,g(y)\,\mathrm{d}y  - \theta^2\\
-&amp;= \int_{-\infty}^{+\infty} \frac{f(y)^2}{g(y)}\,\phi(y)^2 \,\mathrm{d}y  - \theta^2 \end{align} \]</span> Second, we have <span class="math display">\[ \Var\big(\widehat\theta_n^{\mathrm{IS}}\big) = \Var \left(\frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)} \,\phi(Y_i) \right) = \frac{1}{n} \Var \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) . \]</span> Putting these together proves the result.</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(d)</strong>&nbsp;&nbsp;Let <span class="math inline">\(X \sim \operatorname{N}(0,2)\)</span> and <span class="math inline">\(a \in \mathbb R\)</span>. We want to estimate <span class="math inline">\(\theta = \Ex \big(\sqrt{2}\exp(-(X-a)^2/4)\big)\)</span>, using importance sampling with samples <span class="math inline">\(Y \sim \operatorname{N}(\mu, 1)\)</span> for some <span class="math inline">\(\mu \in \mathbb R\)</span>. Using the result from part (c), or otherwise, show that in the case the variance of the importance sampling estimator <span class="math inline">\(\widehat\theta_n^{\mathrm{IS}}\)</span> is given by <span class="math display">\[ \Var\big(\widehat\theta_n^{\mathrm{IS}}\big) = \frac{\exp(\mu^2 - a\mu) - \theta^2}{n} . \]</span> <em>[Note: This equation has changed since an earlier version of the question.]</em></p>
-<div class="myanswers">
-<p><em>Solution.</em> It’s clear, using part (c), that it will suffice to show that <span class="math display">\[ \int_{-\infty}^{+\infty} \frac{f(y)^2 \phi(y)^2}{g(y)}\,\mathrm{d}y = \exp(\mu^2 - a\mu) . \]</span> Here, we have <span class="math display">\[ \begin{align}
-f(y) &amp;= \frac{1}{\sqrt{4\pi}} \exp\big(-\tfrac14 y^2 \big) \\
-g(y) &amp;= \frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 (y-\mu)^2 \big) \\
-\phi(y) &amp;= \sqrt{2} \exp\big(-\tfrac14 (y-a)^2 \big) .
-\end{align} \]</span> Therefore, by a long algebra slog, we have <span class="math display">\[ \begin{align}
-\frac{f(y)^2 \phi(y)^2}{g(y)} &amp;= \frac{\frac{1}{4\pi} \exp\big(-\tfrac12 y^2 \big)\times 2\exp\big(-\tfrac12 (y-a)^2 \big)}{\frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 (y-\mu)^2 \big)} \\
-&amp;= \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y^2 + (y-a)^2 - (y-\mu)^2 \big)\Big) \\
-&amp;= \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y^2 - 2(a - \mu)y + a^2 + \mu^2\big)\Big) \\
-&amp;= \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big((y - (a - \mu))^2 - (a- \mu)^2 + a^2 - \mu^2\big)\Big) \\
-&amp;= \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big((y - (a - \mu))^2 + 2a\mu - 2\mu^2 \big)\Big) \\
-&amp;=  \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y - (a - \mu)\big)^2\Big)\exp(\mu^2 + 2a),
-\end{align} \]</span> where we ‘completed the square’ on the fourth line. Thus <span class="math display">\[ \begin{align}
-\int_{-\infty}^{+\infty} \frac{f(y)^2 \phi(y)^2}{g(y)}\,\mathrm{d}y
-&amp;= \int_{-\infty}^{+\infty}  \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y - (a - \mu)\big)^2\Big)\exp(\mu^2 + 2a) \,\mathrm{d}y\\
-&amp;= \exp(\mu^2 + 2a) \int_{-\infty}^{+\infty}  \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y - (a - \mu)\big)^2\Big)\,\mathrm{d}y \\
-&amp;= \exp(\mu^2 + 2a) ,
-\end{align} \]</span> since the big integral on the right is the integral of the PDF of a normal <span class="math inline">\(\operatorname{N}(a-\mu, 1)\)</span> distribution, so equals 1.</p>
-<p>Hence, we have proved the result.</p>
-</div>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For fixed <span class="math inline">\(n\)</span> and <span class="math inline">\(a\)</span>, find the value of <span class="math inline">\(\mu\)</span> for which the importance sampling estimator has the smallest mean-square error. Comment on the result.</p>
-<div class="myanswers">
-<p><em>Solution.</em> Minimising this expression is equivalent to minimising <span class="math inline">\(\mu^2 + a\mu\)</span>. By differentiating with respect to <span class="math inline">\(\mu\)</span> (or otherwise), we see that this is at <span class="math inline">\(a = \tfrac12 \mu\)</span>.</p>
-</div>
-</div>
-</div>
-<div class="myq">
-<p><strong>4.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Answer the following question “by hand”, without using R. You may <em>check</em> your answer with R, if you wish.)</p>
-<div class="subq">
-<p><strong>(a)</strong>&nbsp;&nbsp;Consider the LCG with modulus <span class="math inline">\(m = 2^4 = 16\)</span>, multiplier <span class="math inline">\(a = 5\)</span>, and increment <span class="math inline">\(a = 8\)</span>. What is the period of this LCG when started from the seed <strong>(i)</strong> <span class="math inline">\(x_1 = 1\)</span>; <strong>(ii)</strong> <span class="math inline">\(x_1 = 2\)</span>?</p>
-<div class="myanswers">
-<p><em>Solution.</em> For <strong>(i)</strong>, we have <span class="math display">\[ \begin{align}
-x_1 &amp;= 1 \\
-x_2 &amp;= (5 \times 1 + 8) \bmod 16 = 13 \bmod 16 = 13 \\
-x_3 &amp;= (5 \times 13 + 8) \bmod 16 = 73 \bmod 16 = 9 \\
-x_4 &amp;= (5 \times 9 + 8) \bmod 16 = 53 \bmod 16 = 5 \\
-x_5 &amp;= (5 \times 5 + 8) \bmod 16 = 33 \bmod 16 = 1 .
-\end{align}\]</span> Here, <span class="math inline">\(x_5\)</span> is a repeat of <span class="math inline">\(x_1\)</span>, so the period is <span class="math inline">\(5-1=4\)</span>.</p>
-<p>For <strong>(ii)</strong>, we have <span class="math display">\[ \begin{align}
-x_1 &amp;= 2 \\
-x_2 &amp;= (5 \times 2 + 8) \bmod 16 = 18 \bmod 16 = 2 .
-\end{align}\]</span> This is an immediate repeat, so the period is 2.</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(b)</strong> Consider the LCG with modulus <span class="math inline">\(m = 2^4 = 16\)</span>, multiplier <span class="math inline">\(a = 2\)</span>, and increment <span class="math inline">\(c = 4\)</span>. Start from the seed <span class="math inline">\(x_1 = 3\)</span>. <strong>(i)</strong> When do we first see a repeat output? <strong>(ii)</strong> What is the period?</p>
-<div class="myanswers">
-<p><em>Solution.</em> We have <span class="math display">\[ \begin{align}
-x_1 &amp;= 3 \\
-x_2 &amp;= (2 \times 3 + 4) \bmod 16 = 10 \bmod 16 = 10 \\
-x_3 &amp;= (2 \times 10 + 4) \bmod 16 = 24 \bmod 16 = 8 \\
-x_4 &amp;= (2 \times 8 + 4) \bmod 16 = 20 \bmod 16 = 4 \\
-x_5 &amp;= (2 \times 4 + 4) \bmod 16 = 12 \bmod 16 = 12 \\
-x_6 &amp;= (2 \times 12 + 4) \bmod 16 = 28 \bmod 16 = 12 .
-\end{align}\]</span></p>
-<p><strong>(i)</strong> The first repeat is <span class="math inline">\(x_6\)</span>.</p>
-<p><strong>(ii)</strong> Since 12 is a fixed point of this LCG, the remainder of the sequence is 12 forever, with period 1.</p>
-</div>
-</div>
-</div>
-<div class="myq">
-<p><strong>5.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider the following LCGs with modulus <span class="math inline">\(m = 2^8 = 256\)</span>:</p>
-<p>&nbsp;(i) <span class="math inline">\(a = 31\)</span>, <span class="math inline">\(c = 47\)</span>;</p>
-<p>&nbsp;(ii) <span class="math inline">\(a = 21\)</span>, <span class="math inline">\(c = 47\)</span>;</p>
-<p>&nbsp;(iii) <span class="math inline">\(a = 129\)</span>, <span class="math inline">\(c = 47\)</span>.</p>
-<div class="subq">
-<p><strong>(a)</strong>&nbsp;&nbsp;Without using a computer, work out which of these LCGs have a full period of 256.</p>
-<div class="myanswers">
-<p><em>Solution.</em></p>
-<p>&nbsp;(i) Here, <span class="math inline">\(a\)</span> is <span class="math inline">\(3 \bmod 4\)</span>, not <span class="math inline">\(1 \bmod 4\)</span>, so this does not have full period of 256.</p>
-<p>&nbsp;(ii) Here, <span class="math inline">\(c\)</span> is odd and <span class="math inline">\(a\)</span> is <span class="math inline">\(1 \bmod 4\)</span>, so this does have full period of 256.</p>
-<p>&nbsp;(iii) Here, <span class="math inline">\(c\)</span> is odd and <span class="math inline">\(a\)</span> is <span class="math inline">\(1 \bmod 4\)</span>, so this does have full period of 256.</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(b)</strong>&nbsp;&nbsp;Which of these LCGs would make good pseudorandom number generators?</p>
-<div class="myanswers">
-<p><em>Solution.</em> We will check the random appearance of the outputs using R.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>lcg <span class="ot">&lt;-</span> <span class="cf">function</span>(n, modulus, mult, incr, seed) {</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  samples <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  samples[<span class="dv">1</span>] <span class="ot">&lt;-</span> seed</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    samples[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> (mult <span class="sc">*</span> samples[i] <span class="sc">+</span> incr) <span class="sc">%%</span> modulus</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(samples)</span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>&nbsp;(i) This does not have full period, so is unlikely to be good PRNG. Let’s check</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">^</span><span class="dv">8</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>seed <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">lcg</span>(m, m, <span class="dv">31</span>, <span class="dv">47</span>, seed))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="solutions_files/figure-html/unnamed-chunk-18-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>The picture confirms that this does not look random, and in fact has very short period of 16.</p>
-<p>&nbsp;(ii) This does have full period, so is a candidate for a good PRNG if the output looks random.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">lcg</span>(m, m, <span class="dv">21</span>, <span class="dv">47</span>, seed))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="solutions_files/figure-html/unnamed-chunk-19-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>This mostly looks random, but there does appear to be a sort of thick diagonal line in the picture going from bottom left to rop right. I’d might be happy to use this for casual statistical work – the lack of randomness does not seem super-serious – but I would avoid this for cryptographic purposes, for example.</p>
-<p>&nbsp;(iii) This does have full period, so is a candidate for a good PRNG if the output looks random.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">lcg</span>(m, m, <span class="dv">129</span>, <span class="dv">47</span>, seed))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="solutions_files/figure-html/unnamed-chunk-20-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Even though this has full period, there is a very clear non-random pattern. This is not appropriate for a PRNG.</p>
-</div>
-</div>
-</div>
-<div class="myq">
-<p><strong>6.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider an LCG with modulus <span class="math inline">\(m = 2^{10} = 1024\)</span>, multiplier <span class="math inline">\(a = 125\)</span>, and increment <span class="math inline">\(c = 5\)</span>. Using R:</p>
-<div class="subq">
-<p><strong>(a)</strong> Generate 200 outputs in <span class="math inline">\(\{0, 1, \dots, 1023\}\)</span> from this LCG, starting with the seed <span class="math inline">\(x_1 = 1\)</span>.</p>
-</div>
-<div class="subq">
-<p><strong>(b)</strong>&nbsp;&nbsp;Convert these to 200 outputs to pseudorandom uniform samples in <span class="math inline">\([0, 1]\)</span>.</p>
-</div>
-<div class="subq">
-<p><strong>(c)</strong>&nbsp;&nbsp;Using these samples, obtain a Monte Carlo estimate for <span class="math inline">\(\mathbb E\cos(U)\)</span>, where <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>.</p>
-</div>
-<div class="subq">
-<p><strong>(d)</strong>&nbsp;&nbsp;What is the root-mean-square error of your estimate?</p>
-</div>
-<div class="subq">
-<p><strong>(e)</strong>&nbsp;&nbsp;Repeat parts (a) to (d) for the LCG with the same <span class="math inline">\(m\)</span>, but now with multiplier <span class="math inline">\(a = 127\)</span> and increment <span class="math inline">\(c = 4\)</span>.</p>
-</div>
-</div>
 
 
 </section>

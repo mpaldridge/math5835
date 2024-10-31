@@ -6,4 +6,3 @@
 
 # Problem Sheet 2
 
-{{< include P2-content.qmd >}}

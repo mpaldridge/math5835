@@ -326,7 +326,7 @@ window.Quarto = {
 
 
 <p>We’ve seen how to generate uniform random variates <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>, either using true physical randomness or the output of a pseudorandom number generator. But in statistics – whether performing Monte Carlo estimation or anything else – we typically want to sample from some other distribution <span class="math inline">\(X\)</span>.</p>
-<p>In the next five lectures, we will look at ways we can manipulate the uniform random variable <span class="math inline">\(U\)</span> to take on different distributions instead. We start today by looking at some important special cases.</p>
+<p>In the next five lectures, we will look at ways we can transform the uniform random variable <span class="math inline">\(U\)</span> to take on different distributions instead. We start today by looking at some important special cases.</p>
 <section id="uniform-random-variables" class="level2" data-number="12.1">
 <h2 data-number="12.1" class="anchored" data-anchor-id="uniform-random-variables"><span class="header-section-number">12.1</span> Uniform random variables</h2>
 <p>We know how to generate <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>. But suppose we want to generate <span class="math inline">\(X \sim \operatorname{U}[a,b]\)</span> instead, for some <span class="math inline">\(a &lt; b\)</span>; how can we do that.</p>
@@ -353,7 +353,7 @@ window.Quarto = {
 <p>But what if we very formally wanted to <em>prove</em> that <span class="math inline">\(X = (b-a)U + a\)</span> definitely has the distribution <span class="math inline">\(X \sim \operatorname{U}[a,b]\)</span>; how could we do that?</p>
 <p>The best way to give a formal proof of something like this is to use the <strong>cumulative distribution function</strong> (CDF). Recall that the CDF <span class="math inline">\(F_Y\)</span> of a distribution <span class="math inline">\(Y\)</span> is the function <span class="math inline">\(F_Y(y) = \mathbb P(Y \leq y)\)</span>. One benefit of the CDF is it works equally well for both discrete and continuous random variables, so we don’t need to give separate arguments for discrete and continuous cases.</p>
 <p>The CDF of the standard uniform distribution <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span> is <span id="eq-cdf-u"><span class="math display">\[ F_U(u) = \begin{cases} 0 &amp; u &lt; 0 \\ u &amp; 0 \leq u \leq 1 \\ 1 &amp; u &gt; 1 , \end{cases}  \tag{12.1}\]</span></span> and the CDF of any uniform distribution <span class="math inline">\(X \sim \operatorname{U}[a,b]\)</span> is <span id="eq-cdf-x"><span class="math display">\[ F_X(x) = \begin{cases} 0 &amp; x &lt; a \\ \displaystyle\frac{x - a}{b-a} &amp; a \leq x \leq b \\ 1 &amp; x &gt; b . \end{cases}  \tag{12.2}\]</span></span> So to show that <span class="math inline">\(X = (b-a)U + a \sim \operatorname{U}[a,b]\)</span>, we take the fact that <span class="math inline">\(U\)</span> has the CDF in <a href="#eq-cdf-u" class="quarto-xref">Equation&nbsp;<span>12.1</span></a> and try to use it to show that <span class="math inline">\(X\)</span> has the CDF in <a href="#eq-cdf-x" class="quarto-xref">Equation&nbsp;<span>12.2</span></a>.</p>
-<p>Indeed, we have <span class="math display">\[ F_X(x) = \mathbb P(X \leq x) = \mathbb P\big((b-a)U + a \leq x\big) = \mathbb P \left( U \leq \frac{x - a}{b-a}\right) . \]</span> But putting <span class="math inline">\(u = (x - a)/(b - a)\)</span> in <a href="#eq-cdf-u" class="quarto-xref">Equation&nbsp;<span>12.1</span></a>, does indeed give the CDF in <a href="#eq-cdf-x" class="quarto-xref">Equation&nbsp;<span>12.2</span></a>. Thw lower boundary <span class="math inline">\(u &lt; 0\)</span> becomes <span class="math inline">\(x &lt; 0 \times (b-a) + a = a\)</span>; the upper boundary <span class="math inline">\(u &gt; b\)</span> becomes <span class="math inline">\(x &gt; 1 \times(b-a) + a = b\)</span>; and, in between, the CDF <span class="math inline">\(u\)</span> becomes <span class="math inline">\((x - a)/(b - a)\)</span>. Thus we have proven that <span class="math inline">\(X\)</span> has the CDF of the <span class="math inline">\(\operatorname{U}[a,b]\)</span> distribution, as required.</p>
+<p>Indeed, we have <span class="math display">\[ F_X(x) = \mathbb P(X \leq x) = \mathbb P\big((b-a)U + a \leq x\big) = \mathbb P \left( U \leq \frac{x - a}{b-a}\right) . \]</span> But putting <span class="math inline">\(u = (x - a)/(b - a)\)</span> in <a href="#eq-cdf-u" class="quarto-xref">Equation&nbsp;<span>12.1</span></a>, does indeed give the CDF in <a href="#eq-cdf-x" class="quarto-xref">Equation&nbsp;<span>12.2</span></a>. The lower boundary <span class="math inline">\(u &lt; 0\)</span> becomes <span class="math inline">\(x &lt; 0 \times (b-a) + a = a\)</span>; the upper boundary <span class="math inline">\(u &gt; b\)</span> becomes <span class="math inline">\(x &gt; 1 \times(b-a) + a = b\)</span>; and, in between, the CDF <span class="math inline">\(u\)</span> becomes <span class="math inline">\((x - a)/(b - a)\)</span>. Thus we have proven that <span class="math inline">\(X\)</span> has the CDF of the <span class="math inline">\(\operatorname{U}[a,b]\)</span> distribution, as required.</p>
 </section>
 <section id="discrete-random-variables" class="level2" data-number="12.2">
 <h2 data-number="12.2" class="anchored" data-anchor-id="discrete-random-variables"><span class="header-section-number">12.2</span> Discrete random variables</h2>
@@ -424,31 +424,6 @@ window.Quarto = {
 <p>Suppose I want a sample from this, based on the uniform variate <span class="math inline">\(u_1 = 0.7980\)</span>. We see that <span class="math inline">\(u_1\)</span> is bigger that <span class="math inline">\(F_X(2) = 0.5\)</span> (the upper end of the “2” interval) but less than <span class="math inline">\(F_X(3) = 0.8125\)</span> (the upper end of the “3” interval), so falls into the “3” interval. So our first binomial variate is <span class="math inline">\(x_1 = 3\)</span>.</p>
 <p>If we then got the next uniform variate <span class="math inline">\(u_2 = 0.4353\)</span>, we would see that <span class="math inline">\(u_2\)</span> is between <span class="math inline">\(F_X(1) = 0.1875\)</span> and <span class="math inline">\(F_X(2) = 0.5\)</span>, so would take <span class="math inline">\(x_2 = 2\)</span> for our next binomial variate.</p>
 </div>
-<!--
-## Inverse CDF
-
-The uniform and discrete examples we have both involved the cumulative distribution function $F_X(x) = \mathbb P(X \leq x)$. The CDF will be of central importance in generating general continuous random variables too (see the next lecture). In fact, it is the *inverse* of the CDF that will play a crucial role.
-
-It seems natural to define the inverse $F_X^{-1}$ of the CDF in just the same way we would define the inverse of any other function: that $F_X{^-1}(u)$ is the unique value $x$ such that $F_X(x) = u$.
-
-\[picture\]
-
-There are two problems with this definition. First, if there are intervals on the line where $X$ has probability zero, then all the $x$s in that interval have the same value of $F_X(x) = u$, so there is no "*unique* value $x$ such that $F_X(x) = u$. Second, if $X$ has any point masses, points $x$ with strictly positive probability, then $F_X$ may "jump past" the value $u$, so there is *no* value $x$ such that $F_X(u)$.
-
-\[picture\]
-
-It turns out that the best way to solve this is the following. For the first obstacle, if there are many points $x$, with $F_X(x) = u$ we take the smallest of them to be $F_X^{-1}(u)$. For the second obstacle, we "round down" by decreasing $u$ until we hit a point $x$ to be $F_X^{-1}(u)$. These two cases are illustrated below.
-
-\[picture\]
-
-These two awkward cases can be encapsulated in the following definition.
-
-::: {#def-cdf-inv}
-Let $X$ be a random variable with cumulative distribution function $F_X(x) = \mathbb P(X \leq x)$. Then the **inverse cumulative distribution function** (inverse CDF) $F_X^{-1}$ is defined for $u \in (0,1)$ by $$ F^{-1}_X(u) = \inf \big \{x : F_X(x) \geq u \big\} . $$
-:::
-
-You should check that you agree this definition matches the discussion above. (The "infimum", or "inf", is like "minimum", but allows for the possibility the minimum might not be achieved.) And remember it -- it's coming back in the next lecture!
--->
 <p><strong>Next time:</strong> <em>Sampling from continuous distribution using the CDF.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
