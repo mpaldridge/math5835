@@ -6,21 +6,21 @@
 
 We have started looking at how to transform a standard uniform random variable $U \sim \operatorname{U}[0,1]$ into any other distribution $X$.
 
-Last lecture, we saw how to do this for other uniform distributions and for discrete random variables. Booth involved the cumulative distribution function $F_X(x) = \mathbb P(X \leq x)$. For generating a wider class of random variables (including continuous random variables) the CDF will continue to be important. In fact, it is the *inverse* of the CDF that will play a crucial role.
+Last lecture, we saw how to do this for other uniform distributions and for discrete random variables. Booth involved the cumulative distribution function $F(x) = \mathbb P(X \leq x)$. For generating a wider class of random variables (including continuous random variables) the CDF will continue to be important. In fact, it is the *inverse* of the CDF that will play a crucial role.
 
-It seems natural to define the inverse $F_X^{-1}$ of the CDF in just the same way we would define the inverse of any other function: that $F_X^{-1}(u)$ is the unique value $x$ such that $F_X(x) = u$. This is illustrated in the graph below.
+It seems natural to define the inverse $F^{-1}$ of the CDF in just the same way we would define the inverse of any other function: that $F^{-1}(u)$ is the unique value $x$ such that $F(x) = u$. This is illustrated in the figure below.
 
 \[picture\]
 
 This definition works fine for a purely continuous distribution that doesn't have any "gaps" in the set of values it can take. But for a general random variable, there are two problems with this definition.
 
-1. If $X$ has any point masses -- points $x$ with strictly positive probability $\mathbb P(X = x) > 0$ of hitting that point exactly -- then $F_X$ may "jump past" the value $u$, so there is *no* value $x$ such that $F_X(u)$. (See the blue line on the graph below.)
+1. If $X$ has any point masses -- points $x$ with strictly positive probability $\mathbb P(X = x) > 0$ of hitting that point exactly -- then $F_X$ may "jump past" the value $u$, so there is *no* value $x$ such that $F(u)$. (See the blue line on the graph below.)
 
-2. If there is an interval on the line where $X$ has probability zero, then all the $x$s in that interval have the same value of $F_X(x) = u$, so there is no "*unique* value $x$ such that $F_X(x) = u$. (See the red line on the graph below.)
+2. If there is an interval on the line where $X$ has probability zero, then all the $x$s in that interval have the same value of $F(x) = u$, so there is no "*unique* value $x$ such that $F(x) = u$. (See the red line on the graph below.)
 
 \[picture\]
 
-It turns out that the best way to solve this is the following. For the first obstacle, if there are many points $x$, with $F_X(x) = u$ we take the *smallest* of them to be $F_X^{-1}(u)$. For the second obstacle, we "round down" by decreasing $u$ until we hit a point $x$ to be $F_X^{-1}(u)$. These two cases are illustrated below.
+It turns out that the best way to solve this is the following. For the first obstacle, if there are many points $x$, with $F_X(x) = u$ we take the smallest of them to be $F^{-1}(u)$. For the second obstacle, we "round up" by taking the value of the smallest $x$ such that $F(x) > u$. These two cases are illustrated below.
 
 \[picture\]
 
@@ -47,8 +47,11 @@ We need to show that $\mathbb P(X \leq x) = F(x)$ when this is in $(0,1)$. The p
 $$ \mathbb P(X \leq x) = \mathbb P\big(F^{-1}(U) \leq x\big) = \mathbb P\big(U \leq F(x)\big) = F(x), $$
 where we have simply "undone" the function $F^{-1}$ and used that $\mathbb P(U \leq u) = u$ for $u \in (0,1)$.
 
-For the general case, we need to be just a little bit more careful .......
-$$ \mathbb P(X \leq x) = $$
+For the general case, we need to be just a little bit more careful. We have
+$$ \mathbb P(X \leq x) = \mathbb P\big(F^{-1}(U) \leq x\big) = \mathbb P\big(\min\{y : F(y) \geq U \} \leq x \big) .$$
+If $x$ is bigger than the minimum $y$ with $F(y) \geq u$, then certainly $F(x) \geq u$ as well; while if $F(x) \geq u$, then $x$ must be at least as big as the minimum $y$ for which $F(y) \geq u$. Hence $\min\{y : F(y) \geq U \} \leq x$ if and only is $F(x) \geq U$. So
+$$ \mathbb P(X \leq x) = \mathbb P\big(\min\{y : F(y) \geq U \} \leq x \big) = \mathbb P\big(F(x) \geq U\big) = \mathbb P(U \leq F(x)\big) = F(x), $$
+as before.
 :::
 
 The method -- known as the **inverse transform method** gives a simple way to generate any random variable $X$ for which the inverse CDF $F_X^{-1}$ can be computed easily.
@@ -153,6 +156,8 @@ Actually, that's not quite true. Rather transforming one standard uniform $U$ in
 First, let's note it suffices to produce a standard normal $X \sim \operatorname{N}(0,1)$. Any other normal distribution $W \sim \operatorname{N}(\mu, \sigma^2)$ can then be formed as $W = \sigma X + \mu$.
 
 The idea of the Box--Muller transform is based on converting the two standard normal distributions $(X, Y)$ from cartesian coordinates into polar coordinates $(R, \Theta)$. (Those of you who have know [how to calculate the Gaussian integral](https://mpaldridge.github.io/math1710/L16-normal.html#normal-properties) will have seen this idea before.)
+
+[picture]
 
 ::: {#thm-box-muller-1}
 Let $X, Y \sim \operatorname{N}(0,1)$ be independent standard normal distributions. Write
