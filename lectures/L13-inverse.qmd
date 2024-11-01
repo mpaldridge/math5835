@@ -1,7 +1,7 @@
 # Inverse transform method
 
 {{< include ../_header.qmd >}}
-<!--
+
 ## Inverse CDF
 
 We have started looking at how to transform a standard uniform random variable $U \sim \operatorname{U}[0,1]$ into any other distribution $X$.
@@ -58,7 +58,7 @@ This is not all random variable, however. In particular, the inverse CDF of the 
 ## Examples
 
 Let's see some examples. The idea for all these problems is "Write $U = F(X)$, then invert, to get $X = F^{-1}(U)$."
--->
+
 ::: {#exm-exp}
 Let $X \sim \operatorname{Exp}(\lambda)$ be an exponential distribution with rate $\lambda$. This has PDF $f(x) = \lambda \ee^{-\lambda x}$ for $x \geq 0$ and CDF $F(x) = 1 - \ee^{-\lambda x}$.
 
@@ -85,7 +85,7 @@ instead.
 
 Alternatively, since $X$ and $X'$ are not independent and both have the same exponential distribution, they are a candidate to use as an antithetic pair in Monte Carlo estimation.
 :::
-<!--
+
 ::: {#exm-rayleigh}
 Consider $X$ with PDF
 $$ f(x) = \frac{x}{\gamma} \,\exp \left(-\frac{x^2}{2\gamma}\right)$$
@@ -183,7 +183,7 @@ Y &= R\sin \Theta =  \sqrt{-2 \log U} \sin(2\pi V) .
 \end{align} $$
 
 Let's check the just the $X$.
--->
+
 ```{r}
 n <- 1e5
 unif1 <- runif(n)

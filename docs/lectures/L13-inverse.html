@@ -299,8 +299,17 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#inverse-cdf" id="toc-inverse-cdf" class="nav-link active" data-scroll-target="#inverse-cdf"><span class="header-section-number">13.1</span> Inverse CDF</a></li>
+  <li><a href="#inverse-transform" id="toc-inverse-transform" class="nav-link" data-scroll-target="#inverse-transform"><span class="header-section-number">13.2</span> Inverse transform</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">13.3</span> Examples</a></li>
+  <li><a href="#boxmuller-transform" id="toc-boxmuller-transform" class="nav-link" data-scroll-target="#boxmuller-transform"><span class="header-section-number">13.4</span> Box–Muller transform</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -333,64 +342,42 @@ window.Quarto = {
 \newcommand{\Corr}{\operatorname{Corr}}
 \newcommand{\ee}{\mathrm{e}}\]</span></p>
 </div>
-<!--
-## Inverse CDF
-
-We have started looking at how to transform a standard uniform random variable $U \sim \operatorname{U}[0,1]$ into any other distribution $X$.
-
-Last lecture, we saw how to do this for other uniform distributions and for discrete random variables. Booth involved the cumulative distribution function $F_X(x) = \mathbb P(X \leq x)$. For generating a wider class of random variables (including continuous random variables) the CDF will continue to be important. In fact, it is the *inverse* of the CDF that will play a crucial role.
-
-It seems natural to define the inverse $F_X^{-1}$ of the CDF in just the same way we would define the inverse of any other function: that $F_X^{-1}(u)$ is the unique value $x$ such that $F_X(x) = u$. This is illustrated in the graph below.
-
-\[picture\]
-
-This definition works fine for a purely continuous distribution that doesn't have any "gaps" in the set of values it can take. But for a general random variable, there are two problems with this definition.
-
-1. If $X$ has any point masses -- points $x$ with strictly positive probability $\mathbb P(X = x) > 0$ of hitting that point exactly -- then $F_X$ may "jump past" the value $u$, so there is *no* value $x$ such that $F_X(u)$. (See the blue line on the graph below.)
-
-2. If there is an interval on the line where $X$ has probability zero, then all the $x$s in that interval have the same value of $F_X(x) = u$, so there is no "*unique* value $x$ such that $F_X(x) = u$. (See the red line on the graph below.)
-
-\[picture\]
-
-It turns out that the best way to solve this is the following. For the first obstacle, if there are many points $x$, with $F_X(x) = u$ we take the *smallest* of them to be $F_X^{-1}(u)$. For the second obstacle, we "round down" by decreasing $u$ until we hit a point $x$ to be $F_X^{-1}(u)$. These two cases are illustrated below.
-
-\[picture\]
-
-These two awkward cases can be encapsulated in the following definition.
-
-::: {#def-cdf-inv}
-Let $X$ be a random variable with cumulative distribution function $F_X(x) = \mathbb P(X \leq x)$. Then the **inverse cumulative distribution function** (inverse CDF) $F_X^{-1}$ is defined for $u \in (0,1)$ by
-$$ F^{-1}_X(u) = \min \big \{x : F_X(x) \geq u \big\} . $$
-:::
-
-You should check that you agree this definition matches the discussion above.
-
-
-## Inverse transform
-
-The inverse transform method works like this: To generate $X$, simply apply the inverse CDF $F_X^{-1}$ to a standard uniform random variable $U$.
-
-::: {#thm-inv-trans}
-Let $F$ be a cumulative distribution function, and let $F^{-1}$ be its inverse. Let $U \sim \operatorname{U}[0,1]$. Then $X = F^{-1}(U)$ has cumulative distribution function $F$.
-:::
-
-::: {.proof}
-We need to show that $\mathbb P(X \leq x) = F(x)$ when this is in $(0,1)$. The proof is very easy if $F$ has no "gaps" or "jumps" as described above. Then, we simply have
-$$ \mathbb P(X \leq x) = \mathbb P\big(F^{-1}(U) \leq x\big) = \mathbb P\big(U \leq F(x)\big) = F(x), $$
-where we have simply "undone" the function $F^{-1}$ and used that $\mathbb P(U \leq u) = u$ for $u \in (0,1)$.
-
-For the general case, we need to be just a little bit more careful .......
-$$ \mathbb P(X \leq x) = $$
-:::
-
-The method -- known as the **inverse transform method** gives a simple way to generate any random variable $X$ for which the inverse CDF $F_X^{-1}$ can be computed easily.
-
-This is not all random variable, however. In particular, the inverse CDF of the normal distribution does not have a closed form, so this does not give a way of sampling normal distributions. Later we'll see other methods that allow us to sample from normal random variables.
-
-## Examples
-
-Let's see some examples. The idea for all these problems is "Write $U = F(X)$, then invert, to get $X = F^{-1}(U)$."
--->
+<section id="inverse-cdf" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="inverse-cdf"><span class="header-section-number">13.1</span> Inverse CDF</h2>
+<p>We have started looking at how to transform a standard uniform random variable <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span> into any other distribution <span class="math inline">\(X\)</span>.</p>
+<p>Last lecture, we saw how to do this for other uniform distributions and for discrete random variables. Booth involved the cumulative distribution function <span class="math inline">\(F_X(x) = \mathbb P(X \leq x)\)</span>. For generating a wider class of random variables (including continuous random variables) the CDF will continue to be important. In fact, it is the <em>inverse</em> of the CDF that will play a crucial role.</p>
+<p>It seems natural to define the inverse <span class="math inline">\(F_X^{-1}\)</span> of the CDF in just the same way we would define the inverse of any other function: that <span class="math inline">\(F_X^{-1}(u)\)</span> is the unique value <span class="math inline">\(x\)</span> such that <span class="math inline">\(F_X(x) = u\)</span>. This is illustrated in the graph below.</p>
+<p>[picture]</p>
+<p>This definition works fine for a purely continuous distribution that doesn’t have any “gaps” in the set of values it can take. But for a general random variable, there are two problems with this definition.</p>
+<ol type="1">
+<li><p>If <span class="math inline">\(X\)</span> has any point masses – points <span class="math inline">\(x\)</span> with strictly positive probability <span class="math inline">\(\mathbb P(X = x) &gt; 0\)</span> of hitting that point exactly – then <span class="math inline">\(F_X\)</span> may “jump past” the value <span class="math inline">\(u\)</span>, so there is <em>no</em> value <span class="math inline">\(x\)</span> such that <span class="math inline">\(F_X(u)\)</span>. (See the blue line on the graph below.)</p></li>
+<li><p>If there is an interval on the line where <span class="math inline">\(X\)</span> has probability zero, then all the <span class="math inline">\(x\)</span>s in that interval have the same value of <span class="math inline">\(F_X(x) = u\)</span>, so there is no “<em>unique</em> value <span class="math inline">\(x\)</span> such that <span class="math inline">\(F_X(x) = u\)</span>. (See the red line on the graph below.)</p></li>
+</ol>
+<p>[picture]</p>
+<p>It turns out that the best way to solve this is the following. For the first obstacle, if there are many points <span class="math inline">\(x\)</span>, with <span class="math inline">\(F_X(x) = u\)</span> we take the <em>smallest</em> of them to be <span class="math inline">\(F_X^{-1}(u)\)</span>. For the second obstacle, we “round down” by decreasing <span class="math inline">\(u\)</span> until we hit a point <span class="math inline">\(x\)</span> to be <span class="math inline">\(F_X^{-1}(u)\)</span>. These two cases are illustrated below.</p>
+<p>[picture]</p>
+<p>These two awkward cases can be encapsulated in the following definition.</p>
+<div id="def-cdf-inv" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 13.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable with cumulative distribution function <span class="math inline">\(F_X(x) = \mathbb P(X \leq x)\)</span>. Then the <strong>inverse cumulative distribution function</strong> (inverse CDF) <span class="math inline">\(F_X^{-1}\)</span> is defined for <span class="math inline">\(u \in (0,1)\)</span> by <span class="math display">\[ F^{-1}_X(u) = \min \big \{x : F_X(x) \geq u \big\} . \]</span></p>
+</div>
+<p>You should check that you agree this definition matches the discussion above.</p>
+</section>
+<section id="inverse-transform" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="inverse-transform"><span class="header-section-number">13.2</span> Inverse transform</h2>
+<p>The inverse transform method works like this: To generate <span class="math inline">\(X\)</span>, simply apply the inverse CDF <span class="math inline">\(F_X^{-1}\)</span> to a standard uniform random variable <span class="math inline">\(U\)</span>.</p>
+<div id="thm-inv-trans" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 13.1</strong></span> Let <span class="math inline">\(F\)</span> be a cumulative distribution function, and let <span class="math inline">\(F^{-1}\)</span> be its inverse. Let <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>. Then <span class="math inline">\(X = F^{-1}(U)\)</span> has cumulative distribution function <span class="math inline">\(F\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We need to show that <span class="math inline">\(\mathbb P(X \leq x) = F(x)\)</span> when this is in <span class="math inline">\((0,1)\)</span>. The proof is very easy if <span class="math inline">\(F\)</span> has no “gaps” or “jumps” as described above. Then, we simply have <span class="math display">\[ \mathbb P(X \leq x) = \mathbb P\big(F^{-1}(U) \leq x\big) = \mathbb P\big(U \leq F(x)\big) = F(x), \]</span> where we have simply “undone” the function <span class="math inline">\(F^{-1}\)</span> and used that <span class="math inline">\(\mathbb P(U \leq u) = u\)</span> for <span class="math inline">\(u \in (0,1)\)</span>.</p>
+<p>For the general case, we need to be just a little bit more careful ……. <span class="math display">\[ \mathbb P(X \leq x) = \]</span></p>
+</div>
+<p>The method – known as the <strong>inverse transform method</strong> gives a simple way to generate any random variable <span class="math inline">\(X\)</span> for which the inverse CDF <span class="math inline">\(F_X^{-1}\)</span> can be computed easily.</p>
+<p>This is not all random variable, however. In particular, the inverse CDF of the normal distribution does not have a closed form, so this does not give a way of sampling normal distributions. Later we’ll see other methods that allow us to sample from normal random variables.</p>
+</section>
+<section id="examples" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="examples"><span class="header-section-number">13.3</span> Examples</h2>
+<p>Let’s see some examples. The idea for all these problems is “Write <span class="math inline">\(U = F(X)\)</span>, then invert, to get <span class="math inline">\(X = F^{-1}(U)\)</span>.”</p>
 <div id="exm-exp" class="theorem example">
 <p><span class="theorem-title"><strong>Example 13.1</strong></span> Let <span class="math inline">\(X \sim \operatorname{Exp}(\lambda)\)</span> be an exponential distribution with rate <span class="math inline">\(\lambda\)</span>. This has PDF <span class="math inline">\(f(x) = \lambda \ee^{-\lambda x}\)</span> for <span class="math inline">\(x \geq 0\)</span> and CDF <span class="math inline">\(F(x) = 1 - \ee^{-\lambda x}\)</span>.</p>
 <p>We write <span class="math inline">\(U = F(X)\)</span> and invert it to make <span class="math inline">\(X\)</span> the subject. So <span class="math inline">\(U = 1 - \ee^{-\lambda X}\)</span>, and therefore <span class="math display">\[ X = -\frac{1}{\lambda} \log(1 - U) . \]</span></p>
@@ -415,105 +402,60 @@ Let's see some examples. The idea for all these problems is "Write $U = F(X)$, t
 <p>Since <span class="math inline">\(1 - U\)</span> has the same distribution as <span class="math inline">\(U\)</span>, it can be more convenient to simply write <span class="math display">\[ X' = -\frac{1}{\lambda} \log U \]</span> instead.</p>
 <p>Alternatively, since <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> are not independent and both have the same exponential distribution, they are a candidate to use as an antithetic pair in Monte Carlo estimation.</p>
 </div>
-<!--
-::: {#exm-rayleigh}
-Consider $X$ with PDF
-$$ f(x) = \frac{x}{\gamma} \,\exp \left(-\frac{x^2}{2\gamma}\right)$$
-for $x \geq 0$, and CDF
-$$ F(x) = 1 - \exp\left(-\frac{x^2}{2\gamma}\right) $$
-This is known as the **Rayleigh distribution** with scale parameter $\gamma$.
-
-Again, we write $U = F(X)$ and invert. so
-$$ U = 1 - \exp\left(-\frac{X^2}{2\gamma}\right)  $$
-so
-$$ X = \sqrt{-2\gamma\log(1-U)} . $$
-
-Again, $X' = \sqrt{-2\gamma\log U}$ is a slightly simpler expression, or could be used in an antithetic variables Monte Carlo approach.
-:::
-
-::: {#exm-unif}
-Suppose $X \sim \operatorname{U}[a,b]$, then
-$$ F(x) = \frac{x-a}{b-a} $$
-(except for when $F(x) = 0$ or $1$).
-
-Write $U = F(X)$ and invert. We get $X = (b-a)U + a$. This is precisely the method for generating general uniform distributions that we saw in the last lecture.
-:::
-
-::: {#exm-discrete}
-Let $X$ be discrete on the values $x_1, x_2, \dots$ with probabilities $p_1, p_2, \dots$. The CDF is
-$$ F(x) = \begin{cases} 0 & x < x_1 \\
-p_1 & x_1 \leq x < x_2 \\
-p_1 + p_2 & x_2 \leq x < x_3 \\
-p_1 + p_2 + p_3 & x_3 \leq x < x_4 \\
-\cdots & \cdots . \end{cases} $$
-
-Remembering the rule for "jumps" in the CDF, we see that the inverse CDF is
-$$ F^{-1}(u) = \begin{cases} x_1 & u < p_1 \\
-x_2 & p_1 \leq x < p_1 + p_2 \\
-x_3 & p_1 + p_2 \leq x < p_1 + p_2 + p_3 \\
-\cdots & \cdots . \end{cases} $$
-Taking $X = F^{-1}(U)$ gives the same method for generating discrete random variables as we discussed in the last lecture.
-:::
-
-::: {#exm-pdf-gen}
-*Consider a distribution with PDF*
-$$ f(x) = \begin{cases} x^2 & 0 \leq x \leq 1 \\
-\frac{2}{3} & 1 < x \leq 2 \\
-0 & \text{otherwise.} \end{cases} $$
-*Show how to sample $X$ using a standard uniform random variable $U$.*
-
-This is a standard sort of question. First we have to find the CDF, then we have to invert it.
-
-We find the CDF from the PDF by integrating. For $0 \leq x \leq 1$, we have
-$$ F(x) = \int_0^x f(y) \, \mathrm{d}y = \int_0^x y^2 \,\mathrm{d}y = \tfrac13 x^3. $$
-Then for $1 < x \leq 2$, we have
-$$ F(x) = F(1) + \int_1^x f(y) \, \mathrm{d}y = \tfrac13 + \int_1^x \tfrac23 \,\mathrm{d}y = \tfrac13 + \tfrac23 x - \tfrac23 = \tfrac23 x - \tfrac13 . $$
-
-For $0 \leq U < \leq F(1) = \tfrac13$, we have $U = \tfrac13 X^3$, so $X = \sqrt[3]{3U}$. For $F(1) = \tfrac13 < U \leq 1$, we have $U = \tfrac23 X - \tfrac13$, so $X = \tfrac32 U + \tfrac12$. So the inverse transform is
-$$ X = \begin{cases} \sqrt[3]{3U} & U \leq \frac13 \\ \tfrac32 U + \tfrac12 & U > \tfrac13 . \end{cases} $$
-:::
-
-
-## Box--Muller transform
-
-While the inverse transform method is very powerful, we have mentioned that it doesn't work for the normal distribution. Instead, the **Box--Muller transform** is a clever way to transform a standard uniform into a normal distribution. It was discovered by the statistician GEP Box and the computer scientist Marvin E Muller in 1958.
-
-Actually, that's not quite true. Rather transforming one standard uniform $U$ into one normal distribution $X$, it instead transforms *two* independent standard uniforms $U, V$ into *two* normal distributions $X, Y$. (There is some profound mathematical sense in which the two-dimensional bivariate normal is somehow a more "deeply" important mathematical object than the one-dimensional univariate normal we are used to, but we don't have time to get into that here.)
-
-First, let's note it suffices to produce a standard normal $X \sim \operatorname{N}(0,1)$. Any other normal distribution $W \sim \operatorname{N}(\mu, \sigma^2)$ can then be formed as $W = \sigma X + \mu$.
-
-The idea of the Box--Muller transform is based on converting the two standard normal distributions $(X, Y)$ from cartesian coordinates into polar coordinates $(R, \Theta)$. (Those of you who have know [how to calculate the Gaussian integral](https://mpaldridge.github.io/math1710/L16-normal.html#normal-properties) will have seen this idea before.)
-
-::: {#thm-box-muller-1}
-Let $X, Y \sim \operatorname{N}(0,1)$ be independent standard normal distributions. Write
-$$ R = \sqrt{X^2 + Y^2} \qquad\qquad \Theta = \tan \frac{Y}{X} $$
-for the radius and the angle of $(X, Y)$ in polar coordinates. Then the radius $R$ has a Rayleigh distribution with scalar parameter $\gamma = 1$, the angle $\Theta$ has a uniform distribution on $[0, 2\pi]$, and $R$ and $\Theta$ are independent.
-:::
-
-::: {.proof}
-The joint PDF of $(X,Y)$ is
-$$ \begin{align}
-f_{X,Y}(x, y) \,\mathrm{d}x\,\mathrm{d}y &= f_X(x) \,f_Y(y) \,\mathrm{d}x\,\mathrm{d}y \\
-&= \frac{1}{\sqrt{2\pi}}\, \exp \big(-\tfrac12 x^2\big) \, \frac{1}{\sqrt{2\pi}} \,\exp \big(-\tfrac12 y^2\big) \,\mathrm{d}x\,\mathrm{d}y \\
-&= \frac{1}{2\pi} \,\exp \big(-\tfrac12 (x^2 + y^2)\big) \,\mathrm{d}x\,\mathrm{d}y .
-\end{align}$$ {#eq-box-1}
-The joint PDF of $(R, \Theta)$ is
-$$ \begin{align}
-f_{R, \Theta}(r, \theta) \,\mathrm{d}r\,\mathrm{d}\theta &= f_R(r) \,f_\Theta(\theta) \,\mathrm{d}r\,\mathrm{d}\theta \\
-&= r\exp \big(-\tfrac12 r^2\big) \, \frac{1}{2\pi}\, \mathrm{d}r\,\mathrm{d}\theta
-\end{align} .$$ {#eq-box-2}
-
-But in @eq-box-1, we can substitute $r = x^2 + y^2$ and $\mathrm{d}x\,\mathrm{d}y = r\,\mathrm{d}r\,\mathrm{d}\theta$, and get @eq-box-2.
-:::
-
-So we've reduced the problem of sample two normal distributions to sampling a Rayleigh (with scale parameter 1) and a uniform (on $[0, 2\pi]$). But we know how to do this. We saw in @exm-rayleigh that we can take $R = \sqrt{-2 \log U}$, and we saw in the last lecture that we can take $\Theta = 2\pi V$. We can then transform back into cartesian coordinates with
-$$ \begin{align}
-X &= R\cos \Theta =  \sqrt{-2 \log U} \cos(2\pi V) \\
-Y &= R\sin \Theta =  \sqrt{-2 \log U} \sin(2\pi V) .
-\end{align} $$
-
-Let's check the just the $X$.
--->
+<div id="exm-rayleigh" class="theorem example">
+<p><span class="theorem-title"><strong>Example 13.2</strong></span> Consider <span class="math inline">\(X\)</span> with PDF <span class="math display">\[ f(x) = \frac{x}{\gamma} \,\exp \left(-\frac{x^2}{2\gamma}\right)\]</span> for <span class="math inline">\(x \geq 0\)</span>, and CDF <span class="math display">\[ F(x) = 1 - \exp\left(-\frac{x^2}{2\gamma}\right) \]</span> This is known as the <strong>Rayleigh distribution</strong> with scale parameter <span class="math inline">\(\gamma\)</span>.</p>
+<p>Again, we write <span class="math inline">\(U = F(X)\)</span> and invert. so <span class="math display">\[ U = 1 - \exp\left(-\frac{X^2}{2\gamma}\right)  \]</span> so <span class="math display">\[ X = \sqrt{-2\gamma\log(1-U)} . \]</span></p>
+<p>Again, <span class="math inline">\(X' = \sqrt{-2\gamma\log U}\)</span> is a slightly simpler expression, or could be used in an antithetic variables Monte Carlo approach.</p>
+</div>
+<div id="exm-unif" class="theorem example">
+<p><span class="theorem-title"><strong>Example 13.3</strong></span> Suppose <span class="math inline">\(X \sim \operatorname{U}[a,b]\)</span>, then <span class="math display">\[ F(x) = \frac{x-a}{b-a} \]</span> (except for when <span class="math inline">\(F(x) = 0\)</span> or <span class="math inline">\(1\)</span>).</p>
+<p>Write <span class="math inline">\(U = F(X)\)</span> and invert. We get <span class="math inline">\(X = (b-a)U + a\)</span>. This is precisely the method for generating general uniform distributions that we saw in the last lecture.</p>
+</div>
+<div id="exm-discrete" class="theorem example">
+<p><span class="theorem-title"><strong>Example 13.4</strong></span> Let <span class="math inline">\(X\)</span> be discrete on the values <span class="math inline">\(x_1, x_2, \dots\)</span> with probabilities <span class="math inline">\(p_1, p_2, \dots\)</span>. The CDF is <span class="math display">\[ F(x) = \begin{cases} 0 &amp; x &lt; x_1 \\
+p_1 &amp; x_1 \leq x &lt; x_2 \\
+p_1 + p_2 &amp; x_2 \leq x &lt; x_3 \\
+p_1 + p_2 + p_3 &amp; x_3 \leq x &lt; x_4 \\
+\cdots &amp; \cdots . \end{cases} \]</span></p>
+<p>Remembering the rule for “jumps” in the CDF, we see that the inverse CDF is <span class="math display">\[ F^{-1}(u) = \begin{cases} x_1 &amp; u &lt; p_1 \\
+x_2 &amp; p_1 \leq x &lt; p_1 + p_2 \\
+x_3 &amp; p_1 + p_2 \leq x &lt; p_1 + p_2 + p_3 \\
+\cdots &amp; \cdots . \end{cases} \]</span> Taking <span class="math inline">\(X = F^{-1}(U)\)</span> gives the same method for generating discrete random variables as we discussed in the last lecture.</p>
+</div>
+<div id="exm-pdf-gen" class="theorem example">
+<p><span class="theorem-title"><strong>Example 13.5</strong></span> <em>Consider a distribution with PDF</em> <span class="math display">\[ f(x) = \begin{cases} x^2 &amp; 0 \leq x \leq 1 \\
+\frac{2}{3} &amp; 1 &lt; x \leq 2 \\
+0 &amp; \text{otherwise.} \end{cases} \]</span> <em>Show how to sample <span class="math inline">\(X\)</span> using a standard uniform random variable <span class="math inline">\(U\)</span>.</em></p>
+<p>This is a standard sort of question. First we have to find the CDF, then we have to invert it.</p>
+<p>We find the CDF from the PDF by integrating. For <span class="math inline">\(0 \leq x \leq 1\)</span>, we have <span class="math display">\[ F(x) = \int_0^x f(y) \, \mathrm{d}y = \int_0^x y^2 \,\mathrm{d}y = \tfrac13 x^3. \]</span> Then for <span class="math inline">\(1 &lt; x \leq 2\)</span>, we have <span class="math display">\[ F(x) = F(1) + \int_1^x f(y) \, \mathrm{d}y = \tfrac13 + \int_1^x \tfrac23 \,\mathrm{d}y = \tfrac13 + \tfrac23 x - \tfrac23 = \tfrac23 x - \tfrac13 . \]</span></p>
+<p>For <span class="math inline">\(0 \leq U &lt; \leq F(1) = \tfrac13\)</span>, we have <span class="math inline">\(U = \tfrac13 X^3\)</span>, so <span class="math inline">\(X = \sqrt[3]{3U}\)</span>. For <span class="math inline">\(F(1) = \tfrac13 &lt; U \leq 1\)</span>, we have <span class="math inline">\(U = \tfrac23 X - \tfrac13\)</span>, so <span class="math inline">\(X = \tfrac32 U + \tfrac12\)</span>. So the inverse transform is <span class="math display">\[ X = \begin{cases} \sqrt[3]{3U} &amp; U \leq \frac13 \\ \tfrac32 U + \tfrac12 &amp; U &gt; \tfrac13 . \end{cases} \]</span></p>
+</div>
+</section>
+<section id="boxmuller-transform" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="boxmuller-transform"><span class="header-section-number">13.4</span> Box–Muller transform</h2>
+<p>While the inverse transform method is very powerful, we have mentioned that it doesn’t work for the normal distribution. Instead, the <strong>Box–Muller transform</strong> is a clever way to transform a standard uniform into a normal distribution. It was discovered by the statistician GEP Box and the computer scientist Marvin E Muller in 1958.</p>
+<p>Actually, that’s not quite true. Rather transforming one standard uniform <span class="math inline">\(U\)</span> into one normal distribution <span class="math inline">\(X\)</span>, it instead transforms <em>two</em> independent standard uniforms <span class="math inline">\(U, V\)</span> into <em>two</em> normal distributions <span class="math inline">\(X, Y\)</span>. (There is some profound mathematical sense in which the two-dimensional bivariate normal is somehow a more “deeply” important mathematical object than the one-dimensional univariate normal we are used to, but we don’t have time to get into that here.)</p>
+<p>First, let’s note it suffices to produce a standard normal <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span>. Any other normal distribution <span class="math inline">\(W \sim \operatorname{N}(\mu, \sigma^2)\)</span> can then be formed as <span class="math inline">\(W = \sigma X + \mu\)</span>.</p>
+<p>The idea of the Box–Muller transform is based on converting the two standard normal distributions <span class="math inline">\((X, Y)\)</span> from cartesian coordinates into polar coordinates <span class="math inline">\((R, \Theta)\)</span>. (Those of you who have know <a href="https://mpaldridge.github.io/math1710/L16-normal.html#normal-properties">how to calculate the Gaussian integral</a> will have seen this idea before.)</p>
+<div id="thm-box-muller-1" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 13.2</strong></span> Let <span class="math inline">\(X, Y \sim \operatorname{N}(0,1)\)</span> be independent standard normal distributions. Write <span class="math display">\[ R = \sqrt{X^2 + Y^2} \qquad\qquad \Theta = \tan \frac{Y}{X} \]</span> for the radius and the angle of <span class="math inline">\((X, Y)\)</span> in polar coordinates. Then the radius <span class="math inline">\(R\)</span> has a Rayleigh distribution with scalar parameter <span class="math inline">\(\gamma = 1\)</span>, the angle <span class="math inline">\(\Theta\)</span> has a uniform distribution on <span class="math inline">\([0, 2\pi]\)</span>, and <span class="math inline">\(R\)</span> and <span class="math inline">\(\Theta\)</span> are independent.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>The joint PDF of <span class="math inline">\((X,Y)\)</span> is <span id="eq-box-1"><span class="math display">\[ \begin{align}
+f_{X,Y}(x, y) \,\mathrm{d}x\,\mathrm{d}y &amp;= f_X(x) \,f_Y(y) \,\mathrm{d}x\,\mathrm{d}y \\
+&amp;= \frac{1}{\sqrt{2\pi}}\, \exp \big(-\tfrac12 x^2\big) \, \frac{1}{\sqrt{2\pi}} \,\exp \big(-\tfrac12 y^2\big) \,\mathrm{d}x\,\mathrm{d}y \\
+&amp;= \frac{1}{2\pi} \,\exp \big(-\tfrac12 (x^2 + y^2)\big) \,\mathrm{d}x\,\mathrm{d}y .
+\end{align} \tag{13.1}\]</span></span> The joint PDF of <span class="math inline">\((R, \Theta)\)</span> is <span id="eq-box-2"><span class="math display">\[ \begin{align}
+f_{R, \Theta}(r, \theta) \,\mathrm{d}r\,\mathrm{d}\theta &amp;= f_R(r) \,f_\Theta(\theta) \,\mathrm{d}r\,\mathrm{d}\theta \\
+&amp;= r\exp \big(-\tfrac12 r^2\big) \, \frac{1}{2\pi}\, \mathrm{d}r\,\mathrm{d}\theta
+\end{align} . \tag{13.2}\]</span></span></p>
+<p>But in <a href="#eq-box-1" class="quarto-xref">Equation&nbsp;<span>13.1</span></a>, we can substitute <span class="math inline">\(r = x^2 + y^2\)</span> and <span class="math inline">\(\mathrm{d}x\,\mathrm{d}y = r\,\mathrm{d}r\,\mathrm{d}\theta\)</span>, and get <a href="#eq-box-2" class="quarto-xref">Equation&nbsp;<span>13.2</span></a>.</p>
+</div>
+<p>So we’ve reduced the problem of sample two normal distributions to sampling a Rayleigh (with scale parameter 1) and a uniform (on <span class="math inline">\([0, 2\pi]\)</span>). But we know how to do this. We saw in <a href="#exm-rayleigh" class="quarto-xref">Example&nbsp;<span>13.2</span></a> that we can take <span class="math inline">\(R = \sqrt{-2 \log U}\)</span>, and we saw in the last lecture that we can take <span class="math inline">\(\Theta = 2\pi V\)</span>. We can then transform back into cartesian coordinates with <span class="math display">\[ \begin{align}
+X &amp;= R\cos \Theta =  \sqrt{-2 \log U} \cos(2\pi V) \\
+Y &amp;= R\sin \Theta =  \sqrt{-2 \log U} \sin(2\pi V) .
+\end{align} \]</span></p>
+<p>Let’s check the just the <span class="math inline">\(X\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>unif1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
@@ -534,6 +476,7 @@ Let's check the just the $X$.
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
