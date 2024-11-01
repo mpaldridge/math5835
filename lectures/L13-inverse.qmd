@@ -1,7 +1,7 @@
 # Inverse transform method
 
 {{< include ../_header.qmd >}}
-
+<!--
 ## Inverse CDF
 
 We have started looking at how to transform a standard uniform random variable $U \sim \operatorname{U}[0,1]$ into any other distribution $X$.
@@ -58,7 +58,7 @@ This is not all random variable, however. In particular, the inverse CDF of the 
 ## Examples
 
 Let's see some examples. The idea for all these problems is "Write $U = F(X)$, then invert, to get $X = F^{-1}(U)$."
-
+-->
 ::: {#exm-exp}
 Let $X \sim \operatorname{Exp}(\lambda)$ be an exponential distribution with rate $\lambda$. This has PDF $f(x) = \lambda \ee^{-\lambda x}$ for $x \geq 0$ and CDF $F(x) = 1 - \ee^{-\lambda x}$.
 
@@ -85,7 +85,7 @@ instead.
 
 Alternatively, since $X$ and $X'$ are not independent and both have the same exponential distribution, they are a candidate to use as an antithetic pair in Monte Carlo estimation.
 :::
-
+<!--
 ::: {#exm-rayleigh}
 Consider $X$ with PDF
 $$ f(x) = \frac{x}{\gamma} \,\exp \left(-\frac{x^2}{2\gamma}\right)$$
@@ -135,12 +135,63 @@ $$ f(x) = \begin{cases} x^2 & 0 \leq x \leq 1 \\
 This is a standard sort of question. First we have to find the CDF, then we have to invert it.
 
 We find the CDF from the PDF by integrating. For $0 \leq x \leq 1$, we have
-$$ F(x) = \int_0^x f(y) \, \mathrm{d}y = \int_0^x y^2 \mathrm{d}y = \tfrac13 x^3. $$
+$$ F(x) = \int_0^x f(y) \, \mathrm{d}y = \int_0^x y^2 \,\mathrm{d}y = \tfrac13 x^3. $$
 Then for $1 < x \leq 2$, we have
-$$ F(x) = F(1) + \int_1^x f(y) \, \mathrm{d}y = \tfrac13 + \int_1^x \tfrac23 \mathrm{d}y = \tfrac13 + \tfrac23 x - \tfrac23 = \tfrac23 x - \tfrac13 . $$
+$$ F(x) = F(1) + \int_1^x f(y) \, \mathrm{d}y = \tfrac13 + \int_1^x \tfrac23 \,\mathrm{d}y = \tfrac13 + \tfrac23 x - \tfrac23 = \tfrac23 x - \tfrac13 . $$
 
 For $0 \leq U < \leq F(1) = \tfrac13$, we have $U = \tfrac13 X^3$, so $X = \sqrt[3]{3U}$. For $F(1) = \tfrac13 < U \leq 1$, we have $U = \tfrac23 X - \tfrac13$, so $X = \tfrac32 U + \tfrac12$. So the inverse transform is
 $$ X = \begin{cases} \sqrt[3]{3U} & U \leq \frac13 \\ \tfrac32 U + \tfrac12 & U > \tfrac13 . \end{cases} $$
-
-
 :::
+
+
+## Box--Muller transform
+
+While the inverse transform method is very powerful, we have mentioned that it doesn't work for the normal distribution. Instead, the **Box--Muller transform** is a clever way to transform a standard uniform into a normal distribution. It was discovered by the statistician GEP Box and the computer scientist Marvin E Muller in 1958.
+
+Actually, that's not quite true. Rather transforming one standard uniform $U$ into one normal distribution $X$, it instead transforms *two* independent standard uniforms $U, V$ into *two* normal distributions $X, Y$. (There is some profound mathematical sense in which the two-dimensional bivariate normal is somehow a more "deeply" important mathematical object than the one-dimensional univariate normal we are used to, but we don't have time to get into that here.)
+
+First, let's note it suffices to produce a standard normal $X \sim \operatorname{N}(0,1)$. Any other normal distribution $W \sim \operatorname{N}(\mu, \sigma^2)$ can then be formed as $W = \sigma X + \mu$.
+
+The idea of the Box--Muller transform is based on converting the two standard normal distributions $(X, Y)$ from cartesian coordinates into polar coordinates $(R, \Theta)$. (Those of you who have know [how to calculate the Gaussian integral](https://mpaldridge.github.io/math1710/L16-normal.html#normal-properties) will have seen this idea before.)
+
+::: {#thm-box-muller-1}
+Let $X, Y \sim \operatorname{N}(0,1)$ be independent standard normal distributions. Write
+$$ R = \sqrt{X^2 + Y^2} \qquad\qquad \Theta = \tan \frac{Y}{X} $$
+for the radius and the angle of $(X, Y)$ in polar coordinates. Then the radius $R$ has a Rayleigh distribution with scalar parameter $\gamma = 1$, the angle $\Theta$ has a uniform distribution on $[0, 2\pi]$, and $R$ and $\Theta$ are independent.
+:::
+
+::: {.proof}
+The joint PDF of $(X,Y)$ is
+$$ \begin{align}
+f_{X,Y}(x, y) \,\mathrm{d}x\,\mathrm{d}y &= f_X(x) \,f_Y(y) \,\mathrm{d}x\,\mathrm{d}y \\
+&= \frac{1}{\sqrt{2\pi}}\, \exp \big(-\tfrac12 x^2\big) \, \frac{1}{\sqrt{2\pi}} \,\exp \big(-\tfrac12 y^2\big) \,\mathrm{d}x\,\mathrm{d}y \\
+&= \frac{1}{2\pi} \,\exp \big(-\tfrac12 (x^2 + y^2)\big) \,\mathrm{d}x\,\mathrm{d}y .
+\end{align}$$ {#eq-box-1}
+The joint PDF of $(R, \Theta)$ is
+$$ \begin{align}
+f_{R, \Theta}(r, \theta) \,\mathrm{d}r\,\mathrm{d}\theta &= f_R(r) \,f_\Theta(\theta) \,\mathrm{d}r\,\mathrm{d}\theta \\
+&= r\exp \big(-\tfrac12 r^2\big) \, \frac{1}{2\pi}\, \mathrm{d}r\,\mathrm{d}\theta
+\end{align} .$$ {#eq-box-2}
+
+But in @eq-box-1, we can substitute $r = x^2 + y^2$ and $\mathrm{d}x\,\mathrm{d}y = r\,\mathrm{d}r\,\mathrm{d}\theta$, and get @eq-box-2.
+:::
+
+So we've reduced the problem of sample two normal distributions to sampling a Rayleigh (with scale parameter 1) and a uniform (on $[0, 2\pi]$). But we know how to do this. We saw in @exm-rayleigh that we can take $R = \sqrt{-2 \log U}$, and we saw in the last lecture that we can take $\Theta = 2\pi V$. We can then transform back into cartesian coordinates with
+$$ \begin{align}
+X &= R\cos \Theta =  \sqrt{-2 \log U} \cos(2\pi V) \\
+Y &= R\sin \Theta =  \sqrt{-2 \log U} \sin(2\pi V) .
+\end{align} $$
+
+Let's check the just the $X$.
+-->
+```{r}
+n <- 1e5
+unif1 <- runif(n)
+unif2 <- runif(n)
+rad <- sqrt(-2 * log(unif1))
+ang <- 2 * pi * unif2
+samples <- rad * cos(ang)
+
+hist(samples, probability = TRUE, breaks = 50, xlim = c(-4, 4))
+curve(dnorm(x), add = TRUE, col = "blue", lwd = 2)
+```

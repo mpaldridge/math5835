@@ -338,7 +338,8 @@ window.Quarto = {
 \newcommand{\Ind}{\mathbb{I}}
 \newcommand{\Var}{\operatorname{Var}}
 \newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\ee}{\mathrm{e}}\]</span></p>
 </div>
 <section id="picking-a-good-distribution" class="level2" data-number="9.1">
 <h2 data-number="9.1" class="anchored" data-anchor-id="picking-a-good-distribution"><span class="header-section-number">9.1</span> Picking a good distribution</h2>
@@ -404,7 +405,7 @@ window.Quarto = {
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>MC_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">phi</span>(samples)) <span class="sc">/</span> n</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MCest, <span class="fu">sqrt</span>(MC_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1863843908 0.0002536575</code></pre>
+<pre><code>[1] 0.1863397228 0.0002534953</code></pre>
 </div>
 </div>
 <p>Maybe we can improve on this using importance sampling. Let’s have a look at a graph of <span class="math inline">\(f(y)\,\phi(y)\)</span> (blue line).</p>
@@ -464,7 +465,7 @@ window.Quarto = {
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>IS_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>((<span class="fu">pdf_x</span>(samples) <span class="sc">/</span> <span class="fu">pdf_y</span>(samples)) <span class="sc">*</span> <span class="fu">phi</span>(samples)) <span class="sc">/</span> n</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(ISest, <span class="fu">sqrt</span>(IS_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1864286978 0.0001351437</code></pre>
+<pre><code>[1] 0.1864660680 0.0001351119</code></pre>
 </div>
 </div>
 <p>We see that the RMSE has roughly halved, which is the equivalent of taking four times as many samples.</p>

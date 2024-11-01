@@ -338,7 +338,8 @@ window.Quarto = {
 \newcommand{\Ind}{\mathbb{I}}
 \newcommand{\Var}{\operatorname{Var}}
 \newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\ee}{\mathrm{e}}\]</span></p>
 </div>
 <div class="myq">
 <p><strong>1.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(X\)</span> be uniform on <span class="math inline">\([-1,2]\)</span>.</p>
@@ -358,7 +359,7 @@ window.Quarto = {
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.200859</code></pre>
+<pre><code>[1] 2.202239</code></pre>
 </div>
 </div>
 </div>
@@ -375,7 +376,7 @@ window.Quarto = {
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>ysamples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">pmax</span>(xsamples, ysamples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5637339</code></pre>
+<pre><code>[1] 0.5648906</code></pre>
 </div>
 </div>
 </div>
@@ -395,7 +396,7 @@ window.Quarto = {
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>in_box <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> y<span class="sc">^</span><span class="dv">2</span> <span class="sc">&lt;=</span> <span class="dv">1</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">in_box</span>(rain_x, rain_y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.785823</code></pre>
+<pre><code>[1] 0.784906</code></pre>
 </div>
 </div>
 </div>
@@ -416,7 +417,7 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>var_est <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">in_box</span>(rain_x, rain_y))</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>var_est <span class="sc">/</span> (<span class="fl">1e-6</span>)<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 168305380974</code></pre>
+<pre><code>[1] 168828739992</code></pre>
 </div>
 </div>
 <p>We will probably spend a long time waiting for that much rain!</p>
@@ -435,7 +436,7 @@ window.Quarto = {
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>samples1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">5</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">integrand</span>(samples1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.929335</code></pre>
+<pre><code>[1] 3.93898</code></pre>
 </div>
 </div>
 <p>(In fact, the true answer is <span class="math inline">\(\log(5.1) - \log(0.1) = 3.932\)</span>, so it looks like this is working correctly.)</p>
@@ -473,7 +474,7 @@ window.Quarto = {
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>samples2 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">1</span>)</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">phi</span>(samples2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.935744</code></pre>
+<pre><code>[1] 3.93244</code></pre>
 </div>
 </div>
 <p>(I had to include <code>x &lt;= 5</code> in the expression for <span class="math inline">\(\phi\)</span>, because my exponential distribution will sometimes take samples above 5, but they should count as 0 in an estimate for the integral between 0 and 5.)</p>
@@ -481,11 +482,11 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">integrand</span>(samples1)) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.361979e-05</code></pre>
+<pre><code>[1] 3.387878e-05</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(<span class="fu">phi</span>(samples2)) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.073885e-06</code></pre>
+<pre><code>[1] 6.072919e-06</code></pre>
 </div>
 </div>
 <p>I found that I had reduced the mean-square error by roughly a factor of 5. <!--
@@ -504,7 +505,7 @@ mean(phi(samples2))
 ::: {.cell-output .cell-output-stdout}
 
 ```
-[1] 3.931375
+[1] 3.923446
 ```
 
 
@@ -552,7 +553,7 @@ mean(phi(samples2))
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">1</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="fl">2.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.204066</code></pre>
+<pre><code>[1] 2.19999</code></pre>
 </div>
 </div>
 </div>
@@ -564,7 +565,7 @@ mean(phi(samples2))
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="fl">2.1</span> <span class="sc">-</span> samples<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.198793</code></pre>
+<pre><code>[1] 2.197787</code></pre>
 </div>
 </div>
 </div>
@@ -577,14 +578,14 @@ mean(phi(samples2))
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(samples<span class="sc">^</span><span class="fl">2.1</span>) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.82498e-05</code></pre>
+<pre><code>[1] 2.775811e-05</code></pre>
 </div>
 </div>
 <p>For the control variate method,</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(samples<span class="sc">^</span><span class="fl">2.1</span> <span class="sc">-</span> samples<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.958636e-07</code></pre>
+<pre><code>[1] 6.743602e-07</code></pre>
 </div>
 </div>
 <p>So the control variates method is much, much better.</p>
@@ -608,7 +609,8 @@ mean(phi(samples2))
 \newcommand{\Ind}{\mathbb{I}}
 \newcommand{\Var}{\operatorname{Var}}
 \newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}\]</span></p>
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\ee}{\mathrm{e}}\]</span></p>
 </div>
 <div class="myq">
 <p><strong>1.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>[2018 exam, Question 4]</em></p>
@@ -685,7 +687,7 @@ mean(phi(samples2))
 <span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="fu">signif</span>(<span class="fu">c</span>(var1, var2, var3, var4), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 8.20e-05 1.39e-05 6.69e-06 1.92e-06</code></pre>
+<pre><code>[1] 8.65e-05 1.40e-05 6.68e-06 1.92e-06</code></pre>
 </div>
 </div>
 <p>(For the fourth PDF, we used that the PDF of <span class="math inline">\(3 + Z\)</span> is <span class="math inline">\(f_Z(z-3)\)</span>.)</p>
@@ -702,10 +704,10 @@ mean(phi(samples2))
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>IS_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>((<span class="fu">pdf_x</span>(samples_y4) <span class="sc">/</span> <span class="fu">pdf_y4</span>(samples_y4)) <span class="sc">*</span> <span class="fu">phi</span>(samples_y4)) <span class="sc">/</span> n</span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(ISest, <span class="fu">sqrt</span>(IS_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.316356e-03 1.387238e-06</code></pre>
+<pre><code>[1] 1.310251e-03 1.387297e-06</code></pre>
 </div>
 </div>
-<p>So our estimate is <span class="math inline">\(\widehat\theta = 0.00132\)</span>. Since the RMSE is three orders of magnitude less than the estimate, so the estimate is probably accurate to a couple of significant figures.</p>
+<p>So our estimate is <span class="math inline">\(\widehat\theta = 0.00131\)</span>. Since the RMSE is three orders of magnitude less than the estimate, so the estimate is probably accurate to a couple of significant figures.</p>
 </div>
 </div>
 <div class="subq">
@@ -716,7 +718,7 @@ mean(phi(samples2))
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>eps <span class="ot">&lt;-</span> <span class="fl">0.01</span> <span class="sc">*</span> ISest</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(var1, var2, var3, var4) <span class="sc">/</span> eps<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 473334  80024  38607  11106</code></pre>
+<pre><code>[1] 503778  81273  38901  11211</code></pre>
 </div>
 </div>
 </div>
@@ -961,8 +963,8 @@ x_6 &amp;= (2 \times 12 + 4) \bmod 16 = 28 \bmod 16 = 12 .
 </div>
 <p>Thus the estimator is just keeping using the same 8 points over and over again. So this is actually estimating <span class="math inline">\(\mathbb E(\cos Y)\)</span>, where <span class="math inline">\(Y\)</span> is uniform on the 8 points actually visited by the LCG. So while the correct answer is <span class="math inline">\(\mathbb EU = \sin 1 = 0.841\)</span>, this is in fact estimating <span class="math display">\[ \begin{multline}
 \frac{1}{8} \bigg(\cos \frac{1}{2^{10}} + \cos \frac{131}{2^{10}} + \cos \frac{257}{2^{10}} + \cos \frac{899}{2^{10}} \\
-+ \cos \frac{513}{2^{10}} + \cos \frac{643}{2^{10}} + \cos \frac{769}{2^{10}} + \cos \frac{387}{2^{10}}\bigg) = 0.868 ,
-\end{multline} \]</span> (where the numerators are the 9 points visited by the LCG), which is not the correct answer.</p>
++ \cos \frac{513}{2^{10}} + \cos \frac{643}{2^{10}} + \cos \frac{769}{2^{10}} + \cos \frac{387}{2^{10}}\bigg) = 0.868
+\end{multline} \]</span> (where the numerators are the 8 values visited by the LCG), which is not the correct answer.</p>
 </div>
 </div>
 </div>
