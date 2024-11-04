@@ -14,13 +14,13 @@ It seems natural to define the inverse $F^{-1}$ of the CDF in just the same way 
 
 This definition works fine for a purely continuous distribution that doesn't have any "gaps" in the set of values it can take. But for a general random variable, there are two problems with this definition.
 
-1. If $X$ has any point masses -- points $x$ with strictly positive probability $\mathbb P(X = x) > 0$ of hitting that point exactly -- then $F_X$ may "jump past" the value $u$, so there is *no* value $x$ such that $F(u)$. (See the blue line on the graph below.)
+1. If $X$ has any point masses -- points $x$ with strictly positive probability $\mathbb P(X = x) > 0$ of hitting that point exactly -- then $F$ may "jump past" the value $u$, so there is *no* value $x$ such that $F(u)$. (See the blue line on the graph below.)
 
-2. If there is an interval on the line where $X$ has probability zero, then all the $x$s in that interval have the same value of $F(x) = u$, so there is no "*unique* value $x$ such that $F(x) = u$. (See the red line on the graph below.)
+2. If there is an interval on the line where $X$ has probability zero, then all the $x$s in that interval have the same value of $F(x) = u$, so there is no *unique* value $x$ such that $F(x) = u$. (See the red line on the graph below.)
 
 \[picture\]
 
-It turns out that the best way to solve this is the following. For the first obstacle, if there are many points $x$, with $F_X(x) = u$ we take the smallest of them to be $F^{-1}(u)$. For the second obstacle, we "round up" by taking the value of the smallest $x$ such that $F(x) > u$. These two cases are illustrated below.
+It turns out that the best way to solve this is the following. For the first obstacle, if there are many points $x$ with $F(x) = u$, we take the first one -- that is, the smallest $x$ with $F(x) = u$. For the second obstacle, we take the value of the smallest $x$ where $F(x)$ is above $u$, which comes right at the jump. These two cases are illustrated below.
 
 \[picture\]
 
@@ -36,7 +36,7 @@ You should check that you agree this definition matches the discussion above.
 
 ## Inverse transform
 
-The inverse transform method works like this: To generate $X$, simply apply the inverse CDF $F_X^{-1}$ to a standard uniform random variable $U$.
+The inverse transform method works like this: To generate $X$, simply apply the inverse CDF $F^{-1}$ to a standard uniform random variable $U$.
 
 ::: {#thm-inv-trans}
 Let $F$ be a cumulative distribution function, and let $F^{-1}$ be its inverse. Let $U \sim \operatorname{U}[0,1]$. Then $X = F^{-1}(U)$ has cumulative distribution function $F$.
@@ -56,7 +56,7 @@ as before.
 
 The method -- known as the **inverse transform method** gives a simple way to generate any random variable $X$ for which the inverse CDF $F_X^{-1}$ can be computed easily.
 
-This is not all random variable, however. In particular, the inverse CDF of the normal distribution does not have a closed form, so this does not give a way of sampling normal distributions. Later we'll see other methods that allow us to sample from normal random variables.
+This is not all random variables, however. In particular, the inverse CDF of the normal distribution does not have a closed form, so this does not give a way of sampling normal distributions. Later we'll see other methods that allow us to sample from normal random variables.
 
 ## Examples
 
@@ -200,3 +200,18 @@ samples <- rad * cos(ang)
 hist(samples, probability = TRUE, breaks = 50, xlim = c(-4, 4))
 curve(dnorm(x), add = TRUE, col = "blue", lwd = 2)
 ```
+
+**Next time:** *Sampling using rejection.*
+
+::: mysummary
+**Summary:**
+
+-   The inverse $F^{-1}$ of a CDF $F$ is defined by $F^{-1}_X(u) = \min \big \{x : F_X(x) \geq u \big\}$.
+
+-   The inverse transform method converts $U \sim \operatorname{U}[0,1]$ to a random variable with CDF by setting $X = F^{-1}(U)$. That is: Set $U = F(X)$, and rearrange to make $X$ the subject.
+
+-   The Box--Muller transform is a way to generate two independent standard normal distributions. Set $R$ to Rayleigh with scale parameter 1, set $\Theta \sim \operatorname{U}[0,2\pi]$, then take $X = R \cos \Theta$ and $Y = R \sin \Theta$.
+
+
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Section 1.3.
+:::

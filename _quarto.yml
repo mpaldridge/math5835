@@ -29,7 +29,7 @@ book:
         - problems/P2.qmd
         - lectures/L12-uniform-discrete.qmd
         - lectures/L13-inverse.qmd
-#        - lectures/L14-rejection.qmd
+        - lectures/L14-rejection.qmd
 #        - lectures/L15-envelope-1.qmd
 #        - lectures/L16-envelope-2.qmd
 #        - problems/P3.qmd
