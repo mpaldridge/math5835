@@ -350,20 +350,20 @@ window.Quarto = {
 <p>To do this, we will need samples from the conditional distribution <span class="math inline">\(Y \mid Y \geq 1\)</span>. So we accept proposed standard normal samples that are at least 1, and reject proposed samples that are less than 1.</p>
 <p>There are two ways we could run this in practice. First, we could decide to take <span class="math inline">\(n\)</span> proposal samples from <span class="math inline">\(Y\)</span> and just see how many get accepted.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n_samp <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_samp)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> samples[samples <span class="sc">&gt;=</span> <span class="dv">1</span>]</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n_prop <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>props   <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_prop)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>accepts <span class="ot">&lt;-</span> props[props <span class="sc">&gt;=</span> <span class="dv">1</span>]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(accepts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 158439</code></pre>
+<pre><code>[1] 158692</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>MCest1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>MCest1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(accepts)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>MCest1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.525964</code></pre>
+<pre><code>[1] 1.525705</code></pre>
 </div>
 </div>
-<p>We end up accepting around 160,000 samples out of the 1,000,000 samples we took to start with.</p>
+<p>We end up accepting around 160,000 samples out of the 1,000,000 proposals we had to start with.</p>
 <p>Second, we could keep proposing as many samples as needed until we reach some desired number of acceptances.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n_acc <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
@@ -388,7 +388,8 @@ window.Quarto = {
 <pre><code>[1] 1.526865</code></pre>
 </div>
 </div>
-<p>This required taking about 630,000 samples to get 100,000 acceptances.</p>
+<p>This required taking about 630,000 proposals to get 100,000 acceptances.</p>
+<p>Here we used a “<code>while</code>” loop to keep taking samples <em>until</em> we go one that was not less than 1. The lines involving <code>count</code> were just so I could see how many proposals ended up being needed – these aren’t an integral part of the code.</p>
 </div>
 </section>
 <section id="acceptance-probability" class="level2" data-number="14.2">
@@ -400,14 +401,14 @@ window.Quarto = {
 <p><span class="theorem-title"><strong>Example 14.2</strong></span> Suppose we wish to sample from the distribution <span id="eq-distprop"><span class="math display">\[ f(x) \propto \exp\big(-\tfrac12x^2\big)\,(\sin^2 x) . \tag{14.1}\]</span></span> How can we do this?</p>
 <p>Well, we can note that the PDF of the standard normal is <span class="math display">\[ g(x) = \frac{1}{2\pi}\,\exp\big(-\tfrac12x^2\big) \propto \exp\big(-\tfrac12x^2\big) \]</span> and that <span class="math display">\[ 0 \leq \sin^2x\leq 1 .\]</span> (Here, <span class="math inline">\(\sin^2 x\)</span> means <span class="math inline">\((\sin x)^2\)</span>, by the way.) This means that, if we take proposals <span class="math inline">\(Y \sim \operatorname{N}(0,1)\)</span>, and then accept an proposed sample with probability <span class="math inline">\(\alpha(x) = \sin^2 x\)</span>, that will give us the distribution <a href="#eq-distprop" class="quarto-xref">Equation&nbsp;<span>14.1</span></a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>n_samp <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_samp)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> samples[<span class="fu">runif</span>(n_samp) <span class="sc">&lt;=</span> <span class="fu">sin</span>(samples)<span class="sc">^</span><span class="dv">2</span>]</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>n_prop <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>props <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_prop)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>accepts <span class="ot">&lt;-</span> props[<span class="fu">runif</span>(n_prop) <span class="sc">&lt;=</span> <span class="fu">sin</span>(props)<span class="sc">^</span><span class="dv">2</span>]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(accepts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 431663</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(samples, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">breaks =</span> <span class="dv">50</span>)</span>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(accepts, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">breaks =</span> <span class="dv">50</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fl">0.92</span> <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">sin</span>(x)<span class="sc">^</span><span class="dv">2</span>, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">1001</span>,</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span></span>
@@ -420,11 +421,12 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Let’s explain line 3 more carefully. We want to accept a proposal <span class="math inline">\(x\)</span> with probability <span class="math inline">\(\sin^2 x\)</span>. We saw in Lecture 12 that we can simulate a Bernoulli<span class="math inline">\((p)\)</span> distribution by taking the value 1 is <span class="math inline">\(U \leq p\)</span> and taking 0 if <span class="math inline">\(U &gt; p\)</span>. So in line 3, we are accepting each proposed sample <span class="math inline">\(x\)</span> if a standard uniform variate <span class="math inline">\(u\)</span> satisfies <span class="math inline">\(u \leq \sin^2 x\)</span>.</p>
+<p>By rejecting lots of proposals with values near 0, we turned the unimodal (“one hump”)proposal distribution <span class="math inline">\(Y \sim \operatorname{N}(0,1)\)</span> into this interesting bimodal (“two hump”) distribution.</p>
+<p>Let’s explain line 3 more carefully. We want to accept a proposal <span class="math inline">\(x\)</span> with probability <span class="math inline">\(\sin^2 x\)</span>. We saw in Lecture 12 that we can simulate a Bernoulli<span class="math inline">\((p)\)</span> distribution by taking the value 1 is <span class="math inline">\(U \leq p\)</span> and taking 0 if <span class="math inline">\(U &gt; p\)</span>. So in line 3, we are accepting each proposed sample <span class="math inline">\(x_i\)</span> if a standard uniform variate <span class="math inline">\(u_i\)</span> satisfies <span class="math inline">\(u_i \leq \sin^2 x_i\)</span>.</p>
 <p>In this example, we found we accepted about 430,000 samples.</p>
 </div>
 <p>In this example, we managed to sample from the PDF in <a href="#eq-distprop" class="quarto-xref">Equation&nbsp;<span>14.1</span></a>, <span class="math display">\[ f(x) = \frac{1}{Z}\,\exp\big(-\tfrac12x^2\big)\,(\sin^2 x) ,\]</span> even though we never found out what the normalising constant <span class="math inline">\(Z\)</span> was. This idea – that we can sample from a distribution even if we only know it up to a multiplicative constant – is a very important one that will come up a lot later in this module.</p>
-<p>We won’t go into that idea deeply now, but we will briefly mention that it is very important in Bayesian statistics. That’s because in Bayesian statistics, the posterior distribution is often known only up to proportionality. That’s because we have <span class="math display">\[ \begin{align}
+<p>We won’t go into that idea deeply now, but we briefly mention that it is very important in Bayesian statistics. In Bayesian statistics, the posterior distribution is often known only up to proportionality. That’s because we have <span class="math display">\[ \begin{align}
 \text{posterior} &amp;\propto \text{prior}\times\text{likelihood} \\
 \pi(\theta \mid x) &amp;\propto\, \pi(x) \times p(x \mid \theta)
 \end{align} \]</span> It’s often very difficult to find the normalising constant in this expression – indeed, it can be impossible in practice. So being able to sample from such a posterior distribution without finding the constant is very important for Bayesian statisticians.</p>
@@ -435,21 +437,21 @@ window.Quarto = {
 <p>Let’s examine these questions a bit closer. Write <span class="math inline">\(a = \mathbb P(\text{accept})\)</span> for the probability a sample <span class="math inline">\(Y\)</span> gets accepted (a priori, before we have seen the value <span class="math inline">\(Y = x\)</span> of that sample). In the discrete case, this is <span class="math display">\[ a = \mathbb P(\text{accept}) = \sum_x \mathbb P(Y = x)\,\alpha(x) , \]</span> and in the discrete case this is <span class="math display">\[ a  = \mathbb P(\text{accept}) = \int_{-\infty}^{+\infty} g(x)\,\alpha(x)\,\mathrm{d}x . \]</span> In both cases, this can be written more succinctly as <span class="math inline">\(a = \Exg\alpha(Y)\)</span>.</p>
 <p>Let’s first look at the <strong>“fixed number of proposed samples”</strong> case.</p>
 <p>If we take <span class="math inline">\(m\)</span> proposed samples, each is accepted independently with probability <span class="math inline">\(a\)</span>. So the total number of accepted samples <span class="math inline">\(N\)</span> follows a binomial distribution <span class="math inline">\(N \sim \operatorname{Bin}(m, a)\)</span>. This is because the binomial distribution describes the number of successes from <span class="math inline">\(m\)</span> trials. This has expectation <span class="math inline">\(am\)</span> and standard deviation <span class="math inline">\(\sqrt{a(1-a)m}\)</span>.</p>
-<p>Unless <span class="math inline">\(a\)</span> is very close to <span class="math inline">\(0\)</span> or <span class="math inline">\(1\)</span>, <span class="math inline">\(N\)</span> can be approximated by a normal distribution <span class="math inline">\(N \approx \operatorname{N}(am, a(1-a)m)\)</span>. For large <span class="math inline">\(m\)</span>, the standard deviation will be very small compared to the expectation, so the behaviour will be very predictable. (When <span class="math inline">\(a\)</span> is very small, <span class="math inline">\(N\)</span> can be better approximated by a Poisson distribution <span class="math inline">\(N \approx \operatorname{Po}(am)\)</span>.)</p>
-<p>The alternative way is the <strong>“keep taking proposed samples until we have accepted enough of them”</strong> way.</p>
-<p>To get one sample requires a geometric <span class="math inline">\(\operatorname{Geom}(a)\)</span> number of samples. This is because the geometric distribution counts the number of trials needed until the first success. To get <span class="math inline">\(n\)</span> accepted samples will require the sum of <span class="math inline">\(n\)</span> independent <span class="math inline">\(\operatorname{Geom}(a)\)</span> distributions – this is sometimes called the <em>negative binomial</em> distribution <span class="math inline">\(M \sim \operatorname{NegBin}(n, a)\)</span>, which is the number of trials needed until the <span class="math inline">\(n\)</span>th success. This has expectation <span class="math inline">\(n/a\)</span> and standard deviation <span class="math inline">\(\sqrt{n(1-a)}/a\)</span>.</p>
-<p>Unless <span class="math inline">\(a\)</span> is very close to <span class="math inline">\(0\)</span> or <span class="math inline">\(1\)</span>, <span class="math inline">\(M\)</span> can be approximated can be approximated by a normal distribution <span class="math inline">\(N \approx \operatorname{N}(am, a(1-a)m)\)</span>. For large <span class="math inline">\(m\)</span>, the standard deviation will be very small compared to the expectation, so the behaviour will be very predictable. (When <span class="math inline">\(a\)</span> is very small, <span class="math inline">\(M\)</span> can be better approximated by a Gamma distribution.)</p>
+<p>For large <span class="math inline">\(m\)</span>, the standard deviation will be very small compared to the expectation (unless <span class="math inline">\(a\)</span> is very close to <span class="math inline">\(0\)</span> or <span class="math inline">\(1\)</span>), so the number of acceptances <span class="math inline">\(N\)</span> will be very close to <span class="math inline">\(am\)</span>. If we need a more precise approximation, <span class="math inline">\(N\)</span> can be approximated by a normal distribution <span class="math inline">\(N \approx \operatorname{N}(am, a(1-a)m)\)</span>. When <span class="math inline">\(a\)</span> is very small, <span class="math inline">\(N\)</span> can be better approximated by a Poisson distribution <span class="math inline">\(N \approx \operatorname{Po}(am)\)</span>.</p>
+<p>The second way is the <strong>“keep taking proposed samples until we have accepted enough of them”</strong> way.</p>
+<p>To get one acceptance requires a geometric <span class="math inline">\(\operatorname{Geom}(a)\)</span> number of samples. This is because the geometric distribution counts the number of trials needed until the first success. To get <span class="math inline">\(n\)</span> accepted samples will require the sum of <span class="math inline">\(n\)</span> independent <span class="math inline">\(\operatorname{Geom}(a)\)</span> distributions – this is sometimes called the <em>negative binomial</em> distribution <span class="math inline">\(M \sim \operatorname{NegBin}(n, a)\)</span>, which is the number of trials needed until the <span class="math inline">\(n\)</span>th success. This has expectation <span class="math inline">\(n/a\)</span> and standard deviation <span class="math inline">\(\sqrt{(1-a)n}/a\)</span>.</p>
+<p>For large <span class="math inline">\(n\)</span>, the standard deviation will be very small compared to the expectation (unless <span class="math inline">\(a\)</span> is very close to <span class="math inline">\(0\)</span> or <span class="math inline">\(1\)</span>), so the number of proposal <span class="math inline">\(M\)</span> will be very close to <span class="math inline">\(n/a\)</span>. If we need a more precise approximation, <span class="math inline">\(M\)</span> can be approximated by a normal distribution <span class="math inline">\(M \approx \operatorname{N}(n/a, (1-a)n/a^2)\)</span>. When <span class="math inline">\(a\)</span> is very small, <span class="math inline">\(N\)</span> can be better approximated by a Gamma distribution <span class="math inline">\(M \approx \Gamma(n, a)\)</span>.</p>
 <div id="exm-cond2" class="theorem example">
 <p><span class="theorem-title"><strong>Example 14.3</strong></span> In <a href="#exm-cond" class="quarto-xref">Example&nbsp;<span>14.1</span></a>, we accepted <span class="math inline">\(Y \sim \operatorname{N}(0,1)\)</span> if <span class="math inline">\(Y \geq 1\)</span>. In this case, we happen to know the acceptance probability exactly: it’s<span class="math inline">\(\mathbb P(Y \geq 1) = 0.158\)</span>.</p>
-<p>From 1,000,000 samples, the number of accepted samples we might get is shown below.</p>
+<p>From 1,000,000 proposals, the number of accepted samples we might get is shown below.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code for drawing this graph</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>n_prop <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>acc_prob <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="sc">:</span><span class="fl">2e5</span>, <span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="fl">2e5</span>, m, acc_prob),</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"blue"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="sc">:</span><span class="fl">2e5</span>, <span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="fl">2e5</span>, n_prop, acc_prob),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"number of accepted samples"</span>, <span class="at">ylab =</span> <span class="st">"probability"</span></span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -461,16 +463,17 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>We see that the number of acceptance will be very close to <span class="math inline">\(an = 0.158\times 1\,000\,000 = 158\,000\)</span>. The number of samples required for 100,000 acceptance is shown below.</p>
+<p>We see that the number of acceptance will be very close to <span class="math inline">\(an = 0.158\times 1\,000\,000 = 158\,000\)</span>.</p>
+<p>The number of proposals required for 100,000 acceptances is shown below.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code for drawing this graph</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n_acc <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>acc_prob <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  n <span class="sc">+</span> <span class="dv">0</span><span class="sc">:</span><span class="fl">7e5</span>, <span class="fu">dnbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="fl">7e5</span>, n, acc_prob),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  n_acc <span class="sc">+</span> <span class="dv">0</span><span class="sc">:</span><span class="fl">7e5</span>, <span class="fu">dnbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="fl">7e5</span>, n_acc, acc_prob),</span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"number of required samples"</span>, <span class="at">ylab =</span> <span class="st">"probability"</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"number of required proposals"</span>, <span class="at">ylab =</span> <span class="st">"probability"</span></span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
@@ -484,16 +487,16 @@ window.Quarto = {
 <p>The number of required proposals will be very close to <span class="math inline">\(n/a = 100\,000 / 0.158 = 630\,000\)</span>.</p>
 </div>
 <div id="exm-con3" class="theorem example">
-<p><span class="theorem-title"><strong>Example 14.4</strong></span> Suppose instead we were trying to sample from a standard normal conditional on <span class="math inline">\(Y &gt; 4\)</span>. Again, we take a standard normal and accept if the sample is greater than 4. This is a different matter, because the acceptance probability is very small: about <span class="math inline">\(0.00003\)</span>.</p>
+<p><span class="theorem-title"><strong>Example 14.4</strong></span> Suppose instead we were trying to sample from a standard normal conditional on <span class="math inline">\(Y &gt; 4\)</span>. Again, we take a standard normal proposal and accept if the proposal is greater than 4. This is a different matter, because the acceptance probability is very small: about <span class="math inline">\(0.00003\)</span>.</p>
 <p>Here, the number of acceptances from 100,000 proposals is</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code for drawing this graph</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>n_prop <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>acc_prob <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="dv">4</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>, <span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>, m, acc_prob),</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"h"</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>, <span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>, n_prop, acc_prob),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"h"</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">3</span>,</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"number of accepted samples"</span>, <span class="at">ylab =</span> <span class="st">"probability"</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -505,17 +508,17 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>There is likely to be a very small number of acceptance – and around a 4% chance there are no acceptances at all. The distribution of the number of acceptances is roughly Poisson.</p>
-<p>The number of samples required for just 5 acceptances, on the other hand, is:</p>
+<p>There is likely to be a very small number of acceptances – and around a 4% chance there are no acceptances at all. The distribution of the number of acceptances is roughly Poisson.</p>
+<p>The number of proposals required for just 5 acceptances, on the other hand, is:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code for drawing this graph</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>n_acc <span class="ot">&lt;-</span> <span class="dv">5</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>acc_prob <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="dv">4</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  n <span class="sc">+</span> <span class="dv">0</span><span class="sc">:</span><span class="fl">6e5</span>, <span class="fu">dnbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="fl">6e5</span>, n, acc_prob),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  n_acc <span class="sc">+</span> <span class="dv">0</span><span class="sc">:</span><span class="fl">6e5</span>, <span class="fu">dnbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="fl">6e5</span>, n_acc, acc_prob),</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"number of required samples"</span>, <span class="at">ylab =</span> <span class="st">"probability"</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"number of required proposals"</span>, <span class="at">ylab =</span> <span class="st">"probability"</span></span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
@@ -527,9 +530,9 @@ window.Quarto = {
 </div>
 </div>
 <p>This has a very wide spread of how many proposals will be required – anything between about 50,000 and 300,000 is reasonably plausible.</p>
-<p>This shows the danger of running rejection sampling when the probability of acceptance is very small.</p>
+<p>This shows the danger of running rejection sampling when the probability of acceptance is very small. Not only is the procedure slow and wasteful, but it’s also very unpredictable.</p>
 </div>
-<p>(Annoyingly, R defines the geometric distribution to be the number of failures <em>before</em> the first success – 1 less then our definition – and the negative binomial to be the number of failures <em>before</em> the <span class="math inline">\(n\)</span>th success – <span class="math inline">\(n\)</span> less than our definition. This is why <code>n + dnbinom()</code> was plotted for the two second graphs.)</p>
+<p>(Annoyingly, R defines the geometric distribution to be the number of failures <em>before</em> the first success – 1 less then our definition – and the negative binomial to be the number of failures <em>before</em> the <span class="math inline">\(n\)</span>th success – <span class="math inline">\(n\)</span> less than our definition. This is why <code>n_acc + dnbinom()</code> was plotted for the two second graphs.)</p>
 <p><strong>Next time.</strong> <em>We look closer at rejection sampling, and in particular how we can target rejection sampling at a given distribution using the “envelope” method.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
@@ -538,7 +541,7 @@ window.Quarto = {
 <li><p>If the PDF of a proposed sample is <span class="math inline">\(g\)</span>, then the PDF of an accepted sample is proportional to <span class="math inline">\(\alpha(x) \,g(x)\)</span>.</p></li>
 <li><p>When the acceptance probability is low, rejection sampling can require a lot of proposed samples to get enough accepted samples.</p></li>
 </ul>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Section X.Y.</p>
+<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsections 1.4.1 and 1.4.3.</p>
 </div>
 
 

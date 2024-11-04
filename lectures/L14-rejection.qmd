@@ -20,15 +20,15 @@ To do this, we will need samples from the conditional distribution $Y \mid Y \ge
 There are two ways we could run this in practice. First, we could decide to take $n$ proposal samples from $Y$ and just see how many get accepted.
 
 ```{r}
-n_samp <- 1e6
-samples <- rnorm(n_samp)
-samples <- samples[samples >= 1]
-length(samples)
-MCest1 <- mean(samples)
+n_prop <- 1e6
+props   <- rnorm(n_prop)
+accepts <- props[props >= 1]
+length(accepts)
+MCest1 <- mean(accepts)
 MCest1
 ```
 
-We end up accepting around 160,000 samples out of the 1,000,000 samples we took to start with.
+We end up accepting around 160,000 samples out of the 1,000,000 proposals we had to start with.
 
 Second, we could keep proposing as many samples as needed until we reach some desired number of acceptances.
 
@@ -50,8 +50,9 @@ count
 MCest2 <- mean(samples)
 MCest2
 ```
+This required taking about 630,000 proposals to get 100,000 acceptances.
 
-This required taking about 630,000 samples to get 100,000 acceptances.
+Here we used a "`while`" loop to keep taking samples *until* we go one that was not less than 1. The lines involving `count` were just so I could see how many proposals ended up being needed -- these aren't an integral part of the code.
 :::
 
 ## Acceptance probability
@@ -68,26 +69,28 @@ Suppose we wish to sample from the distribution $$ f(x) \propto \exp\big(-\tfrac
 Well, we can note that the PDF of the standard normal is $$ g(x) = \frac{1}{2\pi}\,\exp\big(-\tfrac12x^2\big) \propto \exp\big(-\tfrac12x^2\big) $$ and that $$ 0 \leq \sin^2x\leq 1 .$$ (Here, $\sin^2 x$ means $(\sin x)^2$, by the way.) This means that, if we take proposals $Y \sim \operatorname{N}(0,1)$, and then accept an proposed sample with probability $\alpha(x) = \sin^2 x$, that will give us the distribution @eq-distprop.
 
 ```{r}
-n_samp <- 1e6
-samples <- rnorm(n_samp)
-samples <- samples[runif(n_samp) <= sin(samples)^2]
-length(samples)
+n_prop <- 1e6
+props <- rnorm(n_prop)
+accepts <- props[runif(n_prop) <= sin(props)^2]
+length(accepts)
 
-hist(samples, probability = TRUE, breaks = 50)
+hist(accepts, probability = TRUE, breaks = 50)
 curve(
   0.92 * exp(-x^2 / 2) * sin(x)^2, add = TRUE, n = 1001,
   lwd = 2, col = "blue"
 )
 ```
 
-Let's explain line 3 more carefully. We want to accept a proposal $x$ with probability $\sin^2 x$. We saw in Lecture 12 that we can simulate a Bernoulli$(p)$ distribution by taking the value 1 is $U \leq p$ and taking 0 if $U > p$. So in line 3, we are accepting each proposed sample $x$ if a standard uniform variate $u$ satisfies $u \leq \sin^2 x$.
+By rejecting lots of proposals with values near 0, we turned the unimodal ("one hump")proposal distribution $Y \sim \operatorname{N}(0,1)$ into this interesting bimodal ("two hump") distribution.
+
+Let's explain line 3 more carefully. We want to accept a proposal $x$ with probability $\sin^2 x$. We saw in Lecture 12 that we can simulate a Bernoulli$(p)$ distribution by taking the value 1 is $U \leq p$ and taking 0 if $U > p$. So in line 3, we are accepting each proposed sample $x_i$ if a standard uniform variate $u_i$ satisfies $u_i \leq \sin^2 x_i$.
 
 In this example, we found we accepted about 430,000 samples.
 :::
 
 In this example, we managed to sample from the PDF in @eq-distprop, $$ f(x) = \frac{1}{Z}\,\exp\big(-\tfrac12x^2\big)\,(\sin^2 x) ,$$ even though we never found out what the normalising constant $Z$ was. This idea -- that we can sample from a distribution even if we only know it up to a multiplicative constant -- is a very important one that will come up a lot later in this module.
 
-We won't go into that idea deeply now, but we will briefly mention that it is very important in Bayesian statistics. That's because in Bayesian statistics, the posterior distribution is often known only up to proportionality. That's because we have $$ \begin{align}
+We won't go into that idea deeply now, but we briefly mention that it is very important in Bayesian statistics. In Bayesian statistics, the posterior distribution is often known only up to proportionality. That's because we have $$ \begin{align}
 \text{posterior} &\propto \text{prior}\times\text{likelihood} \\
 \pi(\theta \mid x) &\propto\, \pi(x) \times p(x \mid \theta)
 \end{align} $$ It's often very difficult to find the normalising constant in this expression -- indeed, it can be impossible in practice. So being able to sample from such a posterior distribution without finding the constant is very important for Bayesian statisticians.
@@ -102,40 +105,42 @@ Let's first look at the **"fixed number of proposed samples"** case.
 
 If we take $m$ proposed samples, each is accepted independently with probability $a$. So the total number of accepted samples $N$ follows a binomial distribution $N \sim \operatorname{Bin}(m, a)$. This is because the binomial distribution describes the number of successes from $m$ trials. This has expectation $am$ and standard deviation $\sqrt{a(1-a)m}$.
 
-Unless $a$ is very close to $0$ or $1$, $N$ can be approximated by a normal distribution $N \approx \operatorname{N}(am, a(1-a)m)$. For large $m$, the standard deviation will be very small compared to the expectation, so the behaviour will be very predictable. (When $a$ is very small, $N$ can be better approximated by a Poisson distribution $N \approx \operatorname{Po}(am)$.)
+For large $m$, the standard deviation will be very small compared to the expectation (unless $a$ is very close to $0$ or $1$), so the number of acceptances $N$ will be very close to $am$. If we need a more precise approximation, $N$ can be approximated by a normal distribution $N \approx \operatorname{N}(am, a(1-a)m)$. When $a$ is very small, $N$ can be better approximated by a Poisson distribution $N \approx \operatorname{Po}(am)$.
 
-The alternative way is the **"keep taking proposed samples until we have accepted enough of them"** way.
+The second way is the **"keep taking proposed samples until we have accepted enough of them"** way.
 
-To get one sample requires a geometric $\operatorname{Geom}(a)$ number of samples. This is because the geometric distribution counts the number of trials needed until the first success. To get $n$ accepted samples will require the sum of $n$ independent $\operatorname{Geom}(a)$ distributions -- this is sometimes called the *negative binomial* distribution $M \sim \operatorname{NegBin}(n, a)$, which is the number of trials needed until the $n$th success. This has expectation $n/a$ and standard deviation $\sqrt{n(1-a)}/a$.
+To get one acceptance requires a geometric $\operatorname{Geom}(a)$ number of samples. This is because the geometric distribution counts the number of trials needed until the first success. To get $n$ accepted samples will require the sum of $n$ independent $\operatorname{Geom}(a)$ distributions -- this is sometimes called the *negative binomial* distribution $M \sim \operatorname{NegBin}(n, a)$, which is the number of trials needed until the $n$th success. This has expectation $n/a$ and standard deviation $\sqrt{(1-a)n}/a$.
 
-Unless $a$ is very close to $0$ or $1$, $M$ can be approximated can be approximated by a normal distribution $N \approx \operatorname{N}(am, a(1-a)m)$. For large $m$, the standard deviation will be very small compared to the expectation, so the behaviour will be very predictable. (When $a$ is very small, $M$ can be better approximated by a Gamma distribution.)
+For large $n$, the standard deviation will be very small compared to the expectation (unless $a$ is very close to $0$ or $1$), so the number of proposal $M$ will be very close to $n/a$. If we need a more precise approximation, $M$ can be approximated by a normal distribution $M \approx \operatorname{N}(n/a, (1-a)n/a^2)$. When $a$ is very small, $N$ can be better approximated by a Gamma distribution $M \approx \Gamma(n, a)$.
 
 ::: {#exm-cond2}
 In @exm-cond, we accepted $Y \sim \operatorname{N}(0,1)$ if $Y \geq 1$. In this case, we happen to know the acceptance probability exactly: it's$\mathbb P(Y \geq 1) = 0.158$.
 
-From 1,000,000 samples, the number of accepted samples we might get is shown below.
+From 1,000,000 proposals, the number of accepted samples we might get is shown below.
 
 ```{r binom1}
 #| code-fold: TRUE
-m <- 1e6
+n_prop <- 1e6
 acc_prob <- pnorm(1, lower.tail = FALSE)
 plot(
-  0:2e5, dbinom(0:2e5, m, acc_prob),
-  type = "l", col = "blue",
+  0:2e5, dbinom(0:2e5, n_prop, acc_prob),
+  type = "l", col = "blue", lwd = 2,
   xlab = "number of accepted samples", ylab = "probability"
 )
 ```
 
-We see that the number of acceptance will be very close to $an = 0.158\times 1\,000\,000 = 158\,000$. The number of samples required for 100,000 acceptance is shown below.
+We see that the number of acceptance will be very close to $an = 0.158\times 1\,000\,000 = 158\,000$.
+
+The number of proposals required for 100,000 acceptances is shown below.
 
 ```{r nbinom1}
 #| code-fold: TRUE
-n <- 1e5
+n_acc <- 1e5
 acc_prob <- pnorm(1, lower.tail = FALSE)
 plot(
-  n + 0:7e5, dnbinom(0:7e5, n, acc_prob),
+  n_acc + 0:7e5, dnbinom(0:7e5, n_acc, acc_prob),
   type = "l", col = "blue", lwd = 2,
-  xlab = "number of required samples", ylab = "probability"
+  xlab = "number of required proposals", ylab = "probability"
 )
 ```
 
@@ -143,42 +148,42 @@ The number of required proposals will be very close to $n/a = 100\,000 / 0.158 =
 :::
 
 ::: {#exm-con3}
-Suppose instead we were trying to sample from a standard normal conditional on $Y > 4$. Again, we take a standard normal and accept if the sample is greater than 4. This is a different matter, because the acceptance probability is very small: about $0.00003$.
+Suppose instead we were trying to sample from a standard normal conditional on $Y > 4$. Again, we take a standard normal proposal and accept if the proposal is greater than 4. This is a different matter, because the acceptance probability is very small: about $0.00003$.
 
 Here, the number of acceptances from 100,000 proposals is
 
 ```{r binom2}
 #| code-fold: TRUE
-m <- 1e5
+n_prop <- 1e5
 acc_prob <- pnorm(4, lower.tail = FALSE)
 plot(
-  0:15, dbinom(0:15, m, acc_prob),
-  type = "h", col = "blue", lwd = 2,
+  0:15, dbinom(0:15, n_prop, acc_prob),
+  type = "h", col = "blue", lwd = 3,
   xlab = "number of accepted samples", ylab = "probability"
 )
 ```
 
-There is likely to be a very small number of acceptance -- and around a 4% chance there are no acceptances at all. The distribution of the number of acceptances is roughly Poisson.
+There is likely to be a very small number of acceptances -- and around a 4% chance there are no acceptances at all. The distribution of the number of acceptances is roughly Poisson.
 
-The number of samples required for just 5 acceptances, on the other hand, is:
+The number of proposals required for just 5 acceptances, on the other hand, is:
 
 ```{r nbinom2}
 #| code-fold: TRUE
-n <- 5
+n_acc <- 5
 acc_prob <- pnorm(4, lower.tail = FALSE)
 plot(
-  n + 0:6e5, dnbinom(0:6e5, n, acc_prob),
+  n_acc + 0:6e5, dnbinom(0:6e5, n_acc, acc_prob),
   type = "l", col = "blue", lwd = 2,
-  xlab = "number of required samples", ylab = "probability"
+  xlab = "number of required proposals", ylab = "probability"
 )
 ```
 
 This has a very wide spread of how many proposals will be required -- anything between about 50,000 and 300,000 is reasonably plausible.
 
-This shows the danger of running rejection sampling when the probability of acceptance is very small.
+This shows the danger of running rejection sampling when the probability of acceptance is very small. Not only is the procedure slow and wasteful, but it's also very unpredictable.
 :::
 
-(Annoyingly, R defines the geometric distribution to be the number of failures *before* the first success -- 1 less then our definition -- and the negative binomial to be the number of failures *before* the $n$th success -- $n$ less than our definition. This is why `n + dnbinom()` was plotted for the two second graphs.)
+(Annoyingly, R defines the geometric distribution to be the number of failures *before* the first success -- 1 less then our definition -- and the negative binomial to be the number of failures *before* the $n$th success -- $n$ less than our definition. This is why `n_acc + dnbinom()` was plotted for the two second graphs.)
 
 **Next time.** *We look closer at rejection sampling, and in particular how we can target rejection sampling at a given distribution using the "envelope" method.*
 
@@ -191,5 +196,5 @@ This shows the danger of running rejection sampling when the probability of acce
 
 -   When the acceptance probability is low, rejection sampling can require a lot of proposed samples to get enough accepted samples.
 
-**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Section X.Y.
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsections 1.4.1 and 1.4.3.
 :::
