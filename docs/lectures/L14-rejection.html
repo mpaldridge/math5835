@@ -305,16 +305,8 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#rejection" id="toc-rejection" class="nav-link active" data-scroll-target="#rejection"><span class="header-section-number">14.1</span> Rejection</a></li>
-  <li><a href="#acceptance-probability" id="toc-acceptance-probability" class="nav-link" data-scroll-target="#acceptance-probability"><span class="header-section-number">14.2</span> Acceptance probability</a></li>
-  <li><a href="#how-many-samples" id="toc-how-many-samples" class="nav-link" data-scroll-target="#how-many-samples"><span class="header-section-number">14.3</span> How many samples?</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -338,19 +330,23 @@ window.Quarto = {
 </header>
 
 
-<section id="rejection" class="level2" data-number="14.1">
-<h2 data-number="14.1" class="anchored" data-anchor-id="rejection"><span class="header-section-number">14.1</span> Rejection</h2>
-<p>In the last two lectures, we have taken standard uniform <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span> random variables, and have applied a function to them to transform into some other distribution <span class="math inline">\(X\)</span>. One <span class="math inline">\(U\)</span> gets turned into one <span class="math inline">\(X\)</span>. (Or, for the Box–Muller transform, two <span class="math inline">\(U\)</span>s become two <span class="math inline">\(X\)</span>s.)</p>
-<p>But so far, we have taken each sample we are given. But another way to get a different distribution is to throw out samples we don’t like and wait until we get a sample we do like. This is called <strong>rejection sampling</strong>.</p>
-<p>Suppose we want not a <span class="math inline">\(\operatorname{U}[0,1]\)</span> random variable but instead a <span class="math inline">\(\operatorname{U}[0,\tfrac12]\)</span> random variable. One way we’ve already seen to do this is by the inverse transform method: simply multiply <span class="math inline">\(U\)</span> by <span class="math inline">\(\tfrac12\)</span>. But we could also do this by rejection: if <span class="math inline">\(U \leq \tfrac12\)</span>, we keep the sample; but if <span class="math inline">\(U &gt; \tfrac12\)</span>, we throw it away and ask for a new one. We keep taking samples until we get one less than <span class="math inline">\(\tfrac12\)</span>. It should be easy to convince yourself that we get a <span class="math inline">\(\operatorname{U}[0,\tfrac12]\)</span> random variable this way. (But we’ll prove it later, if not.)</p>
-<p>The advantage of rejection sampling is that it can help us get samples from some distributions that we couldn’t access with the inverse transform method. The disadvantage is that it can be costly or slow, because we may have to reject lots of samples before finding one we can keep. The more often we reject samples, the slower the procedure will be.</p>
 <!--
-Suppose we are already sampling from some distribution $Y$ (perhaps generated via the inverse transform method, for example); we keep the sample if is in some set $A$, and reject it if it is not in $A$. What is the distribution of the first accepted sample $X$? In the discrete case we have $\mathbb P(X = x) \propto \mathbb P(Y = x)$ for $x \in A$ and $\mathbb P(X = x) = 0$ for $x \notin A$. In the continuous case, have $f(x) \propto g(x)$ for $x \in A$ and $f(x) = 0$ for $x \notin A$, where $f$ is the PDF. (This might seem intuitive; if not, we give a formal proof later.-->
-<p>This method is particularly useful for sampling from a conditional distribution, such as the conditional distribution of <span class="math inline">\(Y\)</span> given that <span class="math inline">\(Y \in A\)</span>: we simply accept a sample <span class="math inline">\(y\)</span> if <span class="math inline">\(y \in A\)</span> and reject it if not.</p>
-<div class="{exm-cond}">
-<p>Let <span class="math inline">\(Y \sim \operatorname{N}(0, 1)\)</span>. Suppose we wish to use Monte Carlo estimation to estimate <span class="math inline">\(\mathbb E(Y \mid Y \geq 1)\)</span>.</p>
-<p>To do this, we will need samples from the conditional distribution <span class="math inline">\(Y \mid Y \geq 1\)</span>. So we accept samples that really are at least 1, and reject samples that are less than 1.</p>
-<p>There are two ways we could run this in practice. First, we could decide to take <span class="math inline">\(n\)</span> samples from <span class="math inline">\(Y\)</span>, and just see how many get accepted.</p>
+## Rejection
+
+In the last two lectures, we have taken standard uniform $U \sim \operatorname{U}[0,1]$ random variables, and have applied a function to them to transform into some other distribution $X$. One $U$ gets turned into one $X$. (Or, for the Box--Muller transform, two $U$s become two $X$s.)
+
+But so far, we have taken each sample we are given. But another way to get a different distribution is to throw out samples we don't like and wait until we get a sample we do like. This is called **rejection sampling**.
+
+Suppose we want not a $\operatorname{U}[0,1]$ random variable but instead a $\operatorname{U}[0,\tfrac12]$ random variable. One way we've already seen to do this is by the inverse transform method: simply multiply $U$ by $\tfrac12$. But we could also do this by rejection. We start with a proposed sample $U \sim \operatorname{U}[0,1]$. If $U \leq \tfrac12$, we "accept" the sample, and keep it. But if $U > \tfrac12$, we "reject" the samples -- we throw it away and ask for a new one. We keep proposing samples until we accept one that's less than $\tfrac12$. It should be easy to convince yourself that we get a $\operatorname{U}[0,\tfrac12]$ random variable this way. (But we'll prove it later, if not.)
+
+The advantage of rejection sampling is that it can help us get samples from some distributions that we couldn't access with the inverse transform method. The disadvantage is that it can be costly or slow, because we may have to reject lots of samples before finding enough that we can accept. The more often we reject samples, the slower the procedure will be.
+
+Rejection sampling is particularly useful for sampling from a conditional distribution, such as the conditional distribution of $Y$ given that $Y \in A$: we simply accept a sample $y$ if $y \in A$ and reject it if not.
+-->
+<div id="exm-cond" class="theorem example">
+<p><span class="theorem-title"><strong>Example 14.1</strong></span> Let <span class="math inline">\(Y \sim \operatorname{N}(0, 1)\)</span>. Suppose we wish to use Monte Carlo estimation to estimate <span class="math inline">\(\mathbb E(Y \mid Y \geq 1)\)</span>.</p>
+<p>To do this, we will need samples from the conditional distribution <span class="math inline">\(Y \mid Y \geq 1\)</span>. So we accept proposed standard normal samples that are at least 1, and reject proposed samples that are less than 1.</p>
+<p>There are two ways we could run this in practice. First, we could decide to take <span class="math inline">\(n\)</span> proposal samples from <span class="math inline">\(Y\)</span> and just see how many get accepted.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n_samp <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_samp)</span>
@@ -366,7 +362,7 @@ Suppose we are already sampling from some distribution $Y$ (perhaps generated vi
 </div>
 </div>
 <p>We end up accepting around 160,000 samples out of the 1,000,000 samples we took to start with.</p>
-<p>Second, we could keep taking as many samples as needed until we reach some desired number of acceptances.</p>
+<p>Second, we could keep proposing as many samples as needed until we reach some desired number of acceptances.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n_acc <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -384,23 +380,31 @@ Suppose we are already sampling from some distribution $Y$ (perhaps generated vi
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 628133</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>MCest1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>MCest1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>MCest2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>MCest2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.526865</code></pre>
 </div>
 </div>
 <p>This required taking about 630,000 samples to get 100,000 acceptances.</p>
 </div>
-</section>
-<section id="acceptance-probability" class="level2" data-number="14.2">
-<h2 data-number="14.2" class="anchored" data-anchor-id="acceptance-probability"><span class="header-section-number">14.2</span> Acceptance probability</h2>
-<p>So far, we have looked at always accepting or always rejecting a given sample, depending on the value it outputs. But we could “perhaps” accept some values too. Suppose we are already sampling from some distribution <span class="math inline">\(Y\)</span> (perhaps generated via the inverse transform method, for example). If we see the sample <span class="math inline">\(Y = x\)</span>, we could accept with some <strong>acceptance probability</strong> <span class="math inline">\(\alpha(x) \in [0,1]\)</span>. We can control the output more delicately by adjusting this acceptance function <span class="math inline">\(\alpha\)</span> to values that aren’t just 0 or 1.</p>
-<p>What is the distribution of the first accepted sample <span class="math inline">\(X\)</span>?</p>
-<p>Well, using Bayes’ theorem, we have in the discrete case <span class="math display">\[\mathbb P(X = x) = \mathbb P(Y = x \mid \text{accept}) = \frac{\mathbb P(Y = x)\,\mathbb P(\text{accept} \mid Y = x)}{\mathbb P(\text{accept})} = \frac{1}{Z} \alpha(x)\,\mathbb P(Y = x) .\]</span> where <span class="math inline">\(Z = \mathbb P(\text{accept})\)</span> is the normalising constant. In the continuous case, with <span class="math inline">\(g\)</span> the PDF of the original <span class="math inline">\(Y\)</span> and <span class="math inline">\(f\)</span> the PDF of the accepted <span class="math inline">\(X\)</span>, we have <span class="math display">\[ f(x) = g(x \mid \text{accept}) = \frac{g(x)\,\mathbb P(\text{accept} \mid X = x)}{\mathbb P(\text{accept})} = \frac{1}{Z}\,\alpha(x)\,g(x) , \]</span> where <span class="math inline">\(Z = \mathbb P(\text{accept})\)</span> again.</p>
+<!--
+## Acceptance probability
+
+So far, we have looked at always accepting or always rejecting a proposed sample, depending on its value. But we could "perhaps" accept some proposals too. Suppose we are already sampling from some distribution $Y$ (perhaps generated via the inverse transform method, for example). If we see the proposed sample $Y = x$, we could accept it with some **acceptance probability** $\alpha(x) \in [0,1]$. We can control the accepted samples more delicately by adjusting this acceptance function $\alpha$ to values that aren't just 0 or 1.
+
+What is the distribution of an accepted sample $X$?
+
+Well, using Bayes' theorem, we have in the discrete case
+$$\mathbb P(X = x) = \mathbb P(Y = x \mid \text{accept}) = \frac{\mathbb P(Y = x)\,\mathbb P(\text{accept} \mid Y = x)}{\mathbb P(\text{accept})} = \frac{1}{Z} \alpha(x)\,\mathbb P(Y = x) .$$
+where $Z = \mathbb P(\text{accept})$ is the normalising constant.
+In the continuous case, with $g$ the PDF of the original $Y$ and $f$ the PDF of the accepted $X$, we have
+$$ f(x) = g(x \mid \text{accept}) = \frac{g(x)\,\mathbb P(\text{accept} \mid X = x)}{\mathbb P(\text{accept})} = \frac{1}{Z}\,\alpha(x)\,g(x) , $$
+where $Z = \mathbb P(\text{accept})$ again.
+-->
 <div id="exm-normcos" class="theorem example">
-<p><span class="theorem-title"><strong>Example 14.1</strong></span> Suppose we wish to sample from the distribution <span id="eq-distprop"><span class="math display">\[ f(x) \propto \exp\big(-\tfrac12x^2\big)\,(\sin^2 x) . \tag{14.1}\]</span></span> How can we do this?</p>
-<p>Well, we can note that the PDF of the standard normal is <span class="math display">\[ g(x) = \frac{1}{2\pi}\,\exp\big(-\tfrac12x^2\big) \propto \exp\big(-\tfrac12x^2\big) \]</span> and that <span class="math display">\[ 0 \leq \sin^2x\leq 1 .\]</span> (Here, <span class="math inline">\(\sin^2 x\)</span> means <span class="math inline">\((\sin x)^2\)</span>, by the way.) This means that, if we sample <span class="math inline">\(Y \sim \operatorname{N}(0,1)\)</span>, and then accept an output with probability <span class="math inline">\(\alpha(x) = \sin^2 x\)</span>, that will give us the distribution <a href="#eq-distprop" class="quarto-xref">Equation&nbsp;<span>14.1</span></a>.</p>
+<p><span class="theorem-title"><strong>Example 14.2</strong></span> Suppose we wish to sample from the distribution <span id="eq-distprop"><span class="math display">\[ f(x) \propto \exp\big(-\tfrac12x^2\big)\,(\sin^2 x) . \tag{14.1}\]</span></span> How can we do this?</p>
+<p>Well, we can note that the PDF of the standard normal is <span class="math display">\[ g(x) = \frac{1}{2\pi}\,\exp\big(-\tfrac12x^2\big) \propto \exp\big(-\tfrac12x^2\big) \]</span> and that <span class="math display">\[ 0 \leq \sin^2x\leq 1 .\]</span> (Here, <span class="math inline">\(\sin^2 x\)</span> means <span class="math inline">\((\sin x)^2\)</span>, by the way.) This means that, if we take proposals <span class="math inline">\(Y \sim \operatorname{N}(0,1)\)</span>, and then accept an proposed sample with probability <span class="math inline">\(\alpha(x) = \sin^2 x\)</span>, that will give us the distribution <a href="#eq-distprop" class="quarto-xref">Equation&nbsp;<span>14.1</span></a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>n_samp <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_samp)</span>
@@ -422,19 +426,146 @@ Suppose we are already sampling from some distribution $Y$ (perhaps generated vi
 </div>
 </div>
 </div>
-<p>Let’s explain line 3 more carefully. We want to accept a value <span class="math inline">\(x\)</span> with probability <span class="math inline">\(\sin^2 x\)</span>. We saw in Lecture 12 that we can simulate a Bernoulli<span class="math inline">\((p)\)</span> distribution by taking the value 1 is <span class="math inline">\(U \leq p\)</span> and taking 0 if <span class="math inline">\(U &gt; p\)</span>. So in line 3, we are accepting each sample <span class="math inline">\(x\)</span> if a standard uniform distribution <span class="math inline">\(U \leq \sin^2 x\)</span>.</p>
+<p>Let’s explain line 3 more carefully. We want to accept a proposal <span class="math inline">\(x\)</span> with probability <span class="math inline">\(\sin^2 x\)</span>. We saw in Lecture 12 that we can simulate a Bernoulli<span class="math inline">\((p)\)</span> distribution by taking the value 1 is <span class="math inline">\(U \leq p\)</span> and taking 0 if <span class="math inline">\(U &gt; p\)</span>. So in line 3, we are accepting each proposed sample <span class="math inline">\(x\)</span> if a standard uniform variate <span class="math inline">\(u\)</span> satisfies <span class="math inline">\(u \leq \sin^2 x\)</span>.</p>
+<p>In this example, we found we accepted about 430,000 samples.</p>
 </div>
-<p>In this example, note that we managed to sample from the PDF in <a href="#eq-distprop" class="quarto-xref">Equation&nbsp;<span>14.1</span></a>, <span class="math display">\[ f(x) = \frac{1}{Z}\,\exp\big(-\tfrac12x^2\big)\,(\sin^2 x) ,\]</span> without every finding out what the normalising constant actually is. This idea – that we can sample from a distribution even if we only know it up to a multiplicative constant – is a very important one that will come up a lot later in this module.</p>
-<p>We won’t go into that idea deeply now, but we will briefly mention that it is very important in Bayesian statistics. That’s because in Bayesian statistics, the posterior distribution is often known only up to proportionality. That’s because we have <span class="math display">\[ \begin{align}
-\text{posterior} &amp;\propto \text{prior}\times\text{likelihood} \\
-\pi(\theta \mid x) &amp;\propto\, \pi(x) \times p(x \mid \theta)
-\end{align} \]</span> It’s often very difficult (or impossible) to find the normalising constant in this expression. So being able to sample from such a posterior distribution without finding that constant is very important for Bayesian statisticians.</p>
-</section>
-<section id="how-many-samples" class="level2" data-number="14.3">
-<h2 data-number="14.3" class="anchored" data-anchor-id="how-many-samples"><span class="header-section-number">14.3</span> How many samples?</h2>
+<!--
+In this example, we managed to sample from the PDF in @eq-distprop,
+$$ f(x) = \frac{1}{Z}\,\exp\big(-\tfrac12x^2\big)\,(\sin^2 x) ,$$
+even though we never found out what the normalising constant $Z$ was. This idea -- that we can sample from a distribution even if we only know it up to a multiplicative constant -- is a very important one that will come up a lot later in this module.
+
+We won't go into that idea deeply now, but we will briefly mention that it is very important in Bayesian statistics. That's because in Bayesian statistics, the posterior distribution is often known only up to proportionality. That's because we have
+$$ \begin{align}
+\text{posterior} &\propto \text{prior}\times\text{likelihood} \\
+\pi(\theta \mid x) &\propto\, \pi(x) \times p(x \mid \theta)
+\end{align} $$
+It's often very difficult to find the normalising constant in this expression -- indeed, it can be impossible in practice. So being able to sample from such a posterior distribution without finding the constant is very important for Bayesian statisticians.
 
 
-</section>
+## How many samples?
+
+We have mentioned that the downside of rejection sampling is that we may have to take lots of samples to get enough accepted ones. Or, conversely, we may not get enough accepted samples from a fixed number of "proposed" samples. Remember that the accuracy of Monte Carlo estimation, for example, depends on how many samples we get -- the mean-square error scales like $1/n$ and the root-mean-square error like $1/\sqrt{n}$. So it's important to be able to get a lot of samples $n$.
+
+Let's examine these questions a bit closer. Write $a = \mathbb P(\text{accept})$ for the probability a sample $Y$ gets accepted (a priori, before we have seen the value $Y = x$ of that sample).  In the discrete case, this is
+$$ a = \mathbb P(\text{accept}) = \sum_x \mathbb P(Y = x)\,\alpha(x) , $$
+and in the discrete case this is
+$$ a  = \mathbb P(\text{accept}) = \int_{-\infty}^{+\infty} g(x)\,\alpha(x)\,\mathrm{d}x . $$
+In both cases, this can be written more succinctly as $a = \Exg\alpha(Y)$.
+
+Let's first look at the **"fixed number of proposed samples"** case.
+
+If we take $m$ proposed samples, each is accepted independently with probability $a$. So the total number of accepted samples $N$ follows a binomial distribution $N \sim \operatorname{Bin}(m, a)$. This is because the binomial distribution describes the number of successes from $m$ trials. This has expectation $am$ and standard deviation $\sqrt{a(1-a)m}$.
+
+Unless $a$ is very close to $0$ or $1$, $N$ can be approximated by a normal distribution $N \approx \operatorname{N}(am, a(1-a)m)$. For large $m$, the standard deviation will be very small compared to the expectation, so the behaviour will be very predictable. (When $a$ is very small, $N$ can be better approximated by a Poisson distribution $N \approx \operatorname{Po}(am)$.)
+
+The alternative way is the **"keep taking proposed samples until we have accepted enough of them"** way.
+
+To get one sample requires a geometric $\operatorname{Geom}(a)$ number of samples. This is because the geometric distribution counts the number of trials needed until the first success. To get $n$ accepted samples will require the sum of $n$ independent $\operatorname{Geom}(a)$ distributions -- this is sometimes called the *negative binomial* distribution $M \sim \operatorname{NegBin}(n, a)$, which is the number of trials needed until the $n$th success. This has expectation $n/a$ and standard deviation $\sqrt{n(1-a)}/a$.
+
+Unless $a$ is very close to $0$ or $1$, $M$ can be approximated can be approximated by a normal distribution $N \approx \operatorname{N}(am, a(1-a)m)$. For large $m$, the standard deviation will be very small compared to the expectation, so the behaviour will be very predictable. (When $a$ is very small, $M$ can be better approximated by a Gamma distribution.)
+-->
+<div id="exm-cond2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 14.3</strong></span> In <a href="#exm-cond" class="quarto-xref">Example&nbsp;<span>14.1</span></a>, we accepted <span class="math inline">\(Y \sim \operatorname{N}(0,1)\)</span> if <span class="math inline">\(Y \geq 1\)</span>. In this case, we happen to know the acceptance probability exactly: it’s<span class="math inline">\(\mathbb P(Y \geq 1) = 0.158\)</span>.</p>
+<p>From 1,000,000 samples, the number of accepted samples we might get is shown below.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>acc_prob <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="sc">:</span><span class="fl">2e5</span>, <span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="fl">2e5</span>, m, acc_prob),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"blue"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"number of accepted samples"</span>, <span class="at">ylab =</span> <span class="st">"probability"</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L14-rejection_files/figure-html/binom1-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We see that the number of acceptance will be very close to <span class="math inline">\(an = 0.158\times 1\,000\,000 = 158\,000\)</span>. The number of samples required for 100,000 acceptance is shown below.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>acc_prob <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  n <span class="sc">+</span> <span class="dv">0</span><span class="sc">:</span><span class="fl">7e5</span>, <span class="fu">dnbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="fl">7e5</span>, n, acc_prob),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"number of required samples"</span>, <span class="at">ylab =</span> <span class="st">"probability"</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L14-rejection_files/figure-html/nbinom1-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The number of required proposals will be very close to <span class="math inline">\(n/a = 100\,000 / 0.158 = 630\,000\)</span>.</p>
+</div>
+<div id="exm-con3" class="theorem example">
+<p><span class="theorem-title"><strong>Example 14.4</strong></span> Suppose instead we were trying to sample from a standard normal conditional on <span class="math inline">\(Y &gt; 4\)</span>. Again, we take a standard normal and accept if the sample is greater than 4. This is a different matter, because the acceptance probability is very small: about <span class="math inline">\(0.00003\)</span>.</p>
+<p>Here, the number of acceptances from 100,000 proposals is</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>acc_prob <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="dv">4</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>, <span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>, m, acc_prob),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"h"</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"number of accepted samples"</span>, <span class="at">ylab =</span> <span class="st">"probability"</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L14-rejection_files/figure-html/binom2-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>There is likely to be a very small number of acceptance – and around a 4% chance there are no acceptances at all. The distribution of the number of acceptances is roughly Poisson.</p>
+<p>The number of samples required for just 5 acceptances, on the other hand, is:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>acc_prob <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="dv">4</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  n <span class="sc">+</span> <span class="dv">0</span><span class="sc">:</span><span class="fl">6e5</span>, <span class="fu">dnbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="fl">6e5</span>, n, acc_prob),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"number of required samples"</span>, <span class="at">ylab =</span> <span class="st">"probability"</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L14-rejection_files/figure-html/nbinom2-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This has a very wide spread of how many proposals will be required – anything between about 50,000 and 300,000 is reasonably plausible.</p>
+<p>This shows the danger of running rejection sampling when the probability of acceptance is very small.</p>
+</div>
+<p>(Annoyingly, R defines the geometric distribution to be the number of failures <em>before</em> the first success – 1 less then our definition – and the negative binomial to be the number of failures <em>before</em> the <span class="math inline">\(n\)</span>th success – <span class="math inline">\(n\)</span> less than our definition. This is why <code>n + dnbinom()</code> was plotted for the two second graphs.)</p>
+<div class="mysummary">
+<p><strong>Summary:</strong></p>
+<ul>
+<li><p>In rejection sampling, we accept a proposed sample <span class="math inline">\(Y = x\)</span> with probability <span class="math inline">\(\alpha(x)\)</span>.</p></li>
+<li><p>If the PDF of a proposed sample is <span class="math inline">\(g\)</span>, then the PDF of an accepted sample is proportional to <span class="math inline">\(\alpha(x) \,g(x)\)</span>.</p></li>
+<li><p>When the acceptance probability is low, rejection sampling can require a lot of proposed samples to get enough accepted samples.</p></li>
+</ul>
+<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Section X.Y.</p>
+</div>
+
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
