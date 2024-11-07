@@ -311,16 +311,8 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#sampling-under-the-curve" id="toc-sampling-under-the-curve" class="nav-link active" data-scroll-target="#sampling-under-the-curve"><span class="header-section-number">15.1</span> Sampling under the curve</a></li>
-  <li><a href="#the-envelope-rejection-sampling-algorithm" id="toc-the-envelope-rejection-sampling-algorithm" class="nav-link" data-scroll-target="#the-envelope-rejection-sampling-algorithm"><span class="header-section-number">15.2</span> The envelope rejection sampling algorithm</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">15.3</span> Examples</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -344,40 +336,67 @@ window.Quarto = {
 </header>
 
 
-<p>Last time, we started looking at rejection sampling. We found that if you start with a proposal distribution <span class="math inline">\(Y\)</span> with PDF <span class="math inline">\(g\)</span>, then accept a proposal <span class="math inline">\(Y = x\)</span> with probability <span class="math inline">\(\alpha(x)\)</span>, then the PDF <span class="math inline">\(f\)</span> of a sample conditional on acceptance satisfies <span class="math inline">\(f(x) \propto \alpha(x) g(x)\)</span>.</p>
-<p>The problem is that this sort of gets the problem backwards. If we pick a proposal distribution <span class="math inline">\(g\)</span> and acceptance function <span class="math inline">\(\alpha\)</span>, this tells us what the sample distribution <span class="math inline">\(f\)</span> will turn out to be. But we are interested in the reverse question: If we want to target a distribution <span class="math inline">\(f\)</span>, what proposal distribution <span class="math inline">\(g\)</span> and acceptance function <span class="math inline">\(\alpha\)</span> do we need to get it?</p>
-<p>Today we look at how to do that with the “envelope” method.</p>
-<section id="sampling-under-the-curve" class="level2" data-number="15.1">
-<h2 data-number="15.1" class="anchored" data-anchor-id="sampling-under-the-curve"><span class="header-section-number">15.1</span> Sampling under the curve</h2>
-<p>We will start with a slightly different discussion, to try to motivate our approach. (If at any point you find this section confuses more than it helps, you can skip straight to the definition in the next section.)</p>
-<p>Consider a PDF <span class="math inline">\(f\)</span>, and draw <span class="math inline">\(f\)</span> as a curve. We know that <span class="math inline">\(f(x)\)</span> is always positive, so this curve is always above the x-axis. We also know that <span class="math inline">\(\int_{-\infty}^{+\infty} f(x)\,\mathrm{d}x = 1\)</span>, so the total area under the curve is 1.</p>
-<p>Suppose we pick a point under the curve, uniformly at random, and then look at its x-coordinate <span class="math inline">\(X\)</span>. What is the PDF of <span class="math inline">\(X\)</span>?</p>
-<p>[picture]</p>
-<p>Well, the probability that <span class="math inline">\(X\)</span> lies in the interval <span class="math inline">\([a,b]\)</span> is the probability the point we pick lies in the part of the curve between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, which is the area of that area divided by the total area under the curve 1. So <span class="math display">\[ \mathbb P(a \leq X \leq b) = \int_a^b f(x) \,\mathrm{d}x .\]</span> But that’s just the probability associated with the PDF <span class="math inline">\(f\)</span>, so <span class="math inline">\(X\)</span> has PDF <span class="math inline">\(f\)</span>.</p>
-<p>[picture]</p>
-<p>This gives us a way – in theory, at least – to sample from a PDF <span class="math inline">\(f\)</span>. Simply pick a point at random under the curve, and take its x-coordinate. Unfortunately, there is no known way to do this directly in general, so it doesn’t really help.</p>
-<p>However, suppose we could find a function <span class="math inline">\(h\)</span> that (a) is positive everywhere, (b) has finite area under the curve, (c is above <span class="math inline">\(f\)</span> everywhere, (d) and that we <em>could</em> sample a point under. We could call such a curve an <strong>envelope</strong> for <span class="math inline">\(f\)</span>. We could then propose a point picked at random under the envelope <span class="math inline">\(h\)</span>, reject it if it were above the curve <span class="math inline">\(f\)</span>, but accept it if it were under the curve <span class="math inline">\(f\)</span>. An accepted point would be uniform under the curve <span class="math inline">\(f\)</span>, so its x-coordinate would have PDF <span class="math inline">\(f\)</span>, as required.</p>
-<p>[picture]</p>
-<p>But how can we find such an envelope <span class="math inline">\(h\)</span> we can use?</p>
-<p>If the area under the envelope <span class="math inline">\(h\)</span> is <span class="math inline">\(c\)</span>, with <span class="math inline">\(1 \leq c &lt; \infty\)</span> (the area must be at least 1, if the curve is above <span class="math inline">\(f\)</span>), then <span class="math inline">\(h\)</span> must be over the form <span class="math inline">\(h(x) = cg(x)\)</span> for a PDF <span class="math inline">\(g\)</span>. But picking the x-coordinate point at random under <span class="math inline">\(g\)</span> is just sampling from the random variable that has PDF <span class="math inline">\(g\)</span>. And the probability that a point with x-coordinate <span class="math inline">\(x\)</span> from under the envelope <span class="math inline">\(cg(x)\)</span> also lies under <span class="math inline">\(f\)</span> is <span class="math inline">\(f(x)/cg(x)\)</span>, so that would be our acceptance probability.</p>
-<p>This tells us how to perform envelope rejection sampling.</p>
-</section>
-<section id="the-envelope-rejection-sampling-algorithm" class="level2" data-number="15.2">
-<h2 data-number="15.2" class="anchored" data-anchor-id="the-envelope-rejection-sampling-algorithm"><span class="header-section-number">15.2</span> The envelope rejection sampling algorithm</h2>
-<p>If I lost you during my motivational discussion, now is the time to switch back on! We are going to set out the steps of the <strong>envelope rejection sampling</strong> algorithm.</p>
-<ul>
-<li><p><strong>Goal:</strong> To sample from a random variable <span class="math inline">\(X\)</span> with PDF <span class="math inline">\(f\)</span>.</p></li>
-<li><p><strong>We will need:</strong> A random variable <span class="math inline">\(Y\)</span> with PDF <span class="math inline">\(g\)</span> that we can sample from and a finite constant <span class="math inline">\(c\)</span> such that <span class="math inline">\(f(x) \leq cg(x)\)</span> for all <span class="math inline">\(x\)</span>.</p></li>
-<li><p><strong>Step 1:</strong> Sample <span class="math inline">\(Y\)</span> from the PDF <span class="math inline">\(g\)</span>.</p></li>
-<li><p><strong>Step 2:</strong> Accept <span class="math inline">\(Y\)</span> with probability <span class="math inline">\(f(Y) / cg(Y)\)</span>; otherwise reject <span class="math inline">\(Y\)</span>. If accepted, <strong>end</strong>. If rejected, <strong>go back to Step 1</strong>.</p></li>
-</ul>
-<p>Note that for given <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span>, there’s no guarantee a finite constant <span class="math inline">\(c\)</span> exists such that <span class="math inline">\(f(x) \leq cg(x)\)</span>. Informally, we need <span class="math inline">\(g\)</span> to have tails that are “at least as heavy” as the tails of <span class="math inline">\(f\)</span>.</p>
-<p>We reject proposals <span class="math inline">\(x\)</span> with probability <span class="math inline">\(f(x)/cg(x)\)</span>. But we saw last time that rejecting samples is bad – in that it leaves us with fewer acceptances (or requiring more proposals to get the same number of acceptances. So, for given <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span>, we’d like to pick <span class="math inline">\(c\)</span> as small as possible. We must have <span class="math inline">\(f(x) \leq cg(x)\)</span> for all <span class="math inline">\(x\)</span>, but, subject to that, smaller <span class="math inline">\(c\)</span> is better. The best possible <span class="math inline">\(c\)</span>, therefore is <span class="math inline">\(c = \inf_x f(x) / g(x)\)</span>, if it’s possible to calculate.</p>
-</section>
-<section id="examples" class="level2" data-number="15.3">
-<h2 data-number="15.3" class="anchored" data-anchor-id="examples"><span class="header-section-number">15.3</span> Examples</h2>
+<!--
+Last time, we started looking at rejection sampling. We found that if you start with a proposal distribution $Y$ with PDF $g$, then accept a proposal $Y = x$ with probability $\alpha(x)$, then the PDF $f$ of a sample conditional on acceptance satisfies $f(x) \propto \alpha(x) g(x)$.
+
+The problem is that this sort of gets the problem backwards. If we pick a proposal distribution $g$ and acceptance function $\alpha$, this tells us what the sample distribution $f$ will turn out to be. But we are interested in the reverse question: If we want to target a distribution $f$, what proposal distribution $g$ and acceptance function $\alpha$ do we need to get it?
+
+Today we look at how to do that with the "envelope" method.
+
+## Sampling under the curve
+
+We will start with a slightly different discussion, to try to motivate our approach. (If at any point you find this section confuses more than it helps, you can skip straight to the definition in the next section.)
+
+Consider a PDF $f$, and draw $f$ as a curve. We know that $f(x)$ is always positive, so this curve is always above the x-axis. We also know that $\int_{-\infty}^{+\infty} f(x)\,\mathrm{d}x = 1$, so the total area under the curve is 1.
+
+Suppose we pick a point under the curve, uniformly at random, and then look at its x-coordinate $X$. What is the PDF of $X$?
+
+[picture]
+
+Well, the probability that $X$ lies in the interval $[a,b]$ is the probability the point we pick lies in the part of the curve between $a$ and $b$, which is the area of that area divided by the total area under the curve 1. So
+$$ \mathbb P(a \leq X \leq b) = \int_a^b f(x) \,\mathrm{d}x .$$
+But that's just the probability associated with the PDF $f$, so $X$ has PDF $f$.
+
+[picture]
+
+This gives us a way -- in theory, at least -- to sample from a PDF $f$. Simply pick a point at random under the curve, and take its x-coordinate. Unfortunately, there is no known way to do this directly in general, so it doesn't really help.
+
+However, suppose we could find a function $h$ that (a) is positive everywhere, (b) has finite area under the curve, (c is above $f$ everywhere, (d) and that we *could* sample a point under. We could call such a curve an **envelope** for $f$. We could then propose a point picked at random under the envelope $h$, reject it if it were above the curve $f$, but accept it if it were under the curve $f$. An accepted point would be uniform under the curve $f$, so its x-coordinate would have PDF $f$, as required.
+
+[picture]
+
+But how can we find such an envelope $h$ we can use?
+
+If the area under the envelope $h$ is $c$, with $1 \leq c < \infty$ (the area must be at least 1, if the curve is above $f$), then $h$ must be over the form $h(x) = cg(x)$ for a PDF $g$. But picking the x-coordinate point at random under $g$ is just sampling from the random variable that has PDF $g$. And the probability that a point with x-coordinate $x$ from under the envelope $cg(x)$ also lies under $f$ is $f(x)/cg(x)$, so that would be our acceptance probability.
+
+This tells us how to perform envelope rejection sampling.
+
+## The envelope rejection sampling algorithm
+
+If I lost you during my motivational discussion, now is the time to switch back on! We are going to set out the steps of the **envelope rejection sampling** algorithm.
+
+::: {.thpart}
+* **Goal:** To sample from a random variable $X$ with PDF $f$.
+
+* **We will need:** A random variable $Y$ with PDF $g$ that we can sample from, and a finite constant $c$ such that $f(x) \leq cg(x)$ for all $x$.
+
+* **Step 1:** Sample a proposal $Y$ from the PDF $g$.
+
+* **Step 2:** Accept the proposal $Y$ with probability $f(Y) / cg(Y)$; otherwise reject $Y$. If accepted, *end*. If rejected, *go back to Step 1*.
+:::
+
+Note that for given $f$ and $g$, there's no guarantee a finite constant $c$ exists such that $f(x) \leq cg(x)$. Informally, we need $g$ to have tails that are "at least as heavy" as the tails of $f$.
+
+We should check this really does sample from $f$. We saw last time that the PDF of a sample had PDF $f(x) \propto g(x) \,\alpha(x)$. Here, that is
+$$ f(x) \propto g(x)\,\frac{f(x)}{cg(x} = \frac1c\,f(x) , $$
+as required.
+
+In envelope rejection sampling, we reject proposals $x$ with probability $f(x)/cg(x)$. But we saw last time that rejecting samples is bad -- higher rejection probabilities leave us with fewer accepted samples (or requiring more proposals to get the same number of accepted samples). So, for given $f$ and $g$, it would be good to pick $c$ as small as possible. We must have $f(x) \leq cg(x)$ for all $x$, but, subject to that, smaller $c$ is better. The best possible $c$, therefore is $c = \inf_x f(x) / g(x)$, if it's possible to calculate. (Here, "inf" means "infimum" -- it's like the minimum, except allows for the fact the minimum might only be achieved in a limit, such as $x \to -\infty$ or  $x \to +\infty$.)
+
+## Examples
+-->
 <div id="exm-env1" class="theorem example">
-<p><span class="theorem-title"><strong>Example 15.1</strong></span> Consider the Wigner semi-cricle distribution with PDF <span class="math display">\[ f(x) = \frac{2}{\pi}\sqrt{1 - x^2} \qquad -1 \leq x \leq 1 . \]</span></p>
+<p><span class="theorem-title"><strong>Example 15.1</strong></span> Consider the Wigner semi-circle distribution with PDF <span class="math display">\[ f(x) = \frac{2}{\pi}\sqrt{1 - x^2} \qquad -1 \leq x \leq 1 . \]</span></p>
 <p>We need to choose the envelope that surrounds the PDF <span class="math inline">\(f\)</span>. Here’s one choice. Let <span class="math inline">\(Y \sim \operatorname{U}[-1,1]\)</span>, which has PDF <span class="math display">\[ g(x) = \tfrac12 \qquad -1 \leq x \leq 1 .\]</span> We can also generate this easily, for example by using the inverse transform <span class="math inline">\(Y = 2U - 1\)</span> for <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>.</p>
 <p>The maximum point of <span class="math inline">\(f\)</span> is at <span class="math inline">\(x = 0\)</span>, where <span class="math inline">\(f(0) = \frac{2}{\pi}\)</span>. So we see that <span class="math inline">\(c \geq \frac{4}{\pi}\)</span> will be sufficient to ensure <span class="math inline">\(f(x) \leq cg(x)\)</span> for all <span class="math inline">\(x\)</span>. We want to take the smallest possible <span class="math inline">\(c\)</span>, so will take <span class="math inline">\(x = \frac{4}{\pi}\)</span>.</p>
 <div class="cell">
@@ -463,7 +482,7 @@ window.Quarto = {
 </div>
 <p>We accept roughly 760,000 proposals, and get an excellent fit to the half-normal distribution.</p>
 </div>
-<p><strong>Next time.</strong> <em>We study enevelope rejection sampling more closely, and complete this part of the module on random number generationg</em></p>
+<p><strong>Next time.</strong> <em>We study envelope rejection sampling more closely, and complete this part of the module on random number generation</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
@@ -475,7 +494,6 @@ window.Quarto = {
 </div>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
