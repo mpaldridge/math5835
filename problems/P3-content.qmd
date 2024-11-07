@@ -1,0 +1,102 @@
+{{< include ../_header.qmd >}}
+
+
+::::: {.myq}
+**1.**     Consider a discrete random variable that takes values $1, 2, 3, 4.5$ with probabilities $0.2, 0.2, 0.5, 0.1$ respectively. Write some R code that will sample from this distribution. (Your code may use the `runif()` function, but may not use the `sample()` function.) Check that a large sample from your code really does have the correct distribution.
+:::::
+
+
+::::: {.myq}
+**2.**     The geometric distribution $X \sim \operatorname{Geom}(p)$ represents the number of trials until the first success, where each trial succeeds independently with probability $p$. The probability mass function of $X$ is
+$$ p(x) = (1-p)^{x-1}p \qquad x = 1, 2, \dots. $$
+
+:::: {.subq}
+**(a)**  Show that the cumulative distribution function $F$ of $X$ is given by
+$$ F(x) = 1 - (1-p)^x \qquad x = 1, 2, \dots .$$
+::::
+
+:::: {.subq}
+**(b)**  Write down a function -- either in mathematical notation or in R code -- that will transform a standard uniform random variable $U$ into a geometric distribution. Try to make your function as simple as possible.
+::::
+:::::
+
+::::: {.myq}
+**3.**     Consider a Cauchy random variable $X$ with probability density function
+$$ f(x) = \frac{1}{\pi(1 + x^2)} .$$
+
+:::: {.subq}
+**(a)**  Show that the cumulative distribution function of $X$ is
+$$ F(x) = \frac12 + \frac{1}{\pi}\arctan x $$
+::::
+
+:::: {.subq}
+**(b)**  Write down a function that will transform a standard uniform random variable $U$ into a Cauchy distribution.
+::::
+
+:::: {.subq}
+**(c)**  Using your answer to part (b), draw a histogram of samples from the Cauchy distribution in R.
+::::
+:::::
+
+::::: {.myq}
+**4.**     Let $F$ be a cumulative distribution function and $F^{-1}$ its inverse.
+
+:::: {.subq}
+**(a)**  Prove that $F^{-1}$ is a non-decreasing function.
+::::
+
+:::: {.subq}
+**(b)**  Show that $X = F^{-1}(U)$ and $X' = F^{-1}(1-U)$ have negative (or, rather, non-positive) correlation. You may use any results from the module, provided you state them clearly.
+::::
+:::::
+
+::::: {.myq}
+**5.**     Let $X \sim \operatorname{Beta}(3, 2)$ be a Beta distribution with PDF
+$$ f(x) = \frac{1}{12} x^2(1-x) \qquad 0 \leq x \leq 1 . $$
+Show how you could sample from $X$ using envelope rejection sampling and an optimised value of the constant $c$.
+:::::
+
+::::: {.myq}
+**6.**     Consider sampling from the half-normal distribution
+$$ f(x) \sqrt{\frac{2}{\pi}} \exp\big(-\tfrac12 x^2\big) \qquad x \geq 0$$
+using envelope rejection sampling with an $\operatorname{Exp}(\lambda)$ proposal distribution
+$$g(x) = \lambda \mathrm{e}^{-\lambda x} \qquad x \geq 0 .$$
+You wish to design your envelope rejection sampling algorithm so that the acceptance probability is as high as possible.
+
+:::: {.subq}
+**(a)**  For fixed $\lambda$, show that the optimal value of $c$ is
+$$c = \sqrt{\frac{2}{\pi}}\,\frac{\exp(\frac12\lambda^2)}{\lambda}.$$
+::::
+
+:::: {.subq}
+**(b)**  Show that the optimal value of $\lambda$ is $\lambda = 1$.
+::::
+:::::
+
+:::::: {.myq}
+**7.**      *[2016 exam, Question 1]*  In this question, we consider generating samples from the distribution with probability density function
+$$ f_a(x) = \frac{1}{Z} \,\frac{1}{a(\cos x + 1) + x^2} \qquad x \geq 1,$$
+where $a$ is a parameter and
+$$Z = \int_{1}^{\infty} \frac{1}{a(\cos x + 1) + x^2}\,\mathrm{d}x $$
+is a normalising constant.
+
+:::: {.subq}
+**(a)**  Introducing any notation you use, state the inverse transform method for random number generation.
+::::
+
+:::: {.subq}
+**(b)**  For $a = 0$, explain how the inverse transform method can be used to generate samples with PDF $f_0$.
+::::
+
+:::: {.subq}
+**(c)**  Introducing any notation you use, state the envelope rejection sampling method for random number generation.
+::::
+
+:::: {.subq}
+**(d)**  For $a > 0$, explain how the envelope rejection sampling method can be used to generate samples with PDF $f_a$.
+::::
+
+:::: {.subq}
+**(e)**  How does the efficiency of your method in part (d) change as the value of $a$ increases? Justify your answer.
+::::
+:::::

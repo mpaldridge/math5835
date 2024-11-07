@@ -1,1 +1,24 @@
-# Problem Sheet 3 {.unnumbered}
+# Problem Sheet 3 {#P3 .unnumbered}
+
+<style>
+.myanswers { 
+display: none !important;
+}
+</style>
+
+<!--
+::: {.mysummary}
+**[Full solutions](#P2-sols)** are now available.
+:::
+-->
+
+
+::: {.mysummary}
+This is Problem Sheet 3, which covers material from Lectures 12 to 16. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of **Thursday 14 November**. If you are stuck on any of the questions, you are welcome to discuss them with me in my office hours on Mondays at 1500.
+
+This problem sheet is to help you practice material from the module. It is *not* for assessment and will not be marked.
+
+Full solutions should be released on **Friday 15 November**.
+:::
+
+{{< include P3-content.qmd >}}

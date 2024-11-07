@@ -1,77 +1,147 @@
-# Envelope rejection sampling I
-<!--
-Last time, we started looking at rejection sampling. We found that if you start with a proposal distribution $Y$ with PDF $g$, then accept a proposal $Y = x$ with probability $\alpha(x)$, then the PDF $f$ of a sample conditional on acceptance satisfies $f(x) \propto \alpha(x) g(x)$.
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
 
-The problem is that this sort of gets the problem backwards. If we pick a proposal distribution $g$ and acceptance function $\alpha$, this tells us what the sample distribution $f$ will turn out to be. But we are interested in the reverse question: If we want to target a distribution $f$, what proposal distribution $g$ and acceptance function $\alpha$ do we need to get it?
+# Envelope rejection sampling I
+
+Last time, we started looking at rejection sampling. We found that if
+you start with a proposal distribution $Y$ with PDF $g$, then accept a
+proposal $Y = x$ with probability $\alpha(x)$, then the PDF $f$ of a
+sample conditional on acceptance satisfies
+$f(x) \propto \alpha(x) g(x)$.
+
+The problem is that this sort of gets the problem backwards. If we pick
+a proposal distribution $g$ and acceptance function $\alpha$, this tells
+us what the sample distribution $f$ will turn out to be. But we are
+interested in the reverse question: If we want to target a distribution
+$f$, what proposal distribution $g$ and acceptance function $\alpha$ do
+we need to get it?
 
 Today we look at how to do that with the "envelope" method.
 
 ## Sampling under the curve
 
-We will start with a slightly different discussion, to try to motivate our approach. (If at any point you find this section confuses more than it helps, you can skip straight to the definition in the next section.)
+We will start with a slightly different discussion, to try to motivate
+our approach. (If at any point you find this section confuses more than
+it helps, you can skip straight to the definition in the next section.)
 
-Consider a PDF $f$, and draw $f$ as a curve. We know that $f(x)$ is always positive, so this curve is always above the x-axis. We also know that $\int_{-\infty}^{+\infty} f(x)\,\mathrm{d}x = 1$, so the total area under the curve is 1.
+Consider a PDF $f$, and draw $f$ as a curve. We know that $f(x)$ is
+always positive, so this curve is always above the x-axis. We also know
+that $\int_{-\infty}^{+\infty} f(x)\,\mathrm{d}x = 1$, so the total area
+under the curve is 1.
 
-Suppose we pick a point under the curve, uniformly at random, and then look at its x-coordinate $X$. What is the PDF of $X$?
+Suppose we pick a point under the curve, uniformly at random, and then
+look at its x-coordinate $X$. What is the PDF of $X$?
 
-[picture]
+\[picture\]
 
-Well, the probability that $X$ lies in the interval $[a,b]$ is the probability the point we pick lies in the part of the curve between $a$ and $b$, which is the area of that area divided by the total area under the curve 1. So
-$$ \mathbb P(a \leq X \leq b) = \int_a^b f(x) \,\mathrm{d}x .$$
-But that's just the probability associated with the PDF $f$, so $X$ has PDF $f$.
+Well, the probability that $X$ lies in the interval $[a,b]$ is the
+probability the point we pick lies in the part of the curve between $a$
+and $b$, which is the area of that area divided by the total area under
+the curve 1. So
+$$ \mathbb P(a \leq X \leq b) = \int_a^b f(x) \,\mathrm{d}x .$$ But
+that's just the probability associated with the PDF $f$, so $X$ has PDF
+$f$.
 
-[picture]
+\[picture\]
 
-This gives us a way -- in theory, at least -- to sample from a PDF $f$. Simply pick a point at random under the curve, and take its x-coordinate. Unfortunately, there is no known way to do this directly in general, so it doesn't really help.
+This gives us a way -- in theory, at least -- to sample from a PDF $f$.
+Simply pick a point at random under the curve, and take its
+x-coordinate. Unfortunately, there is no known way to do this directly
+in general, so it doesn't really help.
 
-However, suppose we could find a function $h$ that (a) is positive everywhere, (b) has finite area under the curve, (c is above $f$ everywhere, (d) and that we *could* sample a point under. We could call such a curve an **envelope** for $f$. We could then propose a point picked at random under the envelope $h$, reject it if it were above the curve $f$, but accept it if it were under the curve $f$. An accepted point would be uniform under the curve $f$, so its x-coordinate would have PDF $f$, as required.
+However, suppose we could find a function $h$ that (a) is positive
+everywhere, (b) has finite area under the curve, (c is above $f$
+everywhere, (d) and that we *could* sample a point under. We could call
+such a curve an **envelope** for $f$. We could then propose a point
+picked at random under the envelope $h$, reject it if it were above the
+curve $f$, but accept it if it were under the curve $f$. An accepted
+point would be uniform under the curve $f$, so its x-coordinate would
+have PDF $f$, as required.
 
-[picture]
+\[picture\]
 
 But how can we find such an envelope $h$ we can use?
 
-If the area under the envelope $h$ is $c$, with $1 \leq c < \infty$ (the area must be at least 1, if the curve is above $f$), then $h$ must be over the form $h(x) = cg(x)$ for a PDF $g$. But picking the x-coordinate point at random under $g$ is just sampling from the random variable that has PDF $g$. And the probability that a point with x-coordinate $x$ from under the envelope $cg(x)$ also lies under $f$ is $f(x)/cg(x)$, so that would be our acceptance probability.
+If the area under the envelope $h$ is $c$, with $1 \leq c < \infty$ (the
+area must be at least 1, if the curve is above $f$), then $h$ must be
+over the form $h(x) = cg(x)$ for a PDF $g$. But picking the x-coordinate
+point at random under $g$ is just sampling from the random variable that
+has PDF $g$. And the probability that a point with x-coordinate $x$ from
+under the envelope $cg(x)$ also lies under $f$ is $f(x)/cg(x)$, so that
+would be our acceptance probability.
 
 This tells us how to perform envelope rejection sampling.
 
 ## The envelope rejection sampling algorithm
 
-If I lost you during my motivational discussion, now is the time to switch back on! We are going to set out the steps of the **envelope rejection sampling** algorithm.
+If I lost you during my motivational discussion, now is the time to
+switch back on! We are going to set out the steps of the **envelope
+rejection sampling** algorithm.
 
-::: {.thpart}
-* **Goal:** To sample from a random variable $X$ with PDF $f$.
+::: thpart
+-   **Goal:** To sample from a random variable $X$ with PDF $f$.
 
-* **We will need:** A random variable $Y$ with PDF $g$ that we can sample from, and a finite constant $c$ such that $f(x) \leq cg(x)$ for all $x$.
+-   **We will need:** A random variable $Y$ with PDF $g$ that we can
+    sample from, and a finite constant $c$ such that $f(x) \leq cg(x)$
+    for all $x$.
 
-* **Step 1:** Sample a proposal $Y$ from the PDF $g$.
+-   **Step 1:** Sample a proposal $Y$ from the PDF $g$.
 
-* **Step 2:** Accept the proposal $Y$ with probability $f(Y) / cg(Y)$; otherwise reject $Y$. If accepted, *end*. If rejected, *go back to Step 1*.
+-   **Step 2:** Accept the proposal $Y$ with probability $f(Y) / cg(Y)$;
+    otherwise reject $Y$. If accepted, *end*. If rejected, *go back to
+    Step 1*.
 :::
 
-Note that for given $f$ and $g$, there's no guarantee a finite constant $c$ exists such that $f(x) \leq cg(x)$. Informally, we need $g$ to have tails that are "at least as heavy" as the tails of $f$.
+Note that for given $f$ and $g$, there's no guarantee a finite constant
+$c$ exists such that $f(x) \leq cg(x)$. Informally, we need $g$ to have
+tails that are "at least as heavy" as the tails of $f$.
 
-We should check this really does sample from $f$. We saw last time that the PDF of a sample had PDF $f(x) \propto g(x) \,\alpha(x)$. Here, that is
-$$ f(x) \propto g(x)\,\frac{f(x)}{cg(x} = \frac1c\,f(x) , $$
-as required.
+We should check this really does sample from $f$. We saw last time that
+the PDF of a sample had PDF $f(x) \propto g(x) \,\alpha(x)$. Here, that
+is $$ f(x) \propto g(x)\,\frac{f(x)}{cg(x)} = \frac1c\,f(x) , $$ as
+required.
 
-In envelope rejection sampling, we reject proposals $x$ with probability $f(x)/cg(x)$. But we saw last time that rejecting samples is bad -- higher rejection probabilities leave us with fewer accepted samples (or requiring more proposals to get the same number of accepted samples). So, for given $f$ and $g$, it would be good to pick $c$ as small as possible. We must have $f(x) \leq cg(x)$ for all $x$, but, subject to that, smaller $c$ is better. The best possible $c$, therefore is $c = \inf_x f(x) / g(x)$, if it's possible to calculate. (Here, "inf" means "infimum" -- it's like the minimum, except allows for the fact the minimum might only be achieved in a limit, such as $x \to -\infty$ or  $x \to +\infty$.)
+In envelope rejection sampling, we reject proposals $x$ with probability
+$f(x)/cg(x)$. But we saw last time that rejecting samples is bad --
+higher rejection probabilities leave us with fewer accepted samples (or
+requiring more proposals to get the same number of accepted samples).
+So, for given $f$ and $g$, it would be good to pick $c$ as small as
+possible. We must have $f(x) \leq cg(x)$ for all $x$, so we must have
+$c \geq f(x) / g(x)$ for all $x$, and therefore
+$c \geq \sup_x f(x)/g(x)$. (Here, "sup"
+means "supremum" -- it's like the maximum, except allows for the fact the
+maximum might only be achieved in a limit, such as $x \to -\infty$ or
+$x \to +\infty$.) The best possible $c$, therefore is to take $c$ to *equal* this maximum, $c = \sup_x f(x) / g(x)$, if it's possible to calculate it.
+
+[**Note:** *I messed this up in the lecture, and accidentally said minimum/infimum, where it should be maximum/supremum.*]
 
 ## Examples
--->
+
 ::: {#exm-env1}
 Consider the Wigner semi-circle distribution with PDF
 $$ f(x) = \frac{2}{\pi}\sqrt{1 - x^2} \qquad -1 \leq x \leq 1 . $$
 
-We need to choose the envelope that surrounds the PDF $f$. Here's one choice. Let $Y \sim \operatorname{U}[-1,1]$, which has PDF
-$$ g(x) = \tfrac12 \qquad -1 \leq x \leq 1 .$$
-We can also generate this easily, for example by using the inverse transform $Y = 2U - 1$ for $U \sim \operatorname{U}[0,1]$.
+We need to choose the envelope that surrounds the PDF $f$. Here's one
+choice. Let $Y \sim \operatorname{U}[-1,1]$, which has PDF
+$$ g(x) = \tfrac12 \qquad -1 \leq x \leq 1 ,$$ which well give a simple "box" around $f$ for the envelope. We can also generate these samples
+easily, for example by using the inverse transform $Y = 2U - 1$ for
+$U \sim \operatorname{U}[0,1]$.
 
-The maximum point of $f$ is at $x = 0$, where $f(0) = \frac{2}{\pi}$. So we see that $c \geq \frac{4}{\pi}$  will be sufficient to ensure $f(x) \leq cg(x)$ for all $x$. We want to take the smallest possible $c$, so will take $x = \frac{4}{\pi}$. 
+The maximum point of $f$ is at $x = 0$, where $f(0) = \frac{2}{\pi}$. So
+we see that $c \geq \frac{4}{\pi}$ will be sufficient to ensure
+$f(x) \leq cg(x)$ for all $x$, with the box surrounding the semi-circle. We want to take the smallest possible
+$c$, so will take $x = \frac{4}{\pi}$, with the box *just* touching the semi-circle at its top.
+
+```{r}
+pdf <- function(x) (2 / pi) * sqrt(1 - x^2)
+env <- function(x) (4 / pi) * (1 / 2) * (-1 <= x & x <= 1)
+```
 
 ```{r semi1}
 #| code-fold: TRUE
-pdf <- function(x) (2 / pi) * sqrt(1 - x^2)
-env <- function(x) (4 / pi) * (1 / 2) * (-1 <= x & x <= 1)
 curve(
   pdf, n = 1001, from = -1, to = 1,
   xlim = c(-1.5, 1.5), ylim = c(0, 0.8), lwd = 3, col = "blue"
@@ -79,6 +149,7 @@ curve(
 curve(env, n = 1001, add = TRUE, lwd = 2, col = "red")
 ```
 
+In my code, I've set it up so that `env()` (the envelope function) is $c$ times $g$.
 
 ```{r}
 n_prop <- 1e6
@@ -90,22 +161,32 @@ hist(accepts, probability = TRUE, breaks = 40)
 curve(pdf, add = TRUE, lwd = 2, col = "blue")
 ```
 
-We see that we accepted about 78% or 79% of proposals, and the histogram is an excellent fit to the semicircle distribution.
+We see that we accepted about 78% or 79% of proposals, and the histogram
+is an excellent fit to the semicircle distribution.
 :::
 
 ::: {#exm-env-norm}
 Suppose we want to sample from the "half-normal" distribution
 $$ f(x) = \sqrt\frac{2}{\pi} \exp\big(\tfrac12 x^2\big) \qquad x \geq 0 . $$
-Let's take $Y \sim \operatorname{Exp}(1)$ with $g(x) = \mathrm{e}^{-x}$. We know this can be easily sampled from, using the inverse transform $U = - \log U$. The exponential also has fatter tails than the normal, so this should work.
+Let's take $Y \sim \operatorname{Exp}(1)$ with $g(x) = \mathrm{e}^{-x}$.
+We know this can be easily sampled from, using the inverse transform
+$Y = - \log U$. The exponential also has fatter tails than the normal,
+so this should work.
 
 To find an appropriate $c$, we consider
 $$ \frac{f(x)}{g(x)} = \frac{\sqrt\frac{2}{\pi} \exp(\tfrac12 x^2)}{\exp(-x)} = \sqrt\frac{2}{\pi} \exp \big(-\tfrac12 x^2 + x\big) . $$
-This is maximised where $-\tfrac12 x^2 + x$ is maximised which (by differentiating and setting equal to 0) is at $x = 1$. So we take the best possible $c$, which is
+This is maximised where $-\tfrac12 x^2 + x$ is maximised which (by
+differentiating and setting equal to 0) is at $x = 1$. So we take the
+best possible $c$, which is
 $$ c = \frac{f(1)}{g(1)} = \sqrt\frac{2}{\pi} \exp\big(-\tfrac12 + 1\big) = \sqrt\frac{2\mathrm{e}}{\pi} . $$
-```{r halfnorm}
-#| code-fold: TRUE
+
+```{r}
 pdf <- function(x) sqrt(2 / pi) * exp(-x^2 / 2)
 env <- function(x) sqrt(2 * exp(1) / pi) * exp(-x)
+```
+
+```{r halfnorm}
+#| code-fold: TRUE
 curve(
   pdf, n = 1001, from = 0, to = 4,
   xlim = c(0, 3), ylim = c(0, 1.32), lwd = 3, col = "blue"
@@ -123,19 +204,27 @@ hist(accepts, probability = TRUE, breaks = 40)
 curve(pdf, add = TRUE, lwd = 2, col = "blue")
 ```
 
-We accept roughly 760,000 proposals, and get an excellent fit to the half-normal distribution.
+We accept roughly 760,000 proposals, and get an excellent fit to the
+half-normal distribution.
 :::
 
-**Next time.** *We study envelope rejection sampling more closely, and complete this part of the module on random number generation*
+**Next time.** *We study envelope rejection sampling more closely, and
+complete this part of the module on random number generation*
 
 ::: mysummary
 **Summary:**
 
--   For envelope rejection sampling from a PDF $f$, we need a PDF $g$ from which we can sample and a constant $c$ such that $f(x) \leq cg(x)$ for all $x$.
+-   For envelope rejection sampling from a PDF $f$, we need a PDF $g$
+    from which we can sample and a constant $c$ such that
+    $f(x) \leq cg(x)$ for all $x$.
 
--   We propose samples from $g$, and accept a proposal $x$ with probability $f(x) / cg(x)$.
+-   We propose samples from $g$, and accept a proposal $x$ with
+    probability $f(x) / cg(x)$.
 
--   To keep the acceptance probability high, we want to pick $c$ as small as possible.
+-   To keep the acceptance probability high, we want to pick $c$ as
+    small as possible.
 
-**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsections 1.4.2.
+**Read more:** [Voss, *An Introduction to Statistical
+Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031),
+Subsections 1.4.2.
 :::
