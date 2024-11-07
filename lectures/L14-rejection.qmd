@@ -1,5 +1,7 @@
 # Rejection sampling
 
+{{< include ../_header.qmd >}}
+
 ## Rejection
 
 In the last two lectures, we have taken standard uniform $U \sim \operatorname{U}[0,1]$ random variables, and have applied a function to them to transform into some other distribution $X$. One $U$ gets turned into one $X$. (Or, for the Box--Muller transform, two $U$s become two $X$s.)
@@ -109,7 +111,7 @@ For large $m$, the standard deviation will be very small compared to the expecta
 
 The second way is the **"keep taking proposed samples until we have accepted enough of them"** way.
 
-To get one acceptance requires a geometric $\operatorname{Geom}(a)$ number of samples. This is because the geometric distribution counts the number of trials needed until the first success. To get $n$ accepted samples will require the sum of $n$ independent $\operatorname{Geom}(a)$ distributions -- this is sometimes called the *negative binomial* distribution $M \sim \operatorname{NegBin}(n, a)$, which is the number of trials needed until the $n$th success. This has expectation $n/a$ and standard deviation $\sqrt{(1-a)n}/a$.
+To get one acceptance requires a geometric $\operatorname{Geom}(a)$ number of samples. This is because the geometric distribution counts the number of trials needed until the first success. To get $n$ accepted samples will require the sum of $n$ independent $\operatorname{Geom}(a)$ distributions -- this is sometimes called the [negative binomial](https://en.wikipedia.org/wiki/Negative_binomial_distribution) distribution $M \sim \operatorname{NegBin}(n, a)$, which is the number of trials needed until the $n$th success. This has expectation $n/a$ and standard deviation $\sqrt{(1-a)n}/a$.
 
 For large $n$, the standard deviation will be very small compared to the expectation (unless $a$ is very close to $0$ or $1$), so the number of proposal $M$ will be very close to $n/a$. If we need a more precise approximation, $M$ can be approximated by a normal distribution $M \approx \operatorname{N}(n/a, (1-a)n/a^2)$. When $a$ is very small, $N$ can be better approximated by a Gamma distribution $M \approx \Gamma(n, a)$.
 

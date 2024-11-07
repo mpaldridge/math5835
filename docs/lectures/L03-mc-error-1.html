@@ -292,6 +292,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Rejection sampling</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L15-envelope-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Envelope rejection sampling I</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -390,7 +396,7 @@ window.Quarto = {
 <ol type="1">
 <li><p><span class="math inline">\(\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex \overline Y_n = \Ex Y = \Exg \phi(X)\)</span>, so <span class="math inline">\(\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0\)</span>.</p></li>
 <li><p><span class="math inline">\({\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \operatorname{Var}\big(\overline Y_n\big) = \frac{1}{n} \operatorname{Var}(Y) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>Using <a href="#thm-MSE-bias" class="quarto-xref">Theorem&nbsp;<span class="quarto-unresolved-ref">thm-MSE-bias</span></a>, <span class="math display">\[\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}})^2 + \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = 0^2 + \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) . \]</span></p></li>
+<li><p>Using <a href="#thm-MSE-bias" class="quarto-xref">Theorem&nbsp;<span>3.1</span></a>, <span class="math display">\[\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}})^2 + \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = 0^2 + \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) . \]</span></p></li>
 <li><p>Take the square root of part 3.</p></li>
 </ol>
 </div>
@@ -400,7 +406,7 @@ window.Quarto = {
 <section id="example" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="example"><span class="header-section-number">3.3</span> Example</h2>
 <div id="exm-MCexp2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 3.1</strong></span> Let’s go back to the very first example in the module, <a href="#exm-MCexp" class="quarto-xref">Example&nbsp;<span class="quarto-unresolved-ref">exm-MCexp</span></a>, where we were trying to find the expectation of an <span class="math inline">\(\operatorname{Exp}(2)\)</span> random variable. We used this R code:</p>
+<p><span class="theorem-title"><strong>Example 3.1</strong></span> Let’s go back to the very first example in the module, <a href="L01-mc-intro.html#exm-MCexp" class="quarto-xref">Example&nbsp;<span>1.1</span></a>, where we were trying to find the expectation of an <span class="math inline">\(\operatorname{Exp}(2)\)</span> random variable. We used this R code:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
@@ -433,7 +439,7 @@ window.Quarto = {
 <li><p>The Monte Carlo estimator has mean-square error <span class="math inline">\(\Var(\phi(X))/n\)</span>, so the root-mean-square error scales like <span class="math inline">\(1/\sqrt{n}\)</span>.</p></li>
 <li><p>The mean-square error can be estimated by <span class="math inline">\(S^2 / n\)</span>, where <span class="math inline">\(S^2\)</span> is the sample variance of <span class="math inline">\(\phi(X)\)</span>.</p></li>
 </ul>
-<p>On <a href="#P1"><strong>Problem Sheet 1</strong></a>, you should now be able to answers Questions 1–6, except 2(c).</p>
+<p>On <a href="../problems/P1.html"><strong>Problem Sheet 1</strong></a>, you should now be able to answers Questions 1–6, except 2(c).</p>
 <p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.2.2.</p>
 </div>
 

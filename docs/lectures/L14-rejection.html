@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../problems/solutions.html" rel="next">
+<link href="../lectures/L15-envelope-1.html" rel="next">
 <link href="../lectures/L13-inverse.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -292,6 +292,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Rejection sampling</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L15-envelope-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Envelope rejection sampling I</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -338,6 +344,15 @@ window.Quarto = {
 </header>
 
 
+<div class="hidden">
+<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
+\newcommand{\Ex}{\mathbb{E}}
+\newcommand{\Ind}{\mathbb{I}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\ee}{\mathrm{e}}\]</span></p>
+</div>
 <section id="rejection" class="level2" data-number="14.1">
 <h2 data-number="14.1" class="anchored" data-anchor-id="rejection"><span class="header-section-number">14.1</span> Rejection</h2>
 <p>In the last two lectures, we have taken standard uniform <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span> random variables, and have applied a function to them to transform into some other distribution <span class="math inline">\(X\)</span>. One <span class="math inline">\(U\)</span> gets turned into one <span class="math inline">\(X\)</span>. (Or, for the Box–Muller transform, two <span class="math inline">\(U\)</span>s become two <span class="math inline">\(X\)</span>s.)</p>
@@ -439,7 +454,7 @@ window.Quarto = {
 <p>If we take <span class="math inline">\(m\)</span> proposed samples, each is accepted independently with probability <span class="math inline">\(a\)</span>. So the total number of accepted samples <span class="math inline">\(N\)</span> follows a binomial distribution <span class="math inline">\(N \sim \operatorname{Bin}(m, a)\)</span>. This is because the binomial distribution describes the number of successes from <span class="math inline">\(m\)</span> trials. This has expectation <span class="math inline">\(am\)</span> and standard deviation <span class="math inline">\(\sqrt{a(1-a)m}\)</span>.</p>
 <p>For large <span class="math inline">\(m\)</span>, the standard deviation will be very small compared to the expectation (unless <span class="math inline">\(a\)</span> is very close to <span class="math inline">\(0\)</span> or <span class="math inline">\(1\)</span>), so the number of acceptances <span class="math inline">\(N\)</span> will be very close to <span class="math inline">\(am\)</span>. If we need a more precise approximation, <span class="math inline">\(N\)</span> can be approximated by a normal distribution <span class="math inline">\(N \approx \operatorname{N}(am, a(1-a)m)\)</span>. When <span class="math inline">\(a\)</span> is very small, <span class="math inline">\(N\)</span> can be better approximated by a Poisson distribution <span class="math inline">\(N \approx \operatorname{Po}(am)\)</span>.</p>
 <p>The second way is the <strong>“keep taking proposed samples until we have accepted enough of them”</strong> way.</p>
-<p>To get one acceptance requires a geometric <span class="math inline">\(\operatorname{Geom}(a)\)</span> number of samples. This is because the geometric distribution counts the number of trials needed until the first success. To get <span class="math inline">\(n\)</span> accepted samples will require the sum of <span class="math inline">\(n\)</span> independent <span class="math inline">\(\operatorname{Geom}(a)\)</span> distributions – this is sometimes called the <em>negative binomial</em> distribution <span class="math inline">\(M \sim \operatorname{NegBin}(n, a)\)</span>, which is the number of trials needed until the <span class="math inline">\(n\)</span>th success. This has expectation <span class="math inline">\(n/a\)</span> and standard deviation <span class="math inline">\(\sqrt{(1-a)n}/a\)</span>.</p>
+<p>To get one acceptance requires a geometric <span class="math inline">\(\operatorname{Geom}(a)\)</span> number of samples. This is because the geometric distribution counts the number of trials needed until the first success. To get <span class="math inline">\(n\)</span> accepted samples will require the sum of <span class="math inline">\(n\)</span> independent <span class="math inline">\(\operatorname{Geom}(a)\)</span> distributions – this is sometimes called the <a href="https://en.wikipedia.org/wiki/Negative_binomial_distribution">negative binomial</a> distribution <span class="math inline">\(M \sim \operatorname{NegBin}(n, a)\)</span>, which is the number of trials needed until the <span class="math inline">\(n\)</span>th success. This has expectation <span class="math inline">\(n/a\)</span> and standard deviation <span class="math inline">\(\sqrt{(1-a)n}/a\)</span>.</p>
 <p>For large <span class="math inline">\(n\)</span>, the standard deviation will be very small compared to the expectation (unless <span class="math inline">\(a\)</span> is very close to <span class="math inline">\(0\)</span> or <span class="math inline">\(1\)</span>), so the number of proposal <span class="math inline">\(M\)</span> will be very close to <span class="math inline">\(n/a\)</span>. If we need a more precise approximation, <span class="math inline">\(M\)</span> can be approximated by a normal distribution <span class="math inline">\(M \approx \operatorname{N}(n/a, (1-a)n/a^2)\)</span>. When <span class="math inline">\(a\)</span> is very small, <span class="math inline">\(N\)</span> can be better approximated by a Gamma distribution <span class="math inline">\(M \approx \Gamma(n, a)\)</span>.</p>
 <div id="exm-cond2" class="theorem example">
 <p><span class="theorem-title"><strong>Example 14.3</strong></span> In <a href="#exm-cond" class="quarto-xref">Example&nbsp;<span>14.1</span></a>, we accepted <span class="math inline">\(Y \sim \operatorname{N}(0,1)\)</span> if <span class="math inline">\(Y \geq 1\)</span>. In this case, we happen to know the acceptance probability exactly: it’s<span class="math inline">\(\mathbb P(Y \geq 1) = 0.158\)</span>.</p>
@@ -975,8 +990,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
-        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L15-envelope-1.html" class="pagination-link" aria-label="Envelope rejection sampling I">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Envelope rejection sampling I</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
