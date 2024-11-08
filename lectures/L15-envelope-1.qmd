@@ -130,10 +130,10 @@ $$ g(x) = \tfrac12 \qquad -1 \leq x \leq 1 ,$$ which well give a simple "box" ar
 easily, for example by using the inverse transform $Y = 2U - 1$ for
 $U \sim \operatorname{U}[0,1]$.
 
-The maximum point of $f$ is at $x = 0$, where $f(0) = \frac{2}{\pi}$. So
+The maximum point of $f$ is at $x = 0$, where $f(0) = \frac{2}{\pi}$ and $g(0) = \tfrac12$. So
 we see that $c \geq \frac{4}{\pi}$ will be sufficient to ensure
 $f(x) \leq cg(x)$ for all $x$, with the box surrounding the semi-circle. We want to take the smallest possible
-$c$, so will take $x = \frac{4}{\pi}$, with the box *just* touching the semi-circle at its top.
+$c$, so will take $c = \frac{4}{\pi}$, with the box *just* touching the semi-circle at its top.
 
 ```{r}
 pdf <- function(x) (2 / pi) * sqrt(1 - x^2)

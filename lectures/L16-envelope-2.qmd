@@ -1,1 +1,147 @@
 # Envelope rejection sampling II
+<!--
+Last time we discussed envelope rejection sampling. The process was the following:
+
+-   **Goal:** To sample from a random variable $X$ with PDF $f$.
+
+-   **We will need:** A random variable $Y$ with PDF $g$ that we can
+    sample from, and a finite constant $c$ such that $f(x) \leq cg(x)$
+    for all $x$.
+
+-   **Step 1:** Sample a proposal $Y$ from the PDF $g$.
+
+-   **Step 2:** Accept the proposal $Y$ with probability $f(Y) / cg(Y)$;
+    otherwise reject $Y$. If accepted, *end*. If rejected, *go back to
+    Step 1*.
+    
+While we've covered the most important facts about envelope rejection sampling last time, there are a few quick matters to mop up today.
+
+## Acceptance probability
+
+Conditional on seeing a proposal $Y = x$, we saw that the acceptance probability is
+$$ \alpha(x) = \frac{f(x)}{cg(x)} . $$
+For any particular $x$, this increases as $c$ decreases, which is why we wanted $c$ as small as possible, subject to $f(x) \leq cg(x)$ for all $x$.
+
+But what is the overall acceptance probability -- unconditionally, before we've seen the value of the proposal?
+
+As we saw before, the overall acceptance probability is
+$$ \operatorname{\mathbb E}\alpha(Y) = \int_{-\infty}^{+\infty} \alpha(x)\,g(x)\,\mathrm{d}x . $$
+Substituting in our value of $\alpha$, we have
+$$ \operatorname{\mathbb E}\alpha(Y) = \int_{-\infty}^{+\infty} \frac{f(x)}{cg(x)}\,g(x)\,\mathrm{d}x = \frac{1}{c} \int_{-\infty}^{+\infty} f(x) \, \mathrm{d}x  = \frac{1}{c} , $$
+since the integral of PDF $f$ is 1. Thus the unconditional acceptance probability is therefore $1/c$. To put it another way, the expected number of proposals per acceptance is $c$.
+
+This is another even more direct reason why we should want to take $c$ as small as possible.
+-->
+::: {#exm-acc-vals}
+In @exm-env1, we took $c = \frac{4}{\pi}$, so $1/c = \frac{\pi}{4} = 0.785$. We saw that we accepted 78% or 79% of the proposals.
+
+In @exm-env-norm, we took
+$$c = \sqrt\frac{2\mathrm{e}}{\pi} \qquad \frac{1}{c} = \sqrt{\frac{\pi}{2\mathrm{e}}} = 0.760.$$
+We saw that we accepted about 76% of proposals.
+:::
+<!--
+## Unnormalised measures
+
+We briefly mentioned in Lecture 14 that it can be useful to be able to be able to sample from PDFs even when we only know the PDF up to proportionality, and that this is particularly useful in Bayesian statistics.
+
+Suppose we want to sample from a PDF
+$$ f(x) = \frac{1}{Z]\,\mu(x) , $$
+where the **measure** $\mu$ is known, but the normalising constant
+$$ Z = \int_{-\infty}^{+\infty}\mu(x) \,\mathrm{d}x $$
+is unknown (but finite). Can we do this with envelope rejection sampling?
+
+The answer is yes -- and algorithm is basically exactly the same, just with $f$ replaced by $\mu$.
+
+::: {.thpart}
+-   **Goal:** To sample from a random variable $X$ with PDF proportional to the measure $\mu$.
+
+-   **We will need:** A random variable $Y$ with PDF $g$ that we can
+    sample from, and a finite constant $c$ such that $\mu(x) \leq cg(x)$
+    for all $x$.
+
+-   **Step 1:** Sample a proposal $Y$ from the PDF $g$.
+
+-   **Step 2:** Accept the proposal $Y$ with probability $\mu(Y) / cg(Y)$;
+    otherwise reject $Y$. If accepted, *end*. If rejected, *go back to
+    Step 1*.
+:::
+
+To check that this still works, we remember that the accepted PDF is proportional to
+$$ \alpha(x) \,g(x) = \frac{\mu(x)}{cg(x)}\,g(x) = \frac{1}{c} \mu(x) \propto \mu(x) \propto f(x) . $$
+
+(In this case, $1/c$ is only proportional to, not directly equal to, the unconditional accpetance probability.)
+-->
+::: {#exm-mises}
+The **von Mises distribution** is a distribution on $[0, 2\pi)$ with PDF
+$$f(x) \propto \mu(x) = \exp\big(\kappa \cos (x-m)\big), $$for some parameters $m \in [0, 2\pi)$ and $\kappa \geq 0$. The von Mises distribution is used to model data on a circle, with $x$ being the angle around the circle. Circular data might be a compass direction (north/south/east/west), or a time of day (with the circle representing the hours from midnight to midnight). The von Mises distribution is sort of a "circular equivalent" of the normal distribution on the line, with $m$ being the mean value and $\kappa$ playing a similar role $1/\sigma^2$. There is no closed form for the constant of proportionality.
+
+We wish to sample from the von Mises distribution with $\mu = 0$ and $\kappa = 2$, where the unnormalised measure is $\mu(x) = \exp(2\cos x)$. We choose the uniform distribution $g(x) = \frac{1}{2\pi}$ on $[0, 2\pi)$ for our envelope, which we can easily sample from as $Y = 2\pi U$. To choose $c$, we note that the maximum of $\mu(x)$ is at $x = 0$, where it takes the value $\exp(2)$. So we take $c = \mu(0)/g(0) = 2\pi\mathrm{e}^2$.
+
+```{r}
+meas <- function(x) exp(2 * cos(x))
+env  <- function(x) 2 * pi * exp(2) * (1 / (2 * pi)) * (x <= 2 * pi)
+```
+
+```{r vonmises}
+#| code-fold: TRUE
+curve(
+  meas, n = 1001, from = 0, to = 2 * pi,
+  lwd = 3, col = "blue"
+)
+curve(env, n = 1001, add = TRUE, lwd = 2, col = "red")
+```
+
+(This graph might look a little odd, but remember that $0$ and $2\pi$ are the same part of the circle, so this measure takes its largest values around that "join".)
+
+```{r}
+n_prop <- 1e6
+props <- 2 * pi * (runif(n_prop))
+accepts <- props[runif(n_prop) <= meas(props) / env(props)]
+
+length(accepts)
+hist(accepts, probability = TRUE, breaks = 2 * pi * (0:30) / 30)
+curve(meas(x) / 14.3, add = TRUE, lwd = 2, col = "blue")
+```
+
+We accepted about 31% of proposals.
+:::
+<--
+## Summary of Part II
+
+This completes our study of random number generation. This would be a good time to summarise what we have learned.
+
+First we discussed generating randomness.
+
+* We can generate random numbers uniform on $[0,1]$ through true physical randomness or by a pseudorandom number generator.
+
+* LCGs are one type of pseudorandom number generator. An LCG is a recurrence $x_{n+1} = (ax_n + c) \bmod m$.
+
+* Conditions for an LCG to have full period of $m$ are given by the Hull--Dobell theorem: if $m$ is a power of 2, then we need $c$ to me even and $a$ to be $1 \bmod 4$.
+
+Then we discussed manipulating standard uniform samples into other distributions.
+
+* The inverse transform method uses the cumulative distribution function: set $U = F(X)$ and invert to make $X$ the subject.
+
+* Discrete random variables can be simulated by splitting up the intervals $[0,1]$ into segments of length $p(x_i)$, then seeing which segment $U$ falls into.
+
+* Two normal distributions can be sampled using the Box--Muller theorem and polar coordinates. Let $R$ be Rayleigh distributed, $\Theta$ be uniform on $[0, 2\pi)$, then set $X = R \cos \Theta$ and $Y = R \sin \Theta$.
+
+* We can also get different distributions by accepting a proposed sample $Y = x$ from $g$ with probability $\alpha(x)$. The PDF of an accepted sample is $f(x) \propto \alpha(x)\,g(x)$.
+
+* Envelope rejection sampling is a way to target rejection sampling a PDF $f$, by choosing an "envelope" $cg(x)$, and accepting a sample from $g$ with probability $f(x)/cg(x)$.
+
+* Rejection sampling works best when the acceptance probability is made as large as possible.
+-->
+**Next time.** *We begin our study on MCMC: Markov chain Monte Carlo.*
+
+::: mysummary
+**Summary:**
+
+-   Envelope rejection sampling with envelope $cg(x)$ has unconditional acceptance probability $1/c$.
+
+-   Envelope rejection sampling works even if the desired distribution is only know up to a proportionality constant.
+
+**Read more:** [Voss, *An Introduction to Statistical
+Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031),
+Subsections 1.4.2.
+:::

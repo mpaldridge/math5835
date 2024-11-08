@@ -120,7 +120,7 @@ c(ISest, sqrt(IS_MSE))
 We see that the RMSE has roughly halved, which is the equivalent of taking four times as many samples.
 :::
 
-## Monte Carlo summary
+## Summary of Part I
 
 This is our last lecture on Monte Carlo estimation -- at least for now, and at least in its standard form. So let's end this section of the module by summarising the estimators we have learned about. We have been learning how to estimate $\theta = \Exg \phi(X)$
 

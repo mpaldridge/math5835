@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -69,6 +103,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../mystyle.css">
 </head>
@@ -285,6 +348,146 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<!--
+Last time we discussed envelope rejection sampling. The process was the following:
+
+-   **Goal:** To sample from a random variable $X$ with PDF $f$.
+
+-   **We will need:** A random variable $Y$ with PDF $g$ that we can
+    sample from, and a finite constant $c$ such that $f(x) \leq cg(x)$
+    for all $x$.
+
+-   **Step 1:** Sample a proposal $Y$ from the PDF $g$.
+
+-   **Step 2:** Accept the proposal $Y$ with probability $f(Y) / cg(Y)$;
+    otherwise reject $Y$. If accepted, *end*. If rejected, *go back to
+    Step 1*.
+    
+While we've covered the most important facts about envelope rejection sampling last time, there are a few quick matters to mop up today.
+
+## Acceptance probability
+
+Conditional on seeing a proposal $Y = x$, we saw that the acceptance probability is
+$$ \alpha(x) = \frac{f(x)}{cg(x)} . $$
+For any particular $x$, this increases as $c$ decreases, which is why we wanted $c$ as small as possible, subject to $f(x) \leq cg(x)$ for all $x$.
+
+But what is the overall acceptance probability -- unconditionally, before we've seen the value of the proposal?
+
+As we saw before, the overall acceptance probability is
+$$ \operatorname{\mathbb E}\alpha(Y) = \int_{-\infty}^{+\infty} \alpha(x)\,g(x)\,\mathrm{d}x . $$
+Substituting in our value of $\alpha$, we have
+$$ \operatorname{\mathbb E}\alpha(Y) = \int_{-\infty}^{+\infty} \frac{f(x)}{cg(x)}\,g(x)\,\mathrm{d}x = \frac{1}{c} \int_{-\infty}^{+\infty} f(x) \, \mathrm{d}x  = \frac{1}{c} , $$
+since the integral of PDF $f$ is 1. Thus the unconditional acceptance probability is therefore $1/c$. To put it another way, the expected number of proposals per acceptance is $c$.
+
+This is another even more direct reason why we should want to take $c$ as small as possible.
+-->
+<div id="exm-acc-vals" class="theorem example">
+<p><span class="theorem-title"><strong>Example 16.1</strong></span> In <a href="L15-envelope-1.html#exm-env1" class="quarto-xref">Example&nbsp;<span>15.1</span></a>, we took <span class="math inline">\(c = \frac{4}{\pi}\)</span>, so <span class="math inline">\(1/c = \frac{\pi}{4} = 0.785\)</span>. We saw that we accepted 78% or 79% of the proposals.</p>
+<p>In <a href="L15-envelope-1.html#exm-env-norm" class="quarto-xref">Example&nbsp;<span>15.2</span></a>, we took <span class="math display">\[c = \sqrt\frac{2\mathrm{e}}{\pi} \qquad \frac{1}{c} = \sqrt{\frac{\pi}{2\mathrm{e}}} = 0.760.\]</span> We saw that we accepted about 76% of proposals.</p>
+</div>
+<!--
+## Unnormalised measures
+
+We briefly mentioned in Lecture 14 that it can be useful to be able to be able to sample from PDFs even when we only know the PDF up to proportionality, and that this is particularly useful in Bayesian statistics.
+
+Suppose we want to sample from a PDF
+$$ f(x) = \frac{1}{Z]\,\mu(x) , $$
+where the **measure** $\mu$ is known, but the normalising constant
+$$ Z = \int_{-\infty}^{+\infty}\mu(x) \,\mathrm{d}x $$
+is unknown (but finite). Can we do this with envelope rejection sampling?
+
+The answer is yes -- and algorithm is basically exactly the same, just with $f$ replaced by $\mu$.
+
+::: {.thpart}
+-   **Goal:** To sample from a random variable $X$ with PDF proportional to the measure $\mu$.
+
+-   **We will need:** A random variable $Y$ with PDF $g$ that we can
+    sample from, and a finite constant $c$ such that $\mu(x) \leq cg(x)$
+    for all $x$.
+
+-   **Step 1:** Sample a proposal $Y$ from the PDF $g$.
+
+-   **Step 2:** Accept the proposal $Y$ with probability $\mu(Y) / cg(Y)$;
+    otherwise reject $Y$. If accepted, *end*. If rejected, *go back to
+    Step 1*.
+:::
+
+To check that this still works, we remember that the accepted PDF is proportional to
+$$ \alpha(x) \,g(x) = \frac{\mu(x)}{cg(x)}\,g(x) = \frac{1}{c} \mu(x) \propto \mu(x) \propto f(x) . $$
+
+(In this case, $1/c$ is only proportional to, not directly equal to, the unconditional accpetance probability.)
+-->
+<div id="exm-mises" class="theorem example">
+<p><span class="theorem-title"><strong>Example 16.2</strong></span> The <strong>von Mises distribution</strong> is a distribution on <span class="math inline">\([0, 2\pi)\)</span> with PDF <span class="math display">\[f(x) \propto \mu(x) = \exp\big(\kappa \cos (x-m)\big), \]</span>for some parameters <span class="math inline">\(m \in [0, 2\pi)\)</span> and <span class="math inline">\(\kappa \geq 0\)</span>. The von Mises distribution is used to model data on a circle, with <span class="math inline">\(x\)</span> being the angle around the circle. Circular data might be a compass direction (north/south/east/west), or a time of day (with the circle representing the hours from midnight to midnight). The von Mises distribution is sort of a “circular equivalent” of the normal distribution on the line, with <span class="math inline">\(m\)</span> being the mean value and <span class="math inline">\(\kappa\)</span> playing a similar role <span class="math inline">\(1/\sigma^2\)</span>. There is no closed form for the constant of proportionality.</p>
+<p>We wish to sample from the von Mises distribution with <span class="math inline">\(\mu = 0\)</span> and <span class="math inline">\(\kappa = 2\)</span>, where the unnormalised measure is <span class="math inline">\(\mu(x) = \exp(2\cos x)\)</span>. We choose the uniform distribution <span class="math inline">\(g(x) = \frac{1}{2\pi}\)</span> on <span class="math inline">\([0, 2\pi)\)</span> for our envelope, which we can easily sample from as <span class="math inline">\(Y = 2\pi U\)</span>. To choose <span class="math inline">\(c\)</span>, we note that the maximum of <span class="math inline">\(\mu(x)\)</span> is at <span class="math inline">\(x = 0\)</span>, where it takes the value <span class="math inline">\(\exp(2)\)</span>. So we take <span class="math inline">\(c = \mu(0)/g(0) = 2\pi\mathrm{e}^2\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>meas <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="dv">2</span> <span class="sc">*</span> <span class="fu">cos</span>(x))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>env  <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> <span class="fu">exp</span>(<span class="dv">2</span>) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> pi)) <span class="sc">*</span> (x <span class="sc">&lt;=</span> <span class="dv">2</span> <span class="sc">*</span> pi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  meas, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">2</span> <span class="sc">*</span> pi,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"blue"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(env, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L16-envelope-2_files/figure-html/vonmises-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>(This graph might look a little odd, but remember that <span class="math inline">\(0\)</span> and <span class="math inline">\(2\pi\)</span> are the same part of the circle, so this measure takes its largest values around that “join”.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n_prop <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>props <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> (<span class="fu">runif</span>(n_prop))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>accepts <span class="ot">&lt;-</span> props[<span class="fu">runif</span>(n_prop) <span class="sc">&lt;=</span> <span class="fu">meas</span>(props) <span class="sc">/</span> <span class="fu">env</span>(props)]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(accepts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 308512</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(accepts, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">breaks =</span> <span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> (<span class="dv">0</span><span class="sc">:</span><span class="dv">30</span>) <span class="sc">/</span> <span class="dv">30</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">meas</span>(x) <span class="sc">/</span> <span class="fl">14.3</span>, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L16-envelope-2_files/figure-html/unnamed-chunk-2-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We accepted about 31% of proposals.</p>
+</div>
+<p>&lt;– ## Summary of Part II</p>
+<p>This completes our study of random number generation. This would be a good time to summarise what we have learned.</p>
+<p>First we discussed generating randomness.</p>
+<ul>
+<li><p>We can generate random numbers uniform on <span class="math inline">\([0,1]\)</span> through true physical randomness or by a pseudorandom number generator.</p></li>
+<li><p>LCGs are one type of pseudorandom number generator. An LCG is a recurrence <span class="math inline">\(x_{n+1} = (ax_n + c) \bmod m\)</span>.</p></li>
+<li><p>Conditions for an LCG to have full period of <span class="math inline">\(m\)</span> are given by the Hull–Dobell theorem: if <span class="math inline">\(m\)</span> is a power of 2, then we need <span class="math inline">\(c\)</span> to me even and <span class="math inline">\(a\)</span> to be <span class="math inline">\(1 \bmod 4\)</span>.</p></li>
+</ul>
+<p>Then we discussed manipulating standard uniform samples into other distributions.</p>
+<ul>
+<li><p>The inverse transform method uses the cumulative distribution function: set <span class="math inline">\(U = F(X)\)</span> and invert to make <span class="math inline">\(X\)</span> the subject.</p></li>
+<li><p>Discrete random variables can be simulated by splitting up the intervals <span class="math inline">\([0,1]\)</span> into segments of length <span class="math inline">\(p(x_i)\)</span>, then seeing which segment <span class="math inline">\(U\)</span> falls into.</p></li>
+<li><p>Two normal distributions can be sampled using the Box–Muller theorem and polar coordinates. Let <span class="math inline">\(R\)</span> be Rayleigh distributed, <span class="math inline">\(\Theta\)</span> be uniform on <span class="math inline">\([0, 2\pi)\)</span>, then set <span class="math inline">\(X = R \cos \Theta\)</span> and <span class="math inline">\(Y = R \sin \Theta\)</span>.</p></li>
+<li><p>We can also get different distributions by accepting a proposed sample <span class="math inline">\(Y = x\)</span> from <span class="math inline">\(g\)</span> with probability <span class="math inline">\(\alpha(x)\)</span>. The PDF of an accepted sample is <span class="math inline">\(f(x) \propto \alpha(x)\,g(x)\)</span>.</p></li>
+<li><p>Envelope rejection sampling is a way to target rejection sampling a PDF <span class="math inline">\(f\)</span>, by choosing an “envelope” <span class="math inline">\(cg(x)\)</span>, and accepting a sample from <span class="math inline">\(g\)</span> with probability <span class="math inline">\(f(x)/cg(x)\)</span>.</p></li>
+<li><p>Rejection sampling works best when the acceptance probability is made as large as possible. –&gt; <strong>Next time.</strong> <em>We begin our study on MCMC: Markov chain Monte Carlo.</em></p></li>
+</ul>
+<div class="mysummary">
+<p><strong>Summary:</strong></p>
+<ul>
+<li><p>Envelope rejection sampling with envelope <span class="math inline">\(cg(x)\)</span> has unconditional acceptance probability <span class="math inline">\(1/c\)</span>.</p></li>
+<li><p>Envelope rejection sampling works even if the desired distribution is only know up to a proportionality constant.</p></li>
+</ul>
+<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsections 1.4.2.</p>
+</div>
 
 
 
