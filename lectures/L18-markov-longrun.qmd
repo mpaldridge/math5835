@@ -1,8 +1,8 @@
 # Markov chains in the long run
 
-## n-step transition probabilities
+## *n*-step transition probabilities
 
-We know that the probability of a "1-step transition" from $x$ to $y$ is $$ p(x, y) = \mathbb P(X_{i+1} = y \mid X_{i} = x)  .$$ But what is the probability of a "2-step transition" $$ p^{(2)}(x, y) = \mathbb P(X_{i+2} = y \mid X_{i} = x) ?$$
+Last time we saw that the probability of a "1-step transition" from $x$ to $y$ is $$ p(x, y) = \mathbb P(X_{i+1} = y \mid X_{i} = x)  .$$ But what is the probability of a "2-step transition" $$ p^{(2)}(x, y) = \mathbb P(X_{i+2} = y \mid X_{i} = x) ?$$
 
 Well, the first step will be from $x$ to some other state $z$; then the second step will have to go from that $z$ to $y$. Thus we have $$ \begin{align}
 p^{(2)}(x, y) &= \mathbb P(X_{i+2} = y \mid X_{i} = x) \\
@@ -18,3 +18,17 @@ Note that what we have here, though, is the $(x, y)$th entry of the matrix squar
 ## Stationary distributions
 
 ## Limit theorems
+
+**Next time.** *We continue our whistle-stop tour of discrete-space Markov chains.*
+
+::: mysummary
+**Summary:**
+
+-   A Markov chain is a stochastic process where the next step $X_{i+1}$ depends on the current step $X_i$, but, given current step $X_{i}$, does not depend on the past $X_1, \dots, X_{i-1}$.
+
+-   A Markov chain is governed by its transition probabilities $p(x, y) = \mathbb P(X_{i+1} = y \mid X_i = x)$. These are written in the transition matrix $\mathsf P$, whose rows add up to 1.
+
+-   The simple random walk on the integers at each step goes up 1 with probability $p$ and down 1 with probability $q$. If $p = q = \tfrac12$, it is a simple symmetric random walk.
+
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 2.3.1 and 4.1.2; my notes for [MATH2750 Introduction to Markov Processes](https://mpaldridge.github.io/math2750/).
+:::

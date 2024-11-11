@@ -58,7 +58,7 @@ Show how you could sample from $X$ using envelope rejection sampling and an opti
 
 ::::: {.myq}
 **6.**     Consider sampling from the half-normal distribution
-$$ f(x) \sqrt{\frac{2}{\pi}} \exp\big(-\tfrac12 x^2\big) \qquad x \geq 0$$
+$$ f(x) = \sqrt{\frac{2}{\pi}} \exp\big(-\tfrac12 x^2\big) \qquad x \geq 0$$
 using envelope rejection sampling with an $\operatorname{Exp}(\lambda)$ proposal distribution
 $$g(x) = \lambda \mathrm{e}^{-\lambda x} \qquad x \geq 0 .$$
 You wish to design your envelope rejection sampling algorithm so that the acceptance probability is as high as possible.
