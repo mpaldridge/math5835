@@ -395,7 +395,7 @@ window.Quarto = {
 <section id="unnormalised-measures" class="level2" data-number="16.2">
 <h2 data-number="16.2" class="anchored" data-anchor-id="unnormalised-measures"><span class="header-section-number">16.2</span> Unnormalised measures</h2>
 <p>We briefly mentioned in Lecture 14 that it can be useful to be able to be able to sample from PDFs even when we only know the PDF up to proportionality, and that this is particularly useful in Bayesian statistics.</p>
-<p>Suppose we want to sample from a PDF <span class="math display">\[ f(x) = \frac{1}{Z]\,\mu(x) , \]</span> where the <strong>measure</strong> <span class="math inline">\(\mu\)</span> is known, but the normalising constant <span class="math display">\[ Z = \int_{-\infty}^{+\infty}\mu(x) \,\mathrm{d}x \]</span> is unknown (but finite). Can we do this with envelope rejection sampling?</p>
+<p>Suppose we want to sample from a PDF <span class="math display">\[ f(x) = \frac{1}{Z}\,\mu(x) , \]</span> where the <strong>measure</strong> <span class="math inline">\(\mu\)</span> is known, but the normalising constant <span class="math display">\[ Z = \int_{-\infty}^{+\infty}\mu(x) \,\mathrm{d}x \]</span> is unknown (but finite). Can we do this with envelope rejection sampling?</p>
 <p>The answer is yes – and algorithm is basically exactly the same, just with <span class="math inline">\(f\)</span> replaced by <span class="math inline">\(\mu\)</span>.</p>
 <div class="thpart">
 <ul>

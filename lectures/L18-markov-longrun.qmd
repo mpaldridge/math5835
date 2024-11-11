@@ -1,1 +1,20 @@
-# Long-run behaviour of Markov chains
+# Markov chains in the long run
+
+## n-step transition probabilities
+
+We know that the probability of a "1-step transition" from $x$ to $y$ is $$ p(x, y) = \mathbb P(X_{i+1} = y \mid X_{i} = x)  .$$ But what is the probability of a "2-step transition" $$ p^{(2)}(x, y) = \mathbb P(X_{i+2} = y \mid X_{i} = x) ?$$
+
+Well, the first step will be from $x$ to some other state $z$; then the second step will have to go from that $z$ to $y$. Thus we have $$ \begin{align}
+p^{(2)}(x, y) &= \mathbb P(X_{i+2} = y \mid X_{i} = x) \\
+&= \sum_{z \in \mathcal S} \mathbb P(X_{i+1} = z \mid X_{i} = x) \,\mathbb P(X_{i+2} = y \mid X_{i+1} = z , X_{i} = x) \\
+&= \sum_{z \in \mathcal S} \mathbb P(X_{i+1} = z \mid X_{i} = x) \,\mathbb P(X_{i+2} = y \mid X_{i+1} = z) \\
+&= \sum_{z \in \mathcal S} p(x, z)\,p(z, y) .
+\end{align} $$ Here, in the third line we used the Markov property to delete the unnecessary conditioning on $X_i$.
+
+Note that what we have here, though, is the $(x, y)$th entry of the matrix square $\mathsf P^2 = \mathsf{P}\,\mathsf{P}$. That is, to get the matrix of 2-step transitions, we simply take the second matrix power of the matrix of 1-step transitions. Similarly, we can calculate the matrix of $n$-step transitions $p^{(n)}(x, y) = \mathbb P(X_{i+n} = y \mid X_i = x)$ by taking the $n$th matrix power $\mathsf{P}^{n} = \mathsf{P}\,\mathsf{P}^{n-1}= \mathsf{P}^{n-1}\,\mathsf{P}$.
+
+(Remember that the matrix power $\mathsf P^n$ is what we get by multiplying the whole matrix $\mathsf P$ by itself $n$ times, using the rules for multiplying matrices. It's not just what we get from taking the $n$th power of the number in each entry. In R, matrix multiplication is `P %*% P`, while `P * P` is simply entry-wise multiplication.)
+
+## Stationary distributions
+
+## Limit theorems

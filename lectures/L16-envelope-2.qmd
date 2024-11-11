@@ -32,7 +32,7 @@ In @exm-env-norm, we took $$c = \sqrt\frac{2\mathrm{e}}{\pi} \qquad \frac{1}{c} 
 
 We briefly mentioned in Lecture 14 that it can be useful to be able to be able to sample from PDFs even when we only know the PDF up to proportionality, and that this is particularly useful in Bayesian statistics.
 
-Suppose we want to sample from a PDF $$ f(x) = \frac{1}{Z]\,\mu(x) , $$ where the **measure** $\mu$ is known, but the normalising constant $$ Z = \int_{-\infty}^{+\infty}\mu(x) \,\mathrm{d}x $$ is unknown (but finite). Can we do this with envelope rejection sampling?
+Suppose we want to sample from a PDF $$ f(x) = \frac{1}{Z}\,\mu(x) , $$ where the **measure** $\mu$ is known, but the normalising constant $$ Z = \int_{-\infty}^{+\infty}\mu(x) \,\mathrm{d}x $$ is unknown (but finite). Can we do this with envelope rejection sampling?
 
 The answer is yes -- and algorithm is basically exactly the same, just with $f$ replaced by $\mu$.
 
