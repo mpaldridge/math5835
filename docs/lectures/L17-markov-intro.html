@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>11&nbsp; LCGs – MATH5835M Statistical Computing</title>
+<title>17&nbsp; Markov chains in discrete space – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../problems/P2.html" rel="next">
-<link href="../lectures/L10-rng-intro.html" rel="prev">
+<link href="../problems/solutions.html" rel="next">
+<link href="../problems/P3.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../lectures/L11-lcg.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Markov chains in discrete space</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -264,7 +264,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L11-lcg.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L11-lcg.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></span></a>
   </div>
 </li>
@@ -323,7 +323,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L17-markov-intro.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L17-markov-intro.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Markov chains in discrete space</span></span></a>
   </div>
 </li>
@@ -345,18 +345,19 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#definition-and-examples" id="toc-definition-and-examples" class="nav-link active" data-scroll-target="#definition-and-examples"><span class="header-section-number">11.1</span> Definition and examples</a></li>
-  <li><a href="#periods-of-lcgs" id="toc-periods-of-lcgs" class="nav-link" data-scroll-target="#periods-of-lcgs"><span class="header-section-number">11.2</span> Periods of LCGs</a></li>
-  <li><a href="#statistical-testing" id="toc-statistical-testing" class="nav-link" data-scroll-target="#statistical-testing"><span class="header-section-number">11.3</span> Statistical testing</a></li>
+  <li><a href="#markov-chains-and-mcmc" id="toc-markov-chains-and-mcmc" class="nav-link active" data-scroll-target="#markov-chains-and-mcmc"><span class="header-section-number">17.1</span> Markov chains and MCMC</a></li>
+  <li><a href="#introduction-to-markov-chains" id="toc-introduction-to-markov-chains" class="nav-link" data-scroll-target="#introduction-to-markov-chains"><span class="header-section-number">17.2</span> Introduction to Markov chains</a></li>
+  <li><a href="#simulation-of-markov-chains" id="toc-simulation-of-markov-chains" class="nav-link" data-scroll-target="#simulation-of-markov-chains"><span class="header-section-number">17.3</span> Simulation of Markov chains</a></li>
+  <li><a href="#n-step-transition-probabilities" id="toc-n-step-transition-probabilities" class="nav-link" data-scroll-target="#n-step-transition-probabilities"><span class="header-section-number">17.4</span> n-step transition probabilities</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../lectures/L11-lcg.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Markov chains in discrete space</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></h1>
+<h1 class="title"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Markov chains in discrete space</span></h1>
 </div>
 
 
@@ -373,140 +374,192 @@ window.Quarto = {
 </header>
 
 
-<section id="definition-and-examples" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="definition-and-examples"><span class="header-section-number">11.1</span> Definition and examples</h2>
-<p>Last lecture we introduced the idea of pseudorandom number generators (PRNGs), which are deterministic functions that produce a sequence of numbers that look for all practical purposes as if they are random.</p>
-<p>We introduced the idea of a recurrence, where we have a function <span class="math inline">\(f\)</span> and start with a seed <span class="math inline">\(x_1\)</span>. We then produce a sequence through the recurrence <span class="math inline">\(x_{i+1} = f(x_i)\)</span>. So <span class="math inline">\(x_2 = f(x_1)\)</span>, <span class="math inline">\(x_3 = f(x_2) = f(f(x_1))\)</span>, and so on.</p>
-<p>We briefly mentioned a class of such PRNGs called <strong>linear congruential generators</strong>, or <strong>LCGs</strong>. An LCG generates integers between <span class="math inline">\(0\)</span> and <span class="math inline">\(m-1\)</span> using a recurrence function of the form <span class="math display">\[ f(x) = (ax + c) \bmod m , \]</span> so <span class="math display">\[ x_{i+1} = (ax_i + c) \bmod m . \]</span></p>
-<p>Here, “<span class="math inline">\(\mathrm{mod}\ m\)</span>” means “modulo <span class="math inline">\(m\)</span>”; that is, we are using modular arithmetic, where when we get to <span class="math inline">\(m - 1\)</span> we wrap back to 0 and start again. (Modular arithmetic is sometimes called “clock arithmetic”, because hours of the day work modulo 12: for example, 3 hours after 11 o’clock is 2 o’clock, because <span class="math inline">\(11 + 3 = 14 \equiv 2 \bmod m\)</span>.)</p>
-<p>In the LCG <span class="math inline">\(x_{i+1} = (ax_i + c) \bmod m\)</span>:</p>
+<div class="hidden">
+<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
+\newcommand{\Ex}{\mathbb{E}}
+\newcommand{\Ind}{\mathbb{I}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\ee}{\mathrm{e}}\]</span></p>
+</div>
+<section id="markov-chains-and-mcmc" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="markov-chains-and-mcmc"><span class="header-section-number">17.1</span> Markov chains and MCMC</h2>
+<p>In the first part of this module, we looked at Monte Carlo methods, where we estimated <span class="math inline">\(\theta = \Exg\phi(X)\)</span> by <span class="math display">\[ \widehat{\theta}_n = \sum_{i=1}^n \phi(X_i) \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are IID samples from the same distributions as <span class="math inline">\(X\)</span>. This worked well for relatively simple distributions <span class="math inline">\(X\)</span>, like those that can be sampled using the inverse transform method or rejection sampling (or a built-in R function). These tended to be one-dimensional distributions, sometimes with a simple dependence on one parameter.</p>
+<p>However, these methods are often not available when dealing with very complex distributions <span class="math inline">\(X\)</span>. For example, these might not be one-dimensional but rather living in some very high-dimensional space. Or they might depend on many parameters – and those parameters might themselves be drawn from random distributions (a so-called “hierarchical model”).</p>
+<p>For more complicated distributions, we can make progress by loosening the assumption that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are IID copies of <span class="math inline">\(X\)</span>.</p>
 <ul>
-<li><p><span class="math inline">\(m\)</span> is called the <strong>modulus</strong>,</p></li>
-<li><p><span class="math inline">\(a\)</span> is called the <strong>multiplier</strong>,</p></li>
-<li><p><span class="math inline">\(c\)</span> is called the <strong>increment</strong>,</p></li>
-<li><p><span class="math inline">\(x_1\)</span>, the starting point, is called the <strong>seed</strong>.</p></li>
+<li><p>Rather than the <span class="math inline">\(X_i\)</span> having <em>exactly</em> the same distribution as <span class="math inline">\(X\)</span>, we might be willing for them to have approximately the same distribution as <span class="math inline">\(X\)</span>, and reach the same distribution in the limit as <span class="math inline">\(i \to \infty\)</span>.</p></li>
+<li><p>Rather than having the <span class="math inline">\(X_i\)</span> be independent, we could let them have some by dependent, but we will want to set things up so that we limit the dependence so there is only “light” dependence and so that we understand the dependence structure well.</p></li>
 </ul>
-<div id="exm-lcg-easy" class="theorem example">
-<p><span class="theorem-title"><strong>Example 11.1</strong></span> Let us look at two simple LCGs with modulus <span class="math inline">\(m = 2^4 = 16\)</span>.</p>
-<p>First, let <span class="math inline">\(a = 5\)</span> be the multiplier, <span class="math inline">\(c = 3\)</span> be the increment, and <span class="math inline">\(x_1 = 1\)</span> be the seed. Then we have <span class="math display">\[ \begin{align} x_2 &amp;= (5x_1 + 3) \bmod 16 = (5\times 1 + 3) \bmod 16 = 8 \bmod 16 = 8 \\
-x_3 &amp;= (5x_2 + 3) \bmod 16 = (5\times 8 + 3) \bmod 16 = 43 \bmod 16 = 11 \\
-x_4 &amp;= (5x_3 + 3) \bmod 16 = (5\times 1 + 3) \bmod 16 = 43 \bmod 58 = 10 , \end{align} \]</span> and so on. The sequence continues <span class="math inline">\((1, 8, 11, 10, 5, 12, 15, 14, 9, 0, \dots)\)</span>. This looks pretty much like a random sequence of numbers between 0 and 15 to me – I certainly don’t see any obvious pattern.</p>
-<p>Second, let <span class="math inline">\(a = 3\)</span> be the multiplier, <span class="math inline">\(c = 4\)</span> be the increment, and <span class="math inline">\(x_1 = 1\)</span> be the seed. Then we have <span class="math display">\[ \begin{align} x_2 &amp;= (3x_1 + 2) \bmod 16 = (3\times 1 + 4) \bmod 16 = 7 \bmod 16 = 7 \\
-x_3 &amp;= (3x_2 + 4) \bmod 16 = (3\times 7 + 4) \bmod 16 = 25 \bmod 16 = 9 . \end{align} \]</span> But if we continue this, we find we get the sequence <span class="math inline">\((1, 7, 9, 15, 1, 7, 9, 15, 1, 7, \dots)\)</span>. This does not seem like a good random sequence – we’re just getting the same pattern of four numbers <span class="math inline">\((1, 7, 9, 15)\)</span> repeating over and over again.</p>
-<p>The example illustrates that, while an LCG <em>can</em> provide a good sequence of pseudorandom numbers, we need to be careful with the parameters we choose.</p>
+<p>The way will do this is to allow <span class="math inline">\(X_1, X_2, \dots\)</span> to be a random process (or “stochastic” process) that has a particular dependence structure known as the <strong>Markov property</strong>. Such a process is known as a <strong>Markov chain</strong>. Random variables in Markov chains can be shown (under certain conditions) to tend to a certain distribution – we will want to set things up so that that “limiting distribution” is the distribution <span class="math inline">\(X\)</span> we want to sample from.</p>
+<p>Using a Monte Carlo estimator where the samples <span class="math inline">\(X_1, X_2, \dots\)</span> are not IID but rather form a Markov chain is known as <strong>Markov chain Monte Carlo</strong> – although it’s almost always referred to by the abbreviation <strong>MCMC</strong>. MCMC is one of the most important ideas in statistics in the second-half of the 20th and in the 21st centuries, and is especially important in Bayesian statistics.</p>
+<p>In this part of the of the module, we will study MCMC in depth. We will take a brief tour through the theory of Markov chains, then talk about how to use the output of a Markov chain for Monte Carlo estimation. We will look specifically at the <strong>Metropolis–Hastings algorithm</strong>, which is one way of setting up a Markov chain to have a specific distribution as its limiting distribution, and has some properties in common with rejection sampling ideas we have already seen.</p>
+<p>The schedule will be:</p>
+<ul>
+<li><p>Today and Lecture 18: Theory of Markov chains in discrete space</p></li>
+<li><p>Lecture 19: Metropolis–Hastings algorithm in discrete space</p></li>
+<li><p>Lecture 20: Theory of Markov chains in continuous space</p></li>
+<li><p>Lecture 21: Metropolis–Hastings algorithm in continuous space</p></li>
+<li><p>Lectures 22 and 23: MCMC in practice (including for Bayesian statistics).</p></li>
+</ul>
+<p>Some of you may have studied Markov chains before – for example, in the Leeds second-year module <a href="https://mpaldridge.github.io/math2750/">MATH2750 Introduction to Markov Processes</a>. If so, you should find that today and the next lecture are just a brief reminder of things you already know, but the rest of the material is likely to be new.</p>
+</section>
+<section id="introduction-to-markov-chains" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="introduction-to-markov-chains"><span class="header-section-number">17.2</span> Introduction to Markov chains</h2>
+<p>A <strong>Markov chain</strong> in discrete time <span class="math inline">\(i = 1, 2, \dots\)</span> and discrete space <span class="math inline">\(\mathcal S\)</span> is a sequence of random variables <span class="math inline">\((X_1, X_2, X_3, \dots)\)</span>. The random variables are not independent, but their dependence is limited to just the random variable before it in the list. That is, the next state <span class="math inline">\(X_{i+1}\)</span> can depend on on the current state <span class="math inline">\(X_i\)</span>; but, given the current state <span class="math inline">\(X_i\)</span>, it has no further dependence on the past states <span class="math inline">\(X_{i-1}, X_{i-2}, \dots, X_2, X_1\)</span>. This is known as the “Markov property”.</p>
+<p>Think of playing a simple board game where you roll a dice and move that many squares along the board. Let <span class="math inline">\(X_i\)</span> be the current square you are on. The the next square you land on, <span class="math inline">\(X_{i+1}\)</span>:</p>
+<ul>
+<li><p>is random – because it depends on the roll of the dice;</p></li>
+<li><p>depends on which square <span class="math inline">\(X_i\)</span> you are on now – because the value of dice roll will be added to your current square;</p></li>
+<li><p><em>given</em> the square <span class="math inline">\(X_i\)</span> you are on now, it doesn’t depend which sequence of squares <span class="math inline">\(X_1, X_2, \dots, X_{i-1}\)</span> you previously landed on to get there.</p></li>
+</ul>
+<div id="def-markov" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 17.1</strong></span> A sequence of random variables <span class="math inline">\((X_i) = (X_1, X_2, \dots)\)</span> taking values in a countable state space <span class="math inline">\(\mathcal S\)</span> is said to be a <strong>Markov chain</strong> or to have the <strong>Markov property</strong> if <span class="math display">\[ \mathbb P(X_{i+1} = x_{i+1} \mid X_i = x_i, \dots, X_2 = x_2, X_1 = x_1)
+= \mathbb P(X_{i+1} = x_{i+1} \mid X_i = x_i)\]</span> for all <span class="math inline">\(i = 1, 2, \dots\)</span> and for all <span class="math inline">\(x_1, x_2, \dots, x_{i}, x_{i+1} \in \mathcal S\)</span> such that the conditional probability is defined.</p>
 </div>
-<div id="exm-lcg-hard" class="theorem example">
-<p><span class="theorem-title"><strong>Example 11.2</strong></span> Of course, it doesn’t make much sense to run LCGs by hand – the whole purpose of LCGs is that they can produce lots of (pseudo)random numbers very fast. So we should run them on computers.</p>
-<p>The following R code sets up a function for sampling <span class="math inline">\(n\)</span> numbers from an LCG.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>lcg <span class="ot">&lt;-</span> <span class="cf">function</span>(n, modulus, mult, incr, seed) {</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  samples <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  samples[<span class="dv">1</span>] <span class="ot">&lt;-</span> seed</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    samples[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> (mult <span class="sc">*</span> samples[i] <span class="sc">+</span> incr) <span class="sc">%%</span> modulus</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(samples)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="exm-2state" class="theorem example">
+<p><span class="theorem-title"><strong>Example 17.1</strong></span> Consider a simple model of an unreliable printer:</p>
+<ul>
+<li><p>On day 1, the printer is working.</p></li>
+<li><p>If the printer is working, then the next day there is a 90% chance it is still working, but a 10% chance it has broken.</p></li>
+<li><p>If the printer is broken, then the next day there is a 50% chance it has been mended, but a 50% chance it is still broken.</p></li>
+</ul>
+<p>We can model this as a Markov chain on the state space <span class="math inline">\(\mathcal S = \{1, 2\}\)</span>, where state 1 denotes that the printer is working and state 2 denotes that the printer is working. We have <span class="math display">\[ \begin{align}
+\mathbb P(X_{i+1} = 1 \mid X_i = 1) &amp;= 0.9 &amp; \mathbb P(X_{i+1} = 2 \mid X_i = 1) = 0.1 \\
+\mathbb P(X_{i+1} = 1 \mid X_i = 2) &amp;= 0.5 &amp; \mathbb P(X_{i+1} = 2 \mid X_i = 2) = 0.5.
+\end{align} \]</span></p>
 </div>
-<p>In the fourth line, <code>%%</code> is R’s “mod” operator.</p>
-<p>Let’s look at two examples with modulus <span class="math inline">\(m = 2^8 = 256\)</span>.</p>
-<p>First, let <span class="math inline">\(a = 13\)</span> be the multiplier, <span class="math inline">\(c = 17\)</span> be the increment, and <span class="math inline">\(x_1 = 10\)</span> be the seed.</p>
+<div id="exm-rw" class="theorem example">
+<p><span class="theorem-title"><strong>Example 17.2</strong></span> Consider the <strong>simple random walk</strong> on <span class="math inline">\(\mathcal S = \mathbb Z\)</span>. We start at <span class="math inline">\(X_1 = 0\)</span>. At each time step, we move up 1 with probability <span class="math inline">\(p\)</span> and down one with probability <span class="math inline">\(q = 1-p\)</span>; so <span class="math display">\[ \mathbb P(X_{i+1} = y \mid X_i = x) = \begin{cases} p &amp; \text{ if }y = x+1 \\ q &amp; \text{ if }y = x-1 \\
+0 &amp; \text{ otherwise}. \end{cases} \]</span></p>
+<p>If <span class="math inline">\(p = q = \tfrac12\)</span>, this is called the <strong>simple symmetric random walk</strong>.</p>
+<p>We can also write this as <span id="eq-rw"><span class="math display">\[ X_{i+1} = X_i + Z_i ,  \tag{17.1}\]</span></span> where the <span class="math inline">\(Z_i\)</span> are IID with distribution <span class="math display">\[ Z_i = \begin{cases} +1 &amp; \text{ with probability } p \\ -1 &amp; \text{ with probability } q. \end{cases} \]</span> Any Markov chain with the structure <a href="#eq-rw" class="quarto-xref">Equation&nbsp;<span>17.1</span></a> for an IID sequence <span class="math inline">\((Z_i)\)</span> is called a <strong>random walk</strong>. If the <span class="math inline">\(Z_i\)</span> are symmetric, in that <span class="math inline">\(\mathbb P(Z_i = +z) = \mathbb P(Z_i = -z)\)</span> for all <span class="math inline">\(z\)</span>, then it is a <strong>symmetric random walk</strong>.</p>
+</div>
+<p>In both the Markov chains we have looked at – and, indeed, all the Markov chains we will ever look at – the <strong>transition probability</strong> <span class="math inline">\(p(x, y) = \mathbb P(X_{i+1} = y \mid X_i = x)\)</span> was the same for all <span class="math inline">\(i\)</span>. That is, the probability <span class="math inline">\(p(x, y)\)</span> of moving from <span class="math inline">\(x\)</span> to <span class="math inline">\(y\)</span> does not depend on which timestep <span class="math inline">\(i\)</span> we are at. This is called being <strong>time homogeneous</strong>.</p>
+<p>Once we have the notation <span class="math inline">\(p(x, y)\)</span> for the transition probability, it will in fact be useful to write them in a matrix <span class="math inline">\(\mathsf P = (p(x,y))\)</span>, called the <strong>transition matrix</strong>.</p>
+<p>For the two-state Markov chain, the transition matrix is <span class="math display">\[ \mathsf P = \begin{pmatrix} 0.9 &amp; 0.1 \\ 0.5 &amp; 0.5 \end{pmatrix} . \]</span> For the simple random walk, the transition matrix is <span class="math display">\[ \mathsf P = \begin{pmatrix}
+\smash\ddots      &amp; \smash\ddots &amp; \phantom{\smash\ddots}  &amp;  \phantom{\smash\ddots}  &amp; \phantom{\smash\ddots} &amp; \phantom{\smash\ddots} \\
+\smash\ddots &amp;  0     &amp; p &amp;        &amp; \\
+       &amp; q      &amp; 0 &amp; p      &amp; \\
+       &amp;        &amp; q &amp; 0      &amp; p \\
+       &amp;        &amp;   &amp; q &amp; 0 &amp; \smash\ddots \\
+       &amp;        &amp;   &amp;  &amp; \smash\ddots &amp;  \smash\ddots       \end{pmatrix}. \]</span></p>
+<p>The <span class="math inline">\(x\)</span>th row of a transition matrix represents the probabilities of moving from <span class="math inline">\(x\)</span> to each of the other states. Thus each row must consist of non-negative numbers that add up to 1, as is the case in both of our examples.</p>
+</section>
+<section id="simulation-of-markov-chains" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="simulation-of-markov-chains"><span class="header-section-number">17.3</span> Simulation of Markov chains</h2>
+<p>We can take <span class="math inline">\(n\)</span> samples from a finite-state Markov chain in R with the following R function. In this function, <code>n</code> is the number of samples (or steps) to take, <code>trans</code> is the transition matrix <span class="math inline">\(\mathsf P\)</span>, and <code>initial</code> is the initial state <span class="math inline">\(X_1\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">^</span><span class="dv">8</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sample1 <span class="ot">&lt;-</span> <span class="fu">lcg</span>(<span class="dv">100</span>, m, <span class="dv">13</span>, <span class="dv">17</span>, <span class="dv">10</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sample1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rmarkov <span class="ot">&lt;-</span> <span class="cf">function</span>(n, trans, initial) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  states <span class="ot">&lt;-</span> <span class="fu">nrow</span>(trans)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  MC <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  MC[<span class="dv">1</span>] <span class="ot">&lt;-</span> initial</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">sample</span>(states, <span class="dv">1</span>, <span class="at">prob =</span> trans[MC[i], ])</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(MC)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The key line is the <code>for</code> loop in the penultimate line. Here, the next state <span class="math inline">\(X_{i+1}\)</span> is chosen by sampling a state with probabilities according to the <span class="math inline">\(x\)</span>th row of the transition matrix, where <span class="math inline">\(X_i = x\)</span> is the current state.</p>
+<div id="exm-2state2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 17.3</strong></span> Let’s simulate the two-state broken printer Markov chain from <a href="#exm-2state" class="quarto-xref">Example&nbsp;<span>17.1</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trans <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>), <span class="dv">2</span>, <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>initial <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>MC <span class="ot">&lt;-</span> <span class="fu">rmarkov</span>(<span class="dv">80</span>, trans, initial)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MC, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="st">"b"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="L11-lcg_files/figure-html/lcg1-1.svg" class="img-fluid figure-img" width="672"></p>
+<p><img src="L17-markov-intro_files/figure-html/r2state-1.svg" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>That looks like a pretty random collection of numbers to me.</p>
-<p>Second, we stick with <span class="math inline">\(a = 13\)</span> be the multiplier and <span class="math inline">\(x_1 = 10\)</span> as the seed, be decrease the increment by 1 to <span class="math inline">\(c = 16\)</span>.</p>
+<p>In the first line, we entered a <span class="math inline">\(2 \times 2\)</span> matrix using the code <code>matrix(P, 2, 2)</code>, where <code>P</code> was a vector of length <span class="math inline">\(2 \times 2 = 4\)</span>. R default is to fill up the matrix column at a time; I personally find it more logical (at least when working with Markov chains) to fill up a matrix row at a time, so I used <code>byrow = TRUE</code> to ensure that.</p>
+<p>Our sample shows that printer spent most of the time working (state 1), but when it did break (state 2) it usually got mended pretty quickly.</p>
+</div>
+<div id="exm-rw2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 17.4</strong></span> We can simulate the simple random walk from <a href="#exm-rw2" class="quarto-xref">Example&nbsp;<span>17.4</span></a> with the following code.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sample2 <span class="ot">&lt;-</span> <span class="fu">lcg</span>(<span class="dv">100</span>, m, <span class="dv">13</span>, <span class="dv">16</span>, <span class="dv">10</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sample2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rrw <span class="ot">&lt;-</span> <span class="cf">function</span>(n, up) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  RW <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  down <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> up</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  RW[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    RW[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> RW[i] <span class="sc">+</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="dv">1</span>, <span class="at">prob =</span> <span class="fu">c</span>(up, down))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(RW)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>So with <span class="math inline">\(p = 0.6\)</span>, we have</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>RW <span class="ot">&lt;-</span> <span class="fu">rrw</span>(<span class="dv">100</span>, <span class="fl">0.6</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(RW, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">type =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="L11-lcg_files/figure-html/lcg2-1.svg" class="img-fluid figure-img" width="672"></p>
+<p><img src="L17-markov-intro_files/figure-html/rw1-1.svg" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>This doesn’t seem as good. We can see there’s some pattern where there are parallel downward sloping lines. And also there seems to be some sort of pattern <em>within</em> these downward sloping lines, sometimes with quite regularly-spaced points on those lines. And looking more closely, we can see that actually the pattern of numbers repeats exactly every 32 steps</p>
+<p>which goes up on average. With <span class="math inline">\(p = 0.3\)</span>, we have</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(sample2 <span class="sc">==</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1]  1 33 65 97</code></pre>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>RW <span class="ot">&lt;-</span> <span class="fu">rrw</span>(<span class="dv">100</span>, <span class="fl">0.3</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(RW, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">type =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L17-markov-intro_files/figure-html/rw2-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>so we only ever see 32 of the possible 256 values. This doesn’t seem to look like a sequence of independent uniformly random points.</p>
-<p>So again, it seems like LCG <em>can</em> provide a good sequence of pseudorandom numbers, but it seems quite sensitive to a good choice of the parameters.</p>
 </div>
-<p>Is these examples, we’ve usually taken <span class="math inline">\(m\)</span> to be a power of 2. There are a few reasons for this:</p>
-<ul>
-<li><p>We will want to divide each term in the sequence <span class="math inline">\(x_i\)</span> by <span class="math inline">\(m\)</span> to get a number between <span class="math inline">\([0,1]\)</span>. If our number will be stored as a <span class="math inline">\(b\)</span>-bit number, then it is makes sense to have created <span class="math inline">\(b\)</span> bits (for an integer between <span class="math inline">\(0\)</span> and <span class="math inline">\(m = 2^{b} - 1\)</span>) in the first place. This means every integer in <span class="math inline">\(\{0, 1, \dots, m-1\}\)</span> corresponds to exactly one <span class="math inline">\(b\)</span>-bit number. Further this makes the division by <span class="math inline">\(m = 2^b\)</span> extremely simple: you simple add “0.” (zero point…) at the front of the number!</p></li>
-<li><p>Modular arithmetic modulo a power of 2 is very simple for a computer. For a number in binary, the value modulo <span class="math inline">\(2^b\)</span> is simply the last <span class="math inline">\(b\)</span> bits of the number. So <code>10111001</code> modulo <span class="math inline">\(2^4\)</span> is simply <code>1001</code>, the last four bits.</p></li>
-<li><p>Having <span class="math inline">\(m = 2^b\)</span> (or, more generally, having <span class="math inline">\(m\)</span> being the product of lots of small prime factors) makes it easier to choose parameters such that the LCG is a good pseudorandom number generator … as we shall see in the next section.</p></li>
-</ul>
+<p>which goes down on average. The simple symmetric random walk, with <span class="math inline">\(p = 0.5\)</span> can be much more unpredictable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>RW <span class="ot">&lt;-</span> <span class="fu">rrw</span>(<span class="dv">1000</span>, <span class="fl">0.5</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(RW, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">100</span>, <span class="dv">100</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"orange"</span>, <span class="st">"yellow"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span>, <span class="st">"darkblue"</span>, <span class="st">"purple"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>) {</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  RW <span class="ot">&lt;-</span> <span class="fu">rrw</span>(<span class="dv">1000</span>, <span class="fl">0.5</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(RW, <span class="at">col =</span> cols[i], <span class="at">type =</span> <span class="st">"l"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L17-markov-intro_files/figure-html/ssrw-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 </section>
-<section id="periods-of-lcgs" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="periods-of-lcgs"><span class="header-section-number">11.2</span> Periods of LCGs</h2>
-<p>In an LCG, each number in the sequence depends only on the one before, since <span class="math inline">\(x_{i+1} = (ax_i + c) \bmod m\)</span>. This means if we ever get a single “repeat” in our sequence – that is, if we see a number we have seen at some point before – then the whole sequence from that point on will copy what came before.</p>
-<p>For example, in the second part of <a href="#exm-lcg-easy" class="quarto-xref">Example&nbsp;<span>11.1</span></a>, the sequence started <span class="math inline">\((1, 7, 9, 15, 1, \dots)\)</span>. As soon as we hit that repeat 1, we know we’re going to see that pattern <span class="math inline">\(1, 7, 9, 15\)</span> repeated forever. We say that this LCG has “period” 4. More generally, the <strong>period</strong> of an LCG is the smallest <span class="math inline">\(k \geq 1\)</span> such that <span class="math inline">\(x_{i+k} = x_i\)</span> for some <span class="math inline">\(i\)</span>.</p>
-<p>We would like our LCGs to have a big period. If an LCG has a small period, it will not look random, as we will just repeat the same small number of values over and over again.</p>
-<p>The smallest possible period is 1. That would be an extraordinarily bad LCG, as it would just spit out the same number forever. The biggest possible period is <span class="math inline">\(m\)</span>. That is because there are only <span class="math inline">\(m\)</span> possible values in <span class="math inline">\(\{0, 1, \dots, m-1\}\)</span>; so after <span class="math inline">\(m+1\)</span> steps we must have had a repeat, by the <a href="https://en.wikipedia.org/wiki/Pigeonhole_principle">pigeonhole principle</a>. Having the maximum period <span class="math inline">\(m\)</span> is also called having “full period”.</p>
-<p>Generally, the only way to find the period of an LCG is to run it for a long time, and see how long it takes to start repeating. But, conveniently, there <em>is</em> a very easy way to tell if an LCG has the maximum possible period <span class="math inline">\(m\)</span>, thanks to a result of TE Hull and AR Dobell.</p>
-<div id="thm-hd" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 11.1 (Hull–Dobell theorem)</strong></span> Consider the linear congruential generator <span class="math inline">\(x_{i+1} = (ax_i + c) \bmod m\)</span>. This LCG has period <span class="math inline">\(m\)</span> if and only if the following three conditions hold:</p>
-<ol type="1">
-<li><p><span class="math inline">\(m\)</span> and <span class="math inline">\(c\)</span> are coprime;</p></li>
-<li><p><span class="math inline">\(a - 1\)</span> is divisible by all prime factors of <span class="math inline">\(m\)</span>;</p></li>
-<li><p>if <span class="math inline">\(m\)</span> is divisible by 4, then <span class="math inline">\(a - 1\)</span> is divisible by 4.</p></li>
-</ol>
-</div>
-<p>(We won’t prove this here – it’s some pretty tricky number theory. But see <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1kmht9a/alma991012846439705181">Knuth, <em>The Art of Computer Programming</em></a>, <em>Volume 2: Seminumerical algorithms</em>, Subsubsection 3.2.1.2 if you really want a proof and have the number theory chops for it.)</p>
-<p>If <span class="math inline">\(m = 2^b\)</span> is a power of 2 (with <span class="math inline">\(b \geq 2\)</span>), then the three conditions simplify to a particularly pleasant form:</p>
-<ol type="1">
-<li><p><span class="math inline">\(c\)</span> is odd;</p></li>
-<li><p><span class="math inline">\(a - 1\)</span> is even;</p></li>
-<li><p><span class="math inline">\(a - 1\)</span> is divisible by 4.</p></li>
-</ol>
-<p>Of course, the third point on the list implies the second. So we only need to check two things: that <span class="math inline">\(c\)</span> is odd and that <span class="math inline">\(a\)</span> is <span class="math inline">\(1 \bmod 4\)</span> (that is, <span class="math inline">\(a\)</span> is one more than a multiple of 4).</p>
-<div id="exm-periods" class="theorem example">
-<p><span class="theorem-title"><strong>Example 11.3</strong></span> Let’s go back to the earlier examples, and see if they have full periods or not.</p>
-<p>In the first LCG of <a href="#exm-lcg-easy" class="quarto-xref">Example&nbsp;<span>11.1</span></a>, we had <span class="math inline">\(m = 2^4\)</span>, <span class="math inline">\(a = 5\)</span> and <span class="math inline">\(c = 3\)</span>. Here, <span class="math inline">\(c\)</span> is odd, and <span class="math inline">\(a = 4 + 1\)</span> is <span class="math inline">\(1 \bmod 4\)</span>. This LCG fulfils both conditions, so it has the maximum possible period of 16.</p>
-<p>In the second LCG of <a href="#exm-lcg-easy" class="quarto-xref">Example&nbsp;<span>11.1</span></a>, we had <span class="math inline">\(m = 2^4\)</span>, <span class="math inline">\(a = 3\)</span> and <span class="math inline">\(c = 4\)</span>. Here, <span class="math inline">\(c\)</span> is even, and <span class="math inline">\(a\)</span> is <span class="math inline">\(3 \bmod 4\)</span>. This LCG does not fulfil both the conditions – in fact, it fails them both – so it does not have the maximum possible period of 16. (We already saw that it in fact has period 4.)</p>
-<p>In the first LCG of <a href="#exm-lcg-hard" class="quarto-xref">Example&nbsp;<span>11.2</span></a>, we had <span class="math inline">\(m = 2^8\)</span>, <span class="math inline">\(a = 13\)</span> and <span class="math inline">\(c = 17\)</span>. Here, <span class="math inline">\(c\)</span> is odd, and <span class="math inline">\(a = 12 + 1\)</span> is <span class="math inline">\(1 \bmod 4\)</span>. This LCG fulfils both conditions, so it has the maximum possible period of 256.</p>
-<p>In the second LCG of <a href="#exm-lcg-hard" class="quarto-xref">Example&nbsp;<span>11.2</span></a>, we had <span class="math inline">\(m = 2^8\)</span>, <span class="math inline">\(a = 13\)</span> and <span class="math inline">\(c = 16\)</span>. Here, <span class="math inline">\(c\)</span> is even, and <span class="math inline">\(a = 12 + 1\)</span> is <span class="math inline">\(1 \bmod 4\)</span>. So although this LCG does fulfil the second condition, it does not fulfil the first, so it does not have the maximum possible period of 256. (We already saw that it in fact has period 32.)</p>
-</div>
-<p>It normally a good idea to make sure your LCG has full period – if it’s so easy to ensure, then why not? (That said, a very large but not-quite-maximum period may be good enough. For example, if an LCG with modulus <span class="math inline">\(2^{64}\)</span> has a period of “only” <span class="math inline">\(2^{60}\)</span>, that might well be enough: one million samples a second for one thousand years is only <span class="math inline">\(2^{55}\)</span> samples, so you’d never actually see a repeat.)</p>
-<p>But merely having full period (and a large modulus) isn’t enough by itself to guarantee an LCG will make a good pseudorandom number generator. After all, the silly LCG <span class="math inline">\(x_{i+1} = x_i + 1\)</span> has full period, but the sequence <span class="math display">\[(0, 1, 2, 3, \dots, m-2, m-1, 0, 1, 2, \dots)\]</span> will not look random.</p>
-</section>
-<section id="statistical-testing" class="level2" data-number="11.3">
-<h2 data-number="11.3" class="anchored" data-anchor-id="statistical-testing"><span class="header-section-number">11.3</span> Statistical testing</h2>
-<p>Before being used properly, any pseudorandom number generator is subjected to a barrage of statistical tests, to check if its output seems to “look random”. Alongside checking it has a very large period, the tester will want to check other statistical properties of randomness. <!--For just a few examples:
-
-* For any $0 \leq a < b < m$, is the proportion of samples $a \leq x_{i} < b$ in a medium-length subsequence that lie between $a$ and $b$ should be roughly equal to $(b - a)/m$.
-
-* Are there any patterns in the pairs of consecutive outputs $(x_i, x_{i+1})$ that display behaviour that "doesn't look independent"? What about other "low-dimensional" patterns in $(x_i, x_{i+1}, \dots, x_{i+k-1})$ for small $k$?
-
-* For a number $r$ dividing $m$ (that is, $r = 2^d$ for $d < b$, if $m = 2^b$) are there any patterns in $(x_i \bmod r)$? That is, does the sequence also seem random mod $r$ as well as mod $m$?
---> Even the best PRNGs might not pass every single such test. See <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 1.1.2 for more on this.</p>
-<p>LCGs were considered state-of-the-art until the late-90s or so. However, it was discovered that <span class="math inline">\(m\)</span> needs be very big and the number of samples used fairly small in order to pass some of the more stringent statistical tests of randomness. For example, it’s suggested that <span class="math inline">\(n = 1\,000\,000\)</span> (one million) samples from a full-period LCG with modulus <span class="math inline">\(m = 2^{64}\)</span> might be the limit before it starts “not looking random enough”. In particular, an LCG with a large period may not actually see <em>enough</em> repeats – after all, random numbers will have the occasional one-off repeat, just by chance. Compared to other more modern methods (like R’s default, the Mersenne Twister mentioned in the last lecture, discovered in 1997), an LCG requires quite a lot of computation for only a modest number of samples. So while LCGs are still admired for their simplicity and elegance, they have fallen out of favour for cutting-edge computational work.</p>
-<p><strong>Next time:</strong> <em>We’ll use our pseudorandom uniform <span class="math inline">\([0,1]\)</span> random numbers to make random numbers with other discrete or uniform distributions.</em></p>
+<section id="n-step-transition-probabilities" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="n-step-transition-probabilities"><span class="header-section-number">17.4</span> n-step transition probabilities</h2>
+<p>We know that the probability of a “1-step transition” from <span class="math inline">\(x\)</span> to <span class="math inline">\(y\)</span> is <span class="math display">\[ p(x, y) = \mathbb P(X_{i+1} = y \mid X_{i} = x)  .\]</span> But what is the probability of a “2-step transition” <span class="math display">\[ p^{(2)}(x, y) = \mathbb P(X_{i+2} = y \mid X_{i} = x) ?\]</span></p>
+<p>Well, the first step will be from <span class="math inline">\(x\)</span> to some other state <span class="math inline">\(z\)</span>; then the second step will have to go from that <span class="math inline">\(z\)</span> to <span class="math inline">\(y\)</span>. Thus we have <span class="math display">\[ \begin{align}
+p^{(2)}(x, y) &amp;= \mathbb P(X_{i+2} = y \mid X_{i} = x) \\
+&amp;= \sum_{z \in \mathcal S} \mathbb P(X_{i+1} = z \mid X_{i} = x) \,\mathbb P(X_{i+2} = y \mid X_{i+1} = z , X_{i} = x) \\
+&amp;= \sum_{z \in \mathcal S} \mathbb P(X_{i+1} = z \mid X_{i} = x) \,\mathbb P(X_{i+2} = y \mid X_{i+1} = z) \\
+&amp;= \sum_{z \in \mathcal S} p(x, z)\,p(z, y) .
+\end{align} \]</span> Here, in the third line we used the Markov property to delet the unnecessary conditioning on <span class="math inline">\(X_i\)</span>.</p>
+<p>Note that what we have here, though, is the <span class="math inline">\((x, y)\)</span>th entry of the matrix square <span class="math inline">\(\mathsf P^2 = \mathsf{P}\,\mathsf{P}\)</span>. That is, to get the matrix of 2-step transitions, we simply take the second matrix power of the matrix of one step transitions. Similarly, we can the matrix of <span class="math inline">\(n\)</span>-step transitions <span class="math inline">\(p^{n}(x, y) = \mathbb P(X_{i+n} = y \mid X_i = x)\)</span> by taking the <span class="math inline">\(n\)</span>th matrix power <span class="math inline">\(\mathsf{P}^{n} = \mathsf{P}\,\mathsf{P}^{n-1}= \mathsf{P}^{n-1}\,\mathsf{P}\)</span>.</p>
+<p>(Remember that the matrix power <span class="math inline">\(\mathsf P^n\)</span> is what we get by multiplying the whole matrix <span class="math inline">\(\mathsf P\)</span> by itself <span class="math inline">\(n\)</span> times, using the rules for multiplying matrices. It’s not just what we get from taking the <span class="math inline">\(n\)</span>th power of the number in each entry. In R, matrix multiplication is <code>P %*% P</code>, while <code>P * P</code> is simply entry-wise multiplication.)</p>
+<p><strong>Next time.</strong> <em>We continue our whistle-stop tour of discrete-space Markov chains.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
-<li><p>Linear congruential generators are pseudorandom number generators based on the recurrence <span class="math inline">\(x_{n+1} = (ax_n + c) \bmod m\)</span>.</p></li>
-<li><p>Any LCG will eventually repeat with periodic behaviour.</p></li>
-<li><p>Suppose <span class="math inline">\(m\)</span> is a power of 2. Then an LCG has period <span class="math inline">\(m\)</span> if and only if <span class="math inline">\(c\)</span> is odd and <span class="math inline">\(a = 1 \bmod 4\)</span>.</p></li>
+<li><p>A Markov chain is a stochastic process where the next step <span class="math inline">\(X_{i+1}\)</span> depends on the current step <span class="math inline">\(X_i\)</span>, but, given current step <span class="math inline">\(X_{i}\)</span>, does not depend on the past <span class="math inline">\(X_1, \dots, X_{i-1}\)</span>.</p></li>
+<li><p>A Markov chain is governed by its transition probabilities <span class="math inline">\(p(x, y) = \mathbb P(X_{i+1} = y \mid X_i = x)\)</span>. These are written in the transition matrix <span class="math inline">\(\mathsf P\)</span>, whose rows add up to 1.</p></li>
+<li><p>The simple random walk on the integers at each step goes up 1 with probability <span class="math inline">\(p\)</span> and down 1 with probability <span class="math inline">\(q\)</span>. If <span class="math inline">\(p = q = \tfrac12\)</span>, it is a simple symmetric random walk.</p></li>
+<li><p>The matrix of <span class="math inline">\(n\)</span>-step transition probabilities is the <span class="math inline">\(n\)</span>th matrix power of <span class="math inline">\(\mathsf P\)</span>.</p></li>
 </ul>
-<p>You should now be able to answer all questions on <a href="../problems/P2.html"><strong>Problem Sheet 2</strong></a>. Your answer will be discussed in the problems class on <strong>Thursday 31 October</strong>.</p>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsections 1.1.1 and 1.1.2.</p>
+<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Section 2.2; my notes for <a href="https://mpaldridge.github.io/math2750/">MATH2750 Introduction to Markov Processes</a>.</p>
 </div>
 
 
@@ -935,13 +988,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L10-rng-intro.html" class="pagination-link" aria-label="Generating random numbers">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generating random numbers</span></span>
+      <a href="../problems/P3.html" class="pagination-link" aria-label="Problem Sheet 3">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Problem Sheet 3</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../problems/P2.html" class="pagination-link" aria-label="Problem Sheet 2">
-        <span class="nav-page-text">Problem Sheet 2</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
+        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

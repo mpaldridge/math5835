@@ -169,7 +169,6 @@ samples2 <- 5 * rbeta(n, 1, 2)
 mean(phi(samples2))
 ```
 -->
-
 :::
 ::::
 :::::

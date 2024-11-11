@@ -33,12 +33,12 @@ book:
         - lectures/L15-envelope-1.qmd
         - lectures/L16-envelope-2.qmd
         - problems/P3.qmd
-#    - part: "MCMC"
-#      chapters:
-#        - lectures/L17-markov-intro.qmd
+    - part: "MCMC"
+      chapters:
+        - lectures/L17-markov-intro.qmd
 #        - lectures/L18-markov-longrun.qmd
-#        - lectures/L19-markov-cont.qmd
 #        - lectures/L20-mh-1.qmd
+#        - lectures/L19-markov-cont.qmd
 #        - lectures/L21-mh-2.qmd
 #        - problems/P4.qmd
 #        - lectures/L22-convergence.qmd
@@ -61,9 +61,12 @@ format:
 #  pdf:
 #    documentclass: scrreprt
 
+filters:
+  - diagram
+
 execute: 
   cache: true
-  
+
 knitr:
   opts_chunk: 
     fig-format: svg

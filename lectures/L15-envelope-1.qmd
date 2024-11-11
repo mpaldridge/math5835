@@ -1,9 +1,3 @@
----
-editor: 
-  markdown: 
-    wrap: 72
----
-
 # Envelope rejection sampling I
 
 Last time, we started looking at rejection sampling. We found that if
