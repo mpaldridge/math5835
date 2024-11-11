@@ -66,8 +66,8 @@ Consider a simple model of an unreliable printer:
 
 We can model this as a Markov chain on the state space $\mathcal S = \{1, 2\}$, where state 1 denotes that the printer is working and state 2 denotes that the printer is working. We have
 $$ \begin{align}
-\mathbb P(X_{i+1} = 1 \mid X_i = 1) &= 0.9 & \mathbb P(X_{i+1} = 2 \mid X_i = 1) = 0.1 \\
-\mathbb P(X_{i+1} = 1 \mid X_i = 2) &= 0.5 & \mathbb P(X_{i+1} = 2 \mid X_i = 2) = 0.5.
+\mathbb P(X_{i+1} = 1 \mid X_i = 1) &= 0.9 & \mathbb P(X_{i+1} = 2 \mid X_i = 1) &= 0.1 \\
+\mathbb P(X_{i+1} = 1 \mid X_i = 2) &= 0.5 & \mathbb P(X_{i+1} = 2 \mid X_i = 2) &= 0.5.
 \end{align} $$
 :::
 
@@ -170,7 +170,7 @@ which goes down on average. The simple symmetric random walk, with $p = 0.5$ can
 
 ```{r ssrw}
 RW <- rrw(1000, 0.5)
-plot(RW, col = "black", type = "l", ylim = c(-100, 100))
+plot(RW, col = "black", type = "l", ylim = c(-80, 80))
 
 cols <- c("red", "orange", "yellow", "green", "blue", "darkblue", "purple")
 for (i in 1:7) {
