@@ -394,7 +394,7 @@ samples1 <- lcg(n, m, 125, 5, seed)
 ::::
 
 :::: {.subq}
-**(b)**  Convert these to 200 outputs to pseudorandom uniform samples in $[0, 1]$.
+**(b)**  Convert these to 1000 outputs to pseudorandom uniform samples in $[0, 1]$.
 
 ::: {.myanswers}
 To do this, we simply divide the samples by $m$.

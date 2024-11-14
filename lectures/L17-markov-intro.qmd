@@ -79,19 +79,21 @@ In both the Markov chains we have looked at -- and, indeed, all the Markov chain
 
 Once we have the notation $p(x, y)$ for the transition probability, it will in fact be useful to write them in a matrix $\mathsf P = (p(x,y))$, called the **transition matrix**.
 
-For the two-state Markov chain, the transition matrix is $$ \mathsf P = \begin{pmatrix} 0.9 & 0.1 \\ 0.5 & 0.5 \end{pmatrix} . $$ For the simple random walk, the transition matrix is the "infinite matrix" $$ \mathsf P = \begin{pmatrix}
+For the two-state "unreliable printer" Markov chain, the transition matrix is $$ \mathsf P = \begin{pmatrix} 0.9 & 0.1 \\ 0.5 & 0.5 \end{pmatrix} . $$
+
+For the simple random walk, the transition matrix is the "infinite matrix" $$ \mathsf P = \begin{pmatrix}
  \smash\ddots      & \smash\ddots & \phantom{\smash\ddots}  &  \phantom{\smash\ddots}  & \phantom{\smash\ddots} & \phantom{\smash\ddots} \\
 \smash\ddots &  0     & p &        & \\
        & q      & 0 & p      & \\
        &        & q & 0      & p \\
        &        &   & q & 0 & \smash\ddots \\
-       &        &   &  & \smash\ddots &  \smash\ddots       \end{pmatrix} $$ (where any blank area denotes a 0).
+       &        &   &  & \smash\ddots &  \smash\ddots       \end{pmatrix} $$ This has 0s down the diagonal (representing the probability 0 of staying still), $p$ one place to the right of the diagonal (representing the probability of moving up 1), and $q$ one place to the left of the diagonal (representing the probability of moving down 1). Blank spaces in this matrix denotes 0s.
 
 The $x$th row of a transition matrix represents the probabilities of moving from $x$ to each of the other states. Thus each row must consist of non-negative numbers that add up to 1, as is the case in both of our examples.
 
 ## Simulation of Markov chains
 
-We can take $n$ samples from a finite-state Markov chain in R with the following R function. In this function, `n` is the number of samples (or steps) to take, `trans` is the transition matrix $\mathsf P$, and `initial` is the initial state $X_1$.
+We can take $n$ samples from a finite-state Markov chain in R with the following function. In the function `rmarkov()`, `n` is the number of samples (or steps) to take, `trans` is the transition matrix $\mathsf P$, and `initial` is the initial state $X_1$.
 
 ```{r}
 rmarkov <- function(n, trans, initial) {
@@ -99,9 +101,7 @@ rmarkov <- function(n, trans, initial) {
   MC <- rep(0, n)
   
   MC[1] <- initial
-  for (i in 1:(n - 1)) {
-    MC[i + 1] <- sample(states, 1, prob = trans[MC[i], ])
-  }
+  for (i in 1:(n - 1)) MC[i + 1] <- sample(states, 1, prob = trans[MC[i], ])
   
   return(MC)
 }

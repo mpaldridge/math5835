@@ -437,30 +437,29 @@ window.Quarto = {
 </div>
 <p>In both the Markov chains we have looked at – and, indeed, all the Markov chains we will ever look at – the <strong>transition probability</strong> <span class="math inline">\(p(x, y) = \mathbb P(X_{i+1} = y \mid X_i = x)\)</span> was the same for all <span class="math inline">\(i\)</span>. That is, the probability <span class="math inline">\(p(x, y)\)</span> of moving from <span class="math inline">\(x\)</span> to <span class="math inline">\(y\)</span> does not depend on which timestep <span class="math inline">\(i\)</span> we are at. This is called being <strong>time homogeneous</strong>.</p>
 <p>Once we have the notation <span class="math inline">\(p(x, y)\)</span> for the transition probability, it will in fact be useful to write them in a matrix <span class="math inline">\(\mathsf P = (p(x,y))\)</span>, called the <strong>transition matrix</strong>.</p>
-<p>For the two-state Markov chain, the transition matrix is <span class="math display">\[ \mathsf P = \begin{pmatrix} 0.9 &amp; 0.1 \\ 0.5 &amp; 0.5 \end{pmatrix} . \]</span> For the simple random walk, the transition matrix is the “infinite matrix” <span class="math display">\[ \mathsf P = \begin{pmatrix}
+<p>For the two-state “unreliable printer” Markov chain, the transition matrix is <span class="math display">\[ \mathsf P = \begin{pmatrix} 0.9 &amp; 0.1 \\ 0.5 &amp; 0.5 \end{pmatrix} . \]</span></p>
+<p>For the simple random walk, the transition matrix is the “infinite matrix” <span class="math display">\[ \mathsf P = \begin{pmatrix}
 \smash\ddots      &amp; \smash\ddots &amp; \phantom{\smash\ddots}  &amp;  \phantom{\smash\ddots}  &amp; \phantom{\smash\ddots} &amp; \phantom{\smash\ddots} \\
 \smash\ddots &amp;  0     &amp; p &amp;        &amp; \\
        &amp; q      &amp; 0 &amp; p      &amp; \\
        &amp;        &amp; q &amp; 0      &amp; p \\
        &amp;        &amp;   &amp; q &amp; 0 &amp; \smash\ddots \\
-       &amp;        &amp;   &amp;  &amp; \smash\ddots &amp;  \smash\ddots       \end{pmatrix} \]</span> (where any blank area denotes a 0).</p>
+       &amp;        &amp;   &amp;  &amp; \smash\ddots &amp;  \smash\ddots       \end{pmatrix} \]</span> This has 0s down the diagonal (representing the probability 0 of staying still), <span class="math inline">\(p\)</span> one place to the right of the diagonal (representing the probability of moving up 1), and <span class="math inline">\(q\)</span> one place to the left of the diagonal (representing the probability of moving down 1). Blank spaces in this matrix denotes 0s.</p>
 <p>The <span class="math inline">\(x\)</span>th row of a transition matrix represents the probabilities of moving from <span class="math inline">\(x\)</span> to each of the other states. Thus each row must consist of non-negative numbers that add up to 1, as is the case in both of our examples.</p>
 </section>
 <section id="simulation-of-markov-chains" class="level2" data-number="17.3">
 <h2 data-number="17.3" class="anchored" data-anchor-id="simulation-of-markov-chains"><span class="header-section-number">17.3</span> Simulation of Markov chains</h2>
-<p>We can take <span class="math inline">\(n\)</span> samples from a finite-state Markov chain in R with the following R function. In this function, <code>n</code> is the number of samples (or steps) to take, <code>trans</code> is the transition matrix <span class="math inline">\(\mathsf P\)</span>, and <code>initial</code> is the initial state <span class="math inline">\(X_1\)</span>.</p>
+<p>We can take <span class="math inline">\(n\)</span> samples from a finite-state Markov chain in R with the following function. In the function <code>rmarkov()</code>, <code>n</code> is the number of samples (or steps) to take, <code>trans</code> is the transition matrix <span class="math inline">\(\mathsf P\)</span>, and <code>initial</code> is the initial state <span class="math inline">\(X_1\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rmarkov <span class="ot">&lt;-</span> <span class="cf">function</span>(n, trans, initial) {</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  states <span class="ot">&lt;-</span> <span class="fu">nrow</span>(trans)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  MC <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  MC[<span class="dv">1</span>] <span class="ot">&lt;-</span> initial</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">sample</span>(states, <span class="dv">1</span>, <span class="at">prob =</span> trans[MC[i], ])</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(MC)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">sample</span>(states, <span class="dv">1</span>, <span class="at">prob =</span> trans[MC[i], ])</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(MC)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The key line is the <code>for</code> loop in the penultimate line. Here, the next state <span class="math inline">\(X_{i+1}\)</span> is chosen by sampling a state with probabilities according to the <span class="math inline">\(x\)</span>th row of the transition matrix, where <span class="math inline">\(X_i = x\)</span> is the current state.</p>
 <div id="exm-2state2" class="theorem example">
