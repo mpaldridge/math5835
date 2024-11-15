@@ -4,7 +4,7 @@
 
 ## Markov chains and MCMC
 
-In the first part of this module, we looked at Monte Carlo methods, where we estimated $\theta = \Exg\phi(X)$ by $$ \widehat{\theta}_n = \sum_{i=1}^n \phi(X_i) $$ where $X_1, X_2, \dots, X_n$ are IID samples from the same distributions as $X$. This worked well for relatively simple distributions $X$, like those that can be sampled using the inverse transform method or rejection sampling (or a built-in R function). These tended to be one-dimensional distributions, sometimes with a simple dependence on one parameter.
+In the first part of this module, we looked at Monte Carlo methods, where we estimated $\theta = \Exg\phi(X)$ by $$ \widehat{\theta}_n = \frac{1}{n} \sum_{i=1}^n \phi(X_i) $$ where $X_1, X_2, \dots, X_n$ are IID samples from the same distributions as $X$. This worked well for relatively simple distributions $X$, like those that can be sampled using the inverse transform method or rejection sampling (or a built-in R function). These tended to be one-dimensional distributions, sometimes with a simple dependence on one parameter.
 
 However, these methods are often not available when dealing with very complex distributions $X$. For example, these might not be one-dimensional but rather living in some very high-dimensional space. Or they might depend on many parameters -- and those parameters might themselves be drawn from random distributions (a so-called "hierarchical model").
 
@@ -180,5 +180,5 @@ for (i in 1:7) {
 
 -   The simple random walk on the integers at each step goes up 1 with probability $p$ and down 1 with probability $q$. If $p = q = \tfrac12$, it is a simple symmetric random walk.
 
-**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 2.3.1; my notes for [MATH2750 Introduction to Markov Processes](https://mpaldridge.github.io/math2750/).
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsections 2.3.1; my notes for [MATH2750 Introduction to Markov Processes](https://mpaldridge.github.io/math2750/).
 :::

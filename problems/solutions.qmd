@@ -10,4 +10,4 @@
 
 ## Problem Sheet 3 {.unnumbered #P3-sols}
 
-
+{{< include P3-content.qmd >}}

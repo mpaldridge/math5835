@@ -11,24 +11,138 @@ p^{(2)}(x, y) &= \mathbb P(X_{i+2} = y \mid X_{i} = x) \\
 &= \sum_{z \in \mathcal S} p(x, z)\,p(z, y) .
 \end{align} $$ Here, in the third line we used the Markov property to delete the unnecessary conditioning on $X_i$.
 
-Note that what we have here, though, is the $(x, y)$th entry of the matrix square $\mathsf P^2 = \mathsf{P}\,\mathsf{P}$. That is, to get the matrix of 2-step transitions, we simply take the second matrix power of the matrix of 1-step transitions. Similarly, we can calculate the matrix of $n$-step transitions $p^{(n)}(x, y) = \mathbb P(X_{i+n} = y \mid X_i = x)$ by taking the $n$th matrix power $\mathsf{P}^{n} = \mathsf{P}\,\mathsf{P}^{n-1}= \mathsf{P}^{n-1}\,\mathsf{P}$.
+What we have here, though, is the $(x, y)$th entry of the matrix square $\mathsf P^2 = \mathsf{P}\,\mathsf{P}$. That is, to get the matrix of 2-step transitions, we simply take the second matrix power of the matrix of 1-step transitions.
 
-(Remember that the matrix power $\mathsf P^n$ is what we get by multiplying the whole matrix $\mathsf P$ by itself $n$ times, using the rules for multiplying matrices. It's not just what we get from taking the $n$th power of the number in each entry. In R, matrix multiplication is `P %*% P`, while `P * P` is simply entry-wise multiplication.)
+In the same way we can calculate an $n$-step transition probability $p^{(n)}(x, y) = \mathbb P(X_{i+n} = y \mid X_i = x)$ by summing over all the potential paths $x \to z_1 \to \cdots \to z_{n-1} \to y$ of length $n$ from $x$ to $y$. This gives
+$$ p^{(n)}(x, y) = \sum_{z_1, \dots, z_{n-1} \in \mathcal S} p(x, z_1)\,p(z_1, z_2)\cdots p(z_{n-2},z_{n-1})\,p(z_{n-1}, y).$$
+This is the expression for the $(x,y)$th entry of the $n$th matrix power $\mathsf{P}^{n} = \mathsf{P}\,\mathsf{P}^{n-1}= \mathsf{P}^{n-1}\,\mathsf{P}$, so we can find all the $n$-step transition probabilities from $\mathsf P^n$.
+
+(Remember that the matrix power $\mathsf P^n$ is what we get by multiplying the whole matrix $\mathsf P$ by itself $n$ times, using the rules for multiplying matrices. It's not just what we get from taking the $n$th power of the number in each entry. In R, proper matrix multiplication is `P %*% P`, while `P * P` is simply entry-wise multiplication.)
+
+::: {#exm-2state-nstep}
+Let's go back to our two-state "unreliable printer" Markov chain. Here, we had
+$$ \mathsf P = \begin{pmatrix} 0.9 & 0.1 \\ 0.5 & 0.5 \end{pmatrix} . $$
+The 2-step transition probabilities are given by
+$$ \mathsf P^2 = \begin{pmatrix} 0.9 & 0.1 \\ 0.5 & 0.5 \end{pmatrix}\begin{pmatrix} 0.9 & 0.1 \\ 0.5 & 0.5 \end{pmatrix} = \begin{pmatrix} 0.86 & 0.14 \\ 0.7 & 0.3 \end{pmatrix} . $$
+So if the printer is working today, there's an 86% probability it's working in two days' time, for example.
+
+For bigger matrix powers, it's best to use a computer. In R, the following "quick and dirty" function works well for small powers. (For larger powers, I recommend finding a package with an appropriate built-in matrix power function.)
+
+```{r}
+matrixpow <- function(M, n) {
+  if (n == 1) return(M)
+  else return(M %*% matrixpow(M, n - 1))
+}
+```
+
+From this we find the 10-step transition probability
+$$ \mathsf P^{10} = \begin{pmatrix} 0.8334 & 0.1667 \\ 0.8332 & 0.1668 \end{pmatrix}. $$
+The first row of this matrix denotes the probabilities of where we end up after 10 steps if we start in state 1, and the second row for if we start in state 2. These are very nearly the same -- we have a probability $\approx 0.883$ if being in state 1 and $\approx 0.167$ of being in state 2, *regardless of which state we started in*. It's as if the Markov chain has forgotten where we started.
+
+Similarly, if we look at the 11-step transition probability, that comes out as
+$$ \mathsf P^{11} = \begin{pmatrix} 0.8333 & 0.1667 \\ 0.8333 & 0.1667 \end{pmatrix}, $$
+which is virtually the same distribution as after 10 steps. It seems that, after a large number of steps $i$, that we are "settling down" to a "long run distribution" where $\mathbb P(X_i = 1) = 0.8333$ and $\mathbb P(X_i = 2) = 0.1667$, not only regardless of which state we started in but also for all large $i$.
+:::
+
+We will investigate these phenomena in the next section.
 
 ## Stationary distributions
 
+Suppose our Markov chain is currently in the distribution $\pi$ at step $i$. That is, for each $x \in \mathcal S$, we have $\mathbb P(X_i = x) = \pi(x)$. What is the probability we are in state $y$ at the next step $i+1$? Well, conditioning on the current step, we have
+$$ \mathbb P(X_{i+1} = y) = \sum_{x \in \mathcal S} \mathbb P(X_i = x) \,\mathbb P(X_{i+1} = y \mid X_i = x) = \sum_{x \in \mathcal S} \pi(x) \,p(x, y) . $$
+
+Now if, $X_{i+1}$ *also* has the distribution $\pi$ -- that is, if $\mathbb P(X_{i+1} = y) = \pi(y)$ -- then we would remain in the distribution $\pi$ a time step $i+1$. And, by the same logic, time steps $i+2, i+3, \dots$ and forever. That seems a bit like what we saw happening in @exm-2state-nstep. We call this a **stationary distribution**.
+
+A stationary distribution means that *the probability of being in state $x$* is staying the same, as $\pi(x)$. Any particular realisation of the Markov chain will, of course, continue moving between states.
+
+::: {#def-statdist}
+Let $(X_i)$ be a Markov chain with transition matrix $\mathsf P = (p(x,y))$. Let $\pi$ be a distribution on $\mathcal S$, in that $\pi(x) \geq 0$ for all $x$ and $\sum_{x \in \mathcal S} \pi(x) = 1$. If, for all $y \in \mathcal S$ we have
+$$ \pi(y) = \sum_{x \in \mathcal S} \pi(x) \,p(x, y) , $$ {#eq-statdist}
+then we say that $\pi$ is a **stationary distribution**.
+:::
+
+In matrix form, we can write @eq-statdist as $\boldsymbol\pi = \boldsymbol\pi\mathsf P$, where $\boldsymbol\pi$ is a *row* vector (not the more common column vector holding the values of $\pi(x)$.
+
+Solving @eq-statdist or $\boldsymbol\pi = \boldsymbol\pi\mathsf P$ can be a bit fiddly. It's often easier to check something called the **detailed balance equations**.
+
+::: {#thm-detbal}
+Let $(X_i)$ be a Markov chain with transition matrix $\mathsf P = (p(x,y))$. Let $\pi$ be a distribution on $\mathcal S$ that solved the **detailed balance equations**
+$$ \pi(y) \,p(y, x) = \pi(x)\,p(x,y) \qquad \text{for all $x, y \in \mathcal S$.} $$
+Then $\pi$ is a stationary distribution.
+:::
+
+::: {.proof}
+Sum both sides over $x$. The left-hand side becomes
+$$ \sum_{x \in \mathcal S} \pi(y)\,p(y,x) = \pi(y) \sum_{x \in \mathcal S} p(y,x) = \pi(y) , $$
+since rows of a transition matrix sum up to 1. The right hand side becomes
+$$ \sum_{x \in \mathcal S}\pi(x)\,p(x,y) .$$
+Hence, we have
+$$ \pi(y) = \sum_{x \in \mathcal S} \pi(x) \,p(x, y) , $$
+which is the definition of a stationary distribution.
+:::
+
+::: {#exm-2state-stat}
+We return to @exm-2state and @exm-2state-nstep. There's no need to check the detailed balance equations when $x = y$, so we just need
+$$ \pi(2)\,p(2, 1) = \pi(1)\,p(1, 2) \qquad \Longrightarrow \qquad 0.5\pi(2) = 0.1\pi(1) .$$
+Remembering that $\pi$ must sum to 1, we get $\pi(1) = \tfrac16 = 0.1667$ and $\pi(2) = \tfrac56 = 0.8333$.
+
+Look how that compares with our results for $\mathsf P^{10}$ and $\mathsf P^{11}$ -- this $\pi$ was precisely the values we saw in every row of $\mathsf P^n$ for large $n$.
+:::
+
 ## Limit theorems
 
-**Next time.** *We continue our whistle-stop tour of discrete-space Markov chains.*
+The big central theorem of Markov chains in discrete space is the following. We will highlight some technical conditions in <span style="color:red;">red</span> that we will return to later.
+
+::: {#thm-ergodic}
+Let $(X_i)$ be a Markov chain with transition matrix $\mathsf P$. Suppose that $(X_i)$ is <span style="color:red;">irreducible</span> and <span style="color:red;">positive recurrent</span>.
+
+1. There exists a stationary distribution $\pi$, which is unique.
+
+2. **(Limit theorem)** If $(X_i)$ is also <span style="color:red;">aperiodic</span>, then $\mathbb P(X_n = y \mid X_1 = x) \to \pi(y)$ as $n \to \infty$ for all $y \in \mathcal S$ , regardless of the starting state $X_1 = x$, where $\pi$ is the unique stationary distribution.
+
+3. **(Ergodic theorem, 1)** Write $$V_n(x) = \frac{1}{n} \big|\{i = 1, 2, \dots, n : X_i = x\}\big|$$ for the proportion of the first $n$ steps spent in state $x$. Then $V_n(x) \to \pi(x)$ as $n \to \infty$ for all $x \in \mathcal S$, regardless of the starting state $X_1$, where $\pi$ is the unique stationary distribution.
+
+4. **(Ergodic theorem, 2)** Let $\phi$ be a function on the state space $\mathcal S$. Let $X$ have probability mass function $\pi$, where $\pi$ is the unique stationary distribution. Then $$ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X), $$ as $n \to \infty$, regardless of the starting state $X_1$.
+:::
+
+("Ergodic" is a word mathematicians use when talking about long-run average behaviour.)
+
+The precise mathematical statements of this theorem are not important for this module. However, it is important to have a rough idea what the statements mean -- especially part 4, which is central to the idea of Markov chain Monte Carlo we will discuss over the next lectures.
+
+The first part tells us that (provided the technical conditions are fulfilled) we always have a stationary distribution and there's always exactly one of them. This allows us to use phrases like "where $\pi$ is the unique stationary distribution" in the other parts of the theorem.
+
+The second part tells us that any $n$-step transition probability $p^{(n)}(x,y)$ tends to $\pi(y)$, no matter what the value of $x$. In terms of the $n$-step transition matrix $\mathsf P^n$, this means that every row of $\mathsf P^n$ should end up looking like an identical copy of the row vector $\boldsymbol\pi$. That is exactly what we found in @exm-2state-nstep.
+
+The third part tells us that, in the long run, $\pi$ describes the proportion of time we spend in each state. In the "unreliable printer" example of @exm-2state-stat, this means that the printer spends 83% of the time working and 17% of the time broken in the long run, regardless of whether it was working or broken on day 1.
+
+The fourth part is by far the most important result for us, as it relates Markov chains back to the idea of Monte Carlo estimation. Let's look at the equation in the fourth part,
+$$ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X). $$
+If the $X_i$ were independent and identically distributed, this would just be the ordinary law of large numbers, which tells us that the Monte Carlo estimator (the left-hand side) is an accurate estimator of $\operatorname{\mathbb E}\phi(X)$, when the number of samples is large. This result tells us that we still get a good estimator when the $X_i$ are not IID, but rather come from a Markov chain whose stationary distribution is the PMF of $X$.
+
+This fourth part is what allows us to do **Markov chain Monte Carlo** (**MCMC**): Monte Carlo estimation when the $X_i$ are the outputs from a Markov chain. If we want to estimate $\operatorname{\mathbb E}\phi(X)$, we just need to find a Markov chain who stationary distribution is the PMF of $X$, and then form the Monte Carlo estimate in the usual way. In the next lecture, the **Metropolis--Hastings algorithm** will show us a way to do find a Markov chain with a given stationary distribution.
+
+A quick word before we end about the <span style="color:red;">technical conditions</span> in @thm-ergodic. The precise definitions are not important here, but let us say the following:
+
+* **<span style="color:red;">Irreducible</red>** roughly means that a Markov chain is "connected up", and isn't just two Markov separate Markov chains (for example). Specifically, it must be at least *possible* to get from any state $x$ to any other state $y$ -- maybe not in a single step, but in some finite number of steps, with probability greater than 0.
+
+* **<span style="color:red;">Aperiodic</red>** is another technical condition, but if a Markov chain has a non-zero probability of staying in the same state, then this is fulfilled. The Markov chains we look at for MCMC will all have a strictly postive probability of staying put.
+
+* **<span style="color:red;">Positive recurrence</red>** is a highly technical condition we won't get into here.
+
+If you do want to read more about the theory of Markov chains, and these technical conditions in particular, I recommend my lecture notes for my notes for [MATH2750 Introduction to Markov Processes](https://mpaldridge.github.io/math2750/). This is entirely optional, though, and this knowledge is *not* required for this module and its exam.
+
+
+
+**Next time.** *We we look at Markov chain Monte Carlo; specifically, how to set up a Markov chain that has a given probability mass function as its stationary distribution.*
 
 ::: mysummary
 **Summary:**
 
--   A Markov chain is a stochastic process where the next step $X_{i+1}$ depends on the current step $X_i$, but, given current step $X_{i}$, does not depend on the past $X_1, \dots, X_{i-1}$.
+-   The $n$-step transition probabilities $p^{(n)}(x,y) = \mathbb{P}(X_{i+n} = y \mid X_i = x)$ can be found from the $n$th matrix power $\mathsf P^n$.
 
--   A Markov chain is governed by its transition probabilities $p(x, y) = \mathbb P(X_{i+1} = y \mid X_i = x)$. These are written in the transition matrix $\mathsf P$, whose rows add up to 1.
+-   A stationary distribution $\pi$ for a Markov chain satisfies the detailed balance equations $\pi(y)\,p(y,x) = \pi(x)\,p(x,y)$.
 
--   The simple random walk on the integers at each step goes up 1 with probability $p$ and down 1 with probability $q$. If $p = q = \tfrac12$, it is a simple symmetric random walk.
+-   The ergodic theorem says that (under certain technical conditions) $\frac{1}{n}\sum_{i=1}^n \phi(X_i)$, where $X_i$ is Markov chain, tends to $\operatorname{\mathbb E}\phi(X)$, where the PMF of $X$ is the unique stationary distribution of the Markov chain.
 
-**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 2.3.1 and 4.1.2; my notes for [MATH2750 Introduction to Markov Processes](https://mpaldridge.github.io/math2750/).
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsections 2.3.1 and 4.1.2; my notes for [MATH2750 Introduction to Markov Processes](https://mpaldridge.github.io/math2750/).
 :::

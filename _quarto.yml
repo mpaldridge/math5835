@@ -36,7 +36,7 @@ book:
     - part: "MCMC"
       chapters:
         - lectures/L17-markov-intro.qmd
-#        - lectures/L18-markov-longrun.qmd
+        - lectures/L18-markov-longrun.qmd
 #        - lectures/L20-mh-1.qmd
 #        - lectures/L19-markov-cont.qmd
 #        - lectures/L21-mh-2.qmd
