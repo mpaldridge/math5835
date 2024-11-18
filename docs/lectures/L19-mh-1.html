@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>13&nbsp; Inverse transform method – MATH5835M Statistical Computing</title>
+<title>19&nbsp; Metropolis–Hastings in discrete space – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L14-rejection.html" rel="next">
-<link href="../lectures/L12-uniform-discrete.html" rel="prev">
+<link href="../problems/solutions.html" rel="next">
+<link href="../lectures/L18-markov-longrun.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../lectures/L13-inverse.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L19-mh-1.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in discrete space</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -282,7 +282,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L13-inverse.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L13-inverse.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></span></a>
   </div>
 </li>
@@ -335,7 +335,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L19-mh-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L19-mh-1.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in discrete space</span></span></a>
   </div>
 </li>
@@ -352,24 +352,15 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#inverse-cdf" id="toc-inverse-cdf" class="nav-link active" data-scroll-target="#inverse-cdf"><span class="header-section-number">13.1</span> Inverse CDF</a></li>
-  <li><a href="#inverse-transform" id="toc-inverse-transform" class="nav-link" data-scroll-target="#inverse-transform"><span class="header-section-number">13.2</span> Inverse transform</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">13.3</span> Examples</a></li>
-  <li><a href="#boxmuller-transform" id="toc-boxmuller-transform" class="nav-link" data-scroll-target="#boxmuller-transform"><span class="header-section-number">13.4</span> Box–Muller transform</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../lectures/L13-inverse.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L19-mh-1.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in discrete space</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></h1>
+<h1 class="title"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in discrete space</span></h1>
 </div>
 
 
@@ -386,163 +377,171 @@ window.Quarto = {
 </header>
 
 
-<div class="hidden">
-<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
-\newcommand{\Ex}{\mathbb{E}}
-\newcommand{\Ind}{\mathbb{I}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}
-\newcommand{\ee}{\mathrm{e}}\]</span></p>
-</div>
-<section id="inverse-cdf" class="level2" data-number="13.1">
-<h2 data-number="13.1" class="anchored" data-anchor-id="inverse-cdf"><span class="header-section-number">13.1</span> Inverse CDF</h2>
-<p>We have started looking at how to transform a standard uniform random variable <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span> into any other distribution <span class="math inline">\(X\)</span>.</p>
-<p>Last lecture, we saw how to do this for other uniform distributions and for discrete random variables. Booth involved the cumulative distribution function <span class="math inline">\(F(x) = \mathbb P(X \leq x)\)</span>. For generating a wider class of random variables (including continuous random variables) the CDF will continue to be important. In fact, it is the <em>inverse</em> of the CDF that will play a crucial role.</p>
-<p>It seems natural to define the inverse <span class="math inline">\(F^{-1}\)</span> of the CDF in just the same way we would define the inverse of any other function: that <span class="math inline">\(F^{-1}(u)\)</span> is the unique value <span class="math inline">\(x\)</span> such that <span class="math inline">\(F(x) = u\)</span>. This is illustrated in the figure below.</p>
-<p>[picture]</p>
-<p>This definition works fine for a purely continuous distribution that doesn’t have any “gaps” in the set of values it can take. But for a general random variable, there are two problems with this definition.</p>
-<ol type="1">
-<li><p>If <span class="math inline">\(X\)</span> has any point masses – points <span class="math inline">\(x\)</span> with strictly positive probability <span class="math inline">\(\mathbb P(X = x) &gt; 0\)</span> of hitting that point exactly – then <span class="math inline">\(F\)</span> may “jump past” the value <span class="math inline">\(u\)</span>, so there is <em>no</em> value <span class="math inline">\(x\)</span> such that <span class="math inline">\(F(u)\)</span>. (See the blue line on the graph below.)</p></li>
-<li><p>If there is an interval on the line where <span class="math inline">\(X\)</span> has probability zero, then all the <span class="math inline">\(x\)</span>s in that interval have the same value of <span class="math inline">\(F(x) = u\)</span>, so there is no <em>unique</em> value <span class="math inline">\(x\)</span> such that <span class="math inline">\(F(x) = u\)</span>. (See the red line on the graph below.)</p></li>
-</ol>
-<p>[picture]</p>
-<p>It turns out that the best way to solve this is the following. For the first obstacle, if there are many points <span class="math inline">\(x\)</span> with <span class="math inline">\(F(x) = u\)</span>, we take the first one – that is, the smallest <span class="math inline">\(x\)</span> with <span class="math inline">\(F(x) = u\)</span>. For the second obstacle, we take the value of the smallest <span class="math inline">\(x\)</span> where <span class="math inline">\(F(x)\)</span> is above <span class="math inline">\(u\)</span>, which comes right at the jump. These two cases are illustrated below.</p>
-<p>[picture]</p>
-<p>These two awkward cases can be encapsulated in the following definition.</p>
-<div id="def-cdf-inv" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 13.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable with cumulative distribution function <span class="math inline">\(F_X(x) = \mathbb P(X \leq x)\)</span>. Then the <strong>inverse cumulative distribution function</strong> (inverse CDF) <span class="math inline">\(F_X^{-1}\)</span> is defined for <span class="math inline">\(u \in (0,1)\)</span> by <span class="math display">\[ F^{-1}_X(u) = \min \big \{x : F_X(x) \geq u \big\} . \]</span></p>
-</div>
-<p>You should check that you agree this definition matches the discussion above.</p>
-</section>
-<section id="inverse-transform" class="level2" data-number="13.2">
-<h2 data-number="13.2" class="anchored" data-anchor-id="inverse-transform"><span class="header-section-number">13.2</span> Inverse transform</h2>
-<p>The inverse transform method works like this: To generate <span class="math inline">\(X\)</span>, simply apply the inverse CDF <span class="math inline">\(F^{-1}\)</span> to a standard uniform random variable <span class="math inline">\(U\)</span>.</p>
-<div id="thm-inv-trans" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 13.1</strong></span> Let <span class="math inline">\(F\)</span> be a cumulative distribution function, and let <span class="math inline">\(F^{-1}\)</span> be its inverse. Let <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>. Then <span class="math inline">\(X = F^{-1}(U)\)</span> has cumulative distribution function <span class="math inline">\(F\)</span>.</p>
-</div>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>We need to show that <span class="math inline">\(\mathbb P(X \leq x) = F(x)\)</span> when this is in <span class="math inline">\((0,1)\)</span>. The proof is very easy if <span class="math inline">\(F\)</span> has no “gaps” or “jumps” as described above. Then, we simply have <span class="math display">\[ \mathbb P(X \leq x) = \mathbb P\big(F^{-1}(U) \leq x\big) = \mathbb P\big(U \leq F(x)\big) = F(x), \]</span> where we have simply “undone” the function <span class="math inline">\(F^{-1}\)</span> and used that <span class="math inline">\(\mathbb P(U \leq u) = u\)</span> for <span class="math inline">\(u \in (0,1)\)</span>.</p>
-<p>For the general case, we need to be just a little bit more careful. We have <span class="math display">\[ \mathbb P(X \leq x) = \mathbb P\big(F^{-1}(U) \leq x\big) = \mathbb P\big(\min\{y : F(y) \geq U \} \leq x \big) .\]</span> If <span class="math inline">\(x\)</span> is bigger than the minimum <span class="math inline">\(y\)</span> with <span class="math inline">\(F(y) \geq u\)</span>, then certainly <span class="math inline">\(F(x) \geq u\)</span> as well; while if <span class="math inline">\(F(x) \geq u\)</span>, then <span class="math inline">\(x\)</span> must be at least as big as the minimum <span class="math inline">\(y\)</span> for which <span class="math inline">\(F(y) \geq u\)</span>. Hence <span class="math inline">\(\min\{y : F(y) \geq U \} \leq x\)</span> if and only is <span class="math inline">\(F(x) \geq U\)</span>. So <span class="math display">\[ \mathbb P(X \leq x) = \mathbb P\big(\min\{y : F(y) \geq U \} \leq x \big) = \mathbb P\big(F(x) \geq U\big) = \mathbb P(U \leq F(x)\big) = F(x), \]</span> as before.</p>
-</div>
-<p>The method – known as the <strong>inverse transform method</strong> gives a simple way to generate any random variable <span class="math inline">\(X\)</span> for which the inverse CDF <span class="math inline">\(F_X^{-1}\)</span> can be computed easily.</p>
-<p>This is not all random variables, however. In particular, the inverse CDF of the normal distribution does not have a closed form, so this does not give a way of sampling normal distributions. Later we’ll see other methods that allow us to sample from normal random variables.</p>
-</section>
-<section id="examples" class="level2" data-number="13.3">
-<h2 data-number="13.3" class="anchored" data-anchor-id="examples"><span class="header-section-number">13.3</span> Examples</h2>
-<p>Let’s see some examples. The idea for all these problems is “Write <span class="math inline">\(U = F(X)\)</span>, then invert, to get <span class="math inline">\(X = F^{-1}(U)\)</span>.”</p>
-<div id="exm-exp" class="theorem example">
-<p><span class="theorem-title"><strong>Example 13.1</strong></span> Let <span class="math inline">\(X \sim \operatorname{Exp}(\lambda)\)</span> be an exponential distribution with rate <span class="math inline">\(\lambda\)</span>. This has PDF <span class="math inline">\(f(x) = \lambda \ee^{-\lambda x}\)</span> for <span class="math inline">\(x \geq 0\)</span> and CDF <span class="math inline">\(F(x) = 1 - \ee^{-\lambda x}\)</span>.</p>
-<p>We write <span class="math inline">\(U = F(X)\)</span> and invert it to make <span class="math inline">\(X\)</span> the subject. So <span class="math inline">\(U = 1 - \ee^{-\lambda X}\)</span>, and therefore <span class="math display">\[ X = -\frac{1}{\lambda} \log(1 - U) . \]</span></p>
-<p>We should check that this really does have an exponential distribution.</p>
+<!--
+## The Metropolis--Hastings algorithm
+
+Last time, we looked at the long-run behaviour of a Markov chain $(X_i)$. We saw that (under certain technical conditions) the Markov chain has a unique stationary distribution $\pi$, which we can find by solving the detailed balance equations $\pi(y)\,p(y,x) = \pi(x)\,p(x,y)$.
+
+We then saw the ergodic theorem. If $\phi$ be a function on the state space $\mathcal S$ and $X$ has probability mass function $\pi$, then $$ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X), $$ as $n \to \infty$. This means we can do Monte Carlo estimation where the samples $X_1, \dots, X_n$ are not IID, but are rather the output to a Markov chain with stationary distribution $\pi$.
+
+So, suppose we want to estimate $\operatorname{\mathbb E} \phi(X)$, where $X$ has PDF $\pi$. Then all we need to find a Markov chain that has $\pi$ as its stationary distribution. We could try to do that be being clever -- just by thinking hard and trying to come up with one. However, that's rather difficult. Instead, the **Metropolis--Hastings algorithm** is a method to create such a Markov chain. 
+
+The Metropolis--Hastings algorithm is based on a similar idea to rejection sampling. From state $X_i = x$, we *propose* moving to some other state $y$, and then we accept the proposal with some acceptance probability $\alpha(x,y)$. If we accept the proposal, we move to $X_{i+1} = y$; if we reject the proposal, we stay where we are $X_{i+1} = x$.
+
+[Nicholas Metropolis](https://en.wikipedia.org/wiki/Nicholas_Metropolis) first came up with this idea when he worked with Ulam and von Neumann (of Monte Carlo fame) at the Los Alamos National Laboratories. His original idea was generalised by the Canadian statistician WK Hastings.
+
+The Metropolis--Hastings algorithm works like this:
+
+::: {.thpart}
+* We want to define a Markov chain on a state space $\mathcal S$, which contains the range of the probability mass function $\pi$ we want to sample from.
+
+* We have an initial state $X_1 = x_1$ and we choose a transition matrix $\mathsf R = (r(x,y))$ representing the proposal moves.
+
+* From a current state $X_i = x$ we propose moving to a new state $y$, where $y$ is chosen with probability $r(x, y)$.
+
+* With probability $$\alpha(x,y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} , $$ we accept the proposal, and set $X_i = y$; otherwise we stay put, and set $X_{i+1} = x$.
+
+* We repeat the previous two steps $n$ times.
+:::
+-->
+<p>So a generic Metropolis–Hastings algorithm in “sort-of-R-code” would look something like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rate <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>unif <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="dv">1</span> <span class="sc">/</span> rate) <span class="sc">*</span> <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> unif)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(samples, <span class="at">probability =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dexp</span>(x, rate), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INPUTS:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># trans:   proposal transition matrix</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># target:  target stationary distribution</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># initial: initial state</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># n:       number of samples/steps</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>states <span class="ot">&lt;-</span> <span class="fu">nrow</span>(trans)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>MC <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>accept <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  ratio <span class="ot">&lt;-</span> (target[y] <span class="sc">*</span> trans[y, x]) <span class="sc">/</span> (target[x] <span class="sc">*</span> trans[x, y])</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">min</span>(ratio, <span class="dv">1</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>MC[<span class="dv">1</span>] <span class="ot">&lt;-</span> initial</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  prop <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>states, <span class="dv">1</span>, <span class="at">prob =</span> trans[MC[i], ])</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;=</span> <span class="fu">accept</span>(MC[i], prop)) MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> prop</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i]</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!--
+It's the last three lines that are important here. First we propose a move to state `prop`, according to the row of the transition matrix corresponding to the current state. Second, we accept that with probability `accept()`, where the arguments are the current state and the proposed state; we do this be checking whether a standard uniform `runif(1)` is less than this acceptance probability or not. If it is, we move to `prop` (last-but-one line); and if not, we stay where we are (last line).
+
+
+We will show later that this algorithm really does have $\pi$ as its stationary distribution.
+
+## Random walk Metropolis
+
+There are quite a lot of cases where the proposals are **symmetric**, meaning that $r(x, y) = r(y, x)$. This is the case if, for example, the proposal probabilities are those of the simple symmetric random walk: $r(x, x+1) = \frac12$ and $r(x, x-1) = \frac12$. In the symmetric case, the acceptance probability simplifies to 
+$$ \alpha(x, y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1\right\} . $$
+
+The symmetric case was the version originally considered by Metropolis, before Hastings generalised it to non-symmetric proposals. For this reasons, when $\mathsf R$ has this symmetry property, we often refer to the resulting algorithm just as the **Metropolis algorithm**. When the proposal probabilities are those of the simple symmetric random walk, we call it the **random walk Metropolis algorithm**.
+-->
+<div id="exm-MCMC-geom" class="theorem example">
+<p><span class="theorem-title"><strong>Example 19.1</strong></span> Let’s do an example of the random walk Metropolis algorithm where we aim to sample from the geometric distribution with parameter <span class="math inline">\(\frac13\)</span>, <span class="math display">\[ \pi(x) = \Big(\frac23\Big)^{x-1}\times \frac13 \qquad x = 1, 2, \dots. \]</span> We will start from <span class="math inline">\(X_1 = 1\)</span>.</p>
+<p>So at each step we propose moving up one with probability <span class="math inline">\(\tfrac12\)</span> and moving down one with probability <span class="math inline">\(\tfrac12\)</span>. Since the proposals are symmetric, the acceptance probabilities are <span class="math display">\[ \begin{align}
+\alpha(x, x+1) = \min \left\{ \frac{\pi(x+1)}{\pi(x)} , \, 1\right\} = \min \left\{\frac{\big(\frac23\big)^{x}\times \frac13}{\big(\frac23\big)^{x-1}\times \frac13},\, 1\right\} = \min \Big\{\frac23, 1\Big\} = \frac23 \\
+\alpha(x, x-1) = \min \left\{ \frac{\pi(x-1)}{\pi(x)} , \, 1\right\} = \min \left\{\frac{\big(\frac23\big)^{x-1}\times \frac13}{\big(\frac23\big)^{x}\times \frac13},\, 1\right\} = \min \Big\{\frac32, 1\Big\} = 1 ,
+\end{align} \]</span> except for <span class="math display">\[\alpha(1, 0) = \min \left\{ \frac{\pi(0)}{\pi(1)} , \, 1\right\} = \min \left\{ \frac{0}{\frac13} , \, 1\right\} = \min \{0,1\} = 0 .\]</span> So if the proposal is up one, we accept it with probability <span class="math inline">\(\frac23\)</span> and otherwise stay where we are. If the proposal is down one, we always accept – except going down from 1 to 0, which we always reject.</p>
+<p>Let’s try it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>MC <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>MC[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  prop <span class="ot">&lt;-</span> MC[i] <span class="sc">+</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="dv">1</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>      (prop <span class="sc">==</span> <span class="dv">0</span>)         MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i]</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span> (prop <span class="sc">==</span> MC[i] <span class="sc">-</span> <span class="dv">1</span>) MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span> (prop <span class="sc">==</span> MC[i] <span class="sc">+</span> <span class="dv">1</span>) MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i] <span class="sc">+</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;=</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If we look at a graph of the first 250 steps of this Markov chain, we see that these aren’t at all random samples from the geometric distribution – each step is either the same as the one before, one bigger, or one smaller.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  MC[<span class="dv">1</span><span class="sc">:</span><span class="dv">250</span>],</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"time step"</span>, <span class="at">ylab =</span> <span class="st">"value"</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="L13-inverse_files/figure-html/unnamed-chunk-1-1.svg" class="img-fluid figure-img" width="672"></p>
+<p><img src="L19-mh-1_files/figure-html/MCgeom1-1.svg" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Looks like an accurate sample!</p>
-<p>Since <span class="math inline">\(1 - U\)</span> has the same distribution as <span class="math inline">\(U\)</span>, it can be more convenient to simply write <span class="math display">\[ X' = -\frac{1}{\lambda} \log U \]</span> instead.</p>
-<p>Alternatively, since <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> are not independent and both have the same exponential distribution, they are a candidate to use as an antithetic pair in Monte Carlo estimation.</p>
-</div>
-<div id="exm-rayleigh" class="theorem example">
-<p><span class="theorem-title"><strong>Example 13.2</strong></span> Consider <span class="math inline">\(X\)</span> with PDF <span class="math display">\[ f(x) = \frac{x}{\gamma} \,\exp \left(-\frac{x^2}{2\gamma}\right)\]</span> for <span class="math inline">\(x \geq 0\)</span>, and CDF <span class="math display">\[ F(x) = 1 - \exp\left(-\frac{x^2}{2\gamma}\right) \]</span> This is known as the <strong>Rayleigh distribution</strong> with scale parameter <span class="math inline">\(\gamma\)</span>.</p>
-<p>Again, we write <span class="math inline">\(U = F(X)\)</span> and invert. so <span class="math display">\[ U = 1 - \exp\left(-\frac{X^2}{2\gamma}\right)  \]</span> so <span class="math display">\[ X = \sqrt{-2\gamma\log(1-U)} . \]</span></p>
-<p>Again, <span class="math inline">\(X' = \sqrt{-2\gamma\log U}\)</span> is a slightly simpler expression, or could be used in an antithetic variables Monte Carlo approach.</p>
-</div>
-<div id="exm-unif" class="theorem example">
-<p><span class="theorem-title"><strong>Example 13.3</strong></span> Suppose <span class="math inline">\(X \sim \operatorname{U}[a,b]\)</span>, then <span class="math display">\[ F(x) = \frac{x-a}{b-a} \]</span> (except for when <span class="math inline">\(F(x) = 0\)</span> or <span class="math inline">\(1\)</span>).</p>
-<p>Write <span class="math inline">\(U = F(X)\)</span> and invert. We get <span class="math inline">\(X = (b-a)U + a\)</span>. This is precisely the method for generating general uniform distributions that we saw in the last lecture.</p>
-</div>
-<div id="exm-discrete" class="theorem example">
-<p><span class="theorem-title"><strong>Example 13.4</strong></span> Let <span class="math inline">\(X\)</span> be discrete on the values <span class="math inline">\(x_1, x_2, \dots\)</span> with probabilities <span class="math inline">\(p_1, p_2, \dots\)</span>. The CDF is <span class="math display">\[ F(x) = \begin{cases} 0 &amp; x &lt; x_1 \\
-p_1 &amp; x_1 \leq x &lt; x_2 \\
-p_1 + p_2 &amp; x_2 \leq x &lt; x_3 \\
-p_1 + p_2 + p_3 &amp; x_3 \leq x &lt; x_4 \\
-\cdots &amp; \cdots . \end{cases} \]</span></p>
-<p>Remembering the rule for “jumps” in the CDF, we see that the inverse CDF is <span class="math display">\[ F^{-1}(u) = \begin{cases} x_1 &amp; u &lt; p_1 \\
-x_2 &amp; p_1 \leq x &lt; p_1 + p_2 \\
-x_3 &amp; p_1 + p_2 \leq x &lt; p_1 + p_2 + p_3 \\
-\cdots &amp; \cdots . \end{cases} \]</span> Taking <span class="math inline">\(X = F^{-1}(U)\)</span> gives the same method for generating discrete random variables as we discussed in the last lecture.</p>
-</div>
-<div id="exm-pdf-gen" class="theorem example">
-<p><span class="theorem-title"><strong>Example 13.5</strong></span> <em>Consider a distribution with PDF</em> <span class="math display">\[ f(x) = \begin{cases} x^2 &amp; 0 \leq x \leq 1 \\
-\frac{2}{3} &amp; 1 &lt; x \leq 2 \\
-0 &amp; \text{otherwise.} \end{cases} \]</span> <em>Show how to sample <span class="math inline">\(X\)</span> using a standard uniform random variable <span class="math inline">\(U\)</span>.</em></p>
-<p>This is a standard sort of question. First we have to find the CDF, then we have to invert it.</p>
-<p>We find the CDF from the PDF by integrating. For <span class="math inline">\(0 \leq x \leq 1\)</span>, we have <span class="math display">\[ F(x) = \int_0^x f(y) \, \mathrm{d}y = \int_0^x y^2 \,\mathrm{d}y = \tfrac13 x^3. \]</span> Then for <span class="math inline">\(1 &lt; x \leq 2\)</span>, we have <span class="math display">\[ F(x) = F(1) + \int_1^x f(y) \, \mathrm{d}y = \tfrac13 + \int_1^x \tfrac23 \,\mathrm{d}y = \tfrac13 + \tfrac23 x - \tfrac23 = \tfrac23 x - \tfrac13 . \]</span></p>
-<p>For <span class="math inline">\(0 \leq U &lt; \leq F(1) = \tfrac13\)</span>, we have <span class="math inline">\(U = \tfrac13 X^3\)</span>, so <span class="math inline">\(X = \sqrt[3]{3U}\)</span>. For <span class="math inline">\(F(1) = \tfrac13 &lt; U \leq 1\)</span>, we have <span class="math inline">\(U = \tfrac23 X - \tfrac13\)</span>, so <span class="math inline">\(X = \tfrac32 U + \tfrac12\)</span>. So the inverse transform is <span class="math display">\[ X = \begin{cases} \sqrt[3]{3U} &amp; U \leq \frac13 \\ \tfrac32 U + \tfrac12 &amp; U &gt; \tfrac13 . \end{cases} \]</span></p>
-</div>
-</section>
-<section id="boxmuller-transform" class="level2" data-number="13.4">
-<h2 data-number="13.4" class="anchored" data-anchor-id="boxmuller-transform"><span class="header-section-number">13.4</span> Box–Muller transform</h2>
-<p>While the inverse transform method is very powerful, we have mentioned that it doesn’t work easily for the normal distribution. One would need first a very good approximation to the inverse CDF, in order to be able to apply it.</p>
-<p>Instead, the <strong>Box–Muller transform</strong> (discovered by the statistician GEP Box and the computer scientist Marvin E Muller in 1958) is a clever way to easily transform a standard uniform into a normal distribution.</p>
-<p>Actually, that’s not quite true. Rather than transforming one standard uniform <span class="math inline">\(U\)</span> into one normal distribution <span class="math inline">\(X\)</span>, it instead transforms <em>two</em> independent standard uniforms <span class="math inline">\(U, V\)</span> into <em>two</em> normal distributions <span class="math inline">\(X, Y\)</span>. (There is some profound mathematical sense in which the two-dimensional bivariate normal is somehow a more “deeply” important mathematical object than the one-dimensional univariate normal we are used to, but we don’t have time to get into that here.)</p>
-<p>First, let’s note it suffices to produce a standard normal <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span>. Any other normal distribution <span class="math inline">\(W \sim \operatorname{N}(\mu, \sigma^2)\)</span> can then be formed as <span class="math inline">\(W = \sigma X + \mu\)</span>.</p>
-<p>The idea of the Box–Muller transform is based on converting the two standard normal distributions <span class="math inline">\((X, Y)\)</span> from cartesian coordinates into polar coordinates <span class="math inline">\((R, \Theta)\)</span>. (Those of you who have know <a href="https://mpaldridge.github.io/math1710/L16-normal.html#normal-properties">how to calculate the Gaussian integral</a> will have seen this idea before.)</p>
-<p>[picture]</p>
-<div id="thm-box-muller-1" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 13.2</strong></span> Let <span class="math inline">\(X, Y \sim \operatorname{N}(0,1)\)</span> be independent standard normal distributions. Write <span class="math display">\[ R = \sqrt{X^2 + Y^2} \qquad\qquad \Theta = \tan \frac{Y}{X} \]</span> for the radius and the angle of <span class="math inline">\((X, Y)\)</span> in polar coordinates. Then the radius <span class="math inline">\(R\)</span> has a Rayleigh distribution with scalar parameter <span class="math inline">\(\gamma = 1\)</span>, the angle <span class="math inline">\(\Theta\)</span> has a uniform distribution on <span class="math inline">\([0, 2\pi]\)</span>, and <span class="math inline">\(R\)</span> and <span class="math inline">\(\Theta\)</span> are independent.</p>
-</div>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>The joint PDF of <span class="math inline">\((X,Y)\)</span> is <span id="eq-box-1"><span class="math display">\[ \begin{align}
-f_{X,Y}(x, y) \,\mathrm{d}x\,\mathrm{d}y &amp;= f_X(x) \,f_Y(y) \,\mathrm{d}x\,\mathrm{d}y \\
-&amp;= \frac{1}{\sqrt{2\pi}}\, \exp \big(-\tfrac12 x^2\big) \, \frac{1}{\sqrt{2\pi}} \,\exp \big(-\tfrac12 y^2\big) \,\mathrm{d}x\,\mathrm{d}y \\
-&amp;= \frac{1}{2\pi} \,\exp \big(-\tfrac12 (x^2 + y^2)\big) \,\mathrm{d}x\,\mathrm{d}y .
-\end{align} \tag{13.1}\]</span></span> The joint PDF of <span class="math inline">\((R, \Theta)\)</span> is <span id="eq-box-2"><span class="math display">\[ \begin{align}
-f_{R, \Theta}(r, \theta) \,\mathrm{d}r\,\mathrm{d}\theta &amp;= f_R(r) \,f_\Theta(\theta) \,\mathrm{d}r\,\mathrm{d}\theta \\
-&amp;= r\exp \big(-\tfrac12 r^2\big) \, \frac{1}{2\pi}\, \mathrm{d}r\,\mathrm{d}\theta
-\end{align} . \tag{13.2}\]</span></span></p>
-<p>But in <a href="#eq-box-1" class="quarto-xref">Equation&nbsp;<span>13.1</span></a>, we can substitute <span class="math inline">\(r = x^2 + y^2\)</span> and <span class="math inline">\(\mathrm{d}x\,\mathrm{d}y = r\,\mathrm{d}r\,\mathrm{d}\theta\)</span>, and get <a href="#eq-box-2" class="quarto-xref">Equation&nbsp;<span>13.2</span></a>.</p>
-</div>
-<p>So we’ve reduced the problem of sample two normal distributions to sampling a Rayleigh (with scale parameter 1) and a uniform (on <span class="math inline">\([0, 2\pi]\)</span>). But we know how to do this. We saw in <a href="#exm-rayleigh" class="quarto-xref">Example&nbsp;<span>13.2</span></a> that we can take <span class="math inline">\(R = \sqrt{-2 \log U}\)</span>, and we saw in the last lecture that we can take <span class="math inline">\(\Theta = 2\pi V\)</span>. We can then transform back into cartesian coordinates with <span class="math display">\[ \begin{align}
-X &amp;= R\cos \Theta =  \sqrt{-2 \log U} \cos(2\pi V) \\
-Y &amp;= R\sin \Theta =  \sqrt{-2 \log U} \sin(2\pi V) .
-\end{align} \]</span></p>
-<p>Let’s check the just the <span class="math inline">\(X\)</span>.</p>
+<p>But if we look at the overall graph of which samples came up overall, we see that their proportions (red) are extremely close to what we would expect from the true geometric distribution (blue).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>unif1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>unif2 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>rad <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="sc">-</span><span class="dv">2</span> <span class="sc">*</span> <span class="fu">log</span>(unif1))</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>ang <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> unif2</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> rad <span class="sc">*</span> <span class="fu">cos</span>(ang)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(samples, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">breaks =</span> <span class="dv">50</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">4</span>))</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dnorm</span>(x), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>(MC)<span class="sc">/</span>n,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.35</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"value"</span>, <span class="at">ylab =</span> <span class="st">"probability"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">+</span> <span class="fl">0.05</span>, (<span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>), <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">type =</span> <span class="st">"h"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="L13-inverse_files/figure-html/unnamed-chunk-2-1.svg" class="img-fluid figure-img" width="672"></p>
+<p><img src="L19-mh-1_files/figure-html/MCgeom-1.svg" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>This confirms that we get an excellent match to the normal distribution.</p>
-<p><strong>Next time:</strong> <em>Sampling using rejection.</em></p>
-<div class="mysummary">
-<p><strong>Summary:</strong></p>
-<ul>
-<li><p>The inverse <span class="math inline">\(F^{-1}\)</span> of a CDF <span class="math inline">\(F\)</span> is defined by <span class="math inline">\(F^{-1}_X(u) = \min \big \{x : F_X(x) \geq u \big\}\)</span>.</p></li>
-<li><p>The inverse transform method converts <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span> to a random variable with CDF by setting <span class="math inline">\(X = F^{-1}(U)\)</span>. That is: Set <span class="math inline">\(U = F(X)\)</span>, and rearrange to make <span class="math inline">\(X\)</span> the subject.</p></li>
-<li><p>The Box–Muller transform is a way to generate two independent standard normal distributions. Set <span class="math inline">\(R\)</span> to Rayleigh with scale parameter 1, set <span class="math inline">\(\Theta \sim \operatorname{U}[0,2\pi]\)</span>, then take <span class="math inline">\(X = R \cos \Theta\)</span> and <span class="math inline">\(Y = R \sin \Theta\)</span>.</p></li>
-</ul>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Section 1.3.</p>
+<p>Suppose we wanted to estimate <span class="math inline">\(\mathbb EX^2\)</span>, where <span class="math inline">\(X \sim \operatorname{Geom}(\frac{1}{3})\)</span>. We already know how to do this the “basic” Monte Carlo way. But we can now do it the Markov chain Monte Carlo (MCMC) way, by using the output to this Markov chain.</p>
+<p>Our estimate is the following.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(MC<span class="sc">^</span><span class="dv">2</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 15.46673</code></pre>
 </div>
+</div>
+<p>The true answer is 15, so we are in the right area, but probably not as accurate as the basic Monte Carlo estimator with the same sample size would have been. This suggests that the dependence structure in a Markov chain might be a slight disadvantage. The real strength of MCMC is when a basic Monte Carlo estimate is impossible to get – when basic MCMC is possible (such as for simple distributions like this geometric) we should probably stick with it.</p>
+</div>
+<!--
+## Proof of stationary distribution
+
+We have defined the Metropolis--Hastings Markov chain in terms of the proposal transition probabilities $r(x, y)$ and the acceptance probability $\alpha(x, y)$. But what are the actual transition probability $p(x, y)$ of this Markov chain?
+
+Well, to move from $x$ to $y \neq x$, we first have to propose that move, then we have to accept it. So we have
+$$ p(x, y) = r(x, y) \,\alpha(x, y) = r(x, y) \,\min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} .$$ {#eq-MHp}
+(We can find $p(x,x)$, if we need it, by using the fact that $\sum_y p(x,y) = 0$.)
+
+We should check that the Metropolis--Hastings algorithm really does give a Markov chain with stationary distribution $\pi$.
+
+::: {#thm-MHpi}
+Let $\pi$ be a probability mass function on a discrete state space $\mathcal S$, and let $\mathsf R = (r(x,y))$ be a transition matrix on $\mathcal S$. Let $(X_i)$ be the Metropolis--Hastings Markov chain with proposal transition matrix $\mathsf R$ and acceptance probability
+$$ \alpha(x, y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)},\,1\right\} . $$
+Then $\pi$ is a stationary distribution for $(X_i)$.
+:::
+
+::: {.proof}
+We need to check the detailed balance equations
+$$ \pi(y) \,p(y, x) = \pi(x) \,p(x, y) $$
+for $y \neq x$. By @eq-MHp, the detailed balance equations are
+$$ \pi(y)\,r(y, x) \,\min \left\{ \frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} , \, 1\right\} = \pi(x)\,r(x, y) \,\min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} . $$ {#eq-MHDB}
+Note that the two fractions in the first terms on the minimums are reciprocals of each other. So one of these will be greater than equal to 1, and the minimum will be 1; and one of the will be less than or equal to 1, and the minimum will be that fraction.
+
+Suppose first that 
+$$\frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} \geq 1 \qquad\text{and} \qquad \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} \leq 1 .$$
+Then @eq-MHDB becomes
+$$ \pi(y)\,r(y, x) \times 1 = \pi(x)\,r(x, y) \times \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)}  . $$
+On the right-hand side, the two $\pi(x)\,r(x,y)$ terms cancel, so we have equality, and the detailed balance equations hold.
+
+If, on the other hand 
+$$\frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} \leq 1 \qquad\text{and} \qquad \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} \geq 1 ,$$
+then the same argument works the other way around.
+:::
+-->
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -967,13 +966,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L12-uniform-discrete.html" class="pagination-link" aria-label="Uniform and discrete">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></span>
+      <a href="../lectures/L18-markov-longrun.html" class="pagination-link" aria-label="Markov chains in the long run">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Markov chains in the long run</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L14-rejection.html" class="pagination-link" aria-label="Rejection sampling">
-        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Rejection sampling</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
+        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

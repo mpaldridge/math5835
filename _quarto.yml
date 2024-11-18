@@ -37,8 +37,8 @@ book:
       chapters:
         - lectures/L17-markov-intro.qmd
         - lectures/L18-markov-longrun.qmd
-#        - lectures/L20-mh-1.qmd
-#        - lectures/L19-markov-cont.qmd
+        - lectures/L19-mh-1.qmd
+#        - lectures/L20-markov-cont.qmd
 #        - lectures/L21-mh-2.qmd
 #        - problems/P4.qmd
 #        - lectures/L22-convergence.qmd

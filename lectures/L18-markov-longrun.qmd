@@ -56,7 +56,7 @@ Now if, $X_{i+1}$ *also* has the distribution $\pi$ -- that is, if $\mathbb P(X_
 A stationary distribution means that *the probability of being in state $x$* is staying the same, as $\pi(x)$. Any particular realisation of the Markov chain will, of course, continue moving between states.
 
 ::: {#def-statdist}
-Let $(X_i)$ be a Markov chain with transition matrix $\mathsf P = (p(x,y))$. Let $\pi$ be a distribution on $\mathcal S$, in that $\pi(x) \geq 0$ for all $x$ and $\sum_{x \in \mathcal S} \pi(x) = 1$. If, for all $y \in \mathcal S$ we have
+Let $(X_i)$ be a Markov chain on a discrete state space $\mathcal S$ with transition matrix $\mathsf P = (p(x,y))$. Let $\pi$ be a distribution on $\mathcal S$, in that $\pi(x) \geq 0$ for all $x$ and $\sum_{x \in \mathcal S} \pi(x) = 1$. If, for all $y \in \mathcal S$ we have
 $$ \pi(y) = \sum_{x \in \mathcal S} \pi(x) \,p(x, y) , $$ {#eq-statdist}
 then we say that $\pi$ is a **stationary distribution**.
 :::
@@ -66,7 +66,7 @@ In matrix form, we can write @eq-statdist as $\boldsymbol\pi = \boldsymbol\pi\ma
 Solving @eq-statdist or $\boldsymbol\pi = \boldsymbol\pi\mathsf P$ can be a bit fiddly. It's often easier to check something called the **detailed balance equations**.
 
 ::: {#thm-detbal}
-Let $(X_i)$ be a Markov chain with transition matrix $\mathsf P = (p(x,y))$. Let $\pi$ be a distribution on $\mathcal S$ that solved the **detailed balance equations**
+Let $(X_i)$ be a Markov chain on a discrete state space $\mathcal S$ with transition matrix $\mathsf P = (p(x,y))$. Let $\pi$ be a distribution on $\mathcal S$ that solved the **detailed balance equations**
 $$ \pi(y) \,p(y, x) = \pi(x)\,p(x,y) \qquad \text{for all $x, y \in \mathcal S$.} $$
 Then $\pi$ is a stationary distribution.
 :::
@@ -94,7 +94,7 @@ Look how that compares with our results for $\mathsf P^{10}$ and $\mathsf P^{11}
 The big central theorem of Markov chains in discrete space is the following. We will highlight some technical conditions in <span style="color:red;">red</span> that we will return to later.
 
 ::: {#thm-ergodic}
-Let $(X_i)$ be a Markov chain with transition matrix $\mathsf P$. Suppose that $(X_i)$ is <span style="color:red;">irreducible</span> and <span style="color:red;">positive recurrent</span>.
+Let $(X_i)$ be a Markov chain on a discrete state space $\mathcal S$ with transition matrix $\mathsf P$. Suppose that $(X_i)$ is <span style="color:red;">irreducible</span> and <span style="color:red;">positive recurrent</span>.
 
 1. There exists a stationary distribution $\pi$, which is unique.
 

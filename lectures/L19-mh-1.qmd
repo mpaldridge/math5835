@@ -1,0 +1,165 @@
+# Metropolis--Hastings in discrete space
+<!--
+## The Metropolis--Hastings algorithm
+
+Last time, we looked at the long-run behaviour of a Markov chain $(X_i)$. We saw that (under certain technical conditions) the Markov chain has a unique stationary distribution $\pi$, which we can find by solving the detailed balance equations $\pi(y)\,p(y,x) = \pi(x)\,p(x,y)$.
+
+We then saw the ergodic theorem. If $\phi$ be a function on the state space $\mathcal S$ and $X$ has probability mass function $\pi$, then $$ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X), $$ as $n \to \infty$. This means we can do Monte Carlo estimation where the samples $X_1, \dots, X_n$ are not IID, but are rather the output to a Markov chain with stationary distribution $\pi$.
+
+So, suppose we want to estimate $\operatorname{\mathbb E} \phi(X)$, where $X$ has PDF $\pi$. Then all we need to find a Markov chain that has $\pi$ as its stationary distribution. We could try to do that be being clever -- just by thinking hard and trying to come up with one. However, that's rather difficult. Instead, the **Metropolis--Hastings algorithm** is a method to create such a Markov chain. 
+
+The Metropolis--Hastings algorithm is based on a similar idea to rejection sampling. From state $X_i = x$, we *propose* moving to some other state $y$, and then we accept the proposal with some acceptance probability $\alpha(x,y)$. If we accept the proposal, we move to $X_{i+1} = y$; if we reject the proposal, we stay where we are $X_{i+1} = x$.
+
+[Nicholas Metropolis](https://en.wikipedia.org/wiki/Nicholas_Metropolis) first came up with this idea when he worked with Ulam and von Neumann (of Monte Carlo fame) at the Los Alamos National Laboratories. His original idea was generalised by the Canadian statistician WK Hastings.
+
+The Metropolis--Hastings algorithm works like this:
+
+::: {.thpart}
+* We want to define a Markov chain on a state space $\mathcal S$, which contains the range of the probability mass function $\pi$ we want to sample from.
+
+* We have an initial state $X_1 = x_1$ and we choose a transition matrix $\mathsf R = (r(x,y))$ representing the proposal moves.
+
+* From a current state $X_i = x$ we propose moving to a new state $y$, where $y$ is chosen with probability $r(x, y)$.
+
+* With probability $$\alpha(x,y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} , $$ we accept the proposal, and set $X_i = y$; otherwise we stay put, and set $X_{i+1} = x$.
+
+* We repeat the previous two steps $n$ times.
+:::
+-->
+So a generic Metropolis--Hastings algorithm in "sort-of-R-code" would look something like this:
+
+```{r}
+#| eval = FALSE
+# INPUTS:
+# trans:   proposal transition matrix
+# target:  target stationary distribution
+# initial: initial state
+# n:       number of samples/steps
+
+states <- nrow(trans)
+MC <- rep(0, n)
+accept <- function(x, y) {
+  ratio <- (target[y] * trans[y, x]) / (target[x] * trans[x, y])
+  min(ratio, 1)
+}
+
+MC[1] <- initial
+for (i in 1:(n - 1)) {
+  prop <- sample(1:states, 1, prob = trans[MC[i], ])
+  if (runif(1) <= accept(MC[i], prop)) MC[i + 1] <- prop
+  else MC[i + 1] <- MC[i]
+}
+```
+<!--
+It's the last three lines that are important here. First we propose a move to state `prop`, according to the row of the transition matrix corresponding to the current state. Second, we accept that with probability `accept()`, where the arguments are the current state and the proposed state; we do this be checking whether a standard uniform `runif(1)` is less than this acceptance probability or not. If it is, we move to `prop` (last-but-one line); and if not, we stay where we are (last line).
+
+
+We will show later that this algorithm really does have $\pi$ as its stationary distribution.
+
+## Random walk Metropolis
+
+There are quite a lot of cases where the proposals are **symmetric**, meaning that $r(x, y) = r(y, x)$. This is the case if, for example, the proposal probabilities are those of the simple symmetric random walk: $r(x, x+1) = \frac12$ and $r(x, x-1) = \frac12$. In the symmetric case, the acceptance probability simplifies to 
+$$ \alpha(x, y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1\right\} . $$
+
+The symmetric case was the version originally considered by Metropolis, before Hastings generalised it to non-symmetric proposals. For this reasons, when $\mathsf R$ has this symmetry property, we often refer to the resulting algorithm just as the **Metropolis algorithm**. When the proposal probabilities are those of the simple symmetric random walk, we call it the **random walk Metropolis algorithm**.
+-->
+::: {#exm-MCMC-geom}
+Let's do an example of the random walk Metropolis algorithm where we aim to sample from the geometric distribution with parameter $\frac13$,
+$$ \pi(x) = \Big(\frac23\Big)^{x-1}\times \frac13 \qquad x = 1, 2, \dots. $$
+We will start from $X_1 = 1$.
+
+So at each step we propose moving up one with probability $\tfrac12$ and moving down one with probability $\tfrac12$. Since the proposals are symmetric, the acceptance probabilities are
+$$ \begin{align}
+\alpha(x, x+1) = \min \left\{ \frac{\pi(x+1)}{\pi(x)} , \, 1\right\} = \min \left\{\frac{\big(\frac23\big)^{x}\times \frac13}{\big(\frac23\big)^{x-1}\times \frac13},\, 1\right\} = \min \Big\{\frac23, 1\Big\} = \frac23 \\
+\alpha(x, x-1) = \min \left\{ \frac{\pi(x-1)}{\pi(x)} , \, 1\right\} = \min \left\{\frac{\big(\frac23\big)^{x-1}\times \frac13}{\big(\frac23\big)^{x}\times \frac13},\, 1\right\} = \min \Big\{\frac32, 1\Big\} = 1 , 
+\end{align} $$
+except for
+$$\alpha(1, 0) = \min \left\{ \frac{\pi(0)}{\pi(1)} , \, 1\right\} = \min \left\{ \frac{0}{\frac13} , \, 1\right\} = \min \{0,1\} = 0 .$$
+So if the proposal is up one, we accept it with probability $\frac23$ and otherwise stay where we are. If the proposal is down one, we always accept -- except going down from 1 to 0, which we always reject.
+
+Let's try it.
+
+```{r}
+n <- 1e6
+MC <- rep(0, n)
+
+MC[1] <- 1
+for (i in 1:(n - 1)) {
+  prop <- MC[i] + sample(c(-1, 1), 1, prob = c(1/2, 1/2))
+  if      (prop == 0)         MC[i + 1] <- MC[i]
+  else if (prop == MC[i] - 1) MC[i + 1] <- MC[i] - 1
+  else if (prop == MC[i] + 1) MC[i + 1] <- MC[i] + (runif(1) <= 2/3)
+}
+```
+
+If we look at a graph of the first 250 steps of this Markov chain, we see that these aren't at all random samples from the geometric distribution -- each step is either the same as the one before, one bigger, or one smaller.
+
+```{r MCgeom1}
+#| code-fold: TRUE
+plot(
+  MC[1:250],
+  type = "l", col = "red", lwd = 2,
+  xlab = "time step", ylab = "value"
+)
+```
+
+But if we look at the overall graph of which samples came up overall, we see that their proportions (red) are extremely close to what we would expect from the true geometric distribution (blue).
+
+```{r MCgeom}
+#| code-fold: TRUE
+plot(
+  table(MC)/n,
+  xlim = c(0, 10), col = "red", ylim = c(0, 0.35),
+  xlab = "value", ylab = "probability"
+)
+points(1:10 + 0.05, (2/3)^(1:10 - 1) * (1/3), col = "blue", type = "h", lwd = 2)
+```
+
+Suppose we wanted to estimate $\mathbb EX^2$, where $X \sim \operatorname{Geom}(\frac{1}{3})$. We already know how to do this the "basic" Monte Carlo way. But we can now do it the Markov chain Monte Carlo (MCMC) way, by using the output to this Markov chain.
+
+Our estimate is the following.
+
+```{r}
+#| cache: FALSE
+mean(MC^2) 
+```
+
+The true answer is 15, so we are in the right area, but probably not as accurate as the basic Monte Carlo estimator with the same sample size would have been. This suggests that the dependence structure in a Markov chain might be a slight disadvantage. The real strength of MCMC is when a basic Monte Carlo estimate is impossible to get -- when basic MCMC is possible (such as for simple distributions like this geometric) we should probably stick with it.
+:::
+<!--
+## Proof of stationary distribution
+
+We have defined the Metropolis--Hastings Markov chain in terms of the proposal transition probabilities $r(x, y)$ and the acceptance probability $\alpha(x, y)$. But what are the actual transition probability $p(x, y)$ of this Markov chain?
+
+Well, to move from $x$ to $y \neq x$, we first have to propose that move, then we have to accept it. So we have
+$$ p(x, y) = r(x, y) \,\alpha(x, y) = r(x, y) \,\min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} .$$ {#eq-MHp}
+(We can find $p(x,x)$, if we need it, by using the fact that $\sum_y p(x,y) = 0$.)
+
+We should check that the Metropolis--Hastings algorithm really does give a Markov chain with stationary distribution $\pi$.
+
+::: {#thm-MHpi}
+Let $\pi$ be a probability mass function on a discrete state space $\mathcal S$, and let $\mathsf R = (r(x,y))$ be a transition matrix on $\mathcal S$. Let $(X_i)$ be the Metropolis--Hastings Markov chain with proposal transition matrix $\mathsf R$ and acceptance probability
+$$ \alpha(x, y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)},\,1\right\} . $$
+Then $\pi$ is a stationary distribution for $(X_i)$.
+:::
+
+::: {.proof}
+We need to check the detailed balance equations
+$$ \pi(y) \,p(y, x) = \pi(x) \,p(x, y) $$
+for $y \neq x$. By @eq-MHp, the detailed balance equations are
+$$ \pi(y)\,r(y, x) \,\min \left\{ \frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} , \, 1\right\} = \pi(x)\,r(x, y) \,\min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} . $$ {#eq-MHDB}
+Note that the two fractions in the first terms on the minimums are reciprocals of each other. So one of these will be greater than equal to 1, and the minimum will be 1; and one of the will be less than or equal to 1, and the minimum will be that fraction.
+
+Suppose first that 
+$$\frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} \geq 1 \qquad\text{and} \qquad \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} \leq 1 .$$
+Then @eq-MHDB becomes
+$$ \pi(y)\,r(y, x) \times 1 = \pi(x)\,r(x, y) \times \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)}  . $$
+On the right-hand side, the two $\pi(x)\,r(x,y)$ terms cancel, so we have equality, and the detailed balance equations hold.
+
+If, on the other hand 
+$$\frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} \leq 1 \qquad\text{and} \qquad \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} \geq 1 ,$$
+then the same argument works the other way around.
+:::
+-->
+
+
