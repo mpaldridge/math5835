@@ -15,15 +15,15 @@ The Metropolis--Hastings algorithm is based on a similar idea to rejection sampl
 The Metropolis--Hastings algorithm works like this:
 
 ::: thpart
--   We want to define a Markov chain on a state space $\mathcal S$, which contains the range of the probability mass function $\pi$ we want to sample from.
+* We want to define a Markov chain on a state space $\mathcal S$, which contains the range of the probability mass function $\pi$ we want to sample from.
 
-1.  We have an initial state $X_1 = x_1$ and we choose a transition matrix $\mathsf R = (r(x,y))$ representing the proposal moves.
+* We have an initial state $X_1 = x_1$ and we choose a transition matrix $\mathsf R = (r(x,y))$ representing the proposal moves.
 
-2.  From a current state $X_i = x$ we propose moving to a new state $y$, where $y$ is chosen with probability $r(x, y)$.
+1.  From a current state $X_i = x$ we propose moving to a new state $y$, where $y$ is chosen with probability $r(x, y)$.
 
-3.  With probability $$\alpha(x,y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} , $$ we accept the proposal, and set $X_i = y$; otherwise we stay put, and set $X_{i+1} = x$.
+2.  With probability $$\alpha(x,y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} , $$ we accept the proposal, and set $X_i = y$; otherwise we stay put, and set $X_{i+1} = x$.
 
-4.  We repeat steps 2 and 3 $n$ times to get $n$ samples.
+3.  We repeat steps 1. and 2. $n$ times to get $n$ samples.
 :::
 
 So a generic Metropolis--Hastings algorithm on a finite state space in "sort-of-R-code" would look something like this:

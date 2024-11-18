@@ -877,7 +877,7 @@
     "href": "lectures/L19-mh-1.html#the-metropolishastings-algorithm",
     "title": "19  Metropolis–Hastings in discrete space",
     "section": "",
-    "text": "We want to define a Markov chain on a state space \\(\\mathcal S\\), which contains the range of the probability mass function \\(\\pi\\) we want to sample from.\n\n\nWe have an initial state \\(X_1 = x_1\\) and we choose a transition matrix \\(\\mathsf R = (r(x,y))\\) representing the proposal moves.\nFrom a current state \\(X_i = x\\) we propose moving to a new state \\(y\\), where \\(y\\) is chosen with probability \\(r(x, y)\\).\nWith probability \\[\\alpha(x,y) = \\min \\left\\{ \\frac{\\pi(y)\\,r(y,x)}{\\pi(x)\\,r(x,y)} , \\, 1\\right\\} , \\] we accept the proposal, and set \\(X_i = y\\); otherwise we stay put, and set \\(X_{i+1} = x\\).\nWe repeat steps 2 and 3 \\(n\\) times to get \\(n\\) samples.",
+    "text": "We want to define a Markov chain on a state space \\(\\mathcal S\\), which contains the range of the probability mass function \\(\\pi\\) we want to sample from.\nWe have an initial state \\(X_1 = x_1\\) and we choose a transition matrix \\(\\mathsf R = (r(x,y))\\) representing the proposal moves.\n\n\nFrom a current state \\(X_i = x\\) we propose moving to a new state \\(y\\), where \\(y\\) is chosen with probability \\(r(x, y)\\).\nWith probability \\[\\alpha(x,y) = \\min \\left\\{ \\frac{\\pi(y)\\,r(y,x)}{\\pi(x)\\,r(x,y)} , \\, 1\\right\\} , \\] we accept the proposal, and set \\(X_i = y\\); otherwise we stay put, and set \\(X_{i+1} = x\\).\nWe repeat steps 1. and 2. \\(n\\) times to get \\(n\\) samples.",
     "crumbs": [
       "MCMC",
       "<span class='chapter-number'>19</span>  <span class='chapter-title'>Metropolis--Hastings in discrete space</span>"

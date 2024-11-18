@@ -395,13 +395,13 @@ window.Quarto = {
 <p>The Metropolis–Hastings algorithm works like this:</p>
 <div class="thpart">
 <ul>
-<li>We want to define a Markov chain on a state space <span class="math inline">\(\mathcal S\)</span>, which contains the range of the probability mass function <span class="math inline">\(\pi\)</span> we want to sample from.</li>
+<li><p>We want to define a Markov chain on a state space <span class="math inline">\(\mathcal S\)</span>, which contains the range of the probability mass function <span class="math inline">\(\pi\)</span> we want to sample from.</p></li>
+<li><p>We have an initial state <span class="math inline">\(X_1 = x_1\)</span> and we choose a transition matrix <span class="math inline">\(\mathsf R = (r(x,y))\)</span> representing the proposal moves.</p></li>
 </ul>
 <ol type="1">
-<li><p>We have an initial state <span class="math inline">\(X_1 = x_1\)</span> and we choose a transition matrix <span class="math inline">\(\mathsf R = (r(x,y))\)</span> representing the proposal moves.</p></li>
 <li><p>From a current state <span class="math inline">\(X_i = x\)</span> we propose moving to a new state <span class="math inline">\(y\)</span>, where <span class="math inline">\(y\)</span> is chosen with probability <span class="math inline">\(r(x, y)\)</span>.</p></li>
 <li><p>With probability <span class="math display">\[\alpha(x,y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} , \]</span> we accept the proposal, and set <span class="math inline">\(X_i = y\)</span>; otherwise we stay put, and set <span class="math inline">\(X_{i+1} = x\)</span>.</p></li>
-<li><p>We repeat steps 2 and 3 <span class="math inline">\(n\)</span> times to get <span class="math inline">\(n\)</span> samples.</p></li>
+<li><p>We repeat steps 1. and 2. <span class="math inline">\(n\)</span> times to get <span class="math inline">\(n\)</span> samples.</p></li>
 </ol>
 </div>
 <p>So a generic Metropolis–Hastings algorithm on a finite state space in “sort-of-R-code” would look something like this:</p>
