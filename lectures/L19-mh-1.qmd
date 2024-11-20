@@ -4,7 +4,7 @@
 
 Last time, we looked at the long-run behaviour of a Markov chain $(X_i)$. We saw that (under certain technical conditions) the Markov chain has a unique stationary distribution $\pi$, which we can find by solving the detailed balance equations $\pi(y)\,p(y,x) = \pi(x)\,p(x,y)$.
 
-We then saw the ergodic theorem. If $\phi$ be a function on the state space $\mathcal S$ and $X$ has probability mass function $\pi$, then $$ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X), $$ as $n \to \infty$. This means we can do Monte Carlo estimation where the samples $X_1, \dots, X_n$ are not IID, but are rather the output to a Markov chain with stationary distribution $\pi$.
+We then saw the ergodic theorem: If $\phi$ be a function on the state space $\mathcal S$ and $X$ has probability mass function $\pi$, then $$ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X), $$ as $n \to \infty$. This means we can do Monte Carlo estimation where the samples $X_1, \dots, X_n$ are not IID, but are rather the output to a Markov chain with stationary distribution $\pi$.
 
 So, suppose we want to estimate $\operatorname{\mathbb E} \phi(X)$, where $X$ has PDF $\pi$. Then all we need to find a Markov chain that has $\pi$ as its stationary distribution. We could try to do that be being clever -- just by thinking hard and trying to come up with one. However, that's rather difficult. Instead, the **Metropolis--Hastings algorithm** is a method to create such a Markov chain.
 
@@ -131,7 +131,7 @@ We should check that the Metropolis--Hastings algorithm really does give a Marko
 Let $\pi$ be a probability mass function on a discrete state space $\mathcal S$, and let $\mathsf R = (r(x,y))$ be a transition matrix on $\mathcal S$. Let $(X_i)$ be the Metropolis--Hastings Markov chain with proposal transition matrix $\mathsf R$ and acceptance probability $$ \alpha(x, y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)},\,1\right\} . $$ Then $\pi$ is a stationary distribution for $(X_i)$.
 :::
 
-We say "a" stationary distribution. But provided the Markov chain fulfils the technical conditions in Theorem @thm-ergodic, we know that this will be the unique stationary distribution, and that the ergodic theorem will hold.
+We say "a" stationary distribution. But provided the Markov chain fulfils the technical conditions in @thm-ergodic, we know that this will be the unique stationary distribution, and that the ergodic theorem will hold.
 
 ::: proof
 We need to check the detailed balance equations $$ \pi(y) \,p(y, x) = \pi(x) \,p(x, y) $$ for $y \neq x$. By @eq-MHp, the detailed balance equations are $$ \pi(y)\,r(y, x) \,\min \left\{ \frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} , \, 1\right\} = \pi(x)\,r(x, y) \,\min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} . $$ {#eq-MHDB} Note that the two fractions in the first terms on the minimums are reciprocals of each other. So one of these will be greater than equal to 1, and the minimum will be 1; and one of the will be less than or equal to 1, and the minimum will be that fraction.

@@ -167,8 +167,11 @@ Thus, our algorithm is to sample from a standard uniform, and then to accept wit
 :::: myq
 **6.**     Consider sampling from the half-normal distribution $$ f(x) = \sqrt{\frac{2}{\pi}} \exp\big(-\tfrac12 x^2\big) \qquad x \geq 0 $$ using envelope rejection sampling with an $\operatorname{Exp}(\lambda)$ proposal distribution $$g(x) = \lambda \mathrm{e}^{-\lambda x} \qquad x \geq 0 .$$ You wish to design your envelope rejection sampling algorithm so that the acceptance probability is as high as possible.
 
-::: subq
-**(a)**  For fixed $\lambda$, show that the optimal value of $c$ is $$c = \sqrt{\frac{2}{\pi}}\,\frac{\exp(\frac12\lambda^2)}{\lambda}.$$ ::: {.myanswers} *Solution.* This is very similar to @exm-env-norm in Lecture 15. We have $$ \frac{f(x)}{g(x)} = \frac{\sqrt\frac{2}{\pi} \exp(\tfrac12 x^2)}{\lambda \exp(-\lambda x)} = \sqrt\frac{2}{\pi} \,\frac{\exp \big(-\tfrac12 x^2 + \lambda x\big)}{\lambda} . $$ We want to pick $c$ to be the maximum value of this. The maximum occurs where $-\frac12x^2 + \lambda x$ is maximised. By differentiating this and setting equal to 0, we get $-x + \lambda = 0$, so $x = \lambda$ and $$ c =  \sqrt\frac{2}{\pi} \,\frac{\exp \big(-\tfrac12 \lambda^2 + \lambda^2\big)}{\lambda} =   \sqrt\frac{2}{\pi} \,\frac{\exp \big(\tfrac12 \lambda^2\big)}{\lambda}, $$ as required.
+:::: subq
+**(a)**  For fixed $\lambda$, show that the optimal value of $c$ is $$c = \sqrt{\frac{2}{\pi}}\,\frac{\exp(\frac12\lambda^2)}{\lambda}.$$
+
+::: {.myanswers}
+*Solution.* This is very similar to @exm-env-norm in Lecture 15. We have $$ \frac{f(x)}{g(x)} = \frac{\sqrt\frac{2}{\pi} \exp(\tfrac12 x^2)}{\lambda \exp(-\lambda x)} = \sqrt\frac{2}{\pi} \,\frac{\exp \big(-\tfrac12 x^2 + \lambda x\big)}{\lambda} . $$ We want to pick $c$ to be the maximum value of this. The maximum occurs where $-\frac12x^2 + \lambda x$ is maximised. By differentiating this and setting equal to 0, we get $-x + \lambda = 0$, so $x = \lambda$ and $$ c =  \sqrt\frac{2}{\pi} \,\frac{\exp \big(-\tfrac12 \lambda^2 + \lambda^2\big)}{\lambda} =   \sqrt\frac{2}{\pi} \,\frac{\exp \big(\tfrac12 \lambda^2\big)}{\lambda}, $$ as required.
 :::
 ::::
 
