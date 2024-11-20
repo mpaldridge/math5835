@@ -6,6 +6,7 @@ book:
   title: "MATH5835M Statistical Computing"
   author: "Matthew Aldridge"
   date: "09/30/24"
+  site-url: https://mpaldridge.github.io/math5835/
   sidebar:
     title: MATH5835
   chapters:
