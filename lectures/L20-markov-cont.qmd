@@ -13,6 +13,12 @@ Therefore, the steps of such a Markov chain will depend only on the initial stat
 $$ \mathbb P(X_{i+1} \in A \mid X_i = x) = \int_A p(x, y)\,\mathrm{d} y . $$
 This transition density $p = p(x, y)$ behaves a lot like the transition probabilities $\mathsf P = (p(x,y))$ in discrete space.
 
+In the discrete case, we had
+$$\sum_{y \in \mathcal S} p(x, y) = 1 \qquad \text{for all } x\in \mathcal S $$
+("rows of the transition matrix sum to 1"). Similarly, in the discrete case we have
+$$ \int_{\mathcal S} p(x, y) \,\mathrm{d}y = 1 \qquad \text{for all } x\in \mathcal S ,$$
+by the same argument that we have to go *somewhere* from $x$.
+
 ## Gaussian random walk
 
 The most important Markov chain in continuous space is the following.
@@ -29,8 +35,36 @@ We can simulate this in R in a similar way to the simple random walk on the inte
 rgrw <- function(n, mean, sd) {
   GRW <- rep(0, n)
   GRW[1] <- 0
-  for (i in 1:(n - 1)) GRW[i + 1] <- GRW[i] + rnorm(1, mu, sigma)
-  return(RW)
+  for (i in 1:(n - 1)) GRW[i + 1] <- GRW[i] + rnorm(1, mean, sd)
+  return(GRW)
+}
+```
+
+You can play around with this function yourself, but generally we see similar behaviour to the simple random walk: for $\mu > 0$ (as with $p > \frac12$) it trends fairly predictably upwards; for $\mu < 0$ (as with $p < \frac12$) it trends fairly predictably downwards; and for $\mu = 0$ (as with with $p = \frac12$) it is more unpredictable.
+
+```{r ssrw}
+GRW <- rgrw(1000, 0, 1)
+plot(GRW, col = "black", type = "l", ylim = c(-70, 70))
+
+cols <- c("red", "orange", "yellow", "green", "blue", "darkblue", "purple")
+for (i in 1:7) {
+  GRW <- rgrw(1000, 0, 1)
+  points(GRW, col = cols[i], type = "l")
 }
 ```
 :::
+
+## Long-run behaviour
+
+Most of the properties about long-run behaviour of Markov chains in discrete space continue to hold in continuous space: we just replace the transition probabiltiy by the transition density and sums by integrals.
+
+We can find the two-step transition density $p^{(2)}(x, y)$ be integrating over all possible intermediate steps $z$
+$$ p^{(2)}(x, y) = \int_{\mathcal S} p(x, z)\,p(z, y)\,\mathrm{d} z .$$
+Similarly, we get an $n$-step transition density from 
+$$ p^{(n)}(x, y) = \int_{\mathcal S^{n-1}} p(x, z_1)\,p(z_1,z_2)\cdots p(z_{n-2},z_{n-1})\,p(z_{n-1}, y)\, \mathrm{d}z_1 \, \mathrm{d}z_2 \cdots \mathrm{d}z_{n-1} . $$
+
+A stationary density $\pi$ is a PDF on $\mathcal S$ (so $\pi(x) \geq 0$ and $\int_{\mathcal S}\pi(x)\,\mathrm{d}x = 0$) such that
+$$ \pi(y) = \int_{\mathcal S} \pi(x) \,p(x,y) \,\mathrm{d}x \qquad \text{for all } y \in \mathcal S . $$
+This is often easier to find by solving the detailed balance equations
+$$ \pi(y)\,p(y, x) = \pi(x)\,p(x, y) \qquad \text{for all } x,y \in \mathcal S . $$
+
