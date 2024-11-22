@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Matthew Aldridge">
-<meta name="dcterms.date" content="2024-09-30">
 
-<title>MATH5835M Statistical Computing</title>
+<title>21&nbsp; Metropolis–Hastings in continuous space – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,26 +20,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./lectures/L01-mc-intro.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../problems/solutions.html" rel="next">
+<link href="../lectures/L20-markov-cont.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -70,8 +103,37 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="mystyle.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../mystyle.css">
 </head>
 
 <body class="nav-sidebar floating">
@@ -83,7 +145,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">About MATH5835</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L21-mh-2.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in continuous space</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -98,7 +160,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">MATH5835</a> 
+      <a href="../">MATH5835</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -110,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About MATH5835</span></a>
   </div>
 </li>
@@ -125,61 +187,61 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L01-mc-intro.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L01-mc-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L04-mc-error-2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L04-mc-error-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L05-cv.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L05-cv.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L06-antithetic-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L06-antithetic-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./problems/P1.html" class="sidebar-item-text sidebar-link">
+  <a href="../problems/P1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 1</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L07-antithetic-2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L07-antithetic-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L08-is-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L08-is-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L09-is-2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L09-is-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Importance sampling II</span></span></a>
   </div>
 </li>
@@ -196,55 +258,55 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L10-rng-intro.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L10-rng-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generating random numbers</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L11-lcg.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L11-lcg.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./problems/P2.html" class="sidebar-item-text sidebar-link">
+  <a href="../problems/P2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L13-inverse.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L13-inverse.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L14-rejection.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L14-rejection.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Rejection sampling</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L15-envelope-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L15-envelope-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Envelope rejection sampling I</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L16-envelope-2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L16-envelope-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Envelope rejection sampling II</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./problems/P3.html" class="sidebar-item-text sidebar-link">
+  <a href="../problems/P3.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 3</span></a>
   </div>
 </li>
@@ -261,31 +323,31 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L17-markov-intro.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L17-markov-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Markov chains in discrete space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L18-markov-longrun.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L18-markov-longrun.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Markov chains in the long run</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L19-mh-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L19-mh-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in discrete space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L20-markov-cont.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L20-markov-cont.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Markov chains in continuous space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L21-mh-2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L21-mh-2.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in continuous space</span></span></a>
   </div>
 </li>
@@ -293,7 +355,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./problems/solutions.html" class="sidebar-item-text sidebar-link">
+  <a href="../problems/solutions.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Solutions</span></a>
   </div>
 </li>
@@ -302,56 +364,22 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#about-math5835" id="toc-about-math5835" class="nav-link active" data-scroll-target="#about-math5835">About MATH5835</a>
-  <ul class="collapse">
-  <li><a href="#organisation-of-math5835" id="toc-organisation-of-math5835" class="nav-link" data-scroll-target="#organisation-of-math5835">Organisation of MATH5835</a>
-  <ul class="collapse">
-  <li><a href="#lectures" id="toc-lectures" class="nav-link" data-scroll-target="#lectures">Lectures</a></li>
-  <li><a href="#problem-sheets-and-problem-classes" id="toc-problem-sheets-and-problem-classes" class="nav-link" data-scroll-target="#problem-sheets-and-problem-classes">Problem sheets and problem classes</a></li>
-  <li><a href="#coursework" id="toc-coursework" class="nav-link" data-scroll-target="#coursework">Coursework</a></li>
-  <li><a href="#office-hours" id="toc-office-hours" class="nav-link" data-scroll-target="#office-hours">Office hours</a></li>
-  <li><a href="#exam" id="toc-exam" class="nav-link" data-scroll-target="#exam">Exam</a></li>
-  </ul></li>
-  <li><a href="#content-of-math5835" id="toc-content-of-math5835" class="nav-link" data-scroll-target="#content-of-math5835">Content of MATH5835</a>
-  <ul class="collapse">
-  <li><a href="#necessary-background" id="toc-necessary-background" class="nav-link" data-scroll-target="#necessary-background">Necessary background</a></li>
-  <li><a href="#syllabus" id="toc-syllabus" class="nav-link" data-scroll-target="#syllabus">Syllabus</a></li>
-  <li><a href="#book" id="toc-book" class="nav-link" data-scroll-target="#book">Book</a></li>
-  </ul></li>
-  </ul></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L21-mh-2.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in continuous space</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">MATH5835M Statistical Computing</h1>
+<h1 class="title"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in continuous space</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Matthew Aldridge </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 30, 2024</p>
-    </div>
-  </div>
   
     
   </div>
@@ -361,98 +389,161 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="about-math5835" class="level1 unnumbered">
-<h1 class="unnumbered">About MATH5835</h1>
-<section id="organisation-of-math5835" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="organisation-of-math5835">Organisation of MATH5835</h2>
-<p>This module is <strong>MATH5835M Statistical Computing</strong>.</p>
-<p>This module lasts for 11 weeks from 30 September to 13 December 2024. The exam will take place between 13 and 24 January 2025.</p>
-<p>The module leader, the lecturer, and the main author of these notes is <a href="https://mpaldridge.github.io/">Dr Matthew Aldridge</a>. (You can call me “Matt”, “Matthew”, or “Dr Aldridge”, pronounced “<em>old</em>-ridge”.) My email address is <a href="mailto:m.aldridge@leeds.ac.uk">m.aldridge@leeds.ac.uk</a>, although I much prefer questions in person at office hours (see below) rather than by email.</p>
-<section id="lectures" class="level3">
-<h3 class="anchored" data-anchor-id="lectures">Lectures</h3>
-<p>The main way you will learn new material for this module is by attending lectures. There are three lectures per week:</p>
-<ul>
-<li><p>Mondays at 1400 in Roger Stevens LT 13</p></li>
-<li><p>Thursdays at 1200 in Roger Stevens LT 03</p></li>
-<li><p>Fridays at 1000 in Rogers Stevens LT 09</p></li>
-</ul>
-<p>I recommend taking your own notes during the lecture. I will put brief summary notes from the lectures on this website, but they will not reflect all the details I say out loud and write on the whiteboard. Lectures will go through material quite quickly and the material may be quite difficult, so it’s likely you’ll want to spend time reading through your notes after the lecture. Lectures should be recorded on the lecture capture system; I find it very difficult to read the whiteboard in these videos, but if you unavoidably miss a lecture, for example due to illness, you may find they are better than nothing.</p>
-<p>In Weeks 3, 5, 7, 9 and 11, the Thursday lecture will operate as a “problems class” – see more on this below.</p>
-<p>Attendance at lectures in compulsory.</p>
-</section>
-<section id="problem-sheets-and-problem-classes" class="level3">
-<h3 class="anchored" data-anchor-id="problem-sheets-and-problem-classes">Problem sheets and problem classes</h3>
-<p>Mathematics and statistics are “doing” subjects! To help you learn material for the module and to help you prepare for the exam, I will provide 5 unassessed problem sheets. These are for you to work through in your own time to help you learn; they are <em>not</em> formally assessed and will not be marked by me (or anyone else). You are welcome to discuss work on the problem sheets with colleagues and friends, although my recommendation would be to write-up your “last, best” attempt neatly by yourself.</p>
-<p>You should work through each problem sheet in preparation for the problems class in the Thursday lecture of Week 3, 5, 7, 9 and 11. In the problems class, you should be ready to discuss your answers to questions you managed to solve, explain your progress on questions you partially solved, and ask for help on questions you got stuck on. You can also ask for extra help or feedback at office hours (see below).</p>
-</section>
-<section id="coursework" class="level3">
-<h3 class="anchored" data-anchor-id="coursework">Coursework</h3>
-<p>There will be one piece of assessed coursework, which will make up 20% of your module mark.</p>
-<p>The coursework will be in the form of a worksheet. The worksheet will have some questions, mostly computational but also mathematical, and you will have to write a report containing your answers and computations.</p>
-<p>The assessed coursework will be introduced in the <strong>computer practical</strong> sessions in Week 9.</p>
-<p>The deadline for the coursework will be the penultimate day of the Autumn term, <strong>Thursday 12 December </strong> at 1400. Feedback and marks will be returned on Monday 13 January, the first day of the Spring term.</p>
-</section>
-<section id="office-hours" class="level3">
-<h3 class="anchored" data-anchor-id="office-hours">Office hours</h3>
-<p>I will run a weekly office hours drop-in session for feedback and consultation. You can come along if you want to talk to me about anything on the course, including if you’d like some feedback on your attempts at problem sheet questions. (For extremely short queries, you can approach me before or after lectures, but my response will often be: “Come to my office hours, and we can discuss it there!”)</p>
-<p>Office hours will happen on <strong>Mondays from 1500 to 1600</strong> – so directly after the Monday lecture – in my office, which is <strong>EC Stoner 9.10n</strong> on the 9th floor of the EC Stoner building. (One way my office is via the doors directly opposite the main entrance to the School of Mathematics. You can also get there from Staircase 1 on the Level 10 “red route” through EC Stoner, next to the Maths Satellite.) If you cannot make this time, contact me for an alternative arrangement.</p>
-</section>
-<section id="exam" class="level3">
-<h3 class="anchored" data-anchor-id="exam">Exam</h3>
-<p>There will be one exam, which will make up 80% of your module mark.</p>
-<p>The exam will be in the January 2025 exam period (13–24 January); the date and time will be announced in December. The exam will be in person and on campus.</p>
-<p>The exam will last 2 hours and 30 minutes. The exam will consist of 4 questions, all compulsory. You will be allowed to use a basic non-programmable calculator in the exam.</p>
-</section>
-</section>
-<section id="content-of-math5835" class="level2">
-<h2 class="anchored" data-anchor-id="content-of-math5835">Content of MATH5835</h2>
-<section id="necessary-background" class="level3">
-<h3 class="anchored" data-anchor-id="necessary-background">Necessary background</h3>
-<p>It is recommended that students should have completed at least two undergraduate level courses in probability and statistics, or something equivalent, although confidence and proficiency in basic material is more important than very deep knowledge. For Leeds undergraduates, the official prerequisite is <a href="https://webprod3.leeds.ac.uk/catalogue/dynmodules.asp?Y=202425&amp;M=MATH-2715">MATH2715 Statistical Methods</a>, although confidence and proficiency in the material of MATH1710 &amp; MATH1712 Probability and Statistics 1 &amp; 2 is probably more important.</p>
-<p>Some knowledge I will assume:</p>
-<ul>
-<li><p><strong>Probability:</strong> Basic rules of probability; random variables, both continuous and discrete; “famous” distributions (especially the normal distribution and the continuous uniform distribution); expectation, variance, covariance, correlation; law of large numbers and central limit theorem.</p></li>
-<li><p><strong>Statistics:</strong> Estimation of parameters; bias and error; sample mean and sample variance</p></li>
-</ul>
-<p>This module will also include an material on Markov chains. I won’t assume any pre-existing knowledge of this, and I will introduce all new material we need, but students who have studied Markov chains before (for example in the Leeds module MATH2750 Introduction to Markov Processes) may find a couple of lectures here are merely a reminder of things they already know.</p>
-<p>The lectures will include examples using the <strong>R</strong> program language. The coursework and problem sheets will require use of R. The exam, while just a “pencil and paper” exam, will require understanding and writing short portions of R code. We will assume basic R capability – that you can enter R commands, store R objects using the <code>&lt;-</code> assignment, and perform basic arithmetic with numbers and vectors. Other concepts will be introduced as necessary. If you want to use R on your own device, I recommend downloading (if you have not already) the <a href="https://cran.r-project.org">R programming language</a> and the <a href="https://posit.co/downloads/">program RStudio</a>. (These lecture notes were written in R using RStudio.)</p>
-</section>
-<section id="syllabus" class="level3">
-<h3 class="anchored" data-anchor-id="syllabus">Syllabus</h3>
-<p>We plan to cover the following topics in the module:</p>
-<ul>
-<li><p><strong>Monte Carlo estimation:</strong> definition and examples; bias and error; variance reduction techniques: control variates, antithetic variables, importance sampling. [9 lectures]</p></li>
-<li><p><strong>Random number generation:</strong> pseudo-random number generation using linear congruential generators; inverse transform method; rejection sampling [7 lectures]</p></li>
-<li><p><strong>Markov chain Monte Carlo</strong> (MCMC)<strong>:</strong> [7 lectures]</p>
-<ul>
-<li><p>Introduction to Markov chains in discrete and continuous space</p></li>
-<li><p>Metropolis–Hastings algorithm: definition; examples; MCMC in practice; MCMC for Bayesian statistics</p></li>
-</ul></li>
-<li><p><strong>Bootstrap:</strong> Empirical distribution; definition of the bootstrap; bootstrap error; bootstrap confidence intervals [4 lectures]</p></li>
-<li><p>Frequently-asked questions [1 lecture]</p></li>
-</ul>
-<p>Together with the 5 problems classes, this makes 33 lectures.</p>
-</section>
-<section id="book" class="level3">
-<h3 class="anchored" data-anchor-id="book">Book</h3>
-<p>The following book is strongly recommended for the module:</p>
-<ul>
-<li>J Voss, <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031"><em>An Introduction to Statistical Computing: A simulation-based approach</em></a>, Wiley Series in Computational Statistics, Wiley, 2014</li>
-</ul>
-<p>The library has <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">electronic access to this book</a> (and two paper copies).</p>
-<p>Dr Voss is a lecturer in the School of Mathematics and the University of Leeds, and has taught MATH5835 many times. <em>An Introduction to Statistical Computing</em> grew out of his lecture notes for this module, so the book is ideally suited for this module. My lectures will follow this book closely – specifically:</p>
-<ul>
-<li><p>Monte Carlo estimation: Sections 3.1–3.3</p></li>
-<li><p>Random number generation: Sections 1.1–1.4</p></li>
-<li><p>Markov chain Monte Carlo: Section 2.3 and Sections 4.1–4.3</p></li>
-<li><p>Bootstrap: Section 5.2</p></li>
-</ul>
-<p>For a second look at material, for preparatory reading, for optional extended reading, or for extra exercises, this book comes with my highest recommendation!</p>
+<!--
+## The Metropolis--Hastings algorithm again
+
+Last time, we looked at Markov chains $(X_i)$ in continuous space, as defined by a transition density $p(x, y)$. We saw (under certain technical conditions we didn't get into) that we have convergence to a unique stationary probability density $\pi$. We further saw that we have an ergodic theorem
+$$ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X) , $$
+where $X$ has PDF $\pi$.
+
+As before, this opens up to us the possibility of MCMC: find a Markov chain with stationary distribution equal to the PDF you want to sample from, then use the output of the Markov chain as the samples in a Monte Carlo estimator. And, yet again, the Metropolis--Hastings algorithm gives us a way to find such a Markov chain. The continuous Metropolis--Hastings algorithm is essentially the same as the discrete time one, but with densities instead of probabilities.
+
+::: thpart
+* We want to define a Markov chain on a continuous state space $\mathcal S$, which contains the range of the probability density function $\pi$ we want to sample from.
+
+* We have an initial state $X_1 = x_1$ and we choose a transition density $r = r(x,y)$ representing the proposal moves.
+
+1.  From a current state $X_i = x$ we propose moving to a new state $y$, where $y$ is chosen according to the probability density $r(x, y)$.
+
+2.  With probability $$\alpha(x,y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} , $$ we accept the proposal, and set $X_i = y$; otherwise we stay put, and set $X_{i+1} = x$.
+
+3.  We repeat steps 1. and 2. $n$ times to get $n$ samples.
+:::
+
+(Note that the acceptance probability $\alpha(x, y)$ really is a probability, not a density.)
+
+This can be proved to have $\pi$ as a stationary density by checking the detailed balance equations. The proof is identical to the discrete case, so we won't write it out again.
+
+There's something we could have mentioned in the discrete case too, but let's mention it now. Note that in the acceptance probability
+$$\alpha(x,y) = \min \left\{ \frac{\pi(y)}{\pi(x)}\,\frac{r(y,x)}{r(x,y)} , \, 1\right\} , $$
+the stationary distribution only appears in the ratio $\pi(y) / \pi(x)$. Suppose we only knew up to a normalising constant; that is, suppose we had
+$$ \pi(x) = \frac{1}{Z} \,\mu(x) \propto \mu(x) $$
+with only the unnormalised measure $\mu$ known. This is fine -- we can still use it in the Metropolis Hastings algorithm, since
+$$ \frac{\pi(y)}{\pi(x)} = \frac{\frac1Z\mu(y)}{\frac1Z\mu(x)} = \frac{\mu(y)}{\mu(x)} , $$
+so the normalisation constant cancels out.
+
+So Metropolis--Hastings works perfectly well if we want to sample from an unnormalised measure. As we mentioned before, when talking about envelope rejection sampling, this is very useful in Bayesian statistics, when we often know the posterior distribution only up to proportionality.
 
 
-</section>
-</section>
-</section>
+## Random walk Metropolis again
+
+As with the discrete case, when the transition density is symmetric, in that $r(y, x) = r(x, y)$ for all $x, y \in \mathcal S$, then the acceptance probability simplifies to
+$$\alpha(x,y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1\right\} , $$
+and we call it just the Metropolis algorithm.
+
+When the proposal density is that of a Gaussian random walk with drift $\mu = 0$, we call this Random walk Metropolis.
+-->
+<div id="exm-gauss-mh" class="theorem example">
+<p><span class="theorem-title"><strong>Example 21.1</strong></span> Suppose we wish to sample from an exponential distribution <span class="math inline">\(X \sim \operatorname{Exp}(\lambda)\)</span>, which has PDF <span class="math inline">\(\pi(x) = \lambda \mathrm{e}^{-\lambda x}\)</span> for <span class="math inline">\(x \geq 0\)</span>.</p>
+<p>We can sample from this using the random walk Metropolis algorithm. From <span class="math inline">\(X_i = x\)</span>, we propose a move to <span class="math inline">\(y = x + \operatorname{N}(0, \sigma^2) = \operatorname{N}(x, \sigma^2)\)</span>. If <span class="math inline">\(y \geq 0\)</span>, we accept the proposed move with probability <span class="math display">\[\alpha(x,y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1\right\} =  \min \left\{ \frac{\lambda\mathrm{e}^{-\lambda y}}{\lambda\mathrm{e}^{-\lambda x}} , \, 1\right\} = \min \big\{ \mathrm{e}^{\lambda(x - y)},\, 1\big\} .\]</span> So if <span class="math inline">\(0 \leq y \leq x\)</span>, then we always accept the move with probability 1, while if <span class="math inline">\(y &gt; x\)</span> then we accept with probability <span class="math inline">\(\alpha(x, y) = \mathrm{e}^{-\lambda(y-x)}\)</span>. If <span class="math inline">\(y &lt; 0\)</span>, then <span class="math inline">\(\pi(y) = 0\)</span>, so <span class="math inline">\(\alpha(x, y) = 0\)</span>, and we always reject.</p>
+<p>The following R function carries this out.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>metroexp <span class="ot">&lt;-</span> <span class="cf">function</span>(n, rate, sigma, initial) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  MC <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  accept <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) <span class="fu">exp</span>(<span class="sc">-</span>rate <span class="sc">*</span> (y <span class="sc">-</span> x))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  MC[<span class="dv">1</span>] <span class="ot">&lt;-</span> initial</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    prop <span class="ot">&lt;-</span> MC[i] <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="dv">0</span>, sigma)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (prop <span class="sc">&lt;</span> <span class="dv">0</span>)  MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;=</span> <span class="fu">accept</span>(MC[i], prop)) MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> prop</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(MC)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We used a cunning trick to slightly simplify the above code. If <span class="math inline">\(\pi(y) / \pi(x) &gt; 1\)</span>, then the acceptance probability is 1, from the “min” in the definition of <span class="math inline">\(\alpha(x, y)\)</span>. But the implementation to accept if <span class="math inline">\(U \leq \pi(y) / \pi(x)\)</span> still works. This makes the <code>else if</code> line in the above code a bit simpler, as we didn’t have to deal with this case separately.</p>
+<p>Let’s try it out for <span class="math inline">\(\lambda = 0.1\)</span> and <span class="math inline">\(\sigma = 1\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>RWM <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="fl">1e6</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(RWM, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="at">breaks =</span> <span class="dv">50</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dexp</span>(x, <span class="fl">0.1</span>), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L21-mh-2_files/figure-html/unnamed-chunk-2-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This looks like an excellent match to the <span class="math inline">\(\operatorname{Exp}(0.1)\)</span> distribution.</p>
+<p>In the random walk Metropolis algorithm, we had to pick the value for the parameter <span class="math inline">\(\sigma\)</span>. In this algorithm, <span class="math inline">\(\sigma\)</span> can be interpreted as an “average step size”, in the the standard deviation of the step proposal <span class="math inline">\(y - x\)</span> is <span class="math inline">\(\sigma\)</span>. The ergodic theorem will still hold for any value of <span class="math inline">\(\sigma\)</span> in the limit as <span class="math inline">\(n \to \infty\)</span>, but the practical performance at finite <span class="math inline">\(n\)</span> may be different for different values.</p>
+<p>Let’s have a look at how the Markov chain moved with our step size of <span class="math inline">\(\sigma = 1\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(RWM[<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>], <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">type =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L21-mh-2_files/figure-html/unnamed-chunk-3-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>It’s clear this isn’t an independent sample, since we see a sort of “trajectory” rather than simply “exponentially distributed noise”. But it seems to explore the range of typical values reasonably well.</p>
+<p>What if we had chosen a much larger step size, like <span class="math inline">\(\sigma = 50\)</span>, or a much smaller one, like <span class="math inline">\(\sigma = 0.2\)</span>?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>RWMbig <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="dv">1000</span>, <span class="fl">0.1</span>, <span class="dv">50</span>, <span class="dv">0</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(RWMbig, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">type =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L21-mh-2_files/figure-html/unnamed-chunk-4-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>RWMsmall <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="dv">1000</span>, <span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="dv">0</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(RWMsmall, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"green"</span>, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L21-mh-2_files/figure-html/unnamed-chunk-4-2.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see that when <span class="math inline">\(\sigma = 50\)</span> (blue), there are lots of “flat parts” of the graph. This is where the Markov chain did not move, because it was rejecting lots of proposed moves. This would be because large steps would often produce either negative proposals, which are always rejected, or very large proposals, where the acceptance probability is small.</p>
+<p>We can also see that when <span class="math inline">\(\sigma = 0.25\)</span> (green), the Markov chain was often accepting moves, but only making teeny-tiny steps, and so it was exploring the range of values very slowly.</p>
+</div>
+<!--
+We saw here a general pattern when choosing the step size in a Gaussian random walk Metropolis algorithm:
+
+* If the step size is too large, then too many proposals are rejected. This means you often stay in the same state for a long time, and you explore the state space very slowly.
+
+* If the step size is too small, then proposals are very close to the current state. This means you often stay in the same approximate area for a long time, and you explore the state space very slowly.
+
+You want to try and pick the "Goldilocks" step size -- not too small, and not too big! There is no perfect recipe you can follow to pick the ideal step size -- MCMC is an art as well as a science. If you are able to, it can be helpful to think about what typical values you hope to be sampling. In our example, ranges of between 0 and 25 are typical for $\operatorname{Exp}(0.1)$, so you want a step size that will explore such a range well, without too regularly stepping outside of it. Perhaps $\sigma = 1$ was a bit too small, and it might be worth trying a bit larger -- say $\sigma = 2$ or $\sigma = 5$, maybe. It's also worth doing short "pilot" runs, where you try different values of $\sigma$ and see what seems to work.
+
+## Burn-in period
+
+Recall that the goal of MCMC is to sample from the stationary distribution $\pi$. It's therefore a good idea, if it's possible, to start from an initial value that's "typical" of $\pi$; that is, has a large value of $\pi$ and is near other states with large values of $\pi$. That was definitely true for $X_1 = 0$ in our previous example.
+
+But what happens if we don't pick such an initial state -- either because we don't know what these typical states look like, or by mistake.
+-->
+<div id="exm-burn" class="theorem example">
+<p><span class="theorem-title"><strong>Example 21.2</strong></span> We continue with the previous example, with step size <span class="math inline">\(\sigma = 1\)</span> again. What if we had started at <span class="math inline">\(X_1 = 200\)</span> instead – what then would the Markov chain look like.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>RWMbig <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="dv">5000</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(RWMbig, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">type =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L21-mh-2_files/figure-html/unnamed-chunk-5-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>You can see that, at the start, it takes us a while to move away from the “bad” initial state <span class="math inline">\(X_1 = 1\)</span> and to get to the “typical values” of <span class="math inline">\([0, 25]\)</span> or so. In this example, it took around 2000 steps.</p>
+</div>
+<!--
+The ergodic theorem tells us this, eventually, for large enough $n$, these early unrepresentative samples will be drowned out of our large-$n$ collection. But for modest finite values of $n$, these are likely to corrupt our Monte Carlo estimation procedure.
+
+For that reason, it can often be useful to use a **burn-in period**. A burn-in period is when you run the Markov chain for a while without using the samples in estimation, and only start using samples once you have "reached the stationary distribution" -- the phrase "reached equilibrium" is also sometimes used. Again, how long a burn-in period should be is art more than science -- thinking about your specific problem and conducting experiments can help you decide if a burn-in period is necessary and how long it should be.
+-->
+
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -877,10 +968,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../lectures/L20-markov-cont.html" class="pagination-link" aria-label="Markov chains in continuous space">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Markov chains in continuous space</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./lectures/L01-mc-intro.html" class="pagination-link" aria-label="Introduction to Monte Carlo">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
+        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
