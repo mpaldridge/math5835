@@ -130,7 +130,7 @@ RWMbig <- metroexp(5000, 0.1, 1, 100)
 plot(RWMbig, lwd = 2, col = "red", type = "l")
 ```
 
-You can see that, at the start, it takes us a while to move away from the "bad" initial state $X_1 = 1$ and to get to the "typical values" of $[0, 25]$ or so. In this example, it took around 2000 steps.
+You can see that, at the start, it takes us a while to move away from the "bad" initial state $X_1 = 100$ and to get to the "typical values" of $[0, 25]$ or so. In this example, it took around 2000 steps.
 :::
 <!--
 The ergodic theorem tells us this, eventually, for large enough $n$, these early unrepresentative samples will be drowned out of our large-$n$ collection. But for modest finite values of $n$, these are likely to corrupt our Monte Carlo estimation procedure.
