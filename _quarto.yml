@@ -41,8 +41,8 @@ book:
         - lectures/L19-mh-1.qmd
         - lectures/L20-markov-cont.qmd
         - lectures/L21-mh-2.qmd
-#        - problems/P4.qmd
-#        - lectures/L22-convergence.qmd
+        - problems/P4.qmd
+        - lectures/L22-mcmc-error.qmd
 #        - lectures/L23-bayes.qmd
 #    - part: "Bootstrap"
 #      chapters:

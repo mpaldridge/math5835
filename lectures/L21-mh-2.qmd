@@ -22,12 +22,6 @@ As before, this opens up to us the possibility of MCMC: find a Markov chain with
 
 This can be proved to have $\pi$ as a stationary density by checking the detailed balance equations. The proof is identical to the discrete case, so we won't write it out again.
 
-## Unnormalised stationary measures
-
-There's something we could have mentioned in the discrete case too, but let's mention it now. Note that in the acceptance probability $$\alpha(x,y) = \min \left\{ \frac{\pi(y)}{\pi(x)}\,\frac{r(y,x)}{r(x,y)} , \, 1\right\} , $$ the stationary distribution only appears in the ratio $\pi(y) / \pi(x)$. Suppose we only knew up to a normalising constant; that is, suppose we had $$ \pi(x) = \frac{1}{Z} \,\mu(x) \propto \mu(x) $$ with only the unnormalised measure $\mu$ known. This is fine -- we can still use it in the Metropolis Hastings algorithm, since $$ \frac{\pi(y)}{\pi(x)} = \frac{\frac1Z\mu(y)}{\frac1Z\mu(x)} = \frac{\mu(y)}{\mu(x)} , $$ so the normalisation constant cancels out.
-
-So Metropolis--Hastings works perfectly well if we want to sample from an unnormalised measure. As we mentioned before, when talking about envelope rejection sampling, this is very useful in Bayesian statistics, when we often know the posterior distribution only up to proportionality.
-
 ## Random walk Metropolis again
 
 As with the discrete case, when the transition density is symmetric, in that $r(y, x) = r(x, y)$ for all $x, y \in \mathcal S$, then the acceptance probability simplifies to $$\alpha(x,y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1\right\} , $$ and we call it just the Metropolis algorithm.

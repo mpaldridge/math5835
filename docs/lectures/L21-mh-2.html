@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../problems/solutions.html" rel="next">
+<link href="../problems/P4.html" rel="next">
 <link href="../lectures/L20-markov-cont.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -351,6 +351,18 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in continuous space</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../problems/P4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Problem Sheet 4</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L22-mcmc-error.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -364,8 +376,16 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-metropolishastings-algorithm-again" id="toc-the-metropolishastings-algorithm-again" class="nav-link active" data-scroll-target="#the-metropolishastings-algorithm-again"><span class="header-section-number">21.1</span> The Metropolis–Hastings algorithm again</a></li>
+  <li><a href="#random-walk-metropolis-again" id="toc-random-walk-metropolis-again" class="nav-link" data-scroll-target="#random-walk-metropolis-again"><span class="header-section-number">21.2</span> Random walk Metropolis again</a></li>
+  <li><a href="#burn-in-period" id="toc-burn-in-period" class="nav-link" data-scroll-target="#burn-in-period"><span class="header-section-number">21.3</span> Burn-in period</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -389,50 +409,28 @@ window.Quarto = {
 </header>
 
 
-<!--
-## The Metropolis--Hastings algorithm again
-
-Last time, we looked at Markov chains $(X_i)$ in continuous space, as defined by a transition density $p(x, y)$. We saw (under certain technical conditions we didn't get into) that we have convergence to a unique stationary probability density $\pi$. We further saw that we have an ergodic theorem
-$$ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X) , $$
-where $X$ has PDF $\pi$.
-
-As before, this opens up to us the possibility of MCMC: find a Markov chain with stationary distribution equal to the PDF you want to sample from, then use the output of the Markov chain as the samples in a Monte Carlo estimator. And, yet again, the Metropolis--Hastings algorithm gives us a way to find such a Markov chain. The continuous Metropolis--Hastings algorithm is essentially the same as the discrete time one, but with densities instead of probabilities.
-
-::: thpart
-* We want to define a Markov chain on a continuous state space $\mathcal S$, which contains the range of the probability density function $\pi$ we want to sample from.
-
-* We have an initial state $X_1 = x_1$ and we choose a transition density $r = r(x,y)$ representing the proposal moves.
-
-1.  From a current state $X_i = x$ we propose moving to a new state $y$, where $y$ is chosen according to the probability density $r(x, y)$.
-
-2.  With probability $$\alpha(x,y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} , $$ we accept the proposal, and set $X_i = y$; otherwise we stay put, and set $X_{i+1} = x$.
-
-3.  We repeat steps 1. and 2. $n$ times to get $n$ samples.
-:::
-
-(Note that the acceptance probability $\alpha(x, y)$ really is a probability, not a density.)
-
-This can be proved to have $\pi$ as a stationary density by checking the detailed balance equations. The proof is identical to the discrete case, so we won't write it out again.
-
-There's something we could have mentioned in the discrete case too, but let's mention it now. Note that in the acceptance probability
-$$\alpha(x,y) = \min \left\{ \frac{\pi(y)}{\pi(x)}\,\frac{r(y,x)}{r(x,y)} , \, 1\right\} , $$
-the stationary distribution only appears in the ratio $\pi(y) / \pi(x)$. Suppose we only knew up to a normalising constant; that is, suppose we had
-$$ \pi(x) = \frac{1}{Z} \,\mu(x) \propto \mu(x) $$
-with only the unnormalised measure $\mu$ known. This is fine -- we can still use it in the Metropolis Hastings algorithm, since
-$$ \frac{\pi(y)}{\pi(x)} = \frac{\frac1Z\mu(y)}{\frac1Z\mu(x)} = \frac{\mu(y)}{\mu(x)} , $$
-so the normalisation constant cancels out.
-
-So Metropolis--Hastings works perfectly well if we want to sample from an unnormalised measure. As we mentioned before, when talking about envelope rejection sampling, this is very useful in Bayesian statistics, when we often know the posterior distribution only up to proportionality.
-
-
-## Random walk Metropolis again
-
-As with the discrete case, when the transition density is symmetric, in that $r(y, x) = r(x, y)$ for all $x, y \in \mathcal S$, then the acceptance probability simplifies to
-$$\alpha(x,y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1\right\} , $$
-and we call it just the Metropolis algorithm.
-
-When the proposal density is that of a Gaussian random walk with drift $\mu = 0$, we call this Random walk Metropolis.
--->
+<section id="the-metropolishastings-algorithm-again" class="level2" data-number="21.1">
+<h2 data-number="21.1" class="anchored" data-anchor-id="the-metropolishastings-algorithm-again"><span class="header-section-number">21.1</span> The Metropolis–Hastings algorithm again</h2>
+<p>Last time, we looked at Markov chains <span class="math inline">\((X_i)\)</span> in continuous space, as defined by a transition density <span class="math inline">\(p(x, y)\)</span>. We saw (under certain technical conditions we didn’t get into) that we have convergence to a unique stationary probability density <span class="math inline">\(\pi\)</span>. We further saw that we have an ergodic theorem <span class="math display">\[ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X) , \]</span> where <span class="math inline">\(X\)</span> has PDF <span class="math inline">\(\pi\)</span>.</p>
+<p>As before, this opens up to us the possibility of MCMC: find a Markov chain with stationary distribution equal to the PDF you want to sample from, then use the output of the Markov chain as the samples in a Monte Carlo estimator. And, yet again, the Metropolis–Hastings algorithm gives us a way to find such a Markov chain. The continuous Metropolis–Hastings algorithm is essentially the same as the discrete time one, but with densities instead of probabilities.</p>
+<div class="thpart">
+<ul>
+<li><p>We want to define a Markov chain on a continuous state space <span class="math inline">\(\mathcal S\)</span>, which contains the range of the probability density function <span class="math inline">\(\pi\)</span> we want to sample from.</p></li>
+<li><p>We have an initial state <span class="math inline">\(X_1 = x_1\)</span> and we choose a transition density <span class="math inline">\(r = r(x,y)\)</span> representing the proposal moves.</p></li>
+</ul>
+<ol type="1">
+<li><p>From a current state <span class="math inline">\(X_i = x\)</span> we propose moving to a new state <span class="math inline">\(y\)</span>, where <span class="math inline">\(y\)</span> is chosen according to the probability density <span class="math inline">\(r(x, y)\)</span>.</p></li>
+<li><p>With probability <span class="math display">\[\alpha(x,y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} , \]</span> we accept the proposal, and set <span class="math inline">\(X_i = y\)</span>; otherwise we stay put, and set <span class="math inline">\(X_{i+1} = x\)</span>.</p></li>
+<li><p>We repeat steps 1. and 2. <span class="math inline">\(n\)</span> times to get <span class="math inline">\(n\)</span> samples.</p></li>
+</ol>
+</div>
+<p>(Note that the acceptance probability <span class="math inline">\(\alpha(x, y)\)</span> really is a probability, not a density.)</p>
+<p>This can be proved to have <span class="math inline">\(\pi\)</span> as a stationary density by checking the detailed balance equations. The proof is identical to the discrete case, so we won’t write it out again.</p>
+</section>
+<section id="random-walk-metropolis-again" class="level2" data-number="21.2">
+<h2 data-number="21.2" class="anchored" data-anchor-id="random-walk-metropolis-again"><span class="header-section-number">21.2</span> Random walk Metropolis again</h2>
+<p>As with the discrete case, when the transition density is symmetric, in that <span class="math inline">\(r(y, x) = r(x, y)\)</span> for all <span class="math inline">\(x, y \in \mathcal S\)</span>, then the acceptance probability simplifies to <span class="math display">\[\alpha(x,y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1\right\} , \]</span> and we call it just the Metropolis algorithm.</p>
+<p>When the proposal density is that of a Gaussian random walk with drift <span class="math inline">\(\mu = 0\)</span>, we call this Random walk Metropolis.</p>
 <div id="exm-gauss-mh" class="theorem example">
 <p><span class="theorem-title"><strong>Example 21.1</strong></span> Suppose we wish to sample from an exponential distribution <span class="math inline">\(X \sim \operatorname{Exp}(\lambda)\)</span>, which has PDF <span class="math inline">\(\pi(x) = \lambda \mathrm{e}^{-\lambda x}\)</span> for <span class="math inline">\(x \geq 0\)</span>.</p>
 <p>We can sample from this using the random walk Metropolis algorithm. From <span class="math inline">\(X_i = x\)</span>, we propose a move to <span class="math inline">\(y = x + \operatorname{N}(0, \sigma^2) = \operatorname{N}(x, \sigma^2)\)</span>. If <span class="math inline">\(y \geq 0\)</span>, we accept the proposed move with probability <span class="math display">\[\alpha(x,y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1\right\} =  \min \left\{ \frac{\lambda\mathrm{e}^{-\lambda y}}{\lambda\mathrm{e}^{-\lambda x}} , \, 1\right\} = \min \big\{ \mathrm{e}^{\lambda(x - y)},\, 1\big\} .\]</span> So if <span class="math inline">\(0 \leq y \leq x\)</span>, then we always accept the move with probability 1, while if <span class="math inline">\(y &gt; x\)</span> then we accept with probability <span class="math inline">\(\alpha(x, y) = \mathrm{e}^{-\lambda(y-x)}\)</span>. If <span class="math inline">\(y &lt; 0\)</span>, then <span class="math inline">\(\pi(y) = 0\)</span>, so <span class="math inline">\(\alpha(x, y) = 0\)</span>, and we always reject.</p>
@@ -506,21 +504,17 @@ When the proposal density is that of a Gaussian random walk with drift $\mu = 0$
 <p>We can see that when <span class="math inline">\(\sigma = 50\)</span> (blue), there are lots of “flat parts” of the graph. This is where the Markov chain did not move, because it was rejecting lots of proposed moves. This would be because large steps would often produce either negative proposals, which are always rejected, or very large proposals, where the acceptance probability is small.</p>
 <p>We can also see that when <span class="math inline">\(\sigma = 0.25\)</span> (green), the Markov chain was often accepting moves, but only making teeny-tiny steps, and so it was exploring the range of values very slowly.</p>
 </div>
-<!--
-We saw here a general pattern when choosing the step size in a Gaussian random walk Metropolis algorithm:
-
-* If the step size is too large, then too many proposals are rejected. This means you often stay in the same state for a long time, and you explore the state space very slowly.
-
-* If the step size is too small, then proposals are very close to the current state. This means you often stay in the same approximate area for a long time, and you explore the state space very slowly.
-
-You want to try and pick the "Goldilocks" step size -- not too small, and not too big! There is no perfect recipe you can follow to pick the ideal step size -- MCMC is an art as well as a science. If you are able to, it can be helpful to think about what typical values you hope to be sampling. In our example, ranges of between 0 and 25 are typical for $\operatorname{Exp}(0.1)$, so you want a step size that will explore such a range well, without too regularly stepping outside of it. Perhaps $\sigma = 1$ was a bit too small, and it might be worth trying a bit larger -- say $\sigma = 2$ or $\sigma = 5$, maybe. It's also worth doing short "pilot" runs, where you try different values of $\sigma$ and see what seems to work.
-
-## Burn-in period
-
-Recall that the goal of MCMC is to sample from the stationary distribution $\pi$. It's therefore a good idea, if it's possible, to start from an initial value that's "typical" of $\pi$; that is, has a large value of $\pi$ and is near other states with large values of $\pi$. That was definitely true for $X_1 = 0$ in our previous example.
-
-But what happens if we don't pick such an initial state -- either because we don't know what these typical states look like, or by mistake.
--->
+<p>We saw here a general pattern when choosing the step size in a Gaussian random walk Metropolis algorithm:</p>
+<ul>
+<li><p>If the step size is too large, then too many proposals are rejected. This means you often stay in the same state for a long time, and you explore the state space very slowly.</p></li>
+<li><p>If the step size is too small, then proposals are very close to the current state. This means you often stay in the same approximate area for a long time, and you explore the state space very slowly.</p></li>
+</ul>
+<p>You want to try and pick the “Goldilocks” step size – not too small, and not too big! There is no perfect recipe you can follow to pick the ideal step size – MCMC is an art as well as a science. If you are able to, it can be helpful to think about what typical values you hope to be sampling. In our example, ranges of between 0 and 25 are typical for <span class="math inline">\(\operatorname{Exp}(0.1)\)</span>, so you want a step size that will explore such a range well, without too regularly stepping outside of it. Perhaps <span class="math inline">\(\sigma = 1\)</span> was a bit too small, and it might be worth trying a bit larger – say <span class="math inline">\(\sigma = 2\)</span> or <span class="math inline">\(\sigma = 5\)</span>, maybe. It’s also worth doing short “pilot” runs, where you try different values of <span class="math inline">\(\sigma\)</span> and see what seems to work.</p>
+</section>
+<section id="burn-in-period" class="level2" data-number="21.3">
+<h2 data-number="21.3" class="anchored" data-anchor-id="burn-in-period"><span class="header-section-number">21.3</span> Burn-in period</h2>
+<p>Recall that the goal of MCMC is to sample from the stationary distribution <span class="math inline">\(\pi\)</span>. It’s therefore a good idea, if it’s possible, to start from an initial value that’s “typical” of <span class="math inline">\(\pi\)</span>; that is, has a large value of <span class="math inline">\(\pi\)</span> and is near other states with large values of <span class="math inline">\(\pi\)</span>. That was definitely true for <span class="math inline">\(X_1 = 0\)</span> in our previous example.</p>
+<p>But what happens if we don’t pick such an initial state – either because we don’t know what these typical states look like, or by mistake.</p>
 <div id="exm-burn" class="theorem example">
 <p><span class="theorem-title"><strong>Example 21.2</strong></span> We continue with the previous example, with step size <span class="math inline">\(\sigma = 1\)</span> again. What if we had started at <span class="math inline">\(X_1 = 200\)</span> instead – what then would the Markov chain look like.</p>
 <div class="cell">
@@ -537,13 +531,11 @@ But what happens if we don't pick such an initial state -- either because we don
 </div>
 <p>You can see that, at the start, it takes us a while to move away from the “bad” initial state <span class="math inline">\(X_1 = 100\)</span> and to get to the “typical values” of <span class="math inline">\([0, 25]\)</span> or so. In this example, it took around 2000 steps.</p>
 </div>
-<!--
-The ergodic theorem tells us this, eventually, for large enough $n$, these early unrepresentative samples will be drowned out of our large-$n$ collection. But for modest finite values of $n$, these are likely to corrupt our Monte Carlo estimation procedure.
-
-For that reason, it can often be useful to use a **burn-in period**. A burn-in period is when you run the Markov chain for a while without using the samples in estimation, and only start using samples once you have "reached the stationary distribution" -- the phrase "reached equilibrium" is also sometimes used. Again, how long a burn-in period should be is art more than science -- thinking about your specific problem and conducting experiments can help you decide if a burn-in period is necessary and how long it should be.
--->
+<p>The ergodic theorem tells us this, eventually, for large enough <span class="math inline">\(n\)</span>, these early unrepresentative samples will be drowned out of our large-<span class="math inline">\(n\)</span> collection. But for modest finite values of <span class="math inline">\(n\)</span>, these are likely to corrupt our Monte Carlo estimation procedure.</p>
+<p>For that reason, it can often be useful to use a <strong>burn-in period</strong>. A burn-in period is when you run the Markov chain for a while without using the samples in estimation, and only start using samples once you have “reached the stationary distribution” – the phrase “reached equilibrium” is also sometimes used. Again, how long a burn-in period should be is art more than science – thinking about your specific problem and conducting experiments can help you decide if a burn-in period is necessary and how long it should be. If the state space and stationary distribution are easy to understand – say, <span class="math inline">\(\mathcal S\)</span> is one-dimensional and <span class="math inline">\(\pi\)</span> has a single mode – you can even run the MCMC algorithm first, then afterwards decide which unrepresentative early samples to throw away.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -973,8 +965,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
-        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/P4.html" class="pagination-link" aria-label="Problem Sheet 4">
+        <span class="nav-page-text">Problem Sheet 4</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
