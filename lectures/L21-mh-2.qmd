@@ -92,11 +92,11 @@ We can also see that when $\sigma = 1$ (green), the Markov chain was often accep
 
 We saw here a general pattern when choosing the step size in a Gaussian random walk Metropolis algorithm:
 
--   If the step size is too large, then too many proposals are rejected. This means you often stay in the same state for a long time, and you explore the state space very slowly.
+-   If the step size is too large, then too many proposals are rejected. This means you often stay in the same state for a long time, and you only rarely move to explore a new state.
 
--   If the step size is too small, then proposals are very close to the current state. This means you often stay in the same approximate area for a long time, and you explore the state space very slowly.
+-   If the step size is too small, then proposals are very close to the current state. This means you often stay in the same approximate area for a long time, and you crawl through the state space very slowly.
 
-You want to try and pick the "Goldilocks" step size -- not too small, and not too big! There is no perfect recipe you can follow to pick the ideal step size -- MCMC is an art as well as a science. If you are able to, it can be helpful to think about what typical values you hope to be sampling. In our example, ranges of between 0 and 25 are typical for $\operatorname{Exp}(0.1)$, so you want a step size that will explore such a range well, without too regularly stepping outside of it. Perhaps $\sigma = 1$ was a bit too small, and it might be worth trying a bit larger -- say $\sigma = 2$ or $\sigma = 5$, maybe. It's also worth doing short "pilot" runs, where you try different values of $\sigma$ and see what seems to work.
+You want to try and pick the "Goldilocks" step size -- not too small, and not too big! There is no perfect recipe you can follow to pick the ideal step size -- MCMC is an art as well as a science. If you are able to, it can be helpful to think about what typical values you hope to be sampling. In our example, ranges of between 0 and 30 or so are typical for $\operatorname{Exp}(0.1)$, so you want a step size that will explore such a range well without too regularly stepping outside of it. Our choice of $\sigma = 15$, being half of that $[0, 30]$ range seemed to do quite well. It's also worth doing short "pilot" runs, where you try different values of $\sigma$ and examine what seems to work best.
 
 ## Burn-in period
 
