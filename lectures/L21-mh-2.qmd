@@ -54,40 +54,40 @@ metroexp <- function(n, rate, sigma, initial) {
 
 We used a cunning trick to slightly simplify the above code. If $\pi(y) / \pi(x) > 1$, then the acceptance probability is 1, from the "min" in the definition of $\alpha(x, y)$. But the implementation to accept if $U \leq \pi(y) / \pi(x)$ still works. This makes the `else if` line in the above code a bit simpler, as we didn't have to deal with this case separately.
 
-Let's try it out for $\lambda = 0.1$ and $\sigma = 1$.
+Let's try it out for $\lambda = 0.1$ and $\sigma = 15$.
 
 ```{r}
-RWM <- metroexp(1e6, 0.1, 1, 0)
+RWM <- metroexp(1e6, 0.1, 15, 0)
 
-hist(RWM, probability = TRUE, xlim = c(0, 50), ylim = c(0, 0.1), breaks = 50)
+hist(RWM, probability = TRUE, xlim = c(0, 50), ylim = c(0, 0.1), breaks = 100)
 curve(dexp(x, 0.1), add = TRUE, lwd = 2, col = "blue")
 ```
 
 This looks like an excellent match to the $\operatorname{Exp}(0.1)$ distribution.
 
-In the random walk Metropolis algorithm, we had to pick the value for the parameter $\sigma$. In this algorithm, $\sigma$ can be interpreted as an "average step size", in the the standard deviation of the step proposal $y - x$ is $\sigma$. The ergodic theorem will still hold for any value of $\sigma$ in the limit as $n \to \infty$, but the practical performance at finite $n$ may be different for different values.
+In the random walk Metropolis algorithm, we had to pick the value for the parameter $\sigma$. In this algorithm, $\sigma$ can be interpreted as a "typical step size", in that the standard deviation of the step proposal $y - x$ is $\sigma$. The ergodic theorem will still hold for any value of $\sigma$ in the limit as $n \to \infty$, but the practical performance at finite $n$ may be different for different values.
 
-Let's have a look at how the Markov chain moved with our step size of $\sigma = 1$
-
-```{r}
-plot(RWM[1:1000], lwd = 2, col = "red", type = "l")
-```
-
-It's clear this isn't an independent sample, since we see a sort of "trajectory" rather than simply "exponentially distributed noise". But it seems to explore the range of typical values reasonably well.
-
-What if we had chosen a much larger step size, like $\sigma = 50$, or a much smaller one, like $\sigma = 0.2$?
+Let's have a look at how the Markov chain moved with our step size of $\sigma = 15$
 
 ```{r}
-RWMbig <- metroexp(1000, 0.1, 50, 0)
-plot(RWMbig, lwd = 2, col = "blue", type = "l")
-
-RWMsmall <- metroexp(1000, 0.1, 0.25, 0)
-plot(RWMsmall, lwd = 2, col = "green", type = "l", ylim = c(0, 20))
+plot(RWM[1:1000], lwd = 2, ylim = c(0, 40), col = "red", type = "l") 
 ```
 
-We can see that when $\sigma = 50$ (blue), there are lots of "flat parts" of the graph. This is where the Markov chain did not move, because it was rejecting lots of proposed moves. This would be because large steps would often produce either negative proposals, which are always rejected, or very large proposals, where the acceptance probability is small.
+It's clear this isn't an independent sample, since this is not purely "exponentially distributed noise". But it seems to exploring the range of different values an $\operatorname{Exp}(0.1)$ distribution is likely to take very rapidly.
 
-We can also see that when $\sigma = 0.25$ (green), the Markov chain was often accepting moves, but only making teeny-tiny steps, and so it was exploring the range of values very slowly.
+What if we had chosen a much larger step size, like $\sigma = 400$, or a much smaller one, like $\sigma = 1$?
+
+```{r}
+RWMbig <- metroexp(1000, 0.1, 400, 0)
+plot(RWMbig, lwd = 2, ylim = c(0, 40), col = "blue", type = "l")
+
+RWMsmall <- metroexp(1000, 0.1, 1, 0)
+plot(RWMsmall, lwd = 2, ylim = c(0, 40), col = "green", type = "l")
+```
+
+We can see that when $\sigma = 400$ (blue), there are lots of "flat parts" of the graph. This is where the Markov chain did not move, because it was rejecting lots of proposed moves. This would be because large steps would often produce either negative proposals, which are always rejected, or very large proposals, where the acceptance probability is very small. This Markov chain is rarely moving at all, so is not exploring the state space very well.
+
+We can also see that when $\sigma = 1$ (green), the Markov chain was often accepting moves, but only making small steps. Compared to the $\sigma = 15$ case, this graph is much less "busy", and looks more like a gentle wander through the state space rather than a rapid exploration. So although this Markov chain is moving through the state space, it is crawling through space quite slowly.
 :::
 
 We saw here a general pattern when choosing the step size in a Gaussian random walk Metropolis algorithm:
@@ -105,15 +105,15 @@ Recall that the goal of MCMC is to sample from the stationary distribution $\pi$
 But what happens if we don't pick such an initial state -- either because we don't know what these typical states look like, or by mistake.
 
 ::: {#exm-burn}
-We continue with the previous example, with step size $\sigma = 1$ again. What if we had started at $X_1 = 200$ instead -- what then would the Markov chain look like.
+We continue with the previous example, with step size $\sigma = 2$. What if we had started at $X_1 = 200$ instead -- what then would the Markov chain look like.
 
 ```{r}
-set.seed(3)
-RWMbig <- metroexp(5000, 0.1, 1, 100)
+set.seed(4)
+RWMbig <- metroexp(2000, 0.1, 2, 200)
 plot(RWMbig, lwd = 2, col = "red", type = "l")
 ```
 
-You can see that, at the start, it takes us a while to move away from the "bad" initial state $X_1 = 100$ and to get to the "typical values" of $[0, 25]$ or so. In this example, it took around 2000 steps.
+You can see that, at the start, it takes us a while to move away from the "bad" initial state $X_1 = 200$ and to get to the "typical values" of $[0, 35]$ or so. In this example, it took around 1000 steps.
 :::
 
 The ergodic theorem tells us this, eventually, for large enough $n$, these early unrepresentative samples will be drowned out of our large-$n$ collection. But for modest finite values of $n$, these are likely to corrupt our Monte Carlo estimation procedure.

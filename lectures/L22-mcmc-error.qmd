@@ -1,7 +1,7 @@
 # MCMC error
 
 {{< include ../_header.qmd >}}
-
+<!--
 ## Bias for MCMC
 
 Back in Lectures 3 and 4 we looked at the bias, variance, mean-square error and root-mean-square error for the Monte Carlo estimator
@@ -46,14 +46,98 @@ $$  \begin{align}
 &=  \frac{1}{n^2} \left(n\sigma^2 + 2 \sum_{i < j} \gamma(j - i) \right)
 \end{align} $$
 
-AUTO CORRELATION
+When we studied antithetic variables, we found it more convenient to work with the correlation
+$$ \operatorname{Corr}\big(\phi(X_i),\phi(X_j)\big) = \frac{\operatorname{Cov}\big(\phi(X_i),\phi(X_j)\big)}{\sqrt{\operatorname{Var}\big(\phi(X_i)\big)\operatorname{Var}\big(\phi(X_i)\big)}} . $$
+In equilibrium, this is
+$$ \rho(j - i) = \operatorname{Corr}\big(\phi(X_i),\phi(X_j)\big) = \frac{\gamma{j-i}}{\sqrt{\sigma^2\,\sigma^2}} = \frac{\gamma(j-i)}{\sigma^2}, $$
+where $\rho(k)$ is called the **autocorrelation** at lag $k$.
 
-SUM TO INFINITY
+So now we have
+$$  \begin{align}
+\Var \big( \widehat\theta_n^{\mathrm{MC}}\big)
+&=  \frac{1}{n^2} \left(n\sigma^2 + 2 \sum_{i < j} \gamma(j - i) \right) \\
+&= \frac{1}{n}\,\sigma^2 + \frac{2}{n^2} \sum_{i < j} \rho(j - i) \,\sigma^2 \\
+&= \frac{\sigma^2}{n} \left(1 + \frac{2}{n} \sum_{i=1}^n \sum_{j = i+1}^n \rho(j - i) \right) \\
+&= \frac{\sigma^2}{n} \left(1 + \frac{2}{n} \sum_{i=1}^n \sum_{k = 1}^{n-i} \rho(k) \right) .
+\end{align} $$
 
-RESULTS
+We know from the limit theorem that, as $n \to \infty$, a Markov chain tends to its stationary distribution regardless of what state it started from -- it's as if the Markov chain forgets where it starts from. Therefore we know that the autocorrelation $\rho(k)$ tends to 0 as $k \to \infty$. So, provided that the number of samples $n$ is large, there usually very little loss from approximating $\sum_{k = 1}^{n-i} \rho(k)$ by $\sum_{k = 1}^{\infty} \rho(k)$, because the extra autocorrelations we've added in will all be very small.
+
+Finally, we get the result
+$$  \begin{align}
+\Var \big( \widehat\theta_n^{\mathrm{MC}}\big)
+&= \frac{\sigma^2}{n} \left(1 +  \frac{2}{n} \sum_{i=1}^n \sum_{k = 1}^{n-i} \rho(k) \right) \\
+&\approx \frac{\sigma^2}{n} \left(1 + \frac{2}{n} \sum_{i=1}^n \sum_{k = 1}^{\infty} \rho(k) \right) \\
+&= \frac{\sigma^2}{n} \left(1 + \frac{2}{n}\,n \sum_{k = 1}^{\infty} \rho(k) \right) \\
+&= \frac{\sigma^2}{n} \left(1 + 2 \sum_{k = 1}^{\infty} \rho(k) \right) .
+\end{align} $$
+
+In conclusion, we have the following.
+
+::: {#thm-mcmc-err}
+Let $(X_i)$ be a Markov chain started in its stationary distribution $\pi$, and let $X$ have distribution $\pi$ also. Consider $\theta = \Exg\phi(X)$ and its MCMC estimator
+$$ \widehat\theta_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) .$$
+Then, writing $\sigma^2 = \Var(\phi(X))$, we have the following:
+
+* $\widehat\theta_n^{\mathrm{MC}}$ is unbiased, in that $\Exg \widehat\theta_n^{\mathrm{MC}} = \theta$.
+
+* The variance of $\widehat\theta_n^{\mathrm{MC}}$ is approximately
+$$ \Var \big( \widehat\theta_n^{\mathrm{MC}}\big) \approx \frac{\sigma^2}{n} \left(1 + 2 \sum_{k = 1}^{\infty} \rho(k) \right) . $$
+
+* The mean-square error of $\widehat\theta_n^{\mathrm{MC}}$ is approximately
+$$ \operatorname{MSE} \big( \widehat\theta_n^{\mathrm{MC}}\big) \approx \frac{\sigma^2}{n} \left(1 + 2 \sum_{k = 1}^{\infty} \rho(k) \right) . $$
+
+* The root-mean-square error of $\widehat\theta_n^{\mathrm{MC}}$ is approximately
+$$ \operatorname{RMSE} \big( \widehat\theta_n^{\mathrm{MC}}\big) \approx \frac{\sigma}{\sqrt{n}} \sqrt{1 + 2 \sum_{k = 1}^{\infty} \rho(k) } . $$
+:::
+
+Compared to the standard Monte Carlo variance $\Var (\widehat\theta_n^{\mathrm{MC}}) = \sigma^2/n$ we have the extra term $2 \sum_{k = 1}^{\infty} \rho(k)$. While it would be nice for the autocorrelation to be negative, to give us an improvement (like with antithetical variables), this almost never happens with Markov chains, which almost always have positive autocorrelation. Instead, we get the best results when the autocorrelation $\rho(k)$ dies away to 0 as quickly as possible, and get poor results when the autocorrelation only decays to 0 very slowly.
+-->
 
 ## Example
 
-COMPARE TO STEP SIZE EXPERIMENTS LAST TIME
+Last time, we used the random walk Metropolis in continuous space to sample from the $\operatorname{Exp}(0.1)$ distribution. Let's try some different typical step sizes $\sigma = 2, 15, 400$. Let's use these Markov chains to estimate $\mathbb EX$ (which we know is 10), and examine the error in these estimators.
 
-If time remains: ADVANTAGES DISADVANTAGES
+The function we used last time was this.
+
+```{r}
+metroexp <- function(n, rate, sigma, initial) {
+  MC <- rep(0, n)
+  accept <- function(x, y) exp(-rate * (y - x))
+
+  MC[1] <- initial
+  for (i in 1:(n - 1)) {
+    prop <- MC[i] + rnorm(1, 0, sigma)
+    if (prop < 0)  MC[i + 1] <- MC[i]
+    else if (runif(1) <= accept(MC[i], prop)) MC[i + 1] <- prop
+    else MC[i + 1] <- MC[i]
+  }
+  
+  return(MC)
+}
+```
+
+We can plot the autocorrelation $\rho(k)$ against the lag $k$ in R using the `acf()` function.
+
+```{r}
+MC_small <- metroexp(1e6, 0.1, 2, 0) 
+acf(MC_small, lag.max = 100)
+MC_medium <- metroexp(1e6, 0.1, 15, 0)
+acf(MC_medium, lag.max = 100)
+MC_big <- metroexp(1e6, 0.1, 400, 0)
+acf(MC_big, lag.max = 100)
+
+```
+
+Remember that our goal is for the autocorrelation to die away as quickly as possible. We see that the large step size and small step size have the autocorrelation decaying slowly, while the medium step size has the autocorrelation decaying much quicker. This matched with our earlier discussion. When $\sigma$ is too small, the Markov chain crawls around the state space too slowly; when $\sigma$ is too large, large proposal moves are usually rejected, leading the Markov chain to stay in place. We need $\sigma$ in the "Goldilocks" position where $\sigma$ is small enough that the moves proposed are not too outrageous, but $\sigma$ is big enough that we make good progress around the state space. 
+
+This is confirmed by looking at the relevant term $1 + 2\sum_{k=1}^\infty \rho(k)$ from the variance of the MCMC estimator. Well, let's just look at the sum of the first 1000 terms. We have
+
+```{r}
+sum_small  <- 1 + 2 * sum(acf(MC_small,  lag.max = 1000, plot = FALSE)$acf) 
+sum_medium <- 1 + 2 * sum(acf(MC_medium, lag.max = 1000, plot = FALSE)$acf)
+sum_big    <- 1 + 2 * sum(acf(MC_big,    lag.max = 1000, plot = FALSE)$acf)
+round(c(sum_small, sum_medium, sum_big), 1)
+```
+
+With the small and big step sizes, we need to take over 100 samples from the Markov chain to get the equivalent of one independent sample. But with the medium step size, we are getting the equivalent of one independent sample from roughly every 15 samples of the Markov chain.

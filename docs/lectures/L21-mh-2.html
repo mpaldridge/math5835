@@ -452,11 +452,11 @@ window.Quarto = {
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We used a cunning trick to slightly simplify the above code. If <span class="math inline">\(\pi(y) / \pi(x) &gt; 1\)</span>, then the acceptance probability is 1, from the “min” in the definition of <span class="math inline">\(\alpha(x, y)\)</span>. But the implementation to accept if <span class="math inline">\(U \leq \pi(y) / \pi(x)\)</span> still works. This makes the <code>else if</code> line in the above code a bit simpler, as we didn’t have to deal with this case separately.</p>
-<p>Let’s try it out for <span class="math inline">\(\lambda = 0.1\)</span> and <span class="math inline">\(\sigma = 1\)</span>.</p>
+<p>Let’s try it out for <span class="math inline">\(\lambda = 0.1\)</span> and <span class="math inline">\(\sigma = 15\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>RWM <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="fl">1e6</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>RWM <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="fl">1e6</span>, <span class="fl">0.1</span>, <span class="dv">15</span>, <span class="dv">0</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(RWM, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="at">breaks =</span> <span class="dv">50</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(RWM, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="at">breaks =</span> <span class="dv">100</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dexp</span>(x, <span class="fl">0.1</span>), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -467,10 +467,10 @@ window.Quarto = {
 </div>
 </div>
 <p>This looks like an excellent match to the <span class="math inline">\(\operatorname{Exp}(0.1)\)</span> distribution.</p>
-<p>In the random walk Metropolis algorithm, we had to pick the value for the parameter <span class="math inline">\(\sigma\)</span>. In this algorithm, <span class="math inline">\(\sigma\)</span> can be interpreted as an “average step size”, in the the standard deviation of the step proposal <span class="math inline">\(y - x\)</span> is <span class="math inline">\(\sigma\)</span>. The ergodic theorem will still hold for any value of <span class="math inline">\(\sigma\)</span> in the limit as <span class="math inline">\(n \to \infty\)</span>, but the practical performance at finite <span class="math inline">\(n\)</span> may be different for different values.</p>
-<p>Let’s have a look at how the Markov chain moved with our step size of <span class="math inline">\(\sigma = 1\)</span></p>
+<p>In the random walk Metropolis algorithm, we had to pick the value for the parameter <span class="math inline">\(\sigma\)</span>. In this algorithm, <span class="math inline">\(\sigma\)</span> can be interpreted as a “typical step size”, in that the standard deviation of the step proposal <span class="math inline">\(y - x\)</span> is <span class="math inline">\(\sigma\)</span>. The ergodic theorem will still hold for any value of <span class="math inline">\(\sigma\)</span> in the limit as <span class="math inline">\(n \to \infty\)</span>, but the practical performance at finite <span class="math inline">\(n\)</span> may be different for different values.</p>
+<p>Let’s have a look at how the Markov chain moved with our step size of <span class="math inline">\(\sigma = 15\)</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(RWM[<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>], <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">type =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(RWM[<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>], <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">40</span>), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">type =</span> <span class="st">"l"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -479,11 +479,11 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>It’s clear this isn’t an independent sample, since we see a sort of “trajectory” rather than simply “exponentially distributed noise”. But it seems to explore the range of typical values reasonably well.</p>
-<p>What if we had chosen a much larger step size, like <span class="math inline">\(\sigma = 50\)</span>, or a much smaller one, like <span class="math inline">\(\sigma = 0.2\)</span>?</p>
+<p>It’s clear this isn’t an independent sample, since this is not purely “exponentially distributed noise”. But it seems to exploring the range of different values an <span class="math inline">\(\operatorname{Exp}(0.1)\)</span> distribution is likely to take very rapidly.</p>
+<p>What if we had chosen a much larger step size, like <span class="math inline">\(\sigma = 400\)</span>, or a much smaller one, like <span class="math inline">\(\sigma = 1\)</span>?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>RWMbig <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="dv">1000</span>, <span class="fl">0.1</span>, <span class="dv">50</span>, <span class="dv">0</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(RWMbig, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">type =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>RWMbig <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="dv">1000</span>, <span class="fl">0.1</span>, <span class="dv">400</span>, <span class="dv">0</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(RWMbig, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">40</span>), <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">type =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -491,8 +491,8 @@ window.Quarto = {
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>RWMsmall <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="dv">1000</span>, <span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="dv">0</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(RWMsmall, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"green"</span>, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>RWMsmall <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="dv">1000</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(RWMsmall, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">40</span>), <span class="at">col =</span> <span class="st">"green"</span>, <span class="at">type =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -501,8 +501,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>We can see that when <span class="math inline">\(\sigma = 50\)</span> (blue), there are lots of “flat parts” of the graph. This is where the Markov chain did not move, because it was rejecting lots of proposed moves. This would be because large steps would often produce either negative proposals, which are always rejected, or very large proposals, where the acceptance probability is small.</p>
-<p>We can also see that when <span class="math inline">\(\sigma = 0.25\)</span> (green), the Markov chain was often accepting moves, but only making teeny-tiny steps, and so it was exploring the range of values very slowly.</p>
+<p>We can see that when <span class="math inline">\(\sigma = 400\)</span> (blue), there are lots of “flat parts” of the graph. This is where the Markov chain did not move, because it was rejecting lots of proposed moves. This would be because large steps would often produce either negative proposals, which are always rejected, or very large proposals, where the acceptance probability is very small. This Markov chain is rarely moving at all, so is not exploring the state space very well.</p>
+<p>We can also see that when <span class="math inline">\(\sigma = 1\)</span> (green), the Markov chain was often accepting moves, but only making small steps. Compared to the <span class="math inline">\(\sigma = 15\)</span> case, this graph is much less “busy”, and looks more like a gentle wander through the state space rather than a rapid exploration. So although this Markov chain is moving through the state space, it is crawling through space quite slowly.</p>
 </div>
 <p>We saw here a general pattern when choosing the step size in a Gaussian random walk Metropolis algorithm:</p>
 <ul>
@@ -516,10 +516,10 @@ window.Quarto = {
 <p>Recall that the goal of MCMC is to sample from the stationary distribution <span class="math inline">\(\pi\)</span>. It’s therefore a good idea, if it’s possible, to start from an initial value that’s “typical” of <span class="math inline">\(\pi\)</span>; that is, has a large value of <span class="math inline">\(\pi\)</span> and is near other states with large values of <span class="math inline">\(\pi\)</span>. That was definitely true for <span class="math inline">\(X_1 = 0\)</span> in our previous example.</p>
 <p>But what happens if we don’t pick such an initial state – either because we don’t know what these typical states look like, or by mistake.</p>
 <div id="exm-burn" class="theorem example">
-<p><span class="theorem-title"><strong>Example 21.2</strong></span> We continue with the previous example, with step size <span class="math inline">\(\sigma = 1\)</span> again. What if we had started at <span class="math inline">\(X_1 = 200\)</span> instead – what then would the Markov chain look like.</p>
+<p><span class="theorem-title"><strong>Example 21.2</strong></span> We continue with the previous example, with step size <span class="math inline">\(\sigma = 2\)</span>. What if we had started at <span class="math inline">\(X_1 = 200\)</span> instead – what then would the Markov chain look like.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>RWMbig <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="dv">5000</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>RWMbig <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="dv">2000</span>, <span class="fl">0.1</span>, <span class="dv">2</span>, <span class="dv">200</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(RWMbig, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">type =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -529,7 +529,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>You can see that, at the start, it takes us a while to move away from the “bad” initial state <span class="math inline">\(X_1 = 100\)</span> and to get to the “typical values” of <span class="math inline">\([0, 25]\)</span> or so. In this example, it took around 2000 steps.</p>
+<p>You can see that, at the start, it takes us a while to move away from the “bad” initial state <span class="math inline">\(X_1 = 200\)</span> and to get to the “typical values” of <span class="math inline">\([0, 35]\)</span> or so. In this example, it took around 1000 steps.</p>
 </div>
 <p>The ergodic theorem tells us this, eventually, for large enough <span class="math inline">\(n\)</span>, these early unrepresentative samples will be drowned out of our large-<span class="math inline">\(n\)</span> collection. But for modest finite values of <span class="math inline">\(n\)</span>, these are likely to corrupt our Monte Carlo estimation procedure.</p>
 <p>For that reason, it can often be useful to use a <strong>burn-in period</strong>. A burn-in period is when you run the Markov chain for a while without using the samples in estimation, and only start using samples once you have “reached the stationary distribution” – the phrase “reached equilibrium” is also sometimes used. Again, how long a burn-in period should be is art more than science – thinking about your specific problem and conducting experiments can help you decide if a burn-in period is necessary and how long it should be. If the state space and stationary distribution are easy to understand – say, <span class="math inline">\(\mathcal S\)</span> is one-dimensional and <span class="math inline">\(\pi\)</span> has a single mode – you can even run the MCMC algorithm first, then afterwards decide which unrepresentative early samples to throw away.</p>
