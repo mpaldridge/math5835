@@ -16,7 +16,7 @@
 **2.**     The health of a chicken each day during a bird flu pandemic is described by a simple "healthy--sick--dead" Markov chain model. The state space is $\mathcal S = \{\text{H}, \text{S}, \text{D}\}$. The transition probabilities are
 $$ \begin{align}
 p_{\mathrm{HH}} &= ? & p_{\mathrm{HS}} &= 0.02 & p_{\mathrm{HD}} &= 0.01 \\
-p_{\mathrm{SH}} &= 0.3 & p_{\mathrm{SS}} &= 0.6 & p_{\mathrm{SD}} &= 0.2 \\
+p_{\mathrm{SH}} &= 0.3 & p_{\mathrm{SS}} &= 0.5 & p_{\mathrm{SD}} &= 0.2 \\
 p_{\mathrm{DH}} &= ? & p_{\mathrm{DS}} &= ? & p_{\mathrm{DD}} &= 1.
 \end{align} .$$
 Fill in the three gaps (marked $?$).

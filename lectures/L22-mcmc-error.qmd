@@ -1,7 +1,7 @@
 # MCMC error
 
 {{< include ../_header.qmd >}}
-<!--
+
 ## Bias for MCMC
 
 Back in Lectures 3 and 4 we looked at the bias, variance, mean-square error and root-mean-square error for the Monte Carlo estimator
@@ -92,7 +92,6 @@ $$ \operatorname{RMSE} \big( \widehat\theta_n^{\mathrm{MC}}\big) \approx \frac{\
 :::
 
 Compared to the standard Monte Carlo variance $\Var (\widehat\theta_n^{\mathrm{MC}}) = \sigma^2/n$ we have the extra term $2 \sum_{k = 1}^{\infty} \rho(k)$. While it would be nice for the autocorrelation to be negative, to give us an improvement (like with antithetical variables), this almost never happens with Markov chains, which almost always have positive autocorrelation. Instead, we get the best results when the autocorrelation $\rho(k)$ dies away to 0 as quickly as possible, and get poor results when the autocorrelation only decays to 0 very slowly.
--->
 
 ## Example
 
