@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>19&nbsp; Metropolis–Hastings in discrete space – MATH5835M Statistical Computing</title>
+<title>22&nbsp; MCMC error – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L20-markov-cont.html" rel="next">
-<link href="../lectures/L18-markov-longrun.html" rel="prev">
+<link href="../problems/solutions.html" rel="next">
+<link href="../problems/P4.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +111,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L19-mh-1.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in discrete space</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L22-mcmc-error.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -335,7 +301,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L19-mh-1.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L19-mh-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in discrete space</span></span></a>
   </div>
 </li>
@@ -359,8 +325,8 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L22-mcmc-error.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Convergence and mixing</span></span></a>
+  <a href="../lectures/L22-mcmc-error.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></span></a>
   </div>
 </li>
       </ul>
@@ -381,18 +347,18 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-metropolishastings-algorithm" id="toc-the-metropolishastings-algorithm" class="nav-link active" data-scroll-target="#the-metropolishastings-algorithm"><span class="header-section-number">19.1</span> The Metropolis–Hastings algorithm</a></li>
-  <li><a href="#random-walk-metropolis" id="toc-random-walk-metropolis" class="nav-link" data-scroll-target="#random-walk-metropolis"><span class="header-section-number">19.2</span> Random walk Metropolis</a></li>
-  <li><a href="#proof-of-stationary-distribution" id="toc-proof-of-stationary-distribution" class="nav-link" data-scroll-target="#proof-of-stationary-distribution"><span class="header-section-number">19.3</span> Proof of stationary distribution</a></li>
+  <li><a href="#bias-for-mcmc" id="toc-bias-for-mcmc" class="nav-link active" data-scroll-target="#bias-for-mcmc"><span class="header-section-number">22.1</span> Bias for MCMC</a></li>
+  <li><a href="#variance-for-mcmc" id="toc-variance-for-mcmc" class="nav-link" data-scroll-target="#variance-for-mcmc"><span class="header-section-number">22.2</span> Variance for MCMC</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">22.3</span> Example</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L19-mh-1.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in discrete space</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L22-mcmc-error.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in discrete space</span></h1>
+<h1 class="title"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></h1>
 </div>
 
 
@@ -409,135 +375,43 @@ window.Quarto = {
 </header>
 
 
-<section id="the-metropolishastings-algorithm" class="level2" data-number="19.1">
-<h2 data-number="19.1" class="anchored" data-anchor-id="the-metropolishastings-algorithm"><span class="header-section-number">19.1</span> The Metropolis–Hastings algorithm</h2>
-<p>Last time, we looked at the long-run behaviour of a Markov chain <span class="math inline">\((X_i)\)</span>. We saw that (under certain technical conditions) the Markov chain has a unique stationary distribution <span class="math inline">\(\pi\)</span>, which we can find by solving the detailed balance equations <span class="math inline">\(\pi(y)\,p(y,x) = \pi(x)\,p(x,y)\)</span>.</p>
-<p>We then saw the ergodic theorem: If <span class="math inline">\(\phi\)</span> be a function on the state space <span class="math inline">\(\mathcal S\)</span> and <span class="math inline">\(X\)</span> has probability mass function <span class="math inline">\(\pi\)</span>, then <span class="math display">\[ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X), \]</span> as <span class="math inline">\(n \to \infty\)</span>. This means we can do Monte Carlo estimation where the samples <span class="math inline">\(X_1, \dots, X_n\)</span> are not IID, but are rather the output to a Markov chain with stationary distribution <span class="math inline">\(\pi\)</span>.</p>
-<p>So, suppose we want to estimate <span class="math inline">\(\operatorname{\mathbb E} \phi(X)\)</span>, where <span class="math inline">\(X\)</span> has PDF <span class="math inline">\(\pi\)</span>. Then all we need to find a Markov chain that has <span class="math inline">\(\pi\)</span> as its stationary distribution. We could try to do that be being clever – just by thinking hard and trying to come up with one. However, that’s rather difficult. Instead, the <strong>Metropolis–Hastings algorithm</strong> is a method to create such a Markov chain.</p>
-<p>The Metropolis–Hastings algorithm is based on a similar idea to rejection sampling. From state <span class="math inline">\(X_i = x\)</span>, we <em>propose</em> moving to some other state <span class="math inline">\(y\)</span>, and then we accept the proposal with some acceptance probability. If we accept the proposal, we move to <span class="math inline">\(X_{i+1} = y\)</span>; if we reject the proposal, we stay where we are <span class="math inline">\(X_{i+1} = x\)</span>.</p>
-<p><a href="https://en.wikipedia.org/wiki/Nicholas_Metropolis">Nicholas Metropolis</a> first came up with this idea when he worked with Ulam and von Neumann (of Monte Carlo fame) at the Los Alamos National Laboratories. His original idea was generalised by the Canadian statistician WK Hastings.</p>
-<p>The Metropolis–Hastings algorithm works like this:</p>
-<div class="thpart">
-<ul>
-<li><p>We want to define a Markov chain on a state space <span class="math inline">\(\mathcal S\)</span>, which contains the range of the probability mass function <span class="math inline">\(\pi\)</span> we want to sample from.</p></li>
-<li><p>We have an initial state <span class="math inline">\(X_1 = x_1\)</span> and we choose a transition matrix <span class="math inline">\(\mathsf R = (r(x,y))\)</span> representing the proposal moves.</p></li>
-</ul>
-<ol type="1">
-<li><p>From a current state <span class="math inline">\(X_i = x\)</span> we propose moving to a new state <span class="math inline">\(y\)</span>, where <span class="math inline">\(y\)</span> is chosen with probability <span class="math inline">\(r(x, y)\)</span>.</p></li>
-<li><p>With probability <span class="math display">\[\alpha(x,y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} , \]</span> we accept the proposal, and set <span class="math inline">\(X_i = y\)</span>; otherwise we stay put, and set <span class="math inline">\(X_{i+1} = x\)</span>.</p></li>
-<li><p>We repeat steps 1. and 2. <span class="math inline">\(n\)</span> times to get <span class="math inline">\(n\)</span> samples.</p></li>
-</ol>
+<div class="hidden">
+<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
+\newcommand{\Ex}{\mathbb{E}}
+\newcommand{\Ind}{\mathbb{I}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\ee}{\mathrm{e}}\]</span></p>
 </div>
-<p>So a generic Metropolis–Hastings algorithm on a finite state space in “sort-of-R-code” would look something like this:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INPUTS:</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># trans:   proposal transition matrix</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># target:  target stationary distribution</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># initial: initial state</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># n:       number of samples</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>states <span class="ot">&lt;-</span> <span class="fu">nrow</span>(trans)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>MC <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>accept <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  ratio <span class="ot">&lt;-</span> (target[y] <span class="sc">*</span> trans[y, x]) <span class="sc">/</span> (target[x] <span class="sc">*</span> trans[x, y])</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">min</span>(ratio, <span class="dv">1</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>MC[<span class="dv">1</span>] <span class="ot">&lt;-</span> initial</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  prop <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>states, <span class="dv">1</span>, <span class="at">prob =</span> trans[MC[i], ])</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;=</span> <span class="fu">accept</span>(MC[i], prop)) MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> prop</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span>                                 MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i]</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>It’s the last three lines that are important here. In this code <code>MC</code> records the states of our Markov chain. First we propose a move to state <code>prop</code>, according to the row of the transition matrix corresponding to the current state. Second, we accept that proposal move with probability <code>accept()</code>, where the arguments of <code>accept()</code> are the current state and the proposed state; we do this by checking whether a standard uniform <code>runif(1)</code> is less than this acceptance probability or not. If it is, we move to <code>prop</code> (last-but-one line); and if not, we stay where we are (last line).</p>
-<p>We will show later that this algorithm really does have <span class="math inline">\(\pi\)</span> as its stationary distribution.</p>
+<section id="bias-for-mcmc" class="level2" data-number="22.1">
+<h2 data-number="22.1" class="anchored" data-anchor-id="bias-for-mcmc"><span class="header-section-number">22.1</span> Bias for MCMC</h2>
+<p>Back in Lectures 3 and 4 we looked at the bias, variance, mean-square error and root-mean-square error for the Monte Carlo estimator <span class="math display">\[ \widehat\theta_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) \]</span> of <span class="math inline">\(\theta = \operatorname{\mathbb E}\phi(X)\)</span> where the samples <span class="math inline">\(X_i\)</span> are IID with the same distribution as <span class="math inline">\(X\)</span>. We saw that the estimator is unbiased, and that the variance and mean-square error are <span class="math display">\[ \Var\big(\widehat\theta_n^{\mathrm{MC}}\big) = \operatorname{MSE} \big(\widehat\theta_n^{\mathrm{MC}}\big) = \frac{1}{n} \Var\big(\phi(X)\big) . \]</span></p>
+<p>We now want to find these same values where the samples <span class="math inline">\(X_i\)</span> are not IID but are the output of a Markov chain whose stationary distribution is that of <span class="math inline">\(X\)</span>. This will be harder. We saw (under certain technical conditions that we will assume hold throughout) that the <span class="math inline">\(X_i\)</span> tend to the distribution of <span class="math inline">\(X\)</span> in the limit as <span class="math inline">\(i \to \infty\)</span>. But this is not the same as saying that their distribution is exactly the same as <span class="math inline">\(X\)</span> (let alone are independent). So here we can get as far as <span class="math display">\[ \Exg \widehat\theta_n^{\mathrm{MC}} =  \Exg \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i) \right) = \frac{1}{n} \sum_{i=1}^n \Exg\phi(X_i) \]</span> (remembering that linearity of expectation does not require independence), but then we’re a bit stuck.</p>
+<p>To make progress, we will make a simplifying assumption. Suppose we picked the initial state <span class="math inline">\(X_1\)</span> according to the distribution <span class="math inline">\(\pi\)</span>. Then, since <span class="math inline">\(\pi\)</span> is a stationary distribution, <span class="math inline">\(X_2\)</span> is distributed according to <span class="math inline">\(\pi\)</span> too. And <span class="math inline">\(X_3\)</span>, and <span class="math inline">\(X_4\)</span>, and so on. And <span class="math inline">\(\pi\)</span> itself is the distribution for <span class="math inline">\(X\)</span>. So, if we started from the stationary distribution – or “in equilibrium” – then we have <span class="math display">\[  \Exg \widehat\theta_n^{\mathrm{MC}} =  \Exg \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i) \right) = \frac{1}{n} \sum_{i=1}^n \Exg\phi(X_i) = \frac{1}{n}\,n\Exg\phi(X) = \Exg\phi(X) ,\]</span> and our estimator is unbiased.</p>
+<p>Of course, in real life, it is highly unlikely that we are able to sample the initial state from <span class="math inline">\(\pi\)</span>. After all, if we could do that, we could presumably sample all the <span class="math inline">\(X_i\)</span> from <span class="math inline">\(\pi\)</span> independently, as just use the basic Monte Carlo estimator instead. However, if we have used a burn-in period of appropriate length, we hope that by the time we take the first sample “that counts”, after the burn-in period, that will be very close to the stationary distribution, and hence we will have <span class="math display">\[  \Exg \widehat\theta_n^{\mathrm{MC}} \approx \Exg\phi(X) ,\]</span> and our estimator will be approximately unbiased.</p>
 </section>
-<section id="random-walk-metropolis" class="level2" data-number="19.2">
-<h2 data-number="19.2" class="anchored" data-anchor-id="random-walk-metropolis"><span class="header-section-number">19.2</span> Random walk Metropolis</h2>
-<p>There are quite a lot of cases where the proposals are <strong>symmetric</strong>, meaning that <span class="math inline">\(r(x, y) = r(y, x)\)</span>. This is the case if, for example, the proposal probabilities are those of the simple symmetric random walk: <span class="math inline">\(r(x, x+1) = \frac12\)</span> and <span class="math inline">\(r(x, x-1) = \frac12\)</span>. In the symmetric case, the acceptance probability simplifies to <span class="math display">\[ \alpha(x, y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1\right\} . \]</span></p>
-<p>The symmetric case was the version originally considered by Metropolis, before Hastings generalised it to non-symmetric proposals. For this reasons, when <span class="math inline">\(\mathsf R\)</span> has this symmetry property, we often refer to the resulting algorithm just as the <strong>Metropolis algorithm</strong>. When the proposal probabilities are those of the simple symmetric random walk, we call it the <strong>random walk Metropolis algorithm</strong>.</p>
-<div id="exm-MCMC-geom" class="theorem example">
-<p><span class="theorem-title"><strong>Example 19.1</strong></span> Let’s do an example of the random walk Metropolis algorithm where we aim to sample from the geometric distribution with parameter <span class="math inline">\(\frac13\)</span>, <span class="math display">\[ \pi(x) = \Big(\frac23\Big)^{x-1}\times \frac13 \qquad x = 1, 2, \dots. \]</span> We will start from <span class="math inline">\(X_1 = 1\)</span>.</p>
-<p>So at each step we propose moving up one with probability <span class="math inline">\(\tfrac12\)</span> and moving down one with probability <span class="math inline">\(\tfrac12\)</span>. Since the proposals are symmetric, the acceptance probabilities are <span class="math display">\[ \begin{align}
-\alpha(x, x+1) = \min \left\{ \frac{\pi(x+1)}{\pi(x)} , \, 1\right\} = \min \left\{\frac{\big(\frac23\big)^{x}\times \frac13}{\big(\frac23\big)^{x-1}\times \frac13},\, 1\right\} = \min \Big\{\frac23, 1\Big\} = \frac23 \\
-\alpha(x, x-1) = \min \left\{ \frac{\pi(x-1)}{\pi(x)} , \, 1\right\} = \min \left\{\frac{\big(\frac23\big)^{x-1}\times \frac13}{\big(\frac23\big)^{x}\times \frac13},\, 1\right\} = \min \Big\{\frac32, 1\Big\} = 1 ,
-\end{align} \]</span> except for <span class="math display">\[\alpha(1, 0) = \min \left\{ \frac{\pi(0)}{\pi(1)} , \, 1\right\} = \min \left\{ \frac{0}{\frac13} , \, 1\right\} = \min \{0,1\} = 0 .\]</span> So if the proposal is up one, we accept it with probability <span class="math inline">\(\frac23\)</span> and otherwise stay where we are. If the proposal is down one, we always accept – except going down from 1 to 0, which we always reject.</p>
-<p>Let’s try it.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>MC <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>MC[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  prop <span class="ot">&lt;-</span> MC[i] <span class="sc">+</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="sc">+</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="dv">1</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>))</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>      (prop <span class="sc">==</span> <span class="dv">0</span>)         MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i]</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span> (prop <span class="sc">==</span> MC[i] <span class="sc">-</span> <span class="dv">1</span>) MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i] <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span> (prop <span class="sc">==</span> MC[i] <span class="sc">+</span> <span class="dv">1</span>) MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i] <span class="sc">+</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;=</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>If we look at a graph of the first 250 steps of this Markov chain, we see that these aren’t at all random samples from the geometric distribution – each step is either the same as the one before, one bigger, or one smaller.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code for drawing this graph</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  MC[<span class="dv">1</span><span class="sc">:</span><span class="dv">250</span>],</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"time step"</span>, <span class="at">ylab =</span> <span class="st">"value"</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="L19-mh-1_files/figure-html/MCgeom1-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>But if we look at the overall graph of which samples came up overall, we see that their proportions (red) are extremely close to what we would expect from the true geometric distribution (blue).</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code for drawing this graph</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>(MC)<span class="sc">/</span>n,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.35</span>),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"value"</span>, <span class="at">ylab =</span> <span class="st">"probability"</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">+</span> <span class="fl">0.05</span>, (<span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>), <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">type =</span> <span class="st">"h"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="L19-mh-1_files/figure-html/MCgeom-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Suppose we wanted to estimate <span class="math inline">\(\mathbb EX^2\)</span>, where <span class="math inline">\(X \sim \operatorname{Geom}(\frac{1}{3})\)</span>. We already know how to do this the “basic” Monte Carlo way. But we can now do it the Markov chain Monte Carlo (MCMC) way, by using the output to this Markov chain.</p>
-<p>Our estimate is the following.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(MC<span class="sc">^</span><span class="dv">2</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 15.03181</code></pre>
-</div>
-</div>
-<p>The true answer is 15, so we are in the right area, but probably not as accurate as the basic Monte Carlo estimator with the same sample size would have been. This suggests that the dependence structure in a Markov chain might be a slight disadvantage, and may make the variance of our estimator bigger. The real strength of MCMC is when a basic Monte Carlo estimate is impossible to get – when basic MCMC is possible (such as for simple distributions like this geometric) we should probably stick with it.</p>
-</div>
+<section id="variance-for-mcmc" class="level2" data-number="22.2">
+<h2 data-number="22.2" class="anchored" data-anchor-id="variance-for-mcmc"><span class="header-section-number">22.2</span> Variance for MCMC</h2>
+<p>What about the variance of the MCMC estimator. Unlike the basic IID Monte Carlo case, we can no longer say <span class="math display">\[  \Var \big( \widehat\theta_n^{\mathrm{MC}}\big) =  \Var \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i) \right) = \frac{1}{n^2} \sum_{i=1}^n \Var\big(\phi(X_i)\big),\]</span> because the samples from a Markov chain are not independent (although we have limited their dependence structure).</p>
+<p>Instead, we have to include the “cross” covariance terms: <span class="math display">\[  \Var \big( \widehat\theta_n^{\mathrm{MC}}\big) =  \Var \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i) \right) = \frac{1}{n^2} \left(\sum_{i=1}^n \Var\big(\phi(X_i)\big) + 2 \sum_{i &lt; j} \Cov\big(\phi(X_i), \phi(X_j)\big) \right) .\]</span></p>
+<p>Again, we grind to a halt as far as exact results are concerned. But we can again invoke our simplifying assumption that <span class="math inline">\(X_1\)</span> was chosen from <span class="math inline">\(\pi\)</span>, and that we are in equilibrium. Then the variance terms are all <span class="math inline">\(\Var(\phi(X_i)) = \Var(\phi(X))\)</span>, which I shall call <span class="math inline">\(\sigma^2\)</span>. What about the covariance terms? Well, if the Markov chain is stationary, then <span class="math inline">\(\Cov(\phi(X_i), \phi(X_j))\)</span> only depends on how many steps apart <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> are. In equilibrium, <span class="math inline">\(\Cov(\phi(X_1), \phi(X_7))\)</span> is the same as <span class="math inline">\(\Cov(\phi(X_2), \phi(X_8))\)</span> or <span class="math inline">\(\Cov(\phi(X_{101}), \phi(X_{107}))\)</span>: these all represent the covariance between one state chosen according to <span class="math inline">\(\pi\)</span> and the state <span class="math inline">\(k = 7 - 1 = 6\)</span> steps later.</p>
+<p>So here we can write <span class="math display">\[ \Cov\big(\phi(X_i), \phi(X_j)\big) = \gamma(j - i) = \gamma(k) \]</span> where <span class="math inline">\(k = j - i\)</span> is the number of steps between <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. Students who have studied time series will know that <span class="math inline">\(\gamma(k)\)</span> is called the <strong>autocovariance</strong> at <strong>lag</strong> <span class="math inline">\(k\)</span>. (The prefix “auto-” mean “self-”, and “lag” means something like a waiting time.)</p>
+<p>(The tempting hope that we might have <span class="math inline">\(\gamma(k) = 0\)</span> for <span class="math inline">\(k \geq 2\)</span> is not true. [EXPLAIN])</p>
+<p>So now, in equilibrium, we have <span class="math display">\[  \begin{align}
+\Var \big( \widehat\theta_n^{\mathrm{MC}}\big)
+&amp;=  \frac{1}{n^2} \left(\sum_{i=1}^n \Var\big(\phi(X_i)\big) + 2 \sum_{i &lt; j} \Cov\big(\phi(X_i), \phi(X_j)\big) \right) \\
+&amp;= \frac{1}{n^2} \left(\sum_{i=1}^n \sigma^2 + 2 \sum_{i &lt; j} \gamma(j - i) \right) \\
+&amp;=  \frac{1}{n^2} \left(n\sigma^2 + 2 \sum_{i &lt; j} \gamma(j - i) \right)
+\end{align} \]</span></p>
+<p>AUTO CORRELATION</p>
+<p>SUM TO INFINITY</p>
+<p>RESULTS</p>
 </section>
-<section id="proof-of-stationary-distribution" class="level2" data-number="19.3">
-<h2 data-number="19.3" class="anchored" data-anchor-id="proof-of-stationary-distribution"><span class="header-section-number">19.3</span> Proof of stationary distribution</h2>
-<p>We have defined the Metropolis–Hastings Markov chain in terms of the proposal transition probabilities <span class="math inline">\(r(x, y)\)</span> and the acceptance probability <span class="math inline">\(\alpha(x, y)\)</span>. But what are the actual transition probability <span class="math inline">\(p(x, y)\)</span> of this Markov chain?</p>
-<p>Well, to move from <span class="math inline">\(x\)</span> to <span class="math inline">\(y \neq x\)</span>, we first have to propose that move, then we have to accept it. So we have <span id="eq-MHp"><span class="math display">\[ p(x, y) = r(x, y) \,\alpha(x, y) = r(x, y) \,\min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} . \tag{19.1}\]</span></span> (We can find <span class="math inline">\(p(x,x)\)</span>, if we need it, by using the fact that <span class="math inline">\(\sum_y p(x,y) = 0\)</span>.)</p>
-<p>We should check that the Metropolis–Hastings algorithm really does give a Markov chain with stationary distribution <span class="math inline">\(\pi\)</span>.</p>
-<div id="thm-MHpi" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 19.1</strong></span> Let <span class="math inline">\(\pi\)</span> be a probability mass function on a discrete state space <span class="math inline">\(\mathcal S\)</span>, and let <span class="math inline">\(\mathsf R = (r(x,y))\)</span> be a transition matrix on <span class="math inline">\(\mathcal S\)</span>. Let <span class="math inline">\((X_i)\)</span> be the Metropolis–Hastings Markov chain with proposal transition matrix <span class="math inline">\(\mathsf R\)</span> and acceptance probability <span class="math display">\[ \alpha(x, y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)},\,1\right\} . \]</span> Then <span class="math inline">\(\pi\)</span> is a stationary distribution for <span class="math inline">\((X_i)\)</span>.</p>
-</div>
-<p>We say “a” stationary distribution. But provided the Markov chain fulfils the technical conditions in <a href="L18-markov-longrun.html#thm-ergodic" class="quarto-xref">Theorem&nbsp;<span>18.2</span></a>, we know that this will be the unique stationary distribution, and that the ergodic theorem will hold.</p>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>We need to check the detailed balance equations <span class="math display">\[ \pi(y) \,p(y, x) = \pi(x) \,p(x, y) \]</span> for <span class="math inline">\(y \neq x\)</span>. By <a href="#eq-MHp" class="quarto-xref">Equation&nbsp;<span>19.1</span></a>, the detailed balance equations are <span id="eq-MHDB"><span class="math display">\[ \pi(y)\,r(y, x) \,\min \left\{ \frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} , \, 1\right\} = \pi(x)\,r(x, y) \,\min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} .  \tag{19.2}\]</span></span> Note that the two fractions in the first terms on the minimums are reciprocals of each other. So one of these will be greater than equal to 1, and the minimum will be 1; and one of the will be less than or equal to 1, and the minimum will be that fraction.</p>
-<p>Suppose first that <span class="math display">\[\frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} \geq 1 \qquad\text{and} \qquad \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} \leq 1 .\]</span> Then <a href="#eq-MHDB" class="quarto-xref">Equation&nbsp;<span>19.2</span></a> becomes <span class="math display">\[ \pi(y)\,r(y, x) \times 1 = \pi(x)\,r(x, y) \times \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)}  . \]</span> On the right-hand side, the two <span class="math inline">\(\pi(x)\,r(x,y)\)</span> terms cancel, so we have equality, and the detailed balance equations hold.</p>
-<p>If, on the other hand <span class="math display">\[\frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} \leq 1 \qquad\text{and} \qquad \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} \geq 1 ,\]</span> then the same argument works the other way around.</p>
-</div>
+<section id="example" class="level2" data-number="22.3">
+<h2 data-number="22.3" class="anchored" data-anchor-id="example"><span class="header-section-number">22.3</span> Example</h2>
+<p>COMPARE TO STEP SIZE EXPERIMENTS LAST TIME</p>
+<p>If time remains: ADVANTAGES DISADVANTAGES</p>
 
 
 </section>
@@ -965,13 +839,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L18-markov-longrun.html" class="pagination-link" aria-label="Markov chains in the long run">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Markov chains in the long run</span></span>
+      <a href="../problems/P4.html" class="pagination-link" aria-label="Problem Sheet 4">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Problem Sheet 4</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L20-markov-cont.html" class="pagination-link" aria-label="Markov chains in continuous space">
-        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Markov chains in continuous space</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
+        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

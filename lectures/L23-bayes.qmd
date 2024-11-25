@@ -1,1 +1,7 @@
 # MCMC and Bayesian statistics
+
+## Unnormalised stationary measures
+
+There's something we could have mentioned in the discrete case too, but let's mention it now. Note that in the acceptance probability $$\alpha(x,y) = \min \left\{ \frac{\pi(y)}{\pi(x)}\,\frac{r(y,x)}{r(x,y)} , \, 1\right\} , $$ the stationary distribution only appears in the ratio $\pi(y) / \pi(x)$. Suppose we only knew up to a normalising constant; that is, suppose we had $$ \pi(x) = \frac{1}{Z} \,\mu(x) \propto \mu(x) $$ with only the unnormalised measure $\mu$ known. This is fine -- we can still use it in the Metropolis Hastings algorithm, since $$ \frac{\pi(y)}{\pi(x)} = \frac{\frac1Z\mu(y)}{\frac1Z\mu(x)} = \frac{\mu(y)}{\mu(x)} , $$ so the normalisation constant cancels out.
+
+So Metropolis--Hastings works perfectly well if we want to sample from an unnormalised measure. As we mentioned before, when talking about envelope rejection sampling, this is very useful in Bayesian statistics, when we often know the posterior distribution only up to proportionality.

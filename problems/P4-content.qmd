@@ -1,0 +1,100 @@
+{{< include ../_header.qmd >}}
+
+::::: myq
+**1.**     Consider a Markov chain on the discrete state space $\mathcal S = \{1, 2, \dots\}$ with transition probabilities $p(x, x+1) = p$ for all $x$, $p(x, 1) = 1 - p$ for all $x$, and $p(x, y) = 0$ otherwise.
+
+:::: subq
+**(a)**  Calculate the two-step transition probabilities $p^{(2)}(x, y)$. (You might start by working out what two-step transitions are even *possible*.)
+::::
+
+:::: subq
+**(b)**  Find the stationary distribution $\pi$ for the Markov chain by solving $\pi(y) = \sum_x \pi(x) p(x,y)$.
+::::
+:::::
+
+::::: myq
+**2.**     The health of a chicken each day during a bird flu pandemic is described by a simple "healthy--sick--dead" Markov chain model. The state space is $\mathcal S = \{\text{H}, \text{S}, \text{D}\}$. The transition probabilities are
+$$ \begin{align}
+p_{\mathrm{HH}} &= ? & p_{\mathrm{HS}} &= 0.02 & p_{\mathrm{HD}} &= 0.01 \\
+p_{\mathrm{SH}} &= 0.3 & p_{\mathrm{SS}} &= 0.6 & p_{\mathrm{SD}} &= 0.2 \\
+p_{\mathrm{DH}} &= ? & p_{\mathrm{DS}} &= ? & p_{\mathrm{DD}} &= 1.
+\end{align} .$$
+Fill in the three gaps (marked $?$).
+
+If a chicken is healthy on day 1, what is the probability it is still alive on **(a)** day 2, **(b)** day 3; **(c)** day 11; **(d)** day 51? (You should do parts (a) and (b) by hand, but I recommend a computer for parts (c) and (d).)
+:::::
+
+::::: myq
+**3.**     Consider sampling from Poisson distribution with rate $\lambda$ using the random walk Metropolis algorithm on the integers.
+
+:::: subq
+**(a)**  Calculate the acceptance probabilities for this Markov chain. What proposals are always accepted with probability 1?
+::::
+
+:::: subq
+**(b)**  Suggest a good initial starting point $X_1$ for your Markov chain. Why did you choose this?
+::::
+
+:::: subq
+**(c)**  Write some R code to run this Markov chain in the case $\lambda = 4.5$.
+::::
+
+:::: subq
+**(d)**  Using your Markov chain, obtain an MCMC estimate of $\operatorname{\mathbb E}X(X-1)$, where $X \sim \operatorname{Po}(4.5)$.
+::::
+
+:::: subq
+**(e)**  *(Optional)* Calculate the correct answer, and comment on the accuracy of your estimate.
+::::
+:::::
+
+::::: myq
+**4.**     For $-1 < \alpha < 1$, consider the Markov chain on $\mathcal S = \mathbb R$ given by $X_{i+1} = \alpha X_i + Z_i$, where the $Z_i \sim \operatorname{N}(0, 1)$ are IID standard normals. (Students who have studied time series will recognise this as an AR(1) autoregressive process.)
+
+:::: subq
+**(a)**  Write down the transition density $p(x, y)$ for this Markov chain.
+::::
+
+:::: subq
+**(b)**  Find a stationary distribution for this Markov chain.
+::::
+:::::
+
+::::: myq
+**5.**     Let $Y \sim \operatorname{N}(-3, 1)$ and $Z \sim \operatorname{N}(3,1)$. Let $X$ be a mixture distribution that equals $Y$ with probability $\frac12$ and equals $Z$ with probability $\frac21$; in other words, if $f$ is the PDF of $Y$ and $g$ is the PDF of $Z$, then
+$\pi(x) = \frac12 f(x) + \frac12 g(x)$ is the PDF of $X$.
+
+:::: subq
+**(a)**  Draw a graph of $\pi$.
+::::
+
+:::: subq
+**(b)**  Your intention is to sample (approximately) from $X$ using the random walk Metropolis algorithm on the state space $\mathcal S = \mathbb R$. Explain why this could be tricky, and why a good choice of the typical stepsize $\sigma$ will be particularly important.
+::::
+
+:::: subq
+**(c)**  Write an R program that will run the random walk Metropolis algorithm with target distribution $\pi$. Experiment with different values of $\sigma$. What did you discover, and what value of $\sigma$ did you find most appropriate.
+::::
+
+:::: subq
+**(d)** Estimate $\mathbb EX$ using your program. Comment on the accuracy of your estimation.
+::::
+:::::
+
+::::: myq
+**6.**     Consider the Metropolis--Hastings algorithm on the state space $\mathbb R$ with target density
+$$ \pi(x) \propto \sin^2(x) \,\exp(-|x|) . $$
+Each of the following proposal methods gives a formula for the proposed next state $Y_{i+1}$ given the current state $X_{i}$. For each proposal method, write down the proposal density $r(x,y)$ and calculate the acceptance probability $\alpha(x, y)$.
+
+:::: subq
+**(a)**  $Y{i+1} = X_i + Z_i$, where $Z_i \sim \operatorname{N}(0,1)$ are IID.
+::::
+
+:::: subq
+**(b)**  $Y{i+1} = X_i + Z_i$, where $Z_i \sim \operatorname{U}[-1,2]$ are IID.
+::::
+
+:::: subq
+**(c)**  $Y_{i+1} \sim \operatorname{N}(0,1)$, independent of $X_i$.
+::::
+:::::
