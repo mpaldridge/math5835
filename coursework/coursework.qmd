@@ -1,0 +1,17 @@
+# Computational coursework {#coursework}
+
+::: {.mysummary}
+There is one piece of computational coursework for MATH5835M Statistical Computing. This coursework is worth 20% of the module mark.
+
+The coursework sheet is available in **here in HTML format** or **here in R Markdown format**.
+
+The deadline for the coursework will be the penultimate day of the Autumn term, **Thursday 12 December ** at **1400**. There is an optional deadline if you wish to get feedback on a draft of your work: Friday 6 December at 1400.
+
+Feedback on the final report and marks will be returned on Monday 13 January, the first day of the Spring term.
+:::
+
+## Computer practical
+
+## About the coursework
+
+## FAQ

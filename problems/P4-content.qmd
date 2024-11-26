@@ -87,11 +87,11 @@ $$ \pi(x) \propto \sin^2(x) \,\exp(-|x|) . $$
 Each of the following proposal methods gives a formula for the proposed next state $Y_{i+1}$ given the current state $X_{i}$. For each proposal method, write down the proposal density $r(x,y)$ and calculate the acceptance probability $\alpha(x, y)$.
 
 :::: subq
-**(a)**  $Y{i+1} = X_i + Z_i$, where $Z_i \sim \operatorname{N}(0,1)$ are IID.
+**(a)**  $Y_{i+1} = X_i + Z_i$, where $Z_i \sim \operatorname{N}(0,1)$ are IID.
 ::::
 
 :::: subq
-**(b)**  $Y{i+1} = X_i + Z_i$, where $Z_i \sim \operatorname{U}[-1,2]$ are IID.
+**(b)**  $Y_{i+1} = X_i + Z_i$, where $Z_i \sim \operatorname{U}[-1,2]$ are IID.
 ::::
 
 :::: subq
