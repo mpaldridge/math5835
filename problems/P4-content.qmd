@@ -61,7 +61,7 @@ If a chicken is healthy on day 1, what is the probability it is still alive on *
 :::::
 
 ::::: myq
-**5.**     Let $Y \sim \operatorname{N}(-3, 1)$ and $Z \sim \operatorname{N}(3,1)$. Let $X$ be a mixture distribution that equals $Y$ with probability $\frac12$ and equals $Z$ with probability $\frac21$; in other words, if $f$ is the PDF of $Y$ and $g$ is the PDF of $Z$, then
+**5.**     Let $Y \sim \operatorname{N}(-3, 1)$ and $Z \sim \operatorname{N}(3,1)$. Let $X$ be a mixture distribution that equals $Y$ with probability $\frac12$ and equals $Z$ with probability $\frac12$; in other words, if $f$ is the PDF of $Y$ and $g$ is the PDF of $Z$, then
 $\pi(x) = \frac12 f(x) + \frac12 g(x)$ is the PDF of $X$.
 
 :::: subq
@@ -73,7 +73,7 @@ $\pi(x) = \frac12 f(x) + \frac12 g(x)$ is the PDF of $X$.
 ::::
 
 :::: subq
-**(c)**  Write an R program that will run the random walk Metropolis algorithm with target distribution $\pi$. Experiment with different values of $\sigma$. What did you discover, and what value of $\sigma$ did you find most appropriate.
+**(c)**  Write an R program that will run the random walk Metropolis algorithm with target distribution $\pi$. Experiment with different values of the typical step size $\sigma$. What did you discover, and what value of $\sigma$ did you find most appropriate?
 ::::
 
 :::: subq
