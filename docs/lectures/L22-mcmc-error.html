@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../problems/solutions.html" rel="next">
+<link href="../coursework/coursework.html" rel="next">
 <link href="../problems/P4.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -367,6 +367,12 @@ window.Quarto = {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../coursework/coursework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Computational coursework</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../problems/solutions.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Solutions</span></a>
   </div>
@@ -524,7 +530,7 @@ window.Quarto = {
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>sum_big    <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">sum</span>(<span class="fu">acf</span>(MC_big,    <span class="at">lag.max =</span> <span class="dv">1000</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>acf)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(sum_small, sum_medium, sum_big), <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 197.7  14.7 131.1</code></pre>
+<pre><code>[1] 251.5  14.8 106.5</code></pre>
 </div>
 </div>
 <p>With the small and big step sizes, we need to take over 100 samples from the Markov chain to get the equivalent of one independent sample. But with the medium step size, we are getting the equivalent of one independent sample from roughly every 15 samples of the Markov chain.</p>
@@ -960,8 +966,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
-        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../coursework/coursework.html" class="pagination-link" aria-label="Computational coursework">
+        <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Computational coursework</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -367,6 +367,12 @@ window.Quarto = {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../coursework/coursework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Computational coursework</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../problems/solutions.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Solutions</span></a>
   </div>
@@ -456,7 +462,7 @@ window.Quarto = {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MC_RMSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">/</span> n)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MCest, MC_RMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0225920000 0.0001485989</code></pre>
+<pre><code>[1] 0.0227870000 0.0001492239</code></pre>
 </div>
 </div>
 <p>We then used <span class="math inline">\(Z' = -Z\)</span> as an antithetic variable. its root-mean-square error are</p>
@@ -468,14 +474,14 @@ window.Quarto = {
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>AV_RMSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>((samples1 <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">+</span> (samples2 <span class="sc">&gt;</span> <span class="dv">2</span>)) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> n))</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(AVest, AV_RMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0227100000 0.0001472364</code></pre>
+<pre><code>[1] 0.0228490000 0.0001476648</code></pre>
 </div>
 </div>
 <p>This looked like it made very little difference – perhaps a small improvement. This can be confirmed by looking at the sample correlation with R’s <code>cor()</code> function.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(samples1 <span class="sc">&gt;</span> <span class="dv">2</span>, samples2 <span class="sc">&gt;</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.02323712</code></pre>
+<pre><code>[1] -0.02338327</code></pre>
 </div>
 </div>
 <p>We see there was a very small but negative correlation: the variance, and hence the mean-square error, was reduced by about 2%.</p>
@@ -490,7 +496,7 @@ window.Quarto = {
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>MC_RMSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(<span class="fu">sin</span>(samples)) <span class="sc">/</span> n)</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MCest, MC_RMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.459211568 0.000247734</code></pre>
+<pre><code>[1] 0.4601180588 0.0002478952</code></pre>
 </div>
 </div>
 <p>We then used <span class="math inline">\(U' = 1 - U\)</span> as an antithetic variable</p>
@@ -502,7 +508,7 @@ window.Quarto = {
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>AV_RMSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(<span class="fu">sin</span>(samples1) <span class="sc">+</span> <span class="fu">sin</span>(samples2)) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> n))</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(AVest, AV_RMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4.596740e-01 2.483349e-05</code></pre>
+<pre><code>[1] 0.4596760966 0.0000248325</code></pre>
 </div>
 </div>
 <p>This time, we see a big improvement: the root-mean-square error has gone down by a whole order of magnitude, from <span class="math inline">\(2\times 10^{-4}\)</span> to <span class="math inline">\(2\times 10^{-5}\)</span>. It would normally take 100 times as many samples to reduce the RMSE by a factor of 10, but we’ve got the extra 99 million samples for free by using antithetic variables!</p>
@@ -510,7 +516,7 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">sin</span>(samples1), <span class="fu">sin</span>(samples2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.9899602</code></pre>
+<pre><code>[1] -0.9899601</code></pre>
 </div>
 </div>
 <p>That’s a very large negative correlation, which shows why the antithetic variables made such a huge improvement.</p>

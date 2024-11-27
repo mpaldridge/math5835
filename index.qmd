@@ -35,7 +35,7 @@ You should work through each problem sheet in preparation for the problems class
 
 ### Coursework
 
-There will be one piece of assessed coursework, which will make up 20% of your module mark.
+There will be one piece of assessed coursework, which will make up 20% of your module mark. [You can read more about the coursework here.](#coursework)
 
 The coursework will be in the form of a worksheet. The worksheet will have some questions, mostly computational but also mathematical, and you will have to write a report containing your answers and computations.
 

@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Matthew Aldridge">
-<meta name="dcterms.date" content="2024-09-30">
 
-<title>MATH5835M Statistical Computing</title>
+<title>Computational coursework – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -25,23 +23,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./lectures/L01-mc-intro.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../problems/solutions.html" rel="next">
+<link href="../lectures/L22-mcmc-error.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -71,7 +70,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="mystyle.css">
+<link rel="stylesheet" href="../mystyle.css">
 </head>
 
 <body class="nav-sidebar floating">
@@ -83,7 +82,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">About MATH5835</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../coursework/coursework.html">Computational coursework</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -98,7 +97,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">MATH5835</a> 
+      <a href="../">MATH5835</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -110,7 +109,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About MATH5835</span></a>
   </div>
 </li>
@@ -125,61 +124,61 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L01-mc-intro.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L01-mc-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L04-mc-error-2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L04-mc-error-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L05-cv.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L05-cv.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L06-antithetic-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L06-antithetic-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./problems/P1.html" class="sidebar-item-text sidebar-link">
+  <a href="../problems/P1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 1</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L07-antithetic-2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L07-antithetic-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L08-is-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L08-is-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L09-is-2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L09-is-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Importance sampling II</span></span></a>
   </div>
 </li>
@@ -196,55 +195,55 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L10-rng-intro.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L10-rng-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generating random numbers</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L11-lcg.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L11-lcg.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./problems/P2.html" class="sidebar-item-text sidebar-link">
+  <a href="../problems/P2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L13-inverse.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L13-inverse.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L14-rejection.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L14-rejection.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Rejection sampling</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L15-envelope-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L15-envelope-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Envelope rejection sampling I</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L16-envelope-2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L16-envelope-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Envelope rejection sampling II</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./problems/P3.html" class="sidebar-item-text sidebar-link">
+  <a href="../problems/P3.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 3</span></a>
   </div>
 </li>
@@ -261,43 +260,43 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L17-markov-intro.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L17-markov-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Markov chains in discrete space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L18-markov-longrun.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L18-markov-longrun.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Markov chains in the long run</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L19-mh-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L19-mh-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in discrete space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L20-markov-cont.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L20-markov-cont.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Markov chains in continuous space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L21-mh-2.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L21-mh-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in continuous space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./problems/P4.html" class="sidebar-item-text sidebar-link">
+  <a href="../problems/P4.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 4</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lectures/L22-mcmc-error.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L22-mcmc-error.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></span></a>
   </div>
 </li>
@@ -305,13 +304,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./coursework/coursework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Computational coursework</span></span></a>
+  <a href="../coursework/coursework.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Computational coursework</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./problems/solutions.html" class="sidebar-item-text sidebar-link">
+  <a href="../problems/solutions.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Solutions</span></a>
   </div>
 </li>
@@ -325,23 +324,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#about-math5835" id="toc-about-math5835" class="nav-link active" data-scroll-target="#about-math5835">About MATH5835</a>
-  <ul class="collapse">
-  <li><a href="#organisation-of-math5835" id="toc-organisation-of-math5835" class="nav-link" data-scroll-target="#organisation-of-math5835">Organisation of MATH5835</a>
-  <ul class="collapse">
-  <li><a href="#lectures" id="toc-lectures" class="nav-link" data-scroll-target="#lectures">Lectures</a></li>
-  <li><a href="#problem-sheets-and-problem-classes" id="toc-problem-sheets-and-problem-classes" class="nav-link" data-scroll-target="#problem-sheets-and-problem-classes">Problem sheets and problem classes</a></li>
-  <li><a href="#coursework" id="toc-coursework" class="nav-link" data-scroll-target="#coursework">Coursework</a></li>
-  <li><a href="#office-hours" id="toc-office-hours" class="nav-link" data-scroll-target="#office-hours">Office hours</a></li>
-  <li><a href="#exam" id="toc-exam" class="nav-link" data-scroll-target="#exam">Exam</a></li>
-  </ul></li>
-  <li><a href="#content-of-math5835" id="toc-content-of-math5835" class="nav-link" data-scroll-target="#content-of-math5835">Content of MATH5835</a>
-  <ul class="collapse">
-  <li><a href="#necessary-background" id="toc-necessary-background" class="nav-link" data-scroll-target="#necessary-background">Necessary background</a></li>
-  <li><a href="#syllabus" id="toc-syllabus" class="nav-link" data-scroll-target="#syllabus">Syllabus</a></li>
-  <li><a href="#book" id="toc-book" class="nav-link" data-scroll-target="#book">Book</a></li>
-  </ul></li>
-  </ul></li>
+  <li><a href="#about-the-coursework" id="toc-about-the-coursework" class="nav-link active" data-scroll-target="#about-the-coursework">About the coursework</a></li>
   </ul>
 </nav>
     </div>
@@ -350,26 +333,14 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">MATH5835M Statistical Computing</h1>
+<h1 class="title"><span id="coursework" class="quarto-section-identifier">Computational coursework</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Matthew Aldridge </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 30, 2024</p>
-    </div>
-  </div>
   
     
   </div>
@@ -379,97 +350,35 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="about-math5835" class="level1 unnumbered">
-<h1 class="unnumbered">About MATH5835</h1>
-<section id="organisation-of-math5835" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="organisation-of-math5835">Organisation of MATH5835</h2>
-<p>This module is <strong>MATH5835M Statistical Computing</strong>.</p>
-<p>This module lasts for 11 weeks from 30 September to 13 December 2024. The exam will take place between 13 and 24 January 2025.</p>
-<p>The module leader, the lecturer, and the main author of these notes is <a href="https://mpaldridge.github.io/">Dr Matthew Aldridge</a>. (You can call me “Matt”, “Matthew”, or “Dr Aldridge”, pronounced “<em>old</em>-ridge”.) My email address is <a href="mailto:m.aldridge@leeds.ac.uk">m.aldridge@leeds.ac.uk</a>, although I much prefer questions in person at office hours (see below) rather than by email.</p>
-<section id="lectures" class="level3">
-<h3 class="anchored" data-anchor-id="lectures">Lectures</h3>
-<p>The main way you will learn new material for this module is by attending lectures. There are three lectures per week:</p>
+<div class="mysummary">
+<p>There is one piece of computational coursework for MATH5835M Statistical Computing. This coursework is worth 20% of the module mark.</p>
+<p>The coursework sheet is available in <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html">here in HTML format</a></strong> or <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html">here in R Markdown format</a></strong>.</p>
+<p>The deadline for the coursework will be the penultimate day of the Autumn term, <strong>Thursday 12 December </strong> at <strong>1400</strong>. (There is an optional deadline if you wish to get feedback on a draft of your work: Friday 6 December at 1400.)</p>
+<p>Feedback on the final report and marks will be returned on Monday 13 January, the first day of the Spring term.</p>
+</div>
+<section id="about-the-coursework" class="level2">
+<h2 class="anchored" data-anchor-id="about-the-coursework">About the coursework</h2>
+<p>There is one piece of computational coursework for MATH5835M Statistical Computing. This coursework is worth 20% of the module mark.</p>
+<p>This page contains all the administrative and organisational information about the coursework. A coursework sheet contains the tasks you must carry out. The coursework sheet is available in <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html">here in HTML format</a></strong> or <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html">here in R Markdown format</a></strong>. The HTML page can be opened in a standard web browser. The R Markdown version (which I personally prefer) should be downloaded then opened in RStudio; I recommend using the “Visual” editor – see the button in the top left of the editing window.</p>
+<p>The are two deadlines for this work.</p>
+<ol type="1">
+<li><p>There is the <strong>main submission deadline</strong> which is the penultimate day of term, <strong>Thursday 12 December</strong> at <strong>1400</strong>. You must submit your work. Work that is submitted after this deadline will receive a penalty of 5% for every day or part-day late. Work that is more than 14 days late will not be marked and will receive 0. Work will be submitted electronically through Gradescope via the Minerva page for the module.</p></li>
+<li><p><em>Optionally</em>, you <em>may</em> also wish to get some brief informal feedback on your draft work before the main deadline. <em>If</em> you wish to get feedback on your draft work, you should submit that draft by Friday 6 December at 1400. I will return a small amount of general feedback about your work by Monday 9 December. I will not mark your draft, and the feedback will be a brief sentence or too that may be of a little help when completing the final version of your work. The quality of your draft submission will have no effect (either positive or negative) on the mark for your main submission, and there is no penalty if you choose not to take advantage of this offer. No extensions can be offered on the deadline for this informal feedback.</p></li>
+</ol>
+<p>The Gradescope submission for the final report will open after 1400 to Friday 6 December (to avoid drafts for optional feedback getting mixed up with final reports). The Gradescope submission for optional feedback on draft work will be open from the computer practical sessions in week 9.</p>
+<p>Your task is to write a short report in response to the tasks on the coursework sheet. Your report should include all the important R code you use and any important plots you draw. I call this a “report” because your work should be explained in details, in full English-language sentences, with your solutions discussed and justified. Any included code or figures should be an integral part of your text, not just copy-pasted at the end, and should be fully explained within the text. However, other parts of a more formal report such as an introduction, literature review, conclusion, references, etc, are not required here.</p>
+<p>Your report should be prepared electronically, but can be submitted in any sensible format – I recommend PDF (whether produced by LaTeX, R Markdown, Microsoft Word, or any other way), but HTML or Word document are fine too.</p>
+<p>There will be a computer practical in Week 9 where I will introduce the practical coursework in more detail. This is a good place to ask any questions you have about the coursework.</p>
+<p>Places where you can get help with the coursework include:</p>
 <ul>
-<li><p>Mondays at 1400 in Roger Stevens LT 13</p></li>
-<li><p>Thursdays at 1200 in Roger Stevens LT 03</p></li>
-<li><p>Fridays at 1000 in Rogers Stevens LT 09</p></li>
+<li><p>In the computer practical session.</p></li>
+<li><p>In my office hours – Mondays 1500–1600 in my office, 9.10n in the “Maths Research Deck” area on the 9th floor of the EC Stoner building at staircase 1.</p></li>
+<li><p>By submitting your draft work for optional feedback, as discussed above.</p></li>
 </ul>
-<p>I recommend taking your own notes during the lecture. I will put brief summary notes from the lectures on this website, but they will not reflect all the details I say out loud and write on the whiteboard. Lectures will go through material quite quickly and the material may be quite difficult, so it’s likely you’ll want to spend time reading through your notes after the lecture. Lectures should be recorded on the lecture capture system; I find it very difficult to read the whiteboard in these videos, but if you unavoidably miss a lecture, for example due to illness, you may find they are better than nothing.</p>
-<p>In Weeks 3, 5, 7, 9 and 11, the Thursday lecture will operate as a “problems class” – see more on this below.</p>
-<p>Attendance at lectures in compulsory.</p>
-</section>
-<section id="problem-sheets-and-problem-classes" class="level3">
-<h3 class="anchored" data-anchor-id="problem-sheets-and-problem-classes">Problem sheets and problem classes</h3>
-<p>Mathematics and statistics are “doing” subjects! To help you learn material for the module and to help you prepare for the exam, I will provide 5 unassessed problem sheets. These are for you to work through in your own time to help you learn; they are <em>not</em> formally assessed and will not be marked by me (or anyone else). You are welcome to discuss work on the problem sheets with colleagues and friends, although my recommendation would be to write-up your “last, best” attempt neatly by yourself.</p>
-<p>You should work through each problem sheet in preparation for the problems class in the Thursday lecture of Week 3, 5, 7, 9 and 11. In the problems class, you should be ready to discuss your answers to questions you managed to solve, explain your progress on questions you partially solved, and ask for help on questions you got stuck on. You can also ask for extra help or feedback at office hours (see below).</p>
-</section>
-<section id="coursework" class="level3">
-<h3 class="anchored" data-anchor-id="coursework">Coursework</h3>
-<p>There will be one piece of assessed coursework, which will make up 20% of your module mark. <a href="#coursework">You can read more about the coursework here.</a></p>
-<p>The coursework will be in the form of a worksheet. The worksheet will have some questions, mostly computational but also mathematical, and you will have to write a report containing your answers and computations.</p>
-<p>The assessed coursework will be introduced in the <strong>computer practical</strong> sessions in Week 9.</p>
-<p>The deadline for the coursework will be the penultimate day of the Autumn term, <strong>Thursday 12 December </strong> at 1400. Feedback and marks will be returned on Monday 13 January, the first day of the Spring term.</p>
-</section>
-<section id="office-hours" class="level3">
-<h3 class="anchored" data-anchor-id="office-hours">Office hours</h3>
-<p>I will run a weekly office hours drop-in session for feedback and consultation. You can come along if you want to talk to me about anything on the course, including if you’d like some feedback on your attempts at problem sheet questions. (For extremely short queries, you can approach me before or after lectures, but my response will often be: “Come to my office hours, and we can discuss it there!”)</p>
-<p>Office hours will happen on <strong>Mondays from 1500 to 1600</strong> – so directly after the Monday lecture – in my office, which is <strong>EC Stoner 9.10n</strong> on the 9th floor of the EC Stoner building. (One way my office is via the doors directly opposite the main entrance to the School of Mathematics. You can also get there from Staircase 1 on the Level 10 “red route” through EC Stoner, next to the Maths Satellite.) If you cannot make this time, contact me for an alternative arrangement.</p>
-</section>
-<section id="exam" class="level3">
-<h3 class="anchored" data-anchor-id="exam">Exam</h3>
-<p>There will be one exam, which will make up 80% of your module mark.</p>
-<p>The exam will be in the January 2025 exam period (13–24 January); the date and time will be announced in December. The exam will be in person and on campus.</p>
-<p>The exam will last 2 hours and 30 minutes. The exam will consist of 4 questions, all compulsory. You will be allowed to use a basic non-programmable calculator in the exam.</p>
-</section>
-</section>
-<section id="content-of-math5835" class="level2">
-<h2 class="anchored" data-anchor-id="content-of-math5835">Content of MATH5835</h2>
-<section id="necessary-background" class="level3">
-<h3 class="anchored" data-anchor-id="necessary-background">Necessary background</h3>
-<p>It is recommended that students should have completed at least two undergraduate level courses in probability and statistics, or something equivalent, although confidence and proficiency in basic material is more important than very deep knowledge. For Leeds undergraduates, the official prerequisite is <a href="https://webprod3.leeds.ac.uk/catalogue/dynmodules.asp?Y=202425&amp;M=MATH-2715">MATH2715 Statistical Methods</a>, although confidence and proficiency in the material of MATH1710 &amp; MATH1712 Probability and Statistics 1 &amp; 2 is probably more important.</p>
-<p>Some knowledge I will assume:</p>
-<ul>
-<li><p><strong>Probability:</strong> Basic rules of probability; random variables, both continuous and discrete; “famous” distributions (especially the normal distribution and the continuous uniform distribution); expectation, variance, covariance, correlation; law of large numbers and central limit theorem.</p></li>
-<li><p><strong>Statistics:</strong> Estimation of parameters; bias and error; sample mean and sample variance</p></li>
-</ul>
-<p>This module will also include an material on Markov chains. I won’t assume any pre-existing knowledge of this, and I will introduce all new material we need, but students who have studied Markov chains before (for example in the Leeds module MATH2750 Introduction to Markov Processes) may find a couple of lectures here are merely a reminder of things they already know.</p>
-<p>The lectures will include examples using the <strong>R</strong> program language. The coursework and problem sheets will require use of R. The exam, while just a “pencil and paper” exam, will require understanding and writing short portions of R code. We will assume basic R capability – that you can enter R commands, store R objects using the <code>&lt;-</code> assignment, and perform basic arithmetic with numbers and vectors. Other concepts will be introduced as necessary. If you want to use R on your own device, I recommend downloading (if you have not already) the <a href="https://cran.r-project.org">R programming language</a> and the <a href="https://posit.co/downloads/">program RStudio</a>. (These lecture notes were written in R using RStudio.)</p>
-</section>
-<section id="syllabus" class="level3">
-<h3 class="anchored" data-anchor-id="syllabus">Syllabus</h3>
-<p>We plan to cover the following topics in the module:</p>
-<ul>
-<li><p><strong>Monte Carlo estimation:</strong> definition and examples; bias and error; variance reduction techniques: control variates, antithetic variables, importance sampling. [9 lectures]</p></li>
-<li><p><strong>Random number generation:</strong> pseudo-random number generation using linear congruential generators; inverse transform method; rejection sampling [7 lectures]</p></li>
-<li><p><strong>Markov chain Monte Carlo</strong> (MCMC)<strong>:</strong> [7 lectures]</p>
-<ul>
-<li><p>Introduction to Markov chains in discrete and continuous space</p></li>
-<li><p>Metropolis–Hastings algorithm: definition; examples; MCMC in practice; MCMC for Bayesian statistics</p></li>
-</ul></li>
-<li><p><strong>Bootstrap:</strong> Empirical distribution; definition of the bootstrap; bootstrap error; bootstrap confidence intervals [4 lectures]</p></li>
-<li><p>Frequently-asked questions [1 lecture]</p></li>
-</ul>
-<p>Together with the 5 problems classes, this makes 33 lectures.</p>
-</section>
-<section id="book" class="level3">
-<h3 class="anchored" data-anchor-id="book">Book</h3>
-<p>The following book is strongly recommended for the module:</p>
-<ul>
-<li>J Voss, <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031"><em>An Introduction to Statistical Computing: A simulation-based approach</em></a>, Wiley Series in Computational Statistics, Wiley, 2014</li>
-</ul>
-<p>The library has <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">electronic access to this book</a> (and two paper copies).</p>
-<p>Dr Voss is a lecturer in the School of Mathematics and the University of Leeds, and has taught MATH5835 many times. <em>An Introduction to Statistical Computing</em> grew out of his lecture notes for this module, so the book is ideally suited for this module. My lectures will follow this book closely – specifically:</p>
-<ul>
-<li><p>Monte Carlo estimation: Sections 3.1–3.3</p></li>
-<li><p>Random number generation: Sections 1.1–1.4</p></li>
-<li><p>Markov chain Monte Carlo: Section 2.3 and Sections 4.1–4.3</p></li>
-<li><p>Bootstrap: Section 5.2</p></li>
-</ul>
-<p>For a second look at material, for preparatory reading, for optional extended reading, or for extra exercises, this book comes with my highest recommendation!</p>
+<p>Your report must be entirely your own work. You must not work together with others, and you must not use generative AI – the coursework is <strong><span style="color:red;">RED for use of AI</span></strong> on the University’s traffic light system, meaning the use of generative AI is forbidden. You must comply with <a href="https://students.leeds.ac.uk/info/10110/academic-integrity">the University’s rules on academic integrity</a>.</p>
+<p>If you encounter extraordinary unforeseeable personal circumstances that make it impossible for you to submit your coursework on time, you can apply for an deadline extension through <a href="https://students.leeds.ac.uk/info/10111/assessment/860/mitigating_circumstances">the usual mitigating circumstances procedure</a>. (Do not contact me about this – I cannot unilaterally offer deadline extensions.)</p>
 
 
-</section>
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -895,10 +804,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../lectures/L22-mcmc-error.html" class="pagination-link" aria-label="MCMC error">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./lectures/L01-mc-intro.html" class="pagination-link" aria-label="Introduction to Monte Carlo">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
+        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
