@@ -3,7 +3,7 @@
 ::: {.mysummary}
 There is one piece of computational coursework for MATH5835M Statistical Computing. This coursework is worth 20% of the module mark.
 
-The coursework sheet is available in **[here in HTML format](https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html)** or **[here in R Markdown format](https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html)**.
+The coursework sheet is available in **[here in HTML format](https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html)** or **<a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.Rmd">here in R Markdown format</a>**.
 
 The deadline for the coursework will be the penultimate day of the Autumn term, **Thursday 12 December ** at **1400**. (There is an optional deadline if you wish to get feedback on a draft of your work: Friday 6 December at 1400.)
 
@@ -14,7 +14,7 @@ Feedback on the final report and marks will be returned on Monday 13 January, th
 
 There is one piece of computational coursework for MATH5835M Statistical Computing. This coursework is worth 20% of the module mark.
 
-This page contains all the administrative and organisational information about the coursework. A coursework sheet contains the tasks you must carry out. The coursework sheet is available in **[here in HTML format](https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html)** or **[here in R Markdown format](https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html)**. The HTML page can be opened in a standard web browser. The R Markdown version (which I personally prefer) should be downloaded then opened in RStudio; I recommend using the "Visual" editor -- see the button in the top left of the editing window.
+This page contains all the administrative and organisational information about the coursework. A coursework sheet contains the tasks you must carry out. The coursework sheet is available in **[here in HTML format](https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html)** or **<a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.Rmd">here in R Markdown format</a>**. The HTML page can be opened in a standard web browser. The R Markdown version (which I personally prefer) should be downloaded then opened in RStudio; I recommend using the "Visual" editor -- see the button in the top left of the editing window.
 
 The are two deadlines for this work. 
 
@@ -43,3 +43,13 @@ Places where you can get help with the coursework include:
 Your report must be entirely your own work. You must not work together with others, and you must not use generative AI -- the coursework is **<span style="color:red;">RED</red> for use of AI** on the University's traffic light system, meaning the use of generative AI is forbidden. You must comply with [the University's rules on academic integrity](https://students.leeds.ac.uk/info/10110/academic-integrity).
 
 If you encounter extraordinary unforeseeable personal circumstances that make it impossible for you to submit your coursework on time, you can apply for an deadline extension through [the usual mitigating circumstances procedure](https://students.leeds.ac.uk/info/10111/assessment/860/mitigating_circumstances). (Do not contact me about this -- I cannot unilaterally offer deadline extensions.)
+
+## R and RStudio on University computers
+
+A quick reminder on how to access R and RStudio on University computers.
+
+1. **Open the AppsAnywhere portal** This should be a link on the desktop. If invited to run any software, accept.
+
+2. **Load the language R** Search on AppsAnywhere for "R for Windows" (or similar) and launch it. This will (silently) load the language R. It will also open an inferior RStudio-like program called "RGui" -- you can close it.
+
+3.**Launch RStudio** Search on AppsAnywhere for "RStudio" (or similar) and launch it.
