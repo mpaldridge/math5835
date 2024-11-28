@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5&nbsp; Control variate – MATH5835M Statistical Computing</title>
+<title>23&nbsp; MCMC and Bayesian statistics – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L06-antithetic-1.html" rel="next">
-<link href="../lectures/L04-mc-error-2.html" rel="prev">
+<link href="../problems/solutions.html" rel="next">
+<link href="../lectures/L22-mcmc-error.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L05-cv.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L23-bayes.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">MCMC and Bayesian statistics</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -211,7 +211,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L05-cv.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L05-cv.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></span></a>
   </div>
 </li>
@@ -365,7 +365,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L23-bayes.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L23-bayes.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">MCMC and Bayesian statistics</span></span></a>
   </div>
 </li>
@@ -387,18 +387,16 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#variance-reduction" id="toc-variance-reduction" class="nav-link active" data-scroll-target="#variance-reduction"><span class="header-section-number">5.1</span> Variance reduction</a></li>
-  <li><a href="#control-variate-estimation" id="toc-control-variate-estimation" class="nav-link" data-scroll-target="#control-variate-estimation"><span class="header-section-number">5.2</span> Control variate estimation</a></li>
-  <li><a href="#error-of-control-variate-estimate" id="toc-error-of-control-variate-estimate" class="nav-link" data-scroll-target="#error-of-control-variate-estimate"><span class="header-section-number">5.3</span> Error of control variate estimate</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link active" data-scroll-target="#example"><span class="header-section-number">23.1</span> Example</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L05-cv.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L23-bayes.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">MCMC and Bayesian statistics</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></h1>
+<h1 class="title"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">MCMC and Bayesian statistics</span></h1>
 </div>
 
 
@@ -415,165 +413,149 @@ window.Quarto = {
 </header>
 
 
-<div class="hidden">
-<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
-\newcommand{\Ex}{\mathbb{E}}
-\newcommand{\Ind}{\mathbb{I}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}
-\newcommand{\ee}{\mathrm{e}}\]</span></p>
-</div>
-<section id="variance-reduction" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="variance-reduction"><span class="header-section-number">5.1</span> Variance reduction</h2>
-<p>Let’s recap where we’ve got to. The Monte Carlo estimator of <span class="math inline">\(\theta = \Exg \phi(X)\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i), \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are IID random samples from <span class="math inline">\(X\)</span>. The mean-square error of this estimator is <span class="math display">\[{\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . \]</span> If we want a more accurate estimate, we can just take more samples <span class="math inline">\(n\)</span>. But the problem is that the root-mean-square error scales like <span class="math inline">\(1/\sqrt{n}\)</span>. To double the accuracy, we need four times as many samples; for one more decimal place of accuracy, we need one hundred times as many samples.</p>
-<p>Are there other ways we could reduce the error of Monte Carlo estimation, so we need fewer samples? That is, can we use some mathematical ingenuity to adapt the Monte Carlo estimate to one with a smaller error?</p>
-<p>Well, the mean-square error is the variance divided by <span class="math inline">\(n\)</span>. So if we can’t (or don’t want to) increase <span class="math inline">\(n\)</span>, perhaps we can <em>decrease</em> the <em>variance</em> instead? Strategies to do this are called <strong>variance reduction strategies</strong>. In this module, we will look at three variance reduction strategies:</p>
-<ul>
-<li><p><strong>Control variate:</strong> We can “anchor” our estimate of <span class="math inline">\(\Exg \phi(X)\)</span> to a similar but easier-to-calculate value <span class="math inline">\(\Exg \psi(X)\)</span>. (This lecture)</p></li>
-<li><p><strong>Antithetic variables:</strong> Instead of using independent samples, we could use correlated samples. If the correlation is negative this can improve our estimate. (Lectures 6 and 7)</p></li>
-<li><p><strong>Importance sampling:</strong> Instead of sampling from <span class="math inline">\(X\)</span>, sample from some other more suitable distribution instead, then readjust the answer we get. (Lectures 8 and 9)</p></li>
-</ul>
-</section>
-<section id="control-variate-estimation" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="control-variate-estimation"><span class="header-section-number">5.2</span> Control variate estimation</h2>
-<p>In last Friday’s lecture, I polled the class on this question: <em>Estimate the average time it takes to fly from London to Washington D.C.</em></p>
-<ul>
-<li><p>The actual answer is: 8 hours and 29 minutes.</p></li>
-<li><p>The mean guess for the class was: 7 hours and 37 minutes (52 minutes too little)</p></li>
-<li><p>The root-mean-square error for the guesses was: 133 minutes</p></li>
-</ul>
-<p>After you’d guessed, I gave the following hint: <em>Hint: The average time it takes to fly from London to New York is 8 hours and 10 minutes.</em> After the hint:</p>
-<ul>
-<li><p>The mean guess for the class was: 8 hours and 45 minutes (16 minutes too much)</p></li>
-<li><p>The root-mean-square error for the guesses was: 49 minutes</p></li>
-</ul>
-<p>So after the hint, the error of the class was reduced by 63%.</p>
-<p>Why did the hint help? We were trying to estimate <span class="math inline">\(\theta^{\mathrm{DC}}\)</span>, the distance to D.C. But that’s a big number, and the first estimates had a big error (over an hour, on average). After the hint, I expect most people thought something like this: “The answer <span class="math inline">\(\theta^{\mathrm{DC}}\)</span> is going to be similar to the <span class="math inline">\(\theta^{\mathrm{NY}} =\)</span> 8:10 to New York, but Washington D.C. is a bit further, so I should increase the number a bit, but not too much.”</p>
-<p>To be more mathematical, we could write <span class="math display">\[\theta^{\mathrm{DC}} = \theta^{\mathrm{DC}} + \big(\theta^{\mathrm{NY}} - \theta^{\mathrm{NY}}\big)= \underbrace{\big(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\big)}_{\text{small}} + \underbrace{\theta^{\mathrm{NY}}\vphantom{\big)}}_{\text{known}} . \]</span> In that equation, the second term, <span class="math inline">\(\theta^{\mathrm{NY}} =\)</span> 8:10 was completely known, so had error 0, while the first term <span class="math inline">\(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\)</span> (actually 19 minutes) was a small number, so only had a small error.</p>
-<p>This idea of improving an estimate by “anchoring” it to some known value is called <strong>controlled estimation</strong>. It is a very useful idea in statistics (and in life!).</p>
-<p>We can apply this idea to Monte Carlo estimation too. Suppose we are trying to estimate <span class="math inline">\(\theta = \Exg \phi(X)\)</span>. We could look for a function <span class="math inline">\(\psi\)</span> that is similar to <span class="math inline">\(\phi\)</span> (at least for the values of <span class="math inline">\(x\)</span> that have high probability for the random variable <span class="math inline">\(X\)</span>), but where we know for certain what <span class="math inline">\(\Exg \psi(X)\)</span> is. Then we can write <span class="math display">\[ \theta = \Exg \phi(X) = \Exg \big(\phi(X) - \psi(X) + \psi(X)\big) = \underbrace{\Exg\big(\phi(X) - \psi(X)\big)}_{\text{estimate this with Monte Carlo}} + \underbrace{\Exg \psi(X)\vphantom{\big)}}_{\text{known}} . \]</span></p>
-<p>Here, <span class="math inline">\(\psi(X)\)</span> is known as the <strong>control variate</strong>.</p>
-<div id="def-MCest" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 5.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(\psi\)</span> be a function such that <span class="math inline">\(\eta = \Exg\psi(X)\)</span> is known. Suppose that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are a random sample from <span class="math inline">\(X\)</span>. Then the <strong>control variate Monte Carlo estimate</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{CV}}\)</span> of <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta . \]</span></p>
-</div>
-<div id="exm-control" class="theorem example">
-<p><span class="theorem-title"><strong>Example 5.1</strong></span> Let’s try to estimate <span class="math inline">\(\Ex \cos(X)\)</span>, where <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span> is a standard normal distribution.</p>
-<p>We could do this the “usual” Monte Carlo way.</p>
+<!--
+## Bayesian set-up
+
+Today, we will complete our study of Markov chain Monte Carlo by taking a look at how MCMC can be applied to Bayesian statistic.
+
+We recall the Bayesian set-up. The data is modelled by the **likelihood** $f(\mathbf x \mid \theta)$, which is the distribution (probability mass or density function) of the data $\mathbf x = (x_1, x_2, \dots, x_n)$ given some unknown parameter $\theta$. Typically, the datapoints $x_i$ are assumed to be IID, so we can write
+$$ f(\mathbf x \mid \theta) = \prod_{i=1}^n f(x_i \mid \theta) . $$
+
+Our goal in statistics is to make inferences about -- that is, to learn about -- the unknown parameter $\theta$.
+
+In the Bayesian paradigm, we start with a **prior** belief about what we think the likely values of $\theta$ are before we've collected any data. Our prior belief is represented by a distribution $\pi(\theta)$.
+
+After collecting the data $\mathbf x$, we then seek the **posterior** distribution -- that is, the distribution of $\theta$ *conditional on* the data we have seen. This is represented by a distribution $\pi(\theta \mid \mathbf x)$. It is this posterior distribution that we want to learn about.
+
+We can calculate the posterior from the prior and the likelihood using Bayes' theorem. We have
+$$ \pi(\theta \mid \mathbf x) \propto \pi(\theta) \,f(\mathbf x \mid \theta) = \pi(\theta) \prod_{i=1}^n f(x_i \mid \theta) . $$
+More informally, we can say
+$$ \text{posterio} \propto \text{prior} \times \text{likelihood} . $$
+Let us note for future reference that this only gives the posterior
+$$ \pi(\theta \mid \mathbf x) = \frac{1}{Z}\, \pi(\theta) \,f(\mathbf x \mid \theta) = \frac{1}{Z}\, \pi(\theta) \prod_{i=1}^n f(x_i \mid \theta)  $$
+up to proportionality, where the normalising constant is
+$$ Z = \int \pi(\theta)\,f(\mathbf x \mid \theta) \, \mathrm{d}\theta . $$
+
+If you have seen Bayesian statistics in previous modules, you may well have seen simple cases, where the posterior turns out to have a simple form -- often in the same family as the prior but with a different parameter.
+
+For example, take the case where the likelihood $X \sim \operatorname{Bin}(m, \theta)$ is a binomial distribution with a known number of trials $m$ but an unknown success probability. If the prior for $\theta$ is a Beta distribution, then [it's easy to check](https://mpaldridge.github.io/math1710/L20-bayes-ii.html#beta-bern) that the posterior for $\theta$ is another Beta distribution, just with different parameters.
+
+But aside from these simple "toy examples", in real life the posterior distribution often has a complicated form. It is often not possible to calculate the normalising constant $Z$; nor, therefore, can we calculate statistics of the posterior, like its expectation or confidence intervals.
+
+This is where statistical computing comes in. If we can manage to sample from the posterior distribution, then we can estimate statistics of the posterior using Monte Carlo estimation. But (again, aside from the easy toy examples), sampling from the posterior seems hard. The inverse transform method requires the normalisation constant $Z$, but that is typically to difficult to calculate. Occasionally, if we're very clever, we can think for a long time and manage to come up with an envelope rejection sampling method. But we'd like a method we know will always work.
+
+MCMC is that method. If we use the random walk Metropolis algorithm, all we need to do is pick our step size $\sigma$ and set it going.
+
+A crucial point that we haven't mentioned yet, is that Metropolis--Hastings works perfectly fine when we don't know a normalising constant in the distribution we are sampling from. That's because the acceptance probability -- let's just write it for the symmetric Metropolis case -- is
+$$ \begin{align}
+\alpha(\theta, \theta')
+&= \min \left\{ \frac{\pi(\theta' \mid \mathbf x)}{\pi(\theta \mid \mathbf x)} , \, 1 \right\} \\
+&= \min \left\{ \frac{\frac{1}{Z}\,\pi(\theta')\,f(\mathbf x \mid \theta')}{\frac{1}{Z}\,\pi(\theta')\,f(\mathbf x \mid \theta)} , \, 1 \right\} \\
+&= \min \left\{ \frac{\pi(\theta')}{\pi(\theta)}\,\frac{f(\mathbf x \mid \theta')}{f(\mathbf x \mid \theta)} , \, 1 \right\} , 
+\end{align} $$
+where the $Z$s in the fraction have cancelled out.
+-->
+<section id="example" class="level2" data-number="23.1">
+<h2 data-number="23.1" class="anchored" data-anchor-id="example"><span class="header-section-number">23.1</span> Example</h2>
+<div id="exm-mcmc-bayes" class="theorem example">
+<p><span class="theorem-title"><strong>Example 23.1</strong></span> Consider a statistical model where <span class="math inline">\(X_i\)</span> are IID and normally distributed with unknown mean <span class="math inline">\(\mu\)</span> and and standard deviation <span class="math inline">\(\sigma\)</span>. Here our parameter <span class="math inline">\(\boldsymbol\theta = (\mu, \sigma)\)</span> is two-dimensional. So the likelihood is <span class="math display">\[ f(\mathbf x \mid \mu, \sigma) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\,\exp \left(\frac{(x_i-\mu)^2}{2\sigma^2}\right) = (2\pi\sigma^2)^{-n/2} \,\exp \left( \frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2 \right) . \]</span></p>
+<p>There are some special priors for which the posterior here has a very simple distribution. For example, if the prior for <span class="math inline">\(\mu\)</span> is a normal distribution and the prior for <span class="math inline">\(\sigma\)</span> is that <span class="math inline">\(1/\sigma^2\)</span> has a Gamma distribution and these are independent, then the posterior has the same form but with different parameters. But if your beliefs about <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> aren’t well represented by a distribution of this form, then it will be very difficult or impossible to get a closed-form expression for the posterior.</p>
+<p>Let’s suppose our prior beliefs are represented something a bit weirder. Let’s say that our prior is that <span class="math inline">\(\mu\)</span> is uniformly distributed on <span class="math inline">\([-10, 10]\)</span> and that <span class="math inline">\(\sigma\)</span> is exponentially distributed with rate <span class="math inline">\(0.3\)</span> and that these are independent. So our prior is <span class="math display">\[\pi(\mu, \sigma) = \frac{1}{20}\,0.3\mathrm{e}^{-0.3\sigma} \qquad -10 \leq \mu \leq 10, \sigma \geq 0 . \]</span></p>
+<p>Suppose now that we see that data <span class="math display">\[\mathbf x &lt;- (3.5, 13.7, 6.4, 0.7, 10.2, -2.3, 6.6, 5.1, 9.1, 10.7) . \]</span> We want to update our beliefs about <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> and make inferences about the posterior. Finding the posterior here “by hand” seems a hopeless task. But we can certainly simulate from it with the random walk Metropolis algorithm.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">cos</span>(x)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">phi</span>(samples))</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">&lt;-</span> <span class="cf">function</span>(mu, sigma) <span class="fu">dunif</span>(mu, <span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>) <span class="sc">*</span> <span class="fu">dexp</span>(sigma, <span class="fl">0.3</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>accept <span class="ot">&lt;-</span> <span class="cf">function</span>(mu, sigma, propmu, propsigma, x) {</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  priorratio <span class="ot">&lt;-</span> <span class="fu">prior</span>(propmu, propsigma) <span class="sc">/</span> <span class="fu">prior</span>(mu, sigma)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  lhr <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(x, propmu, propsigma) <span class="sc">/</span> <span class="fu">dnorm</span>(x, mu, sigma)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  priorratio <span class="sc">*</span> <span class="fu">prod</span>(lhr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.5</span>, <span class="fl">13.7</span>, <span class="fl">6.4</span>, <span class="fl">0.7</span>, <span class="fl">10.2</span>, <span class="sc">-</span><span class="fl">2.3</span>, <span class="fl">6.6</span>, <span class="fl">5.1</span>, <span class="fl">9.1</span>, <span class="fl">10.7</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>stepmu    <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>stepsigma <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>initialmu    <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>initialsigma <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>MCmu    <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>MCsigma <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>MCmu[<span class="dv">1</span>]    <span class="ot">&lt;-</span> initialmu</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>MCsigma[<span class="dv">1</span>] <span class="ot">&lt;-</span> initialsigma</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  propmu    <span class="ot">&lt;-</span> MCmu[i]    <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="dv">0</span>, stepmu)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  propsigma <span class="ot">&lt;-</span> MCsigma[i] <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="dv">0</span>, stepsigma)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;</span> <span class="fu">accept</span>(MCmu[i], MCsigma[i], propmu, propsigma, x)) {</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    MCmu[i <span class="sc">+</span> <span class="dv">1</span>]    <span class="ot">&lt;-</span> propmu</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    MCsigma[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> propsigma</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    MCmu[i <span class="sc">+</span> <span class="dv">1</span>]    <span class="ot">&lt;-</span> MCmu[i]</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    MCsigma[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MCsigma[i]</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If we just want “point estimators” for <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, we could just take the means of the posteriors distributions. We can calculate those using MCMC; they’re simply</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">mean</span>(MCmu), <span class="fu">mean</span>(MCsigma))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6061676</code></pre>
+<pre><code>[1] 6.286321 5.092001</code></pre>
 </div>
 </div>
-<p>But we could see if we can do better with a control variate. But what should we pick for the control function <span class="math inline">\(\psi\)</span>? We want something that’s similar to <span class="math inline">\(\phi(x) = \cos(x)\)</span>, but where we can actually calculate the expectation.</p>
-<p>Here’s a suggestion. If we remember our <a href="https://en.wikipedia.org/wiki/Taylor_series">Taylor series</a>, we know that, for <span class="math inline">\(x\)</span> near <span class="math inline">\(0\)</span>, <span class="math display">\[ \cos x \approx 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots . \]</span> So how about taking the first two nonzero terms in the Taylor series <span class="math display">\[ \psi(x) = 1 - \frac{x^2}{2} . \]</span> That is quite close to <span class="math inline">\(\cos x\)</span>, at least for the values of <span class="math inline">\(x\)</span> near 0 that <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span> is most likely to take.</p>
+<p>Compare these to the posterior means of <span class="math inline">\(0\)</span> and <span class="math inline">\(1/0.3 = 3.33\)</span> respectively.</p>
+<p>But the strength of Bayesian statistics is not just computing point estimates, but understanding the entire posterior distribution. We can compare our histograms of the marginal distributions of the posterior with the marginal distributions of the prior.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code for drawing this graph</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cos</span>(x), <span class="at">from =</span> <span class="sc">-</span><span class="fl">4.5</span>, <span class="at">to =</span> <span class="fl">4.5</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">3</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.2</span>,<span class="fl">1.2</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="dv">1</span> <span class="sc">-</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span>, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"cos x"</span>, <span class="fu">expression</span>(<span class="dv">1</span> <span class="sc">-</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span>)),</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(MCmu, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">12</span>, <span class="dv">12</span>), <span class="at">breaks =</span> <span class="dv">20</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dunif</span>(x, <span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="L05-cv_files/figure-html/taylor-1.svg" class="img-fluid figure-img" width="672"></p>
+<p><img src="L23-bayes_files/figure-html/unnamed-chunk-3-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(MCsigma, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">breaks =</span> <span class="dv">30</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dexp</span>(x, <span class="fl">0.3</span>), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L23-bayes_files/figure-html/unnamed-chunk-3-2.svg" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Not only that, but we know that for <span class="math inline">\(Y \sim \operatorname{N}(\mu, \sigma^2)\)</span> we have <span class="math inline">\(\Ex Y^2 = \mu^2 + \sigma^2\)</span>. So <span class="math display">\[ \Exg \psi(X) = \Exg \left(1 - \frac{X^2}{2} \right) = 1 - \frac{\Ex X^2}{2} = 1 - \frac{0^2 + 1}{2} = \frac12 . \]</span></p>
-<p>So our control variate estimate is:</p>
+<p>Although in our prior the parameters <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> were independent, that might not be the case any longer in our posterior.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>psi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="dv">1</span> <span class="sc">-</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>CVest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">phi</span>(samples) <span class="sc">-</span> <span class="fu">psi</span>(samples)) <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>CVest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(MCmu, MCsigma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6065323</code></pre>
+<pre><code>[1] -0.08209921</code></pre>
 </div>
 </div>
+<p>It appears there’s now a slight negative correlation (if <span class="math inline">\(\mu\)</span> is smaller than we expect, <span class="math inline">\(\sigma\)</span> has to be a little bit bigger to allow the data to fit).</p>
 </div>
-</section>
-<section id="error-of-control-variate-estimate" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="error-of-control-variate-estimate"><span class="header-section-number">5.3</span> Error of control variate estimate</h2>
-<p>What is the error in a control variate estimate?</p>
-<div id="thm-CVerr" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 5.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(\psi\)</span> be a function such that <span class="math inline">\(\eta \Exg\psi(X)\)</span> is known. Let <span class="math display">\[ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta\]</span> be the control variate Monte Carlo estimator of <span class="math inline">\(\theta\)</span>. Then:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\widehat{\theta}_n^{\mathrm{CV}}\)</span> is unbiased, in that <span class="math inline">\(\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{CV}}\big) = 0\)</span>.</p></li>
-<li><p>The variance of of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{CV}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{CV}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}\)</span>.</p></li>
-<li><p>The mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{CV}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{CV}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}\)</span>.</p></li>
-<li><p>The root-mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{CV}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{CV}}\big) = \frac{1}{\sqrt{n}} \sqrt{\operatorname{Var}\big(\phi(X) - \psi(X)\big)}}\)</span>.</p></li>
-</ol>
-</div>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>This is very similar to <a href="L03-mc-error-1.html#thm-MCerr" class="quarto-xref">Theorem&nbsp;<span>3.2</span></a>, so we’ll just sketch the important differences.</p>
-<p>In part 1, we have <span class="math display">\[\begin{align*}
-\Exg \widehat{\theta}_n^{\mathrm{CV}}
-  &amp;= \Exg \left(\frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big)\right) + \eta \\
-  &amp;= \frac{1}{n}\Exg \left(\sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big)\right) + \eta \\
-  &amp;= \frac{n}{n}\Exg\big(\phi(X) - \psi(X)\big) + \eta \\
-  &amp;= \Exg\phi(X) - \Exg\psi(X) + \eta \\
-  &amp;= \Exg\phi(X) ,
-\end{align*}\]</span> since <span class="math inline">\(\eta = \Exg\psi(X)\)</span>. So the estimator is unbiased.</p>
-<p>For part 2, remembering that <span class="math inline">\(\eta = \Exg \psi(X)\)</span> is a constant, so doesn’t affect the variance, we have <span class="math display">\[\begin{align*}
-\Var \big(\widehat{\theta}_n^{\mathrm{CV}}\big)
-&amp;= \Var \left(\frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta \right) \\
-&amp;= \Big( \frac{1}{n}\Big)^2 \Var \left(\sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) \right) \\
-&amp;= \frac{n}{n^2} \Var \big(\phi(X) - \psi(X)\big) \\
-&amp;= \frac{1}{n} \Var \big(\phi(X) - \psi(X)\big) .
-\end{align*}\]</span></p>
-<p>Parts 3 and 4 follow in the usual way.</p>
-</div>
-<p>This tells us that a control variate Monte Carlo estimate is good when the variance of <span class="math inline">\(\phi(X) - \psi(X)\)</span>. This variance is likely to be small if <span class="math inline">\(\phi(X) - \psi(X)\)</span> is usually small – although, to be more precise, it’s more important for <span class="math inline">\(\phi(X) - \psi(X)\)</span> to be <em>consistent</em>, rather than small per se.</p>
-<p>As before, we can’t usually calculate the variance <span class="math inline">\(\Var(\phi(X) - \psi(X))\)</span> exactly, but we can estimate it from the samples. Again, we use the sample variance <span class="math display">\[S^2 = \frac{1}{n-1}\sum_{i=1}^n \Big(\big(\phi(X_i) - \psi(X_i)\big) - \big(\widehat\theta_n^{\mathrm{CV}} + \eta\big)\Big)^2 , \]</span> and estimate the MSE and RMSE by <span class="math inline">\(S^2 / n\)</span> and <span class="math inline">\(S / \sqrt{n}\)</span> respectively.</p>
-<div id="exm-control2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 5.2</strong></span> We return to <a href="#exm-control" class="quarto-xref">Example&nbsp;<span>5.1</span></a>, where we were estimating <span class="math inline">\(\Ex \cos(X)\)</span> for <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span>.</p>
-<p>The naive Monte Carlo estimate had mean-square and root-mean-square error</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">cos</span>(x)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>MC_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">phi</span>(samples)) <span class="sc">/</span> n</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MC_MSE, <span class="fu">sqrt</span>(MC_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.002769e-07 4.475231e-04</code></pre>
-</div>
-</div>
-<p>The variance and root-mean-square error of our control variate estimate, on the other hand, are</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>psi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="dv">1</span> <span class="sc">-</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>CV_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">phi</span>(samples) <span class="sc">-</span> <span class="fu">psi</span>(samples)) <span class="sc">/</span> n</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(CV_MSE, <span class="fu">sqrt</span>(CV_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 9.327741e-08 3.054135e-04</code></pre>
-</div>
-</div>
-<p>This was a success! The mean-square error roughly halved, from <span class="math inline">\(2\times 10^{-7}\)</span> to <span class="math inline">\(9.3\times 10^{-8}\)</span>. This meant the root-mean-square went down by about a third, from <span class="math inline">\(4.5\times 10^{-4}\)</span> to <span class="math inline">\(3.1\times 10^{-4}\)</span>.</p>
-<p>Halving the mean-square error would normally have required doubling the number of samples <span class="math inline">\(n\)</span>, so we have effectively doubled the sample size by using the control variate.</p>
-</div>
-<p><strong>Next time:</strong> <em>We look at our second variance reduction technique: antithetic variables.</em></p>
-<div class="mysummary">
-<p><strong>Summary:</strong></p>
-<ul>
-<li><p>Variance reduction techniques attempt to improve on Monte Carlo estimation making the variance smaller.</p></li>
-<li><p>If we know <span class="math inline">\(\eta = \Exg \psi(X)\)</span>, then the control variate Monte Carlo estimate is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{CV}} = \frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big) + \eta.\]</span></p></li>
-<li><p>The mean-square error of the control variate Monte Carlo estimate is <span class="math display">\[{\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X) - \psi(X)\big)}.\]</span></p></li>
-</ul>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.3.3.</p>
-</div>
+<!--
+## Numerical stability
+
+In our example, we had only 10 data points. But when you have a large number of data points $n$ (as is often the case in modern "big data" applications), then $f(\mathbf x \mid \theta) = \prod_{i=1}^n f(\mathbf x \mid \theta)$ can be extremely small. This can prove difficult when calculating the acceptance probability, because both the numerator and denominator in
+$$ \frac{\pi(\theta')\, f(\mathbf x \mid \theta')}{\pi(\theta)\, f(\mathbf x \mid \theta)} = \frac{\pi(\theta')\prod_{i=1}^n f(x_i \mid \theta')}{\pi(\theta')\prod_{i=1}^n f(x_i \mid \theta')}  $$
+can be extremely small. Dividing one very small number by another can be "numerically unstable", where small rounding errors can lead to big errors.
+
+It's usually a good idea to split the fraction into multiple fractions each of which has a more sensible size; that is
+$$ \frac{\pi(\theta')}{\pi(\theta)} \times \frac{f(\mathbf x \mid \theta')}{f(\mathbf x \mid \theta)} = \frac{\pi(\theta')}{\pi(\theta)} \times \prod_{i=1}^n \frac{f(x_i \mid \theta')}{f(x_i \mid \theta)} . $$
+
+Even more reliable can be to work on a log scale. We know that $a \times b$ can also be written as $\exp(\log a + \log b)$. So it can be even better to write the fraction above as
+$$ \begin{multline}
+\exp \big(\log \pi(\theta') - \log \pi(\theta) + \log f(\mathbf x \mid \theta') - \log f(\mathbf x \mid \theta) \big) \\
+= \exp \bigg(\log \pi(\theta') - \log \pi(\theta) + \sum_{i=1}^n \log f(x_i \mid \theta') - \sum_{i=1}^n \log f(x_i \mid \theta) \bigg) . 
+\end{multline} $$
+
+## MCMC conclusions
+
+In the second part of this module, we saw various ways to get exact IID samples from the exact distribution we want (in-built R functions, inverse transform method, Box--Muller transform, basic rejection sampling, envelope rejection sampling). In this third part of the module, we've only really seen one way in detail -- the random walk Metropolis algorithm -- and it produces non-independent samples from approximately the distribution we want. That description makes MCMC sound much worse!
+
+But MCMC using the random walk Metropolis algorithm has big advantages too. [complete]
+-->
 
 
 </section>
@@ -1001,13 +983,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L04-mc-error-2.html" class="pagination-link" aria-label="Monte Carlo error II: practice">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></span>
+      <a href="../lectures/L22-mcmc-error.html" class="pagination-link" aria-label="MCMC error">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L06-antithetic-1.html" class="pagination-link" aria-label="Antithetic variables I">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
+        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
