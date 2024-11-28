@@ -465,10 +465,10 @@ window.Quarto = {
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>(samples)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.3978279</code></pre>
+<pre><code>[1] 0.5378136</code></pre>
 </div>
 </div>
-<p>So our Monte Carlo estimate is 0.39783, to 5 decimal places.</p>
+<p>So our Monte Carlo estimate is 0.53781, to 5 decimal places.</p>
 <p>To get a (hopefully) more accurate estimation, we can use more samples. We could also simplify the third line of this code by using the <code>mean()</code> function.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
@@ -476,11 +476,11 @@ window.Quarto = {
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5001547</code></pre>
+<pre><code>[1] 0.4994785</code></pre>
 </div>
 </div>
 <p>(In the second line, <code>1e6</code> is R code for the scientific notation <span class="math inline">\(1 \times 10^6\)</span>, or a million. I just picked this as “a big number, but where my code still only took a few seconds to run.”)</p>
-<p>Our new Monte Carlo estimate is 0.50015, which is much closer to the true value of <span class="math inline">\(\frac12\)</span>.</p>
+<p>Our new Monte Carlo estimate is 0.49948, which is much closer to the true value of <span class="math inline">\(\frac12\)</span>.</p>
 </div>
 <p>By the way: all R code “chunks” displayed in the notes should work perfectly if you copy-and-paste them into RStudio. (Indeed, these lecture notes should not appear unless the code runs correctly without errors.) I strongly encourage playing about with the code as a good way to learn this material and explore further!</p>
 <div id="exm-MC2" class="theorem example">
@@ -492,10 +492,10 @@ window.Quarto = {
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">sin</span>(samples))</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1140989</code></pre>
+<pre><code>[1] 0.1129711</code></pre>
 </div>
 </div>
-<p>Our Monte Carlo estimate is 0.11410.</p>
+<p>Our Monte Carlo estimate is 0.11297.</p>
 </div>
 <p><strong>Next time:</strong> <em>We look at more examples of things we can estimate using the Monte Carlo method.</em></p>
 <div class="mysummary">
