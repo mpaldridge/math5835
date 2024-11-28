@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>1&nbsp; Introduction to Monte Carlo – MATH5835M Statistical Computing</title>
+<title>Computational coursework – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L02-mc-uses.html" rel="next">
-<link href="../index.html" rel="prev">
+<link href="../problems/solutions.html" rel="next">
+<link href="../lectures/L22-mcmc-error.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -103,35 +69,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../mystyle.css">
 </head>
@@ -145,7 +82,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../coursework/coursework.html">Computational coursework</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -187,7 +124,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L01-mc-intro.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L01-mc-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span></a>
   </div>
 </li>
@@ -363,17 +300,11 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/L23-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">MCMC and Bayesian statistics</span></span></a>
-  </div>
-</li>
       </ul>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../coursework/coursework.html" class="sidebar-item-text sidebar-link">
+  <a href="../coursework/coursework.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Computational coursework</span></a>
   </div>
 </li>
@@ -393,18 +324,17 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#what-is-statistical-computing" id="toc-what-is-statistical-computing" class="nav-link active" data-scroll-target="#what-is-statistical-computing"><span class="header-section-number">1.1</span> What is statistical computing?</a></li>
-  <li><a href="#what-is-monte-carlo-estimation" id="toc-what-is-monte-carlo-estimation" class="nav-link" data-scroll-target="#what-is-monte-carlo-estimation"><span class="header-section-number">1.2</span> What is Monte Carlo estimation?</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">1.3</span> Examples</a></li>
+  <li><a href="#about-the-coursework" id="toc-about-the-coursework" class="nav-link active" data-scroll-target="#about-the-coursework">About the coursework</a></li>
+  <li><a href="#r-and-rstudio-on-university-computers" id="toc-r-and-rstudio-on-university-computers" class="nav-link" data-scroll-target="#r-and-rstudio-on-university-computers">R and RStudio on University computers</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></h1>
+<h1 class="title"><span id="coursework" class="quarto-section-identifier">Computational coursework</span></h1>
 </div>
 
 
@@ -421,92 +351,43 @@ window.Quarto = {
 </header>
 
 
-<div class="hidden">
-<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
-\newcommand{\Ex}{\mathbb{E}}
-\newcommand{\Ind}{\mathbb{I}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}
-\newcommand{\ee}{\mathrm{e}}\]</span></p>
-</div>
-<p>Today, we’ll start the first main topic of the module, which is called “Monte Carlo estimation”. But first, a bit about the subject as a whole.</p>
-<section id="what-is-statistical-computing" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="what-is-statistical-computing"><span class="header-section-number">1.1</span> What is statistical computing?</h2>
-<p>“Statistical computing” – or “computational statistics” – refers to the branch of statistics that involves not attacking statistical problems merely with a pencil and paper, but rather by combining human ingenuity with the immense calculating powers of computers.</p>
-<p>One of the big ideas here is <strong>simulation</strong>. Simulation is the idea that we can understand the properties of a random model not by cleverly working out the properties using theory – this is usually impossible for anything but the simplest “toy models” – but rather by running the model many times on a computer. From these many simulations, we can observe and measure things like the typical (or “expected”) behaviour, the spread (or “variance”) of the behaviour, and other things. This concept of simulation is at the heart of the module MATH5835M Statistical Computing.</p>
-<p>In particular, we will look at <strong>Monte Carlo</strong> estimation. Monte Carlo is about estimating a parameter, expectation or probability related to a random variable by taking many samples of that random variable, then computing a relevant sample mean from those samples. We will study Monte Carlo in its standard “basic” form (Lectures 1–9), but also in the modern <strong>Markov chain Monte Carlo</strong> form (Lectures 17–23), which has become such a crucial part of Bayesian statistical analysis.</p>
-<p>To run a simulation, one needs random numbers with the correct distributions. <strong>Random number generation</strong> (Lectures 10–16) will be an important part of this module. We will look first at how to generate randomness of any sort, and then how to get that randomness into the shape of the distributions we want.</p>
-<p>When dealing with a very big data set, traditionally we want to “reduce the dimension” by representing it with a simple parametric model. For example, tens of thousands of datapoints might get reduced just to estimates of the parameters <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> of a normal distribution. But with computational statistics, we don’t need to make such a simplification – we can do inference using the full details of the whole dataset itself, without making extra assumptions. An computational scheme that takes advantage of this idea is the <strong>bootstrap</strong> (Lectures 24–27).</p>
-<p>MATH5835M Statistical Computing is a <em>mathematics</em> module that will concentrate on the <em>mathematical</em> ideas that underpin statistical computing. It is not a programming module that will go deeply into the practical issues of the most efficient possible coding of the algorithms we study. But we will want to investigate the behaviour of the methods we learn about and to explore their properties, so will be computer programming to help us do that. (We will be using the statistical programming language R, although one could just as easily have used Python or other similar languages.) As my PhD supervisor once told me: “You don’t really understand a mathematical algorithm until you’ve coded it up yourself.”</p>
-</section>
-<section id="what-is-monte-carlo-estimation" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="what-is-monte-carlo-estimation"><span class="header-section-number">1.2</span> What is Monte Carlo estimation?</h2>
-<p>Let <span class="math inline">\(X\)</span> be a random variable. We recall the <strong>expectation</strong> <span class="math inline">\(\Ex X\)</span> of <span class="math inline">\(X\)</span>: if <span class="math inline">\(X\)</span> is discrete with probability mass function (PMF) <span class="math inline">\(p\)</span>, then this is <span class="math display">\[ \Ex X = \sum_x x\,p(x) ;\]</span> while if <span class="math inline">\(X\)</span> is continuous with probability density function (PDF) <span class="math inline">\(f\)</span>, then this is <span class="math display">\[ \Ex X = \int_{-\infty}^{+\infty} x\,f(x)\,\mathrm{d}x . \]</span> More generally, the expectation of a function <span class="math inline">\(\phi\)</span> of <span class="math inline">\(X\)</span> is <span class="math display">\[ \Exg \phi(X) = \begin{cases} {\displaystyle \sum_x \phi(x)\,p(x)} &amp; \text{for $X$ discrete}\\ {\displaystyle \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x}  &amp; \text{for $X$ continuous.} \end{cases}\]</span> (This matches with the “plain” expectation when <span class="math inline">\(\phi(x) = x\)</span>.)</p>
-<p>But how do we actually <em>calculate</em> an expectation like one of these? If <span class="math inline">\(X\)</span> is discrete and can only take a small, finite number of values, we can simply add up the sum <span class="math inline">\(\sum_x \phi(x)\,p(x)\)</span>. Otherwise, we just have to hope that <span class="math inline">\(\phi\)</span> and <span class="math inline">\(p\)</span> or <span class="math inline">\(f\)</span> are sufficiently “nice” that we can manage to work out the sum/integral using a pencil and paper. But while this is often the case in the sort of “toy example” one comes across in maths or statistics lectures, this is very rare in “real life”.</p>
-<p><strong>Monte Carlo estimation</strong> is the idea that we can get an approximate answer for <span class="math inline">\(\Ex X\)</span> or <span class="math inline">\(\Exg \phi(X)\)</span> if we have access to lots of samples from <span class="math inline">\(X\)</span>. For example, if we have access to <span class="math inline">\(X_1, X_2 \dots, X_n\)</span> , independent and identically distributed (<strong>IID</strong>) samples with the same distribution as <span class="math inline">\(X\)</span>, then we already know that the mean <span class="math display">\[ \overline X = \frac{1}{n}(X_1 + X_2 + \cdots + X_n) = \frac{1}{n} \sum_{i=1}^n X_i \]</span> is usually close to the expectation <span class="math inline">\(\Ex X\)</span>, at least if <span class="math inline">\(n\)</span> is big. Similarly, it should be the case that <span class="math display">\[ \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) \]</span> should be close to <span class="math inline">\(\Exg \phi(X)\)</span>.</p>
-<p>In this module we will write that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> is a “<strong>random sample</strong> from <span class="math inline">\(X\)</span>” to mean that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are IID with the same distribution as <span class="math inline">\(X\)</span>.</p>
-<div id="def-MCest" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Then the <strong>Monte Carlo estimator</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{MC}}\)</span> of <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are a random sample from <span class="math inline">\(X\)</span>.</p>
-</div>
-<p>While general ideas for estimating using simulation go back a long time, the modern theory of Monte Carlo estimation was developed by the physicists <a href="https://en.wikipedia.org/wiki/Stanisław_Ulam">Stanislaw Ulam</a> and <a href="https://en.wikipedia.org/wiki/John_von_Neumann">John von Neumann</a>. Ulam (who was Polish) and von Neumann (who was Hungarian) moved to the US in the early 1940s to work on the Manhattan project to build the atomic bomb (as made famous by the film Oppenheimer). Later in the 1940s, they worked together in the Los Alamos National Laboratory continuing their research on nuclear weapons, where they used simulations on early computers to help them numerically solve difficult mathematical and physical problems.</p>
-<p>The name “Monte Carlo” was chosen because the use of randomness to solve such problems reminded them of gamblers in the casinos of Monte Carlo, Monaco. Ulam and von Neumann also worked closely with another colleague Nicholas Metropolis, whose work we will study later in this module.</p>
-</section>
-<section id="examples" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="examples"><span class="header-section-number">1.3</span> Examples</h2>
-<p>Let’s see some simple examples of Monte Carlo estimation using R.</p>
-<div id="exm-MCexp" class="theorem example">
-<p><span class="theorem-title"><strong>Example 1.1</strong></span> Let’s suppose we’ve forgotten the expectation of the exponential distribution <span class="math inline">\(X \sim \operatorname{Exp}(2)\)</span> with rate 2. In this simple case, we could work out the answer using the PDF <span class="math inline">\(f(x) = 2\mathrm{e}^{-2x}\)</span> as<br>
-<span class="math display">\[ \mathbb E X = \int_0^\infty x\,2\mathrm{e}^{-2x}\,\mathrm{d}x \]</span>(and, without too much difficulty, get the answer <span class="math inline">\(\frac12\)</span>). But instead, let’s do this the Monte Carlo way.</p>
-<p>In R, we can use the <code>rexp()</code> function to get IID samples from the exponential distribution: the full syntax is <code>rexp(n, rate)</code>, which gives <code>n</code> samples from an exponential distribution with rate <code>rate</code>. So our code here should be</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>(samples)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.3978279</code></pre>
-</div>
-</div>
-<p>So our Monte Carlo estimate is 0.39783, to 5 decimal places.</p>
-<p>To get a (hopefully) more accurate estimation, we can use more samples. We could also simplify the third line of this code by using the <code>mean()</code> function.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5001547</code></pre>
-</div>
-</div>
-<p>(In the second line, <code>1e6</code> is R code for the scientific notation <span class="math inline">\(1 \times 10^6\)</span>, or a million. I just picked this as “a big number, but where my code still only took a few seconds to run.”)</p>
-<p>Our new Monte Carlo estimate is 0.50015, which is much closer to the true value of <span class="math inline">\(\frac12\)</span>.</p>
-</div>
-<p>By the way: all R code “chunks” displayed in the notes should work perfectly if you copy-and-paste them into RStudio. (Indeed, these lecture notes should not appear unless the code runs correctly without errors.) I strongly encourage playing about with the code as a good way to learn this material and explore further!</p>
-<div id="exm-MC2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 1.2</strong></span> Let’s try another example. Let <span class="math inline">\(X \sim \operatorname{N}(1, 2^2)\)</span> be a normal distribution with mean 0 and standard deviation 2. Suppose we want to find out <span class="math inline">\(\mathbb E(\sin X)\)</span> (for some reason). While it <em>might</em> be possible to somehow calculate the integral <span class="math display">\[ \mathbb E(\sin X) = \int_{-\infty}^{+\infty} (\sin x) \, \frac{1}{\sqrt{2\pi\times 2^2}} \exp\left(\frac{(x - 1)^2}{2\times 2^2}\right) \, \mathrm{d} x , \]</span> that looks extremely difficult to me.</p>
-<p>Instead, a Monte Carlo estimation of <span class="math inline">\(\Exg(\sin X)\)</span> is very straightforward. (Although we must remember that when using the <code>rnorm()</code> function to generate normally distributed variates, the third argument is the <em>standard deviation</em>, here <span class="math inline">\(2\)</span>, <em>not</em> the variance, here <span class="math inline">\(2^2 = 4\)</span>.)</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">sin</span>(samples))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1140989</code></pre>
-</div>
-</div>
-<p>Our Monte Carlo estimate is 0.11410.</p>
-</div>
-<p><strong>Next time:</strong> <em>We look at more examples of things we can estimate using the Monte Carlo method.</em></p>
 <div class="mysummary">
-<p><strong>Summary:</strong></p>
-<ul>
-<li><p>Statistical computing is about solving statistical problems by combining human ingenuity with computing power.</p></li>
-<li><p>The Monte Carlo estimate of <span class="math inline">\(\Exg \phi(X)\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , \]</span> where <span class="math inline">\(X_1, \dots, X_n\)</span> are IID random samples from <span class="math inline">\(X\)</span>.</p></li>
-<li><p>Monte Carlo estimation typically gets more accurate as the number of samples <span class="math inline">\(n\)</span> gets bigger.</p></li>
-</ul>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Section 3.1 and Subsection 3.2.1.</p>
+<p>There is one piece of computational coursework for MATH5835M Statistical Computing. This coursework is worth 20% of the module mark.</p>
+<p>The coursework sheet is available in <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html">here in HTML format</a></strong> or <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.Rmd">here in R Markdown format</a></strong>.</p>
+<p>The deadline for the coursework will be the penultimate day of the Autumn term, <strong>Thursday 12 December </strong> at <strong>1400</strong>. (There is an optional deadline if you wish to get feedback on a draft of your work: Friday 6 December at 1400.)</p>
+<p>Feedback on the final report and marks will be returned on Monday 13 January, the first day of the Spring term.</p>
 </div>
+<section id="about-the-coursework" class="level2">
+<h2 class="anchored" data-anchor-id="about-the-coursework">About the coursework</h2>
+<p>There is one piece of computational coursework for MATH5835M Statistical Computing. This coursework is worth 20% of the module mark.</p>
+<p>This page contains all the administrative and organisational information about the coursework. A coursework sheet contains the tasks you must carry out. The coursework sheet is available in <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html">here in HTML format</a></strong> or <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.Rmd">here in R Markdown format</a></strong>. The HTML page can be opened in a standard web browser. The R Markdown version (which I personally prefer) should be downloaded then opened in RStudio; I recommend using the “Visual” editor – see the button in the top left of the editing window.</p>
+<p>The are two deadlines for this work.</p>
+<ol type="1">
+<li><p>There is the <strong>main submission deadline</strong> which is the penultimate day of term, <strong>Thursday 12 December</strong> at <strong>1400</strong>. You must submit your work. Work that is submitted after this deadline will receive a penalty of 5% for every day or part-day late. Work that is more than 14 days late will not be marked and will receive 0. Work will be submitted electronically through Gradescope via the Minerva page for the module.</p></li>
+<li><p><em>Optionally</em>, you <em>may</em> also wish to get some brief informal feedback on your draft work before the main deadline. <em>If</em> you wish to get feedback on your draft work, you should submit that draft by Friday 6 December at 1400. I will return a small amount of general feedback about your work by Monday 9 December. I will not mark your draft, and the feedback will be a brief sentence or too that may be of a little help when completing the final version of your work. The quality of your draft submission will have no effect (either positive or negative) on the mark for your main submission, and there is no penalty if you choose not to take advantage of this offer. No extensions can be offered on the deadline for this informal feedback.</p></li>
+</ol>
+<p>The Gradescope submission for the final report will open after 1400 on Friday 6 December (to avoid drafts for optional feedback getting mixed up with final reports). The Gradescope submission for optional feedback on draft work will be open from the computer practical sessions in week 9.</p>
+<p>Your task is to write a short report in response to the tasks on the coursework sheet. Your report should include all the important R code you use and any important plots you draw. I call this a “report” because your work should be explained in detail, in full English-language sentences, with your solutions discussed and justified. Any code or figures included should be an integral part of your text, not just copy-pasted in at random, and should be fully explained within the text. However, other parts of a more formal report such as an introduction, literature review, conclusion, references, etc, are not required here.</p>
+<p>There is <em>no page limit</em> for the report, although I expect that good reports will typically be around 5–7 pages. If your report is 4 pages or less, make sure you have completed all the tasks and fully explained your work. If your report has 8 pages or more, make sure you are not wandering from the point or including too many necessary figures.</p>
+<p>Your report should be prepared electronically, but can be submitted in any sensible format – I recommend PDF (whether produced by LaTeX, R Markdown, Microsoft Word, or any other way), but HTML or Word document are fine too.</p>
+<p>There will be a computer practical in Week 9 where I will introduce the practical coursework in more detail. This is a good place to ask any questions you have about the coursework.</p>
+<p>Places where you can get help with the coursework include:</p>
+<ul>
+<li><p>In the computer practical session.</p></li>
+<li><p>In my office hours – Mondays 1500–1600 in my office, 9.10n in the “Maths Research Deck” area on the 9th floor of the EC Stoner building at staircase 1.</p></li>
+<li><p>By submitting your draft work for optional feedback, as discussed above.</p></li>
+</ul>
+<p>Your report must be entirely your own work. You must not work together with others, and you must not use generative AI – the coursework is <strong><span style="color:red;">RED for use of AI</span></strong> on the University’s traffic light system, meaning the use of generative AI is forbidden. You must comply with <a href="https://students.leeds.ac.uk/info/10110/academic-integrity">the University’s rules on academic integrity</a>.</p>
+<p>If you encounter extraordinary unforeseeable personal circumstances that make it impossible for you to submit your coursework on time, you can apply for an deadline extension through <a href="https://students.leeds.ac.uk/info/10111/assessment/860/mitigating_circumstances">the usual mitigating circumstances procedure</a>. (Do not contact me about this – I cannot unilaterally offer deadline extensions.)</p>
+</section>
+<section id="r-and-rstudio-on-university-computers" class="level2">
+<h2 class="anchored" data-anchor-id="r-and-rstudio-on-university-computers">R and RStudio on University computers</h2>
+<p>A quick reminder on how to access R and RStudio on University computers.</p>
+<ol type="1">
+<li><p><strong>Open the AppsAnywhere portal</strong> This should be a link on the desktop. If invited to run any software, accept.</p></li>
+<li><p><strong>Load the language R</strong> Search on AppsAnywhere for “R for Windows” (or similar) and launch it. This will (silently) load the language R. It will also open an inferior RStudio-like program called “RGui” – you can close it.</p></li>
+</ol>
+<p>3.<strong>Launch RStudio</strong> Search on AppsAnywhere for “RStudio” (or similar) and launch it.</p>
 
 
 </section>
@@ -934,13 +815,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../index.html" class="pagination-link" aria-label="About MATH5835">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">About MATH5835</span>
+      <a href="../lectures/L22-mcmc-error.html" class="pagination-link" aria-label="MCMC error">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L02-mc-uses.html" class="pagination-link" aria-label="Uses of Monte Carlo">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
+        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
