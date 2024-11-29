@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -407,9 +441,28 @@ display: none !important;
 <p><strong>1.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider a Markov chain on the discrete state space <span class="math inline">\(\mathcal S = \{1, 2, \dots\}\)</span> with transition probabilities <span class="math inline">\(p(x, x+1) = p\)</span> for all <span class="math inline">\(x\)</span>, <span class="math inline">\(p(x, 1) = 1 - p\)</span> for all <span class="math inline">\(x\)</span>, and <span class="math inline">\(p(x, y) = 0\)</span> otherwise.</p>
 <div class="subq">
 <p><strong>(a)</strong>&nbsp;&nbsp;Calculate the two-step transition probabilities <span class="math inline">\(p^{(2)}(x, y)\)</span>. (You might start by working out what two-step transitions are even <em>possible</em>.)</p>
+<div class="myanswers">
+<p><em>Solution.</em> The possible paths of length two from <span class="math inline">\(x\)</span> are</p>
+<ul>
+<li><p><span class="math inline">\(x \to x + 1 \to x + 2\)</span>: this requires two steps up, so has probability <span class="math inline">\(p^2\)</span>.</p></li>
+<li><p><span class="math inline">\(x \to x+1 \to 1\)</span>: this requires one step up then a reset, so has probability <span class="math inline">\(p(1-p)\)</span>.</p></li>
+<li><p><span class="math inline">\(x \to 1 \to 2\)</span>: this requires a reset then one step up, so has probability <span class="math inline">\((1-p)p\)</span>.</p></li>
+<li><p><span class="math inline">\(x \to 1 \to 1\)</span>: this requires two resets, so has probability <span class="math inline">\((1-p)^2\)</span>.</p></li>
+</ul>
+<p>Hence the two-step transition probabilities are <span class="math display">\[ \begin{align}
+p^{(2)}(x, x+2) &amp;= p^2 \\
+p^{(2)}(x, 2) &amp;= (1-p)p \\
+p^{(2)}(x, 1) &amp;= p(1 - p) + (1-p)^2 = 1 - p
+\end{align} \]</span> and <span class="math inline">\(p(x, y) = 0\)</span> otherwise.</p>
+</div>
 </div>
 <div class="subq">
 <p><strong>(b)</strong>&nbsp;&nbsp;Find the stationary distribution <span class="math inline">\(\pi\)</span> for the Markov chain by solving <span class="math inline">\(\pi(y) = \sum_x \pi(x) p(x,y)\)</span>.</p>
+<div class="myanswers">
+<p><em>Solution.</em> For <span class="math inline">\(y \neq 1\)</span>, the only <span class="math inline">\(x\)</span> with <span class="math inline">\(p(x, y) \neq 0\)</span> is <span class="math inline">\(x = y-1\)</span>. So we have <span class="math inline">\(\pi(y) = \pi(y-1)\,p(y-1, y) = p\,\pi(y-1)\)</span>.</p>
+<p>Hence we have <span class="math inline">\(\pi(2) = p\,\pi(1)\)</span>, <span class="math inline">\(\pi(3) = p\,\pi(2) = p^2 \pi(1)\)</span>, <span class="math inline">\(\pi(4) = p\,\pi(3) = p^3 \pi(1)\)</span>, and in general <span class="math inline">\(\pi(i) = p^{i-1}\,\pi(1)\)</span>. (This equation even holds for <span class="math inline">\(i = 1\)</span> itself.)</p>
+<p>We also know that <span class="math inline">\(\pi\)</span> is a distribution, so must sum to 1. Hence <span class="math display">\[ 1 = \sum_{i=1}^\infty \pi(i) = \sum_{i=1}^\infty p^{i-1}\,\pi(1) = \pi(1) \sum_{i=1}^\infty p^{i-1} = \pi(1) \, \frac{1}{1-p} .  \]</span> Hence <span class="math inline">\(\pi(1) = 1 - p\)</span>, and <span class="math inline">\(\pi(i) = p^{i-1}(1-p)\)</span>. This is a <span class="math inline">\(\operatorname{Geom}(1-p)\)</span> distribution.</p>
+</div>
 </div>
 </div>
 <div class="myq">
@@ -419,63 +472,289 @@ p_{\mathrm{SH}} &amp;= 0.3 &amp; p_{\mathrm{SS}} &amp;= 0.5 &amp; p_{\mathrm{SD}
 p_{\mathrm{DH}} &amp;= ? &amp; p_{\mathrm{DS}} &amp;= ? &amp; p_{\mathrm{DD}} &amp;= 1.
 \end{align} .\]</span> Fill in the three gaps (marked <span class="math inline">\(?\)</span>).</p>
 <p>If a chicken is healthy on day 1, what is the probability it is still alive on <strong>(a)</strong> day 2, <strong>(b)</strong> day 3; <strong>(c)</strong> day 11; <strong>(d)</strong> day 51? (You should do parts (a) and (b) by hand, but I recommend a computer for parts (c) and (d).)</p>
+<div class="myanswers">
+<p><em>Solutions.</em> Because row of a transition matrix have to add up to 1, <span class="math inline">\(p_{\mathrm{HH}} = 1 - 0.02 - 0.01 = 0.97\)</span>. Because all entries also have to be non-negative, it must be that <span class="math inline">\(p_{\mathrm{DH}} = p_{\mathrm{DS}} = 0\)</span>.</p>
+<p><strong>(a)</strong> One day later, on day 2, the chicken has died with probability <span class="math inline">\(p_{\mathrm{HD}} = 0.01\)</span>, and is still alive with probability <span class="math inline">\(p_{\mathrm{HH}} + p_{\mathrm{HS}} = 0.97 + 0.02 = 1 - p_{\mathrm{HD}} = 0.99\)</span>.</p>
+<p><strong>(b)</strong> This requires us to calculate <span class="math inline">\(p^{(2)}_{\mathrm{HH}} + p^{(2)}_{\mathrm{HS}} = 1 - p^{(2)}_{\mathrm{HD}}\)</span>.</p>
+<p>We can either do this by summing over paths of length 2 (like in Question 1(a)) or by doing the matrix multiplication. Let’s do it the matrix multiplication way this time. We have <span class="math display">\[ \mathsf P^{(2)} = \mathsf P^2 = \begin{pmatrix} 0.97 &amp; 0.02 &amp; 0.01 \\ 0.3 &amp; 0.5 &amp; 0.2 \\ 0 &amp; 0 &amp; 1 \end{pmatrix} \begin{pmatrix} 0.97 &amp; 0.02 &amp; 0.01 \\ 0.3 &amp; 0.5 &amp; 0.2 \\ 0 &amp; 0 &amp; 1 \end{pmatrix} = \begin{pmatrix} 0.9469 &amp; 0.0294 &amp; 0.0237 \\ 0.441 &amp; 0.256 &amp; 0.303 \\ 0 &amp; 0 &amp; 1\end{pmatrix}.\]</span></p>
+<p>So the answer is <span class="math inline">\(0.9469 + 0.0294 = 1 - 0.0237 = 0.9763\)</span>.</p>
+<p><strong>(c) and (d)</strong> I read the transition matrix into R as follows.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>P <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.97</span>, <span class="fl">0.02</span>, <span class="fl">0.01</span>, <span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.2</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="dv">3</span>, <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I then used the matrix power function from <a href="#L18-markov-longrun">Lecture 18</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>matrixpow <span class="ot">&lt;-</span> <span class="cf">function</span>(M, n) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="sc">==</span> <span class="dv">1</span>) <span class="fu">return</span>(M)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="fu">return</span>(M <span class="sc">%*%</span> <span class="fu">matrixpow</span>(M, n <span class="sc">-</span> <span class="dv">1</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The answers are the following.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>P11 <span class="ot">&lt;-</span> <span class="fu">matrixpow</span>(P, <span class="dv">11</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>P11[<span class="dv">1</span>, <span class="dv">1</span>] <span class="sc">+</span> P11[<span class="dv">1</span>, <span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8354785</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>P50 <span class="ot">&lt;-</span> <span class="fu">matrixpow</span>(P, <span class="dv">50</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>P50[<span class="dv">1</span>, <span class="dv">1</span>] <span class="sc">+</span> P50[<span class="dv">1</span>, <span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4186196</code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="myq">
 <p><strong>3.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider sampling from Poisson distribution with rate <span class="math inline">\(\lambda\)</span> using the random walk Metropolis algorithm on the integers.</p>
 <div class="subq">
 <p><strong>(a)</strong>&nbsp;&nbsp;Calculate the acceptance probabilities for this Markov chain. What proposals are always accepted with probability 1?</p>
+<div class="myanswers">
+<p><em>Solution.</em> The Poisson distribution has PMF <span class="math display">\[ \pi(x) = \mathrm{e}^{-\lambda} \,\frac{\lambda^x}{x!} . \]</span></p>
+<p>The acceptance probability for “up one” is <span class="math display">\[ \alpha(x, x+1) = \min \left\{ \frac{\pi(x+1)}{\pi(x)} , \, 1 \right\}
+= \min \left\{ \frac{\mathrm{e}^{-\lambda} \,\frac{\lambda^{x+1}}{(x+1)!}}{\mathrm{e}^{-\lambda} \,\frac{\lambda^x}{x!}} , \, 1 \right\}
+= \min \left\{ \frac{\lambda}{x+1}, \, 1 \right\} . \]</span> This is 1 if the step up remains less than or equal to <span class="math inline">\(\lambda\)</span>.</p>
+<p>The acceptance probability for “down one” is <span class="math display">\[ \alpha(x, x-1) = \min \left\{ \frac{\pi(x-1)}{\pi(x)} , \, 1 \right\}
+= \min \left\{ \frac{\mathrm{e}^{-\lambda} \,\frac{\lambda^{x-1}}{(x-1)!}}{\mathrm{e}^{-\lambda} \,\frac{\lambda^x}{x!}} , \, 1 \right\}
+= \min \left\{ \frac{x}{\lambda}, \, 1 \right\} . \]</span> This is 1 if the step down is from greater than or equal to <span class="math inline">\(\lambda\)</span>.</p>
 </div>
 <div class="subq">
 <p><strong>(b)</strong>&nbsp;&nbsp;Suggest a good initial starting point <span class="math inline">\(X_1\)</span> for your Markov chain. Why did you choose this?</p>
+<div class="myanswers">
+<p><em>Solution.</em> Somewhere in the middle of the distribution would be good. I would suggest the nearest integer to <span class="math inline">\(\lambda\)</span> as a pretty good place to start, but that’s not the only sensible choice.</p>
+</div>
 </div>
 <div class="subq">
 <p><strong>(c)</strong>&nbsp;&nbsp;Write some R code to run this Markov chain in the case <span class="math inline">\(\lambda = 4.5\)</span>.</p>
+<div class="myanswers">
+<p>This is my code</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fl">4.5</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>acceptup   <span class="ot">&lt;-</span> <span class="cf">function</span>(x, lambda) lambda <span class="sc">/</span> (x <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>acceptdown <span class="ot">&lt;-</span> <span class="cf">function</span>(x, lambda) x <span class="sc">/</span> lambda</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>initial <span class="ot">&lt;-</span> <span class="fu">round</span>(lambda)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>MRW <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>MRW[<span class="dv">1</span>] <span class="ot">&lt;-</span> initial</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;</span> <span class="fl">0.5</span>) {</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># up proposal</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;</span> <span class="fu">acceptup</span>(MRW[i], lambda)) MRW[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MRW[i] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>                                     MRW[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MRW[i]</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># down proposal</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;</span> <span class="fu">acceptdown</span>(MRW[i], lambda)) MRW[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MRW[i] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>                                       MRW[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MRW[i]</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s check if this has worked by looking at the probabilities.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">&lt;-</span> <span class="fu">table</span>(MRW)[<span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>] <span class="sc">/</span> n</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>expected <span class="ot">&lt;-</span> <span class="fu">dpois</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>, lambda)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">rbind</span>(observed, expected), <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              0      1      2      3      4      5      6      7      8      9
+observed 0.0107 0.0498 0.1116 0.1681 0.1897 0.1721 0.1294 0.0827 0.0459 0.0229
+expected 0.0111 0.0500 0.1125 0.1687 0.1898 0.1708 0.1281 0.0824 0.0463 0.0232
+             10
+observed 0.0104
+expected 0.0104</code></pre>
+</div>
+</div>
+<p>This looks like an excellent match.</p>
+</div>
 </div>
 <div class="subq">
 <p><strong>(d)</strong>&nbsp;&nbsp;Using your Markov chain, obtain an MCMC estimate of <span class="math inline">\(\operatorname{\mathbb E}X(X-1)\)</span>, where <span class="math inline">\(X \sim \operatorname{Po}(4.5)\)</span>.</p>
+<div class="myanswers">
+<p><em>Solution.</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(MRW <span class="sc">*</span> (MRW <span class="sc">-</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20.28211</code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="subq">
 <p><strong>(e)</strong>&nbsp;&nbsp;<em>(Optional)</em> Calculate the correct answer, and comment on the accuracy of your estimate.</p>
+<div class="myanswers">
+<p><em>Solution.</em> We have <span class="math display">\[ \mathbb EX(X-1) = \sum_{x=0}^\infty x(x-1)\,\mathrm{e}^{\lambda}\,\frac{\lambda^x}{x!} =  \lambda^2\, \mathrm{e}^{-\lambda} \sum_{x=2}^\infty \frac{\lambda^{x-2}}{(x-2)!} = \lambda^2 \,\mathrm{e}^{-\lambda}\,\mathrm{e}^{\lambda} = \lambda^2 . \]</span> So the correct answer here is <span class="math inline">\(\lambda^2 = 4.5^2 = 20.25\)</span>.</p>
+<p>I found my Markov chain always gets it right to the nearest integer and often gets it right to 1 decimal place (either 20.2 or 20.3). It is not quite as accurate basic Monte Carlo would be (which almost always gets 1 decimal place with a million samples, and occasionally two decimal places), but it is pretty good.</p>
+</div>
 </div>
 </div>
 <div class="myq">
 <p><strong>4.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For <span class="math inline">\(-1 &lt; \alpha &lt; 1\)</span>, consider the Markov chain on <span class="math inline">\(\mathcal S = \mathbb R\)</span> given by <span class="math inline">\(X_{i+1} = \alpha X_i + Z_i\)</span>, where the <span class="math inline">\(Z_i \sim \operatorname{N}(0, 1)\)</span> are IID standard normals. (Students who have studied time series will recognise this as an AR(1) autoregressive process.)</p>
 <div class="subq">
 <p><strong>(a)</strong>&nbsp;&nbsp;Write down the transition density <span class="math inline">\(p(x, y)\)</span> for this Markov chain.</p>
+<div class="myanswers">
+<p><em>Solution.</em> Given <span class="math inline">\(X_i = x\)</span>, we have that <span class="math inline">\(X_{i+1} = \alpha x + \operatorname{N}(0, 1) = \operatorname{N}(\alpha x, 1)\)</span>. So the transition density is <span class="math display">\[ p(x, y) = \frac{1}{\sqrt{2\pi}}\,\mathrm{e}^{-(y - \alpha x)^2/2} . \]</span></p>
+</div>
 </div>
 <div class="subq">
 <p><strong>(b)</strong>&nbsp;&nbsp;Find a stationary distribution for this Markov chain.</p>
+<div class="myanswers">
+<p><em>Solution.</em> There are some long-winded ways to do this. But I would start by guessing there’s a pretty good chance the stationary distribution will be normally distributed. So let’s guess there’s a stationary distribution <span class="math inline">\(\operatorname{N}(\mu, \sigma^2)\)</span>, and see if we can find <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> that satisfy this. (If we can’t, then our guess was wrong, and we’ll have to go back to the drawing board.)</p>
+<p>If <span class="math inline">\(X \sim \operatorname{N}(\mu, \sigma^2)\)</span>, then <span class="math inline">\(\alpha X \sim \operatorname{N}(\alpha\mu, \alpha^2\sigma^2)\)</span> and <span class="math inline">\(\alpha X + Z \sim \operatorname{N}(\alpha\mu, \alpha^2\sigma^2 + 1)\)</span>. To have <span class="math inline">\(X\)</span> with the same distribution as <span class="math inline">\(\alpha X + Z\)</span>, we need <span class="math inline">\(\operatorname{N}(\mu, \sigma^2) = \operatorname{N}(\alpha\mu, \alpha^2\sigma^2 + 1)\)</span>.</p>
+<p>This will hold true if the parameters are the same on bother sides. Looking at the mean parameters, we need <span class="math inline">\(\mu = \alpha\mu\)</span>, which forces <span class="math inline">\(\mu = 0\)</span>. Looking at the variance parameters, we need <span class="math inline">\(\sigma^2 = \alpha^2 \sigma^2 + 1\)</span>, so <span class="math inline">\(\sigma^2 = 1/(1 - \alpha^2)\)</span>. These satisfy the equation. So a stationary distribution is <span class="math display">\[ \operatorname{N}\bigg(0, \,\frac{1}{1 - \alpha^2}\bigg) . \]</span></p>
+</div>
 </div>
 </div>
 <div class="myq">
 <p><strong>5.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(Y \sim \operatorname{N}(-3, 1)\)</span> and <span class="math inline">\(Z \sim \operatorname{N}(3,1)\)</span>. Let <span class="math inline">\(X\)</span> be a mixture distribution that equals <span class="math inline">\(Y\)</span> with probability <span class="math inline">\(\frac12\)</span> and equals <span class="math inline">\(Z\)</span> with probability <span class="math inline">\(\frac12\)</span>; in other words, if <span class="math inline">\(f\)</span> is the PDF of <span class="math inline">\(Y\)</span> and <span class="math inline">\(g\)</span> is the PDF of <span class="math inline">\(Z\)</span>, then <span class="math inline">\(\pi(x) = \frac12 f(x) + \frac12 g(x)\)</span> is the PDF of <span class="math inline">\(X\)</span>.</p>
 <div class="subq">
 <p><strong>(a)</strong>&nbsp;&nbsp;Draw a graph of <span class="math inline">\(\pi\)</span>.</p>
+<div class="myanswers">
+<p><em>Solution.</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pdf <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">dnorm</span>(x, <span class="sc">-</span><span class="dv">3</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">dnorm</span>(x, <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(pdf, <span class="at">from =</span> <span class="sc">-</span><span class="dv">7</span>, <span class="at">to =</span> <span class="dv">7</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">6</span>, <span class="dv">6</span>), <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="P4_files/figure-html/mixgraph-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="subq">
 <p><strong>(b)</strong>&nbsp;&nbsp;Your intention is to sample (approximately) from <span class="math inline">\(X\)</span> using the random walk Metropolis algorithm on the state space <span class="math inline">\(\mathcal S = \mathbb R\)</span>. Explain why this could be tricky, and why a good choice of the typical stepsize <span class="math inline">\(\sigma\)</span> will be particularly important.</p>
+<div class="myanswers">
+<p><em>Solution.</em> We have a “bimodal” distribution, with two humps. If we’re not carefully, our random walk might get stuck for a long time in just one of the humps, without exploring the other one, which give an output that is not representative of the full distribution. In particular, if the typical step size <span class="math inline">\(\sigma\)</span> is too small, getting from one hump to the other will require a long and unlikely trek through the “low probability zone” between the two humps.</p>
+<p>Hence it will be vitally important to make sure that <span class="math inline">\(\sigma\)</span> is big enough that jumps between the two humps can happen reasonably often. (Although, as ever, having the typical step size <span class="math inline">\(\sigma\)</span> too big brings it’s own problems of rejecting moves that overshoot the other hump.)</p>
+</div>
 </div>
 <div class="subq">
 <p><strong>(c)</strong>&nbsp;&nbsp;Write an R program that will run the random walk Metropolis algorithm with target distribution <span class="math inline">\(\pi\)</span>. Experiment with different values of the typical step size <span class="math inline">\(\sigma\)</span>. What did you discover, and what value of <span class="math inline">\(\sigma\)</span> did you find most appropriate?</p>
+<div class="myanswers">
+<p><em>Solution.</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>twohump <span class="ot">&lt;-</span> <span class="cf">function</span>(n, stepsize, initial) {</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  MC <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  MC[<span class="dv">1</span>] <span class="ot">&lt;-</span> initial</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    prop <span class="ot">&lt;-</span> MC[i] <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="dv">0</span>, stepsize)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;</span> <span class="fu">pdf</span>(prop) <span class="sc">/</span> <span class="fu">pdf</span>(MC[i])) MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> prop</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i]</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(MC)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I’ll start with stepsize 0.5.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">twohump</span>(<span class="fl">1e5</span>, <span class="fl">0.1</span>, <span class="dv">0</span>), <span class="at">breaks =</span> <span class="dv">50</span>, <span class="at">probability =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="P4_files/figure-html/hump4-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This has gone very badly – I’ve spent much more time in the left hump than the right hump. I found in general that sometimes I got lucky and got balanced humps in the histogram, but on other occasions it was even more unbalanced than the one shown above.</p>
+<p>Perhaps better would be to set <span class="math inline">\(\sigma = 6\)</span>, since that is the gap between the two peaks.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">twohump</span>(<span class="fl">1e5</span>, <span class="dv">6</span>, <span class="dv">0</span>), <span class="at">breaks =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="P4_files/figure-html/hump1-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>That looks better – the humps are pretty balanced now (although not perfectly balanced each time).</p>
+<p>To be more rigorous, we could look at the autocorrelation, specifically <span class="math inline">\(1 + 2 \sum_{k=0}^{\infty} \rho(k)\)</span>, which we saw was an important figure in <a href="#L22-mcmc-error">Lecture 22</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>trials <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">500</span>, <span class="dv">1000</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">12</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) {</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  MC <span class="ot">&lt;-</span> <span class="fu">twohump</span>(<span class="fl">1e5</span>, trials[i], <span class="dv">0</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  results[i] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">sum</span>(<span class="fu">acf</span>(MC, <span class="at">lag.max =</span> <span class="dv">1000</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>acf)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(trials, results, <span class="at">xlab =</span> <span class="st">"stepsize"</span>, <span class="at">ylab =</span> <span class="st">"autocorrelation calculation"</span>, <span class="at">log =</span> <span class="st">"x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="P4_files/figure-html/unnamed-chunk-7-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This suggests that stepsizes around about the size of 10 is the right order of magnitude. Let’s look a bit closer.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>trials <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">15</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>) {</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  MC <span class="ot">&lt;-</span> <span class="fu">twohump</span>(<span class="fl">1e5</span>, trials[i], <span class="dv">0</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  results[i] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">sum</span>(<span class="fu">acf</span>(MC, <span class="at">lag.max =</span> <span class="dv">1000</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>acf)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(trials, results, <span class="at">xlab =</span> <span class="st">"stepsize"</span>, <span class="at">ylab =</span> <span class="st">"autocorrelation calculation"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="P4_files/figure-html/unnamed-chunk-8-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This is a rather noisy picture – I’d have to do more and longer experiments to find out more. But I’d suggest something in the 4 to 10 range is probably best.</p>
+</div>
 </div>
 <div class="subq">
 <p><strong>(d)</strong> Estimate <span class="math inline">\(\mathbb EX\)</span> using your program. Comment on the accuracy of your estimation.</p>
+<div class="myanswers">
+<p>The estimate is simply</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">twohump</span>(<span class="fl">1e6</span>, <span class="dv">6</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.002129821</code></pre>
+</div>
+</div>
+<p>The answer should be 0. I find this is usually pretty accurate – I usualy get 0.0 to one decimal place, and often 0.00 to two decimal places.</p>
+</div>
 </div>
 </div>
 <div class="myq">
 <p><strong>6.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider the Metropolis–Hastings algorithm on the state space <span class="math inline">\(\mathbb R\)</span> with target density <span class="math display">\[ \pi(x) \propto \sin^2(x) \,\exp(-|x|) . \]</span> Each of the following proposal methods gives a formula for the proposed next state <span class="math inline">\(Y_{i+1}\)</span> given the current state <span class="math inline">\(X_{i}\)</span>. For each proposal method, write down the proposal density <span class="math inline">\(r(x,y)\)</span> and calculate the acceptance probability <span class="math inline">\(\alpha(x, y)\)</span>.</p>
 <div class="subq">
 <p><strong>(a)</strong>&nbsp;&nbsp;<span class="math inline">\(Y_{i+1} = X_i + Z_i\)</span>, where <span class="math inline">\(Z_i \sim \operatorname{N}(0,1)\)</span> are IID.</p>
+<div class="myanswers">
+<p><em>Solution</em> <span class="math inline">\({\displaystyle r(x, y) = \frac{1}{\sqrt{2\pi}}\,\mathrm{e}^{-(y-x)^2/2}}\)</span>.</p>
+<p>Because this is symmetric, the acceptance probability is <span class="math display">\[ \begin{align}
+\alpha(x, y) = \min \left\{ \frac{\pi(y)}{\pi(x)},\,1 \right\} &amp;= \min \left\{ \frac{\sin^2(y) \,\exp(-|y|)}{\sin^2(x) \,\exp(-|x|)},\,1 \right\} \\ &amp;= \min \left\{ \frac{\sin^2(y)}{\sin^2(x)} \,\exp(|x|-|y|),\,1 \right\} .
+\end{align} \]</span></p>
+</div>
 </div>
 <div class="subq">
 <p><strong>(b)</strong>&nbsp;&nbsp;<span class="math inline">\(Y_{i+1} = X_i + Z_i\)</span>, where <span class="math inline">\(Z_i \sim \operatorname{U}[-1,2]\)</span> are IID.</p>
+<div class="myanswers">
+<p><em>Solution</em> <span class="math inline">\(r(x, y) = \frac13\)</span> is <span class="math inline">\(x-1 \leq y \leq x+2\)</span>.</p>
+<p>Now the acceptance probability. If <span class="math inline">\(x - 1 \leq y \leq x + 1\)</span>, then <span class="math inline">\(r(x,y) = r(y,x) = \frac13\)</span>. In that case, <span class="math display">\[ \alpha(x, y) =  \min \left\{ \frac{\sin^2(y)}{\sin^2(x)} \,\exp(|x|-|y|),\,1 \right\}  \]</span> again. On the other hand, if <span class="math inline">\(x + 1 &lt; y \leq x + 2\)</span>, then <span class="math inline">\(r(x, y) = \frac13\)</span> while <span class="math inline">\(r(y,x) = 0\)</span>. In this case, <span class="math inline">\(\alpha(x, y) = 0\)</span>.</p>
+</div>
 </div>
 <div class="subq">
 <p><strong>(c)</strong>&nbsp;&nbsp;<span class="math inline">\(Y_{i+1} \sim \operatorname{N}(0,1)\)</span>, independent of <span class="math inline">\(X_i\)</span>.</p>
+<div class="myanswers">
+<p><em>Solutions.</em> In this case, <span class="math inline">\(r(x, y)\)</span> does not depend on <span class="math inline">\(x\)</span> at all. We have simply <span class="math display">\[ r(x, y) = \frac{1}{\sqrt{2\pi}}\,\mathrm{e}^{-y^2/2} . \]</span> <span class="math display">\[ \begin{align}
+\alpha(x, y) &amp;=  \min \left\{ \frac{\mathrm{e}^{-y^2/2} \,\pi(y)}{\mathrm{e}^{-x^2/2} \, \pi(x)} \right\} \\
+&amp;=  \min \left\{ \frac{\mathrm{e}^{-y^2/2}}{\mathrm{e}^{-x^2/2}}\,\frac{\sin^2(y)}{\sin^2(x)} \,\exp(|x|-|y|),\,1 \right\} \\
+&amp;= \min \left\{ \frac{\sin^2(y)}{\sin^2(x)} \,\exp\big(x^2/2 + |x|-y^2/2 - |y|\big),\,1 \right\}
+\end{align} \]</span></p>
+</div>
 </div>
 </div>
 
 
+</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
