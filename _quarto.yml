@@ -1,6 +1,8 @@
 project:
   type: book
   output-dir: docs
+  resources:
+  - "coursework/*"
 
 book:
   title: "MATH5835M Statistical Computing"

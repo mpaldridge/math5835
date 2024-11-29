@@ -14,4 +14,4 @@
 
 ## Problem Sheet 4 {.unnumbered #P4-sols}
 
-<!-- {{< include P4-content.qmd >}} -->
+{{< include P4-content.qmd >}}
