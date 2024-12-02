@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>24&nbsp; Empirical distribution – MATH5835M Statistical Computing</title>
+<title>25&nbsp; Plug-in estimation – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L25-plugin.html" rel="next">
-<link href="../lectures/L23-bayes.html" rel="prev">
+<link href="../coursework/coursework.html" rel="next">
+<link href="../lectures/L24-empirical.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +111,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html">Bootstrap</a></li><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html">Bootstrap</a></li><li class="breadcrumb-item"><a href="../lectures/L25-plugin.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -382,13 +348,13 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L24-empirical.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L24-empirical.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L25-plugin.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L25-plugin.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation</span></span></a>
   </div>
 </li>
@@ -416,18 +382,16 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">24.1</span> Introduction</a></li>
-  <li><a href="#definition-and-properties" id="toc-definition-and-properties" class="nav-link" data-scroll-target="#definition-and-properties"><span class="header-section-number">24.2</span> Definition and properties</a></li>
-  <li><a href="#empirical-distributions-in-r" id="toc-empirical-distributions-in-r" class="nav-link" data-scroll-target="#empirical-distributions-in-r"><span class="header-section-number">24.3</span> Empirical distributions in R</a></li>
+  <li><a href="#the-plug-in-principle" id="toc-the-plug-in-principle" class="nav-link active" data-scroll-target="#the-plug-in-principle"><span class="header-section-number">25.1</span> The “plug-in” principle</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html">Bootstrap</a></li><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html">Bootstrap</a></li><li class="breadcrumb-item"><a href="../lectures/L25-plugin.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></h1>
+<h1 class="title"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation</span></h1>
 </div>
 
 
@@ -444,123 +408,20 @@ window.Quarto = {
 </header>
 
 
-<section id="introduction" class="level2" data-number="24.1">
-<h2 data-number="24.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">24.1</span> Introduction</h2>
-<p>So far in this module, we have looked at sampling from distributions where we know the precise probability density function <span class="math inline">\(f\)</span> or probability mass function <span class="math inline">\(p\)</span>. We have then been able to discover things about that distribution by sampling from <span class="math inline">\(f\)</span> or <span class="math inline">\(p\)</span>: either exactly with independent samples (with the inverse transform method or envelope rejection sampling, for example), or approximately with samples of restricted dependence (with the Metropolis–Hastings algorithm).</p>
-<p>But statisticians deal with data, not with probability distributions. A much more common situation is that we have some data. We believe that the data has come from a distribution, but we don’t know what that distribution is. Nonetheless, we still want to find out facts about that unknown distribution.</p>
-<p>One traditional way to do this would be to fit a distribution to the data. By using knowledge about the context of the data and by examining the data itself, an appropriate parametric model could be chosen, and then the parameters could be estimated from the data. Once the model has then been specified, we can find out about that model using the ideas we have looked at in this course.</p>
-<p>But sometimes this is not possible or desirable. With insufficient contextual knowledge, we might not be able to choose an appropriate parametric model. Or the data might not seem to fit <em>any</em> of the famous parametric models. And even if we did choose and fit a model, there’s no guarantee that out choice would be correct.</p>
-<p>Instead, we could look for the model that makes the fewest possible assumptions about the data. This is called the <strong>empirical distribution</strong>, which we will look at today. This is the basis for a collection of statistical techniques called the <strong>bootstrap</strong> (or <strong>bootstrapping</strong>), which we will look at for the next lecture.</p>
-</section>
-<section id="definition-and-properties" class="level2" data-number="24.2">
-<h2 data-number="24.2" class="anchored" data-anchor-id="definition-and-properties"><span class="header-section-number">24.2</span> Definition and properties</h2>
-<p>Consider the following dataset <span class="math inline">\(\mathbf x = (x_1, x_2, x_3, x_4, x_5)\)</span> of <span class="math inline">\(m = 5\)</span> values: <span class="math display">\[ 2, \ 3, \ 3, \ 4, \ 6 .\]</span></p>
-<p>We could try to fit a distribution to this data. For example, if we knew it was recording the number of absences from a class of 20 students over five lectures, we might think a binomial <span class="math inline">\(\operatorname{Bin}(20, p)\)</span> model was appropriate, and then try to estimate the value of <span class="math inline">\(p\)</span>. If it was recording the number of emails received per hour, we might think a Poisson <span class="math inline">\(\operatorname{Po}(\lambda)\)</span> model was appropriate, and try to estimate the value of <span class="math inline">\(\lambda\)</span>.</p>
-<p>But that involves making assumptions. What if we wanted to make no assumptions about the data – or, at least, as few assumptions as possible? Well, we can say that in our data set, one fifth of the data was the value 2, two fifths was 3 (because there were two 3s in the dataset), one fifth was 4, and one fifth was 6. So we choose the model that these come from a random variable <span class="math inline">\(X^*\)</span> where <span class="math display">\[ \begin{align}
-\mathbb P(X^* = 2) &amp;= \tfrac15 &amp; \mathbb P(X^* = 3) &amp;= \tfrac25 \\
-\mathbb P(X^* = 4) &amp;= \tfrac15 &amp; \mathbb P(X^* = 6) &amp;= \tfrac15 .
-\end{align} \]</span> This is called the empirical distribution. (The word “empirical” refers to what you actually observed, rather than assumed.)</p>
-<div id="def-empirical" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 24.1</strong></span> Consider a dataset <span class="math inline">\(\mathbf x = (x_1, x_2, \dots, x_m)\)</span>. The <strong>empirical distribution</strong> <span class="math inline">\(X^*\)</span> of this data is a discrete random variable with probability mass function <span class="math inline">\(p^*(x) = \mathbb P(X^* = x)\)</span>, where <span class="math display">\[ p^*(x) = \frac{1}{m} \,\big| \{j : x_j = x \} \big| = \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(x_j) . \]</span></p>
-</div>
-<p>In other words, <span class="math inline">\(p^*(x)\)</span> is simply the proportion of the dataset that took the value <span class="math inline">\(x\)</span>.</p>
-<p>We’re not suggesting that the distribution <span class="math inline">\(X^*\)</span> is necessarily the “true” distribution the data actually came from. Rather, we feel that by reducing any of our own assumptions that we make on the data, we are giving the data the best opportunity to “speak for itself”, rather than imposing our own views and opinions on the data.</p>
-<p>On that point, consider this dataset of <span class="math inline">\(m = 6\)</span> datapoints: <span class="math display">\[ 0.580, \ 3.219, \ 3.433, \ 4.913, \ 18.784, \ 28.133. \]</span> It certainly looks like these came from a continuous distribution. But the empirical distribution <span class="math inline">\(X^*\)</span> is still discrete – it takes each of those values with probability <span class="math inline">\(\tfrac16\)</span>. The claim is not the the empirical distribution is likely to be “correct”; rather, the claim is that by minimising the assumptions we make, we aren’t polluting the data any further.</p>
-<p>Let’s think further about this random variable <span class="math inline">\(X^*\)</span>, the empirical distribution of a dataset <span class="math inline">\(\mathbf x\)</span>.</p>
-<p>First, taking a single sample from the random variable <span class="math inline">\(X^*\)</span> is equivalent to picking one of the datapoints at random. The probability we pick a value <span class="math inline">\(x\)</span> is simply the proportion of the datapoints that take the value <span class="math inline">\(x\)</span>.</p>
-<p>Taking multiple IID samples from <span class="math inline">\(X^*\)</span> is the same as sampling from the dataset <em>with replacement</em> – since, to be <em>independent</em> samples, it has to be possible to pick the same datapoint twice.</p>
-<p>Second, since <span class="math inline">\(X^*\)</span> is a random variable, we can do calculations with it just as we would any other random variable.</p>
-<p>For example, we can calculate its expectation. This is <span class="math display">\[ \begin{align}
-\mathbb E_*X^* &amp;= \sum_x x\,p^*(x) \\
-&amp;=\sum_x x\, \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(x_j)  \\
-&amp;= \frac{1}{m} \sum_{j=1}^m \sum_x x\, \mathbb{I}_{\{x\}}(x_j) .
-\end{align} \]</span> Now, if we think about the term <span class="math inline">\(x\, \mathbb{I}_{\{x\}}(x_j)\)</span> inside the sum over <span class="math inline">\(x\)</span> here, the indicator will equal 0 for every term in the sum except the term <span class="math inline">\(x = x_j\)</span>, when the term will equal <span class="math inline">\(x \times 1 = x_j\)</span>. Hence, we have <span class="math display">\[ \mathbb E_*X^* = \frac{1}{m} \sum_{j=1}^m x_j . \]</span> But this is just the sample mean of the data set. The empirical expectation is the sample mean, <span class="math inline">\(\mathbb E_*X^* = \overline x\)</span>.</p>
-<p>You probably noticed the notation <span class="math inline">\(\mathbb E_*\)</span> here. We use this notation when we want to emphasise we are taken the expectation over the empirical distribution, taking the data as fixed. This isn’t really needed here – we know our data is the fixed observations <span class="math inline">\(\mathbf x\)</span>. But later on, we will model the data itself as being samples from a random variable. There we will want to distinguish between taking an expectation <span class="math inline">\(\mathbb E\)</span> over the randomness in the samples themselves and taking an expectation <span class="math inline">\(\mathbb E_*\)</span> over the empirical distribution while treating the samples as fixed.</p>
-<p>We can also calculate the variance similarly. Since <span class="math inline">\(\mathbb E_*X^* = \overline x\)</span>, we have <span class="math inline">\(\operatorname{Var}_*(X^*) = \mathbb E_*(X^* - \overline x)^2\)</span>. By the same argument as for the expectation, we have <span class="math display">\[ \begin{align}
-\operatorname{Var}_*(X^*) &amp;= \sum_x \big(x - \overline x\big)^2 \, p^*(x)  \\
-&amp;= \sum_x \big(x - \overline x\big)^2 \,\frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(x_j) \\
-&amp;= \frac{1}{m} \sum_{j=1}^m \sum_x \big(x - \overline x\big)^2 \,\mathbb{I}_{\{x\}}(x_j) \\
-&amp;= \frac{1}{m} \sum_{j=1}^m \big(x_j - \overline x\big)^2 .
-\end{align} \]</span> This is almost the sample variance – it just has <span class="math inline">\(\frac{1}{m}\)</span> in front instead of the usual <span class="math inline">\(\frac{1}{m-1}\)</span>. This won’t make much difference when <span class="math inline">\(m\)</span> is large.</p>
-<p>Third, its often more mathematically pleasant to work with is the <strong>empirical cumulative distribution function</strong> <span class="math inline">\(F^*\)</span>. This is <span class="math inline">\(F^*(x) = \mathbb P(X^* \leq x)\)</span>. We can calculate the empirical CDF as <span class="math display">\[ \begin{align}
-F^*(x) = \sum_{y \leq x} p^*(y) &amp;= \sum_{y \leq x} \frac{1}{m}\, \big| \{j : x_j = y \} \big| \\
-&amp;= \frac{1}{m}\sum_{y \leq x}\big| \{j : x_j = y \} \big| \\
-&amp;= \frac{1}{m}\, \big| \{j : x_j \leq x \} \big| .
-\end{align} \]</span> So this is just the proportion of the datapoints that are less than or equal to <span class="math inline">\(x_j\)</span>. This tends to be more mathematically convenient, because the CDF works equally well for discrete and continuous random variables, so this is flexible to the fact that the empirical distribution is always discrete while the true distribution may be continuous.</p>
-</section>
-<section id="empirical-distributions-in-r" class="level2" data-number="24.3">
-<h2 data-number="24.3" class="anchored" data-anchor-id="empirical-distributions-in-r"><span class="header-section-number">24.3</span> Empirical distributions in R</h2>
-<div id="exm-heights" class="theorem example">
-<p><span class="theorem-title"><strong>Example 24.1</strong></span> The heights (in cm) of 20 student’s surveyed in one of Dr Voss’s modules is as follows:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>heights <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">180</span>, <span class="dv">182</span>, <span class="dv">182</span>, <span class="dv">181</span>, <span class="dv">164</span>, <span class="dv">180</span>, <span class="dv">154</span>, <span class="dv">153</span>, <span class="dv">177</span>, <span class="dv">190</span>,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">182</span>, <span class="dv">175</span>, <span class="dv">167</span>, <span class="dv">168</span>, <span class="dv">185</span>, <span class="dv">153</span>, <span class="dv">172</span>, <span class="dv">177</span>, <span class="dv">176</span>, <span class="dv">170</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(heights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>In R, the <code>table()</code> function tells us how many outcomes we had of each value. We can then find the empirical PMF <span class="math inline">\(p^*\)</span> by dividing this by <span class="math inline">\(m\)</span>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(heights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>heights
-153 154 164 167 168 170 172 175 176 177 180 181 182 185 190 
-  2   1   1   1   1   1   1   1   1   2   2   1   3   1   1 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(heights) <span class="sc">/</span> m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>heights
- 153  154  164  167  168  170  172  175  176  177  180  181  182  185  190 
-0.10 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.10 0.10 0.05 0.15 0.05 0.05 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(heights) <span class="sc">/</span> m, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">ylab =</span> <span class="st">"p*"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="L24-empirical_files/figure-html/unnamed-chunk-2-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>We can sample from the empirical distribution <span class="math inline">\(X^*\)</span>. Recall that we said taking IID samples from <span class="math inline">\(X^*\)</span> is equivalent to sampling from <span class="math inline">\(\mathbf x\)</span> with replacement. Here is a sample of <span class="math inline">\(n = 30\)</span> heights. (Note that this is more than the <span class="math inline">\(m = 20\)</span> datapoints we had – but this is no problem if we are sampling with replacement.)</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(heights, <span class="dv">30</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] 177 153 154 175 190 167 185 181 182 177 182 167 167 172 153 180 176 153 180
-[20] 182 153 168 175 177 182 185 154 181 164 177</code></pre>
-</div>
-</div>
-<p>Make sure you use <code>replace = TRUE</code> to ensure you are sampling <em>with</em> replacement.</p>
-<p>The expectation and variance of the empirical distribution are as follows.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>heights_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(heights)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>heights_var <span class="ot">&lt;-</span> <span class="fu">sum</span>((heights <span class="sc">-</span> heights_mean)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> m</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(heights_mean, heights_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 173.40 109.64</code></pre>
-</div>
-</div>
-<p>We can form the empirical CDF in R with the <code>ecdf()</code> function.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Fstar <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(heights)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Fstar, <span class="at">main =</span> <span class="st">"Empirical CDF of heights"</span>, <span class="at">xlab =</span> <span class="st">"height (cm)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="L24-empirical_files/figure-html/unnamed-chunk-5-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>The object produced by <code>ecdf()</code> is a function. So we can find, for example, the empirical CDF at 172, <span class="math inline">\(F^*(172)\)</span>, which is the proportion of a dataset with heights less than or equal to 172 cm.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Fstar</span>(<span class="fl">172.333</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4</code></pre>
-</div>
-</div>
-</div>
-<p>One more thing on the empirical distribution <span class="math inline">\(X^*\)</span>. If we pick an index <span class="math inline">\(J\)</span> uniformly from <span class="math inline">\(\{1, 2, \dots, m\}\)</span>, then <span class="math inline">\(x_J = X^*\)</span>. That is, we can think of <span class="math inline">\(X^*\)</span> as picking one of the datapoints uniformly at random. (This way of looking at <span class="math inline">\(X^*\)</span> is used a lot in the book of Voss.)</p>
+<section id="the-plug-in-principle" class="level2" data-number="25.1">
+<h2 data-number="25.1" class="anchored" data-anchor-id="the-plug-in-principle"><span class="header-section-number">25.1</span> The “plug-in” principle</h2>
+<p>Let’s suppose that the data actually comes from a distribution <span class="math inline">\(X\)</span>; that is, suppose <span class="math inline">\(\mathbf X = (X_1, X_2, \dots, X_m)\)</span> is an IID random sample from <span class="math inline">\(X\)</span>. We observe the samples <span class="math inline">\(\mathbf X\)</span>, but probably to not know the distribution <span class="math inline">\(X\)</span> they are drawn from. However, from this sample <span class="math inline">\(\mathbf X\)</span>, we can certainly calculate the associated empirical distribution <span class="math inline">\(X^*\)</span>.</p>
+<p>The idea behind the bootstrap is to replace calculations with the true distribution <span class="math inline">\(X\)</span> (which we don’t know) by the same calculation but with the empirical distribution <span class="math inline">\(X^*\)</span> (which we do know) taking <span class="math inline">\(X\)</span>’s place. This is called the <strong>plug-in principle</strong>, and such an estimator is a <strong>plug-in estimator</strong> – the idea is that we simply “plug <span class="math inline">\(X^*\)</span> in” to the existing formula.</p>
+<p>So, for example, suppose we wanted to estimate the expectation <span class="math inline">\(\mathbb EX\)</span> of the true distribution <span class="math inline">\(X\)</span>. To estimate this, we instead plug in the empirical distribution <span class="math inline">\(X^*\)</span> in place of <span class="math inline">\(X\)</span> and the empirical expectation <span class="math inline">\(\mathbb E_*\)</span> in place of the expectation over the samples <span class="math inline">\(\mathbb E\)</span>. So our estimator is instead <span class="math inline">\(\mathbb E_*X^*\)</span>. We saw earlier that <span class="math inline">\(\mathbb E_*X^*\)</span> is the sample mean <span class="math inline">\(\overline X\)</span>. So the plug-in estimator for the expectation is the sample mean.</p>
+<p>Remember that <span class="math inline">\(\mathbb E_*\)</span> is expectation of the empirical distribution, treating the samples as fixed. An alternative (if slightly more cumbersome) way to write <span class="math inline">\(\operatorname{\mathbb E}_* \phi(X)\)</span> would be as a conditional expectation <span class="math inline">\(\mathbb E\big(\phi(X) \mid \mathbf X\big)\)</span> given the samples <span class="math inline">\(\mathbf X = (X_1, \dots, X_n)\)</span>. Here, then, we could also write <span class="math inline">\(\mathbb E(X^* \mid \mathbf X) = \overline X\)</span>.</p>
+<p>Suppose we wanted to estimate the variance <span class="math inline">\(\operatorname{Var}(X)\)</span> of the true distribution. Again, we plug in <span class="math inline">\(X^*\)</span>, to instead find <span class="math inline">\(\operatorname{Var}_*(X^*)\)</span>, which we saw earlier is <span class="math display">\[ \operatorname{Var}_*(X^*) = \frac{1}{m} \sum_{j = 1}^m \big(X_j - \overline X\big)^2 , \]</span> which is very similar to our standard estimator <span class="math display">\[ S^2 = \frac{1}{m-1} \sum_{j = 1}^m \big(X_j - \overline X\big)^2 . \]</span> Again, <span class="math inline">\(\operatorname{Var}_*\)</span> means the variance over the empirical distribution treating the samples as fixed. We could alternatively write <span class="math inline">\(\operatorname{Var}(X^* \mid \mathbf X)\)</span> to make the dependence on the fixed samples <span class="math inline">\(\mathbf X\)</span> more explicit.</p>
+<p>If we wanted to estimate <span class="math inline">\(\operatorname{\mathbb E}\phi(X)\)</span>, the plug-in estimator is <span class="math display">\[ \begin{align}
+\operatorname{\mathbb{E}}_* \phi(X^*) &amp;= \sum_x \phi(x)\,p^*(x) \\
+&amp;=\sum_x \phi(x)\, \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(X_j)  \\
+&amp;= \frac{1}{m} \sum_{j=1}^m \sum_x \phi(x)\, \mathbb{I}_{\{x\}}(X_j) \\
+&amp;= \frac{1}{m} \sum_{j=1}^m \phi(X_j) ,
+\end{align} \]</span> by the same logic we used for the expectation and variance earlier. This is the Monte Carlo estimator from the beginning of this module – we have a sample <span class="math inline">\(X_1, X_2, \dots, X_m\)</span> and we have form the Monte Carlo estimator <span class="math inline">\(\operatorname{\mathbb E}\phi(X)\)</span>. This shows there are deep connections between Monte Carlo estimation and the plug-in/bootstrap ideas we will look at over the next three lectures.</p>
+<p>In a sense, this means we haven’t done anything particularly new yet – just dressed up old ideas in new notation. But in the next lectures, we will develop the bootstrap idea further, to look at bias, variance and confidence intervals for these estimators, which is where the power of the bootstrap really shines.</p>
 
 
 </section>
@@ -988,13 +849,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L23-bayes.html" class="pagination-link" aria-label="MCMC and Bayesian statistics">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">MCMC and Bayesian statistics</span></span>
+      <a href="../lectures/L24-empirical.html" class="pagination-link" aria-label="Empirical distribution">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L25-plugin.html" class="pagination-link" aria-label="Plug-in estimation">
-        <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../coursework/coursework.html" class="pagination-link" aria-label="Computational coursework">
+        <span class="nav-page-text">Computational coursework</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

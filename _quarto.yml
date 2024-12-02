@@ -49,7 +49,7 @@ book:
     - part: "Bootstrap"
       chapters:
         - lectures/L24-empirical.qmd
-#        - lectures/L25-bootstrap.qmd
+        - lectures/L25-plugin.qmd
 #        - lectures/L26-bootstrap-error.qmd
 #        - lectures/L27-bootstrap-ci.qmd
 #        - problems/P5.qmd

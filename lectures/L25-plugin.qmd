@@ -1,0 +1,22 @@
+# Plug-in estimation
+
+## The "plug-in" principle
+
+Let's suppose that the data actually comes from a distribution $X$; that is, suppose $\mathbf X = (X_1, X_2, \dots, X_m)$ is an IID random sample from $X$. We observe the samples $\mathbf X$, but probably to not know the distribution $X$ they are drawn from. However, from this sample $\mathbf X$, we can certainly calculate the associated empirical distribution $X^*$.
+
+The idea behind the bootstrap is to replace calculations with the true distribution $X$ (which we don't know) by the same calculation but with the empirical distribution $X^*$ (which we do know) taking $X$'s place. This is called the **plug-in principle**, and such an estimator is a **plug-in estimator** -- the idea is that we simply "plug $X^*$ in" to the existing formula.
+
+So, for example, suppose we wanted to estimate the expectation $\mathbb EX$ of the true distribution $X$. To estimate this, we instead plug in the empirical distribution $X^*$ in place of $X$ and the empirical expectation $\mathbb E_*$ in place of the expectation over the samples $\mathbb E$. So our estimator is instead $\mathbb E_*X^*$. We saw earlier that $\mathbb E_*X^*$ is the sample mean $\overline X$. So the plug-in estimator for the expectation is the sample mean.
+
+Remember that $\mathbb E_*$ is expectation of the empirical distribution, treating the samples as fixed. An alternative (if slightly more cumbersome) way to write $\operatorname{\mathbb E}_* \phi(X)$ would be as a conditional expectation $\mathbb E\big(\phi(X) \mid \mathbf X\big)$ given the samples $\mathbf X = (X_1, \dots, X_n)$. Here, then, we could also write $\mathbb E(X^* \mid \mathbf X) = \overline X$.
+
+Suppose we wanted to estimate the variance $\operatorname{Var}(X)$ of the true distribution. Again, we plug in $X^*$, to instead find $\operatorname{Var}_*(X^*)$, which we saw earlier is $$ \operatorname{Var}_*(X^*) = \frac{1}{m} \sum_{j = 1}^m \big(X_j - \overline X\big)^2 , $$ which is very similar to our standard estimator $$ S^2 = \frac{1}{m-1} \sum_{j = 1}^m \big(X_j - \overline X\big)^2 . $$ Again, $\operatorname{Var}_*$ means the variance over the empirical distribution treating the samples as fixed. We could alternatively write $\operatorname{Var}(X^* \mid \mathbf X)$ to make the dependence on the fixed samples $\mathbf X$ more explicit.
+
+If we wanted to estimate $\operatorname{\mathbb E}\phi(X)$, the plug-in estimator is $$ \begin{align}
+\operatorname{\mathbb{E}}_* \phi(X^*) &= \sum_x \phi(x)\,p^*(x) \\
+&=\sum_x \phi(x)\, \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(X_j)  \\
+&= \frac{1}{m} \sum_{j=1}^m \sum_x \phi(x)\, \mathbb{I}_{\{x\}}(X_j) \\
+&= \frac{1}{m} \sum_{j=1}^m \phi(X_j) ,
+\end{align} $$ by the same logic we used for the expectation and variance earlier. This is the Monte Carlo estimator from the beginning of this module -- we have a sample $X_1, X_2, \dots, X_m$ and we have form the Monte Carlo estimator $\operatorname{\mathbb E}\phi(X)$. This shows there are deep connections between Monte Carlo estimation and the plug-in/bootstrap ideas we will look at over the next three lectures.
+
+In a sense, this means we haven't done anything particularly new yet -- just dressed up old ideas in new notation. But in the next lectures, we will develop the bootstrap idea further, to look at bias, variance and confidence intervals for these estimators, which is where the power of the bootstrap really shines.
