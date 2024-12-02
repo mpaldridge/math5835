@@ -5,7 +5,7 @@ There is one piece of computational coursework for MATH5835M Statistical Computi
 
 The coursework sheet is available in **[here in HTML format](https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html)** or **<a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.Rmd">here in R Markdown format</a>**.
 
-The deadline for the coursework will be the penultimate day of the Autumn term, **Thursday 12 December ** at **1400**. (There is an optional deadline if you wish to get feedback on a draft of your work: Friday 6 December at 1400.)
+The deadline for the coursework will be the penultimate day of the Autumn term, **Thursday 12 December ** at **1400**. (There is also an optional deadline if you wish to get feedback on a draft of your work: Friday 6 December at 1400.)
 
 Feedback on the final report and marks will be returned on Monday 13 January, the first day of the Spring term.
 :::
@@ -14,7 +14,9 @@ Feedback on the final report and marks will be returned on Monday 13 January, th
 
 There is one piece of computational coursework for MATH5835M Statistical Computing. This coursework is worth 20% of the module mark.
 
-This page contains all the administrative and organisational information about the coursework. A coursework sheet contains the tasks you must carry out. The coursework sheet is available in **[here in HTML format](https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html)** or **<a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.Rmd">here in R Markdown format</a>**. The HTML page can be opened in a standard web browser. The R Markdown version (which I personally prefer) should be downloaded then opened in RStudio; I recommend using the "Visual" editor -- see the button in the top left of the editing window.
+This page contains all the administrative and organisational information about the coursework.
+
+A coursework sheet contains the tasks you must carry out. The coursework sheet is available in **[here in HTML format](https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html)** or **<a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.Rmd">here in R Markdown format</a>**. The HTML page can be opened in a standard web browser. The R Markdown version (which I personally prefer) should be downloaded then opened in RStudio; I recommend using the "Visual" editor -- see the button in the top left of the editing window.
 
 The are two deadlines for this work. 
 
@@ -24,11 +26,23 @@ The are two deadlines for this work.
 
 The Gradescope submission for the final report will open after 1400 on Friday 6 December (to avoid drafts for optional feedback getting mixed up with final reports). The Gradescope submission for optional feedback on draft work will be open from the computer practical sessions in week 9.
 
-Your task is to write a short report in response to the tasks on the coursework sheet. Your report should include all the important R code you use and any important plots you draw. I call this a "report" because your work should be explained in detail, in full English-language sentences, with your solutions discussed and justified. Any code or figures included should be an integral part of your text, not just copy-pasted in at random, and should be fully explained within the text. However, other parts of a more formal report such as an introduction, literature review, conclusion, references, etc, are not required here.
+Your report must be entirely your own work. You must not work together with others, and you must not use generative AI -- the coursework is **<span style="color:red;">RED</red> for use of AI** on the University's traffic light system, meaning the use of generative AI is forbidden. You must comply with [the University's rules on academic integrity](https://students.leeds.ac.uk/info/10110/academic-integrity).
 
-There is *no page limit* for the report, although I expect that good reports will typically be around 5--7 pages. If your report is 4 pages or less, make sure you have completed all the tasks and fully explained your work. If your report has 8 pages or more, make sure you are not wandering from the point or including too many necessary figures.
+If you encounter extraordinary unforeseeable personal circumstances that make it impossible for you to submit your coursework on time, you can apply for an deadline extension through [the usual mitigating circumstances procedure](https://students.leeds.ac.uk/info/10111/assessment/860/mitigating_circumstances). (Do not contact me about this -- I cannot unilaterally offer deadline extensions.)
+
+## About your report
+
+Your task is to write a short report in response to the tasks on the coursework sheet. Your report should include all the important R code you use and any important plots you draw. If I can't work out what R code you ran to get your results, I cannot award you marks for those results. Only include the code and figures relevant to your final and best solution -- I don't need or want to see earlier attempts or errors along the way, unless they genuinely help explain your final choices.
+
+*All computational work must be done in R* -- no marks will be given for code written in Python or any other language. It is strongly recommended that you draw figures in R (with the possible exception of rough illustrative sketches, if you find them useful), but I do not insist on this.
+
+I call your output a "report" because your work should be explained in detail, in full English-language sentences, with your solutions discussed and justified. The code and figures you include should be an integral part of your report, not just copy-pasted in at random, and should be fully explained within the text. However, other parts of a more formal "report", such as an introduction, literature review, conclusion, references, etc, are not required here.
+
+There is *no page limit* for the report, although I expect that good reports will typically be around 5--7 pages. If your report is 4 pages or less, make sure you have completed all the tasks and fully explained your work. If your report has 8 pages or more, make sure you are not wandering from the point or including too many unnecessary figures.
 
 Your report should be prepared electronically, but can be submitted in any sensible format -- I recommend PDF (whether produced by LaTeX, R Markdown, Microsoft Word, or any other way), but HTML or Word document are fine too.
+
+## Computer practical and other help
 
 There will be a computer practical in Week 9 where I will introduce the practical coursework in more detail. This is a good place to ask any questions you have about the coursework.
 
@@ -36,13 +50,11 @@ Places where you can get help with the coursework include:
 
 * In the computer practical session.
 
-* In my office hours -- Mondays 1500--1600 in my office, 9.10n in the "Maths Research Deck" area on the 9th floor of the EC Stoner building at staircase 1.
+* In my office hours -- Mondays 1500--1600 in my office, 9.10n in the "Maths Research Deck" area on the 9th floor of the EC Stoner building at staircase 1. (It is unlikely I will have time to discuss computational work at the beginning or end of a lecture, although if your question is *extremely* short you can try.)
 
 * By submitting your draft work for optional feedback, as discussed above.
 
-Your report must be entirely your own work. You must not work together with others, and you must not use generative AI -- the coursework is **<span style="color:red;">RED</red> for use of AI** on the University's traffic light system, meaning the use of generative AI is forbidden. You must comply with [the University's rules on academic integrity](https://students.leeds.ac.uk/info/10110/academic-integrity).
 
-If you encounter extraordinary unforeseeable personal circumstances that make it impossible for you to submit your coursework on time, you can apply for an deadline extension through [the usual mitigating circumstances procedure](https://students.leeds.ac.uk/info/10111/assessment/860/mitigating_circumstances). (Do not contact me about this -- I cannot unilaterally offer deadline extensions.)
 
 ## R and RStudio on University computers
 
@@ -53,3 +65,5 @@ A quick reminder on how to access R and RStudio on University computers.
 2. **Load the language R** Search on AppsAnywhere for "R for Windows" (or similar) and launch it. This will (silently) load the language R. It will also open an inferior RStudio-like program called "RGui" -- you can close it.
 
 3.**Launch RStudio** Search on AppsAnywhere for "RStudio" (or similar) and launch it.
+
+You can also use the [Posit Cloud](https://posit.cloud) to access R and RStudio online.
