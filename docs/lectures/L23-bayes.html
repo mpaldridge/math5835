@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../coursework/coursework.html" rel="next">
+<link href="../lectures/L24-empirical.html" rel="next">
 <link href="../lectures/L22-mcmc-error.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -371,6 +371,23 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Bootstrap</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L24-empirical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../coursework/coursework.html" class="sidebar-item-text sidebar-link">
@@ -445,7 +462,7 @@ window.Quarto = {
 <section id="example" class="level2" data-number="23.2">
 <h2 data-number="23.2" class="anchored" data-anchor-id="example"><span class="header-section-number">23.2</span> Example</h2>
 <div id="exm-mcmc-bayes" class="theorem example">
-<p><span class="theorem-title"><strong>Example 23.1</strong></span> Consider a statistical model where <span class="math inline">\(X_i\)</span> are IID and normally distributed with unknown mean <span class="math inline">\(\mu\)</span> and and standard deviation <span class="math inline">\(\sigma\)</span>. Here our parameter <span class="math inline">\(\boldsymbol\theta = (\mu, \sigma)\)</span> is two-dimensional. So the likelihood is <span class="math display">\[ f(\mathbf x \mid \mu, \sigma) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\,\exp \left(\frac{(x_i-\mu)^2}{2\sigma^2}\right) = (2\pi\sigma^2)^{-n/2} \,\exp \left( \frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2 \right) . \]</span></p>
+<p><span class="theorem-title"><strong>Example 23.1</strong></span> Consider a statistical model where <span class="math inline">\(X_i\)</span> are IID and normally distributed with unknown mean <span class="math inline">\(\mu\)</span> and and standard deviation <span class="math inline">\(\sigma\)</span>. Here our parameter <span class="math inline">\(\boldsymbol\theta = (\mu, \sigma)\)</span> is two-dimensional. So the likelihood is <span class="math display">\[ f(\mathbf x \mid \mu, \sigma) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\,\exp \left(-\frac{(x_i-\mu)^2}{2\sigma^2}\right) = (2\pi\sigma^2)^{-n/2} \,\exp \left( -\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2 \right) . \]</span></p>
 <p>There are some special priors for which the posterior here has a very simple distribution. For example, if the prior for <span class="math inline">\(\mu\)</span> is a normal distribution and the prior for <span class="math inline">\(\sigma\)</span> is that <span class="math inline">\(1/\sigma^2\)</span> has a Gamma distribution and these are independent, then the posterior has the same form but with different parameters. But if your beliefs about <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> aren’t well represented by a distribution of this form, then it will be very difficult or impossible to get a closed-form expression for the posterior.</p>
 <p>Let’s suppose our prior beliefs are represented something a bit weirder. Let’s say that our prior is that <span class="math inline">\(\mu\)</span> is uniformly distributed on <span class="math inline">\([-10, 10]\)</span> and that <span class="math inline">\(\sigma\)</span> is exponentially distributed with rate <span class="math inline">\(0.3\)</span> and that these are independent. So our prior is <span class="math display">\[\pi(\mu, \sigma) = \frac{1}{20}\,0.3\mathrm{e}^{-0.3\sigma} \qquad -10 \leq \mu \leq 10, \sigma \geq 0 . \]</span></p>
 <p>Suppose now that we see that data <span class="math display">\[\mathbf x = (3.5, 13.7, 6.4, 0.7, 10.2, -2.3, 6.6, 5.1, 9.1, 10.7) . \]</span> We want to update our beliefs about <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> and make inferences about the posterior. Finding the posterior here “by hand” seems a hopeless task. But we can certainly simulate from it with the random walk Metropolis algorithm.</p>
@@ -972,8 +989,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../coursework/coursework.html" class="pagination-link" aria-label="Computational coursework">
-        <span class="nav-page-text">Computational coursework</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L24-empirical.html" class="pagination-link" aria-label="Empirical distribution">
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

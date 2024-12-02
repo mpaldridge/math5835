@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>11&nbsp; LCGs – MATH5835M Statistical Computing</title>
+<title>24&nbsp; Empirical distribution – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../problems/P2.html" rel="next">
-<link href="../lectures/L10-rng-intro.html" rel="prev">
+<link href="../coursework/coursework.html" rel="next">
+<link href="../lectures/L23-bayes.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../lectures/L11-lcg.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html">Bootstrap</a></li><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -264,7 +264,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L11-lcg.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L11-lcg.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></span></a>
   </div>
 </li>
@@ -382,7 +382,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L24-empirical.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L24-empirical.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></span></a>
   </div>
 </li>
@@ -405,23 +405,15 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#definition-and-examples" id="toc-definition-and-examples" class="nav-link active" data-scroll-target="#definition-and-examples"><span class="header-section-number">11.1</span> Definition and examples</a></li>
-  <li><a href="#periods-of-lcgs" id="toc-periods-of-lcgs" class="nav-link" data-scroll-target="#periods-of-lcgs"><span class="header-section-number">11.2</span> Periods of LCGs</a></li>
-  <li><a href="#statistical-testing" id="toc-statistical-testing" class="nav-link" data-scroll-target="#statistical-testing"><span class="header-section-number">11.3</span> Statistical testing</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../lectures/L11-lcg.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html">Bootstrap</a></li><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></h1>
+<h1 class="title"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></h1>
 </div>
 
 
@@ -438,144 +430,188 @@ window.Quarto = {
 </header>
 
 
-<section id="definition-and-examples" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="definition-and-examples"><span class="header-section-number">11.1</span> Definition and examples</h2>
-<p>Last lecture we introduced the idea of pseudorandom number generators (PRNGs), which are deterministic functions that produce a sequence of numbers that look for all practical purposes as if they are random.</p>
-<p>We introduced the idea of a recurrence, where we have a function <span class="math inline">\(f\)</span> and start with a seed <span class="math inline">\(x_1\)</span>. We then produce a sequence through the recurrence <span class="math inline">\(x_{i+1} = f(x_i)\)</span>. So <span class="math inline">\(x_2 = f(x_1)\)</span>, <span class="math inline">\(x_3 = f(x_2) = f(f(x_1))\)</span>, and so on.</p>
-<p>We briefly mentioned a class of such PRNGs called <strong>linear congruential generators</strong>, or <strong>LCGs</strong>. An LCG generates integers between <span class="math inline">\(0\)</span> and <span class="math inline">\(m-1\)</span> using a recurrence function of the form <span class="math display">\[ f(x) = (ax + c) \bmod m , \]</span> so <span class="math display">\[ x_{i+1} = (ax_i + c) \bmod m . \]</span></p>
-<p>Here, “<span class="math inline">\(\mathrm{mod}\ m\)</span>” means “modulo <span class="math inline">\(m\)</span>”; that is, we are using modular arithmetic, where when we get to <span class="math inline">\(m - 1\)</span> we wrap back to 0 and start again. (Modular arithmetic is sometimes called “clock arithmetic”, because hours of the day work modulo 12: for example, 3 hours after 11 o’clock is 2 o’clock, because <span class="math inline">\(11 + 3 = 14 \equiv 2 \bmod m\)</span>.)</p>
-<p>In the LCG <span class="math inline">\(x_{i+1} = (ax_i + c) \bmod m\)</span>:</p>
-<ul>
-<li><p><span class="math inline">\(m\)</span> is called the <strong>modulus</strong>,</p></li>
-<li><p><span class="math inline">\(a\)</span> is called the <strong>multiplier</strong>,</p></li>
-<li><p><span class="math inline">\(c\)</span> is called the <strong>increment</strong>,</p></li>
-<li><p><span class="math inline">\(x_1\)</span>, the starting point, is called the <strong>seed</strong>.</p></li>
-</ul>
-<div id="exm-lcg-easy" class="theorem example">
-<p><span class="theorem-title"><strong>Example 11.1</strong></span> Let us look at two simple LCGs with modulus <span class="math inline">\(m = 2^4 = 16\)</span>.</p>
-<p>First, let <span class="math inline">\(a = 5\)</span> be the multiplier, <span class="math inline">\(c = 3\)</span> be the increment, and <span class="math inline">\(x_1 = 1\)</span> be the seed. Then we have <span class="math display">\[ \begin{align} x_2 &amp;= (5x_1 + 3) \bmod 16 = (5\times 1 + 3) \bmod 16 = 8 \bmod 16 = 8 \\
-x_3 &amp;= (5x_2 + 3) \bmod 16 = (5\times 8 + 3) \bmod 16 = 43 \bmod 16 = 11 \\
-x_4 &amp;= (5x_3 + 3) \bmod 16 = (5\times 1 + 3) \bmod 16 = 43 \bmod 58 = 10 , \end{align} \]</span> and so on. The sequence continues <span class="math inline">\((1, 8, 11, 10, 5, 12, 15, 14, 9, 0, \dots)\)</span>. This looks pretty much like a random sequence of numbers between 0 and 15 to me – I certainly don’t see any obvious pattern.</p>
-<p>Second, let <span class="math inline">\(a = 3\)</span> be the multiplier, <span class="math inline">\(c = 4\)</span> be the increment, and <span class="math inline">\(x_1 = 1\)</span> be the seed. Then we have <span class="math display">\[ \begin{align} x_2 &amp;= (3x_1 + 2) \bmod 16 = (3\times 1 + 4) \bmod 16 = 7 \bmod 16 = 7 \\
-x_3 &amp;= (3x_2 + 4) \bmod 16 = (3\times 7 + 4) \bmod 16 = 25 \bmod 16 = 9 . \end{align} \]</span> But if we continue this, we find we get the sequence <span class="math inline">\((1, 7, 9, 15, 1, 7, 9, 15, 1, 7, \dots)\)</span>. This does not seem like a good random sequence – we’re just getting the same pattern of four numbers <span class="math inline">\((1, 7, 9, 15)\)</span> repeating over and over again.</p>
-<p>The example illustrates that, while an LCG <em>can</em> provide a good sequence of pseudorandom numbers, we need to be careful with the parameters we choose.</p>
-</div>
-<div id="exm-lcg-hard" class="theorem example">
-<p><span class="theorem-title"><strong>Example 11.2</strong></span> Of course, it doesn’t make much sense to run LCGs by hand – the whole purpose of LCGs is that they can produce lots of (pseudo)random numbers very fast. So we should run them on computers.</p>
-<p>The following R code sets up a function for sampling <span class="math inline">\(n\)</span> numbers from an LCG.</p>
+<!--
+## Introduction
+
+So far in this module, we have looked at sampling from distributions where we know the precise probability density function $f$ or probability mass function $p$. We have then been able to discover things about that distribution by sampling from $f$ or $p$: either exactly with independent samples (with the inverse transform method or envelope rejection sampling, for example), or approximately with samples of restricted dependence (with the Metropolis--Hastings algorithm).
+
+But statisticians deal with data, not with probability distributions. A much more common situation is that we have some data. We believe that the data has come from a distribution, but we don't know what that distribution is. Nonetheless, we still want to find out facts about that unknown distribution.
+
+One traditional way to do this would be to fit a distribution to the data. By using knowledge about the context of the data and by examining the data itself, an appropriate parametric model could be chosen, and then the parameters could be estimated from the data. Once the model has then been specified, we can find out about that model using the ideas we have looked at in this course.
+
+But sometimes this is not possible or desirable. With insufficient contextual knowledge, we might not be able to choose an appropriate parametric model. Or the data might not seem to fit *any* of the famous parametric models. And even if we did choose and fit a model, there's no guarantee that out choice would be correct.
+
+Instead, we could look for the model that makes the fewest possible assumptions about the data. This is called the **empirical distribution**, which we will look at today. This is the basis for a collection of statistical techniques called the **bootstrap** (or **bootstrapping**), which we will look at for the next lecture.
+
+## Definition and properties
+
+Consider the following dataset $\mathbf x = (x_1, x_2, x_3, x_4, x_5)$ of $m = 5$ values:
+$$ 2, \ 3, \ 3, \ 4, \ 6 .$$
+
+We could try to fit a distribution to this data. For example, if we knew it was recording the number of absences from a class of 20 students over five lectures, we might think a binomial $\operatorname{Bin}(20, p)$ model was appropriate, and then try to estimate the value of $p$. If it was recording the number of emails received per hour, we might think a Poisson $\operatorname{Po}(\lambda)$ model was appropriate, and try to estimate the value of $\lambda$.
+
+But that involves making assumptions. What if we wanted to make no assumptions about the data -- or, at least, as few assumptions as possible? Well, we can say that in our data set, one fifth of the data was the value 2, two fifths was 3 (because there were two 3s in the dataset), one fifth was 4, and one fifth was 6. So we choose the model that these come from a random variable $X^*$ where
+$$ \begin{align}
+\mathbb P(X^* = 2) &= \tfrac15 & \mathbb P(X^* = 3) &= \tfrac25 \\
+\mathbb P(X^* = 4) &= \tfrac15 & \mathbb P(X^* = 6) &= \tfrac15 .
+\end{align} $$
+This is called the empirical distribution. (The word "empirical" refers to what you actually observed, rather than assumed.)
+
+::: {#def-empirical}
+Consider a dataset $\mathbf x = (x_1, x_2, \dots, x_m)$. The **empirical distribution** $X^*$ of this data is a discrete random variable with probability mass function $p^*(x) = \mathbb P(X^* = x)$, where
+$$ p^*(x) = \frac{1}{m} \,\big| \{j : x_j = x \} \big| = \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(x_j) . $$
+:::
+
+In other words, $p^*(x)$ is simply the proportion of the dataset that took the value $x$.
+
+We're not suggesting that the distribution $X^*$ is necessarily the "true" distribution the data actually came from. Rather, we feel that by reducing any of our own assumptions that we make on the data, we are giving the data the best opportunity to "speak for itself", rather than imposing our own views and opinions on the data.
+
+On that point, consider this dataset of $m = 6$ datapoints:
+$$ 0.580, \ 3.219, \ 3.433, \ 4.913, \ 18.784, \ 28.133. $$
+It certainly looks like these came from a continuous distribution. But the empirical distribution $X^*$ is still discrete -- it takes each of those values with probability $\tfrac16$. The claim is not the the empirical distribution is likely to be "correct"; rather, the claim is that by minimising the assumptions we make, we aren't polluting the data any further.
+
+Let's think further about this random variable $X^*$, the empirical distribution of a dataset $\mathbf x$.
+
+First, taking a single sample from the random variable $X^*$ is equivalent to picking one of the datapoints at random. The probability we pick a value $x$ is simply the proportion of the datapoints that take the value $x$.
+
+Taking multiple IID samples from $X^*$ is the same as sampling from the dataset *with replacement* -- since, to be *independent* samples, it has to be possible to pick the same datapoint twice. 
+
+Second, since $X^*$ is a random variable, we can do calculations with it just as we would any other random variable.
+
+For example, we can calculate its expectation. This is
+$$ \begin{align}
+\mathbb E_*X^* &= \sum_x x\,p^*(x) \\
+&=\sum_x x\, \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(x_j)  \\
+&= \frac{1}{m} \sum_{j=1}^m \sum_x x\, \mathbb{I}_{\{x\}}(x_j) .
+\end{align} $$
+Now, if we think about the term $x\, \mathbb{I}_{\{x\}}(x_j)$ inside the sum over $x$ here, the indicator will equal 0 for every term in the sum except the term $x = x_j$, when the term will equal $x \times 1 = x_j$. Hence, we have
+$$ \mathbb E_*X^* = \frac{1}{m} \sum_{j=1}^m x_j . $$
+But this is just the sample mean of the data set. The empirical expectation is the sample mean, $\mathbb E_*X^* = \overline x$.
+
+You probably noticed the notation $\mathbb E_*$ here. We use this notation when we want to emphasise we are taken the expectation over the empirical distribution, taking the data as fixed. This isn't really needed here -- we know our data is the fixed observations $\mathbf x$. But later on, we will model the data itself as being samples from a random variable. There we will want to distinguish between taking an expectation $\mathbb E$ over the randomness in the samples themselves and taking an expectation $\mathbb E_*$ over the empirical distribution while treating the samples as fixed.
+
+We can also calculate the variance similarly. Since $\mathbb E_*X^* = \overline x$, we have $\operatorname{Var}_*(X^*) = \mathbb E_*(X^* - \overline x)^2$. By the same argument as for the expectation, we have
+$$ \begin{align}
+\operatorname{Var}_*(X^*) &= \sum_x \big(x - \overline x\big)^2 \, p^*(x)  \\
+&= \sum_x \big(x - \overline x\big)^2 \,\frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(x_j) \\
+&= \frac{1}{m} \sum_{j=1}^m \sum_x \big(x - \overline x\big)^2 \,\mathbb{I}_{\{x\}}(x_j) \\
+&= \frac{1}{m} \sum_{j=1}^m \big(x_j - \overline x\big)^2 .
+\end{align} $$
+This is almost the sample variance -- it just has $\frac{1}{m}$ in front instead of the usual $\frac{1}{m-1}$. This won't make much difference when $m$ is large.
+
+Third, its often more mathematically pleasant to work with is the **empirical cumulative distribution function** $F^*$. This is $F^*(x) = \mathbb P(X^* \leq x)$.
+We can calculate the empirical CDF as
+$$ \begin{align}
+F^*(x) = \sum_{y \leq x} p^*(y) &= \sum_{y \leq x} \frac{1}{m}\, \big| \{j : x_j = y \} \big| \\
+&= \frac{1}{m}\sum_{y \leq x}\big| \{j : x_j = y \} \big| \\
+&= \frac{1}{m}\, \big| \{j : x_j \leq x \} \big| .
+\end{align} $$
+So this is just the proportion of the datapoints that are less than or equal to $x_j$. This tends to be more mathematically convenient, because the CDF works equally well for discrete and continuous random variables, so this is flexible to the fact that the empirical distribution is always discrete while the true distribution may be continuous.
+-->
+<div id="exm-heights" class="theorem example">
+<p><span class="theorem-title"><strong>Example 24.1</strong></span> The heights (in cm) of 20 student’s surveyed in one of Dr Voss’s modules is as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>lcg <span class="ot">&lt;-</span> <span class="cf">function</span>(n, modulus, mult, incr, seed) {</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  samples <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  samples[<span class="dv">1</span>] <span class="ot">&lt;-</span> seed</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    samples[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> (mult <span class="sc">*</span> samples[i] <span class="sc">+</span> incr) <span class="sc">%%</span> modulus</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(samples)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>heights <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">180</span>, <span class="dv">182</span>, <span class="dv">182</span>, <span class="dv">181</span>, <span class="dv">164</span>, <span class="dv">180</span>, <span class="dv">154</span>, <span class="dv">153</span>, <span class="dv">177</span>, <span class="dv">190</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">182</span>, <span class="dv">175</span>, <span class="dv">167</span>, <span class="dv">168</span>, <span class="dv">185</span>, <span class="dv">153</span>, <span class="dv">172</span>, <span class="dv">177</span>, <span class="dv">176</span>, <span class="dv">170</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(heights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In the fourth line, <code>%%</code> is R’s “mod” operator.</p>
-<p>Let’s look at two examples with modulus <span class="math inline">\(m = 2^8 = 256\)</span>.</p>
-<p>First, let <span class="math inline">\(a = 13\)</span> be the multiplier, <span class="math inline">\(c = 17\)</span> be the increment, and <span class="math inline">\(x_1 = 10\)</span> be the seed.</p>
+<p>In R, the <code>table()</code> function tells us how many outcomes we had of each value. We can then find the empirical PMF <span class="math inline">\(p^*\)</span> by dividing this by <span class="math inline">\(m\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">^</span><span class="dv">8</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sample1 <span class="ot">&lt;-</span> <span class="fu">lcg</span>(<span class="dv">100</span>, m, <span class="dv">13</span>, <span class="dv">17</span>, <span class="dv">10</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sample1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="L11-lcg_files/figure-html/lcg1-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>That looks like a pretty random collection of numbers to me.</p>
-<p>Second, we stick with <span class="math inline">\(a = 13\)</span> be the multiplier and <span class="math inline">\(x_1 = 10\)</span> as the seed, be decrease the increment by 1 to <span class="math inline">\(c = 16\)</span>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sample2 <span class="ot">&lt;-</span> <span class="fu">lcg</span>(<span class="dv">100</span>, m, <span class="dv">13</span>, <span class="dv">16</span>, <span class="dv">10</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sample2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="L11-lcg_files/figure-html/lcg2-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>This doesn’t seem as good. We can see there’s some pattern where there are parallel downward sloping lines. And also there seems to be some sort of pattern <em>within</em> these downward sloping lines, sometimes with quite regularly-spaced points on those lines. And looking more closely, we can see that actually the pattern of numbers repeats exactly every 32 steps</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(sample2 <span class="sc">==</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(heights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1]  1 33 65 97</code></pre>
+<pre><code>heights
+153 154 164 167 168 170 172 175 176 177 180 181 182 185 190 
+  2   1   1   1   1   1   1   1   1   2   2   1   3   1   1 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(heights) <span class="sc">/</span> m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>heights
+ 153  154  164  167  168  170  172  175  176  177  180  181  182  185  190 
+0.10 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.10 0.10 0.05 0.15 0.05 0.05 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(heights) <span class="sc">/</span> m, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">ylab =</span> <span class="st">"p*"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L24-empirical_files/figure-html/unnamed-chunk-2-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>so we only ever see 32 of the possible 256 values. This doesn’t seem to look like a sequence of independent uniformly random points.</p>
-<p>So again, it seems like LCG <em>can</em> provide a good sequence of pseudorandom numbers, but it seems quite sensitive to a good choice of the parameters.</p>
 </div>
-<p>Is these examples, we’ve usually taken <span class="math inline">\(m\)</span> to be a power of 2. There are a few reasons for this:</p>
-<ul>
-<li><p>We will want to divide each term in the sequence <span class="math inline">\(x_i\)</span> by <span class="math inline">\(m\)</span> to get a number between <span class="math inline">\([0,1]\)</span>. If our number will be stored as a <span class="math inline">\(b\)</span>-bit number, then it is makes sense to have created <span class="math inline">\(b\)</span> bits (for an integer between <span class="math inline">\(0\)</span> and <span class="math inline">\(m = 2^{b} - 1\)</span>) in the first place. This means every integer in <span class="math inline">\(\{0, 1, \dots, m-1\}\)</span> corresponds to exactly one <span class="math inline">\(b\)</span>-bit number. Further this makes the division by <span class="math inline">\(m = 2^b\)</span> extremely simple: you simple add “0.” (zero point…) at the front of the number!</p></li>
-<li><p>Modular arithmetic modulo a power of 2 is very simple for a computer. For a number in binary, the value modulo <span class="math inline">\(2^b\)</span> is simply the last <span class="math inline">\(b\)</span> bits of the number. So <code>10111001</code> modulo <span class="math inline">\(2^4\)</span> is simply <code>1001</code>, the last four bits.</p></li>
-<li><p>Having <span class="math inline">\(m = 2^b\)</span> (or, more generally, having <span class="math inline">\(m\)</span> being the product of lots of small prime factors) makes it easier to choose parameters such that the LCG is a good pseudorandom number generator … as we shall see in the next section.</p></li>
-</ul>
-</section>
-<section id="periods-of-lcgs" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="periods-of-lcgs"><span class="header-section-number">11.2</span> Periods of LCGs</h2>
-<p>In an LCG, each number in the sequence depends only on the one before, since <span class="math inline">\(x_{i+1} = (ax_i + c) \bmod m\)</span>. This means if we ever get a single “repeat” in our sequence – that is, if we see a number we have seen at some point before – then the whole sequence from that point on will copy what came before.</p>
-<p>For example, in the second part of <a href="#exm-lcg-easy" class="quarto-xref">Example&nbsp;<span>11.1</span></a>, the sequence started <span class="math inline">\((1, 7, 9, 15, 1, \dots)\)</span>. As soon as we hit that repeat 1, we know we’re going to see that pattern <span class="math inline">\(1, 7, 9, 15\)</span> repeated forever. We say that this LCG has “period” 4. More generally, the <strong>period</strong> of an LCG is the smallest <span class="math inline">\(k \geq 1\)</span> such that <span class="math inline">\(x_{i+k} = x_i\)</span> for some <span class="math inline">\(i\)</span>.</p>
-<p>We would like our LCGs to have a big period. If an LCG has a small period, it will not look random, as we will just repeat the same small number of values over and over again.</p>
-<p>The smallest possible period is 1. That would be an extraordinarily bad LCG, as it would just spit out the same number forever. The biggest possible period is <span class="math inline">\(m\)</span>. That is because there are only <span class="math inline">\(m\)</span> possible values in <span class="math inline">\(\{0, 1, \dots, m-1\}\)</span>; so after <span class="math inline">\(m+1\)</span> steps we must have had a repeat, by the <a href="https://en.wikipedia.org/wiki/Pigeonhole_principle">pigeonhole principle</a>. Having the maximum period <span class="math inline">\(m\)</span> is also called having “full period”.</p>
-<p>Generally, the only way to find the period of an LCG is to run it for a long time, and see how long it takes to start repeating. But, conveniently, there <em>is</em> a very easy way to tell if an LCG has the maximum possible period <span class="math inline">\(m\)</span>, thanks to a result of TE Hull and AR Dobell.</p>
-<div id="thm-hd" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 11.1 (Hull–Dobell theorem)</strong></span> Consider the linear congruential generator <span class="math inline">\(x_{i+1} = (ax_i + c) \bmod m\)</span>. This LCG has period <span class="math inline">\(m\)</span> if and only if the following three conditions hold:</p>
-<ol type="1">
-<li><p><span class="math inline">\(m\)</span> and <span class="math inline">\(c\)</span> are coprime;</p></li>
-<li><p><span class="math inline">\(a - 1\)</span> is divisible by all prime factors of <span class="math inline">\(m\)</span>;</p></li>
-<li><p>if <span class="math inline">\(m\)</span> is divisible by 4, then <span class="math inline">\(a - 1\)</span> is divisible by 4.</p></li>
-</ol>
+<p>We can sample from the empirical distribution <span class="math inline">\(X^*\)</span>. Recall that we said taking IID samples from <span class="math inline">\(X^*\)</span> is equivalent to sampling from <span class="math inline">\(\mathbf x\)</span> with replacement. Here is a sample of <span class="math inline">\(n = 30\)</span> heights. (Note that this is more than the <span class="math inline">\(m = 20\)</span> datapoints we had – but this is no problem if we are sampling with replacement.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(heights, <span class="dv">30</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 177 153 154 175 190 167 185 181 182 177 182 167 167 172 153 180 176 153 180
+[20] 182 153 168 175 177 182 185 154 181 164 177</code></pre>
 </div>
-<p>(We won’t prove this here – it’s some pretty tricky number theory. But see <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1kmht9a/alma991012846439705181">Knuth, <em>The Art of Computer Programming</em></a>, <em>Volume 2: Seminumerical algorithms</em>, Subsubsection 3.2.1.2 if you really want a proof and have the number theory chops for it.)</p>
-<p>If <span class="math inline">\(m = 2^b\)</span> is a power of 2 (with <span class="math inline">\(b \geq 2\)</span>), then the three conditions simplify to a particularly pleasant form:</p>
-<ol type="1">
-<li><p><span class="math inline">\(c\)</span> is odd;</p></li>
-<li><p><span class="math inline">\(a - 1\)</span> is even;</p></li>
-<li><p><span class="math inline">\(a - 1\)</span> is divisible by 4.</p></li>
-</ol>
-<p>Of course, the third point on the list implies the second. So we only need to check two things: that <span class="math inline">\(c\)</span> is odd and that <span class="math inline">\(a\)</span> is <span class="math inline">\(1 \bmod 4\)</span> (that is, <span class="math inline">\(a\)</span> is one more than a multiple of 4).</p>
-<div id="exm-periods" class="theorem example">
-<p><span class="theorem-title"><strong>Example 11.3</strong></span> Let’s go back to the earlier examples, and see if they have full periods or not.</p>
-<p>In the first LCG of <a href="#exm-lcg-easy" class="quarto-xref">Example&nbsp;<span>11.1</span></a>, we had <span class="math inline">\(m = 2^4\)</span>, <span class="math inline">\(a = 5\)</span> and <span class="math inline">\(c = 3\)</span>. Here, <span class="math inline">\(c\)</span> is odd, and <span class="math inline">\(a = 4 + 1\)</span> is <span class="math inline">\(1 \bmod 4\)</span>. This LCG fulfils both conditions, so it has the maximum possible period of 16.</p>
-<p>In the second LCG of <a href="#exm-lcg-easy" class="quarto-xref">Example&nbsp;<span>11.1</span></a>, we had <span class="math inline">\(m = 2^4\)</span>, <span class="math inline">\(a = 3\)</span> and <span class="math inline">\(c = 4\)</span>. Here, <span class="math inline">\(c\)</span> is even, and <span class="math inline">\(a\)</span> is <span class="math inline">\(3 \bmod 4\)</span>. This LCG does not fulfil both the conditions – in fact, it fails them both – so it does not have the maximum possible period of 16. (We already saw that it in fact has period 4.)</p>
-<p>In the first LCG of <a href="#exm-lcg-hard" class="quarto-xref">Example&nbsp;<span>11.2</span></a>, we had <span class="math inline">\(m = 2^8\)</span>, <span class="math inline">\(a = 13\)</span> and <span class="math inline">\(c = 17\)</span>. Here, <span class="math inline">\(c\)</span> is odd, and <span class="math inline">\(a = 12 + 1\)</span> is <span class="math inline">\(1 \bmod 4\)</span>. This LCG fulfils both conditions, so it has the maximum possible period of 256.</p>
-<p>In the second LCG of <a href="#exm-lcg-hard" class="quarto-xref">Example&nbsp;<span>11.2</span></a>, we had <span class="math inline">\(m = 2^8\)</span>, <span class="math inline">\(a = 13\)</span> and <span class="math inline">\(c = 16\)</span>. Here, <span class="math inline">\(c\)</span> is even, and <span class="math inline">\(a = 12 + 1\)</span> is <span class="math inline">\(1 \bmod 4\)</span>. So although this LCG does fulfil the second condition, it does not fulfil the first, so it does not have the maximum possible period of 256. (We already saw that it in fact has period 32.)</p>
 </div>
-<p>It normally a good idea to make sure your LCG has full period – if it’s so easy to ensure, then why not? (That said, a very large but not-quite-maximum period may be good enough. For example, if an LCG with modulus <span class="math inline">\(2^{64}\)</span> has a period of “only” <span class="math inline">\(2^{60}\)</span>, that might well be enough: one million samples a second for one thousand years is only <span class="math inline">\(2^{55}\)</span> samples, so you’d never actually see a repeat.)</p>
-<p>But merely having full period (and a large modulus) isn’t enough by itself to guarantee an LCG will make a good pseudorandom number generator. After all, the silly LCG <span class="math inline">\(x_{i+1} = x_i + 1\)</span> has full period, but the sequence <span class="math display">\[(0, 1, 2, 3, \dots, m-2, m-1, 0, 1, 2, \dots)\]</span> will not look random.</p>
-</section>
-<section id="statistical-testing" class="level2" data-number="11.3">
-<h2 data-number="11.3" class="anchored" data-anchor-id="statistical-testing"><span class="header-section-number">11.3</span> Statistical testing</h2>
-<p>Before being used properly, any pseudorandom number generator is subjected to a barrage of statistical tests, to check if its output seems to “look random”. Alongside checking it has a very large period, the tester will want to check other statistical properties of randomness. <!--For just a few examples:
+<p>Make sure you use <code>replace = TRUE</code> to ensure you are sampling <em>with</em> replacement.</p>
+<p>The expectation and variance of the empirical distribution are as follows.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>heights_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(heights)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>heights_var <span class="ot">&lt;-</span> <span class="fu">sum</span>((heights <span class="sc">-</span> heights_mean)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> m</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(heights_mean, heights_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 173.40 109.64</code></pre>
+</div>
+</div>
+<p>We can form the empirical CDF in R with the <code>ecdf()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Fstar <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(heights)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Fstar, <span class="at">main =</span> <span class="st">"Empirical CDF of heights"</span>, <span class="at">xlab =</span> <span class="st">"height (cm)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L24-empirical_files/figure-html/unnamed-chunk-5-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The object produced by <code>ecdf()</code> is a function. So we can find, for example, the empirical CDF at 172, <span class="math inline">\(F^*(172)\)</span>, which is the proportion of a dataset with heights less than or equal to 172 cm.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Fstar</span>(<span class="dv">172</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4</code></pre>
+</div>
+</div>
+</div>
+<!--
+One more thing on the empirical distribution $X^*$. If we pick an index $J$ uniformly from $\{1, 2, \dots, m\}$, then $x_J = X^*$. That is, we can think of $X^*$ as picking one of the datapoints uniformly at random. (This way of looking at $X^*$ is used a lot in the book of Voss.)
 
-* For any $0 \leq a < b < m$, is the proportion of samples $a \leq x_{i} < b$ in a medium-length subsequence that lie between $a$ and $b$ should be roughly equal to $(b - a)/m$.
+## Plug-in estimation
 
-* Are there any patterns in the pairs of consecutive outputs $(x_i, x_{i+1})$ that display behaviour that "doesn't look independent"? What about other "low-dimensional" patterns in $(x_i, x_{i+1}, \dots, x_{i+k-1})$ for small $k$?
+Let's suppose that the data actually comes from a distribution $X$; that is, suppose $\mathbf X = (X_1, X_2, \dots, X_m)$ is an IID random sample from $X$. We observe the samples $\mathbf X$, but probably to not know the distribution $X$ they are drawn from. However, from this sample $\mathbf X$, we can certainly calculate the associated empirical distribution $X^*$.
 
-* For a number $r$ dividing $m$ (that is, $r = 2^d$ for $d < b$, if $m = 2^b$) are there any patterns in $(x_i \bmod r)$? That is, does the sequence also seem random mod $r$ as well as mod $m$?
---> Even the best PRNGs might not pass every single such test. See <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 1.1.2 for more on this.</p>
-<p>LCGs were considered state-of-the-art until the late-90s or so. However, it was discovered that <span class="math inline">\(m\)</span> needs be very big and the number of samples used fairly small in order to pass some of the more stringent statistical tests of randomness. For example, it’s suggested that <span class="math inline">\(n = 1\,000\,000\)</span> (one million) samples from a full-period LCG with modulus <span class="math inline">\(m = 2^{64}\)</span> might be the limit before it starts “not looking random enough”. In particular, an LCG with a large period may not actually see <em>enough</em> repeats – after all, random numbers will have the occasional one-off repeat, just by chance. Compared to other more modern methods (like R’s default, the Mersenne Twister mentioned in the last lecture, discovered in 1997), an LCG requires quite a lot of computation for only a modest number of samples. So while LCGs are still admired for their simplicity and elegance, they have fallen out of favour for cutting-edge computational work.</p>
-<p><strong>Next time:</strong> <em>We’ll use our pseudorandom uniform <span class="math inline">\([0,1]\)</span> random numbers to make random numbers with other discrete or uniform distributions.</em></p>
-<div class="mysummary">
-<p><strong>Summary:</strong></p>
-<ul>
-<li><p>Linear congruential generators are pseudorandom number generators based on the recurrence <span class="math inline">\(x_{n+1} = (ax_n + c) \bmod m\)</span>.</p></li>
-<li><p>Any LCG will eventually repeat with periodic behaviour.</p></li>
-<li><p>Suppose <span class="math inline">\(m\)</span> is a power of 2. Then an LCG has period <span class="math inline">\(m\)</span> if and only if <span class="math inline">\(c\)</span> is odd and <span class="math inline">\(a = 1 \bmod 4\)</span>.</p></li>
-</ul>
-<p>You should now be able to answer all questions on <a href="../problems/P2.html"><strong>Problem Sheet 2</strong></a>. Your answer will be discussed in the problems class on <strong>Thursday 31 October</strong>.</p>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsections 1.1.1 and 1.1.2.</p>
-</div>
+The idea behind the bootstrap is to replace calculations with the true distribution $X$ (which we don't know) by the same calculation but with the empirical distribution $X^*$ (which we do know) taking $X$'s place. This is called the **plug-in principle**, and such an estimator is a **plug-in estimator** -- the idea is that we simply "plug $X^*$ in" to the existing formula.
+
+So, for example, suppose we wanted to estimate the expectation $\mathbb EX$ of the true distribution $X$. To estimate this, we instead plug in the empirical distribution $X^*$ in place of $X$ and the empirical expectation $\mathbb E_*$ in place of the expectation over the samples $\mathbb E$. So our estimator is instead $\mathbb E_*X^*$. We saw earlier that $\mathbb E_*X^*$ is the sample mean $\overline X$. So the plug-in estimator for the expectation is the sample mean.
+
+Remember that $\mathbb E_*$ is expectation of the empirical distribution, treating the samples as fixed. An alternative (if slightly more cumbersome) way to write $\operatorname{\mathbb E}_* \phi(X)$ would be as a conditional expectation $\mathbb E\big(\phi(X) \mid \mathbf X\big)$ given the samples $\mathbf X = (X_1, \dots, X_n)$. Here, then, we could also write $\mathbb E(X^* \mid \mathbf X) = \overline X$.
+
+Suppose we wanted to estimate the variance $\operatorname{Var}(X)$ of the true distribution. Again, we plug in $X^*$, to instead find $\operatorname{Var}_*(X^*)$, which we saw earlier is
+$$ \operatorname{Var}_*(X^*) = \frac{1}{m} \sum_{j = 1}^m \big(X_j - \overline X\big)^2 , $$
+which is very similar to our standard estimator
+$$ S^2 = \frac{1}{m-1} \sum_{j = 1}^m \big(X_j - \overline X\big)^2 . $$
+Again, $\operatorname{Var}_*$ means the variance over the empirical distribution treating the samples as fixed. We could alternatively write $\operatorname{Var}(X^* \mid \mathbf X)$ to make the dependence on the fixed samples $\mathbf X$ more explicit.
+
+If we wanted to estimate $\operatorname{\mathbb E}\phi(X)$, the plug-in estimator is
+$$ \begin{align}
+\operatorname{\mathbb{E}}_* \phi(X^*) &= \sum_x \phi(x)\,p^*(x) \\
+&=\sum_x \phi(x)\, \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(X_j)  \\
+&= \frac{1}{m} \sum_{j=1}^m \sum_x \phi(x)\, \mathbb{I}_{\{x\}}(X_j) \\
+&= \frac{1}{m} \sum_{j=1}^m \phi(X_j) ,
+\end{align} $$
+by the same logic we used for the expectation and variance earlier.
+This is the Monte Carlo estimator from the beginning of this module -- we have a sample $X_1, X_2, \dots, X_m$ and we have form the Monte Carlo estimator $\operatorname{\mathbb E}\phi(X)$. This shows there are deep connections between Monte Carlo estimation and the plug-in/bootstrap ideas we will look at over the next three lectures.
+
+In a sense, this means we haven't done anything particularly new yet -- just dressed up old ideas in new notation. But in the next lectures, we will develop the bootstrap idea further, to look at bias, variance and confidence intervals for these estimators, which is where the power of the bootstrap really shines.
+
+-->
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1000,13 +1036,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L10-rng-intro.html" class="pagination-link" aria-label="Generating random numbers">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generating random numbers</span></span>
+      <a href="../lectures/L23-bayes.html" class="pagination-link" aria-label="MCMC and Bayesian statistics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">MCMC and Bayesian statistics</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../problems/P2.html" class="pagination-link" aria-label="Problem Sheet 2">
-        <span class="nav-page-text">Problem Sheet 2</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../coursework/coursework.html" class="pagination-link" aria-label="Computational coursework">
+        <span class="nav-page-text">Computational coursework</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

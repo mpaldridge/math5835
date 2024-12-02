@@ -1,1 +1,161 @@
 # Empirical distribution
+
+<!--
+## Introduction
+
+So far in this module, we have looked at sampling from distributions where we know the precise probability density function $f$ or probability mass function $p$. We have then been able to discover things about that distribution by sampling from $f$ or $p$: either exactly with independent samples (with the inverse transform method or envelope rejection sampling, for example), or approximately with samples of restricted dependence (with the Metropolis--Hastings algorithm).
+
+But statisticians deal with data, not with probability distributions. A much more common situation is that we have some data. We believe that the data has come from a distribution, but we don't know what that distribution is. Nonetheless, we still want to find out facts about that unknown distribution.
+
+One traditional way to do this would be to fit a distribution to the data. By using knowledge about the context of the data and by examining the data itself, an appropriate parametric model could be chosen, and then the parameters could be estimated from the data. Once the model has then been specified, we can find out about that model using the ideas we have looked at in this course.
+
+But sometimes this is not possible or desirable. With insufficient contextual knowledge, we might not be able to choose an appropriate parametric model. Or the data might not seem to fit *any* of the famous parametric models. And even if we did choose and fit a model, there's no guarantee that out choice would be correct.
+
+Instead, we could look for the model that makes the fewest possible assumptions about the data. This is called the **empirical distribution**, which we will look at today. This is the basis for a collection of statistical techniques called the **bootstrap** (or **bootstrapping**), which we will look at for the next lecture.
+
+## Definition and properties
+
+Consider the following dataset $\mathbf x = (x_1, x_2, x_3, x_4, x_5)$ of $m = 5$ values:
+$$ 2, \ 3, \ 3, \ 4, \ 6 .$$
+
+We could try to fit a distribution to this data. For example, if we knew it was recording the number of absences from a class of 20 students over five lectures, we might think a binomial $\operatorname{Bin}(20, p)$ model was appropriate, and then try to estimate the value of $p$. If it was recording the number of emails received per hour, we might think a Poisson $\operatorname{Po}(\lambda)$ model was appropriate, and try to estimate the value of $\lambda$.
+
+But that involves making assumptions. What if we wanted to make no assumptions about the data -- or, at least, as few assumptions as possible? Well, we can say that in our data set, one fifth of the data was the value 2, two fifths was 3 (because there were two 3s in the dataset), one fifth was 4, and one fifth was 6. So we choose the model that these come from a random variable $X^*$ where
+$$ \begin{align}
+\mathbb P(X^* = 2) &= \tfrac15 & \mathbb P(X^* = 3) &= \tfrac25 \\
+\mathbb P(X^* = 4) &= \tfrac15 & \mathbb P(X^* = 6) &= \tfrac15 .
+\end{align} $$
+This is called the empirical distribution. (The word "empirical" refers to what you actually observed, rather than assumed.)
+
+::: {#def-empirical}
+Consider a dataset $\mathbf x = (x_1, x_2, \dots, x_m)$. The **empirical distribution** $X^*$ of this data is a discrete random variable with probability mass function $p^*(x) = \mathbb P(X^* = x)$, where
+$$ p^*(x) = \frac{1}{m} \,\big| \{j : x_j = x \} \big| = \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(x_j) . $$
+:::
+
+In other words, $p^*(x)$ is simply the proportion of the dataset that took the value $x$.
+
+We're not suggesting that the distribution $X^*$ is necessarily the "true" distribution the data actually came from. Rather, we feel that by reducing any of our own assumptions that we make on the data, we are giving the data the best opportunity to "speak for itself", rather than imposing our own views and opinions on the data.
+
+On that point, consider this dataset of $m = 6$ datapoints:
+$$ 0.580, \ 3.219, \ 3.433, \ 4.913, \ 18.784, \ 28.133. $$
+It certainly looks like these came from a continuous distribution. But the empirical distribution $X^*$ is still discrete -- it takes each of those values with probability $\tfrac16$. The claim is not the the empirical distribution is likely to be "correct"; rather, the claim is that by minimising the assumptions we make, we aren't polluting the data any further.
+
+Let's think further about this random variable $X^*$, the empirical distribution of a dataset $\mathbf x$.
+
+First, taking a single sample from the random variable $X^*$ is equivalent to picking one of the datapoints at random. The probability we pick a value $x$ is simply the proportion of the datapoints that take the value $x$.
+
+Taking multiple IID samples from $X^*$ is the same as sampling from the dataset *with replacement* -- since, to be *independent* samples, it has to be possible to pick the same datapoint twice. 
+
+Second, since $X^*$ is a random variable, we can do calculations with it just as we would any other random variable.
+
+For example, we can calculate its expectation. This is
+$$ \begin{align}
+\mathbb E_*X^* &= \sum_x x\,p^*(x) \\
+&=\sum_x x\, \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(x_j)  \\
+&= \frac{1}{m} \sum_{j=1}^m \sum_x x\, \mathbb{I}_{\{x\}}(x_j) .
+\end{align} $$
+Now, if we think about the term $x\, \mathbb{I}_{\{x\}}(x_j)$ inside the sum over $x$ here, the indicator will equal 0 for every term in the sum except the term $x = x_j$, when the term will equal $x \times 1 = x_j$. Hence, we have
+$$ \mathbb E_*X^* = \frac{1}{m} \sum_{j=1}^m x_j . $$
+But this is just the sample mean of the data set. The empirical expectation is the sample mean, $\mathbb E_*X^* = \overline x$.
+
+You probably noticed the notation $\mathbb E_*$ here. We use this notation when we want to emphasise we are taken the expectation over the empirical distribution, taking the data as fixed. This isn't really needed here -- we know our data is the fixed observations $\mathbf x$. But later on, we will model the data itself as being samples from a random variable. There we will want to distinguish between taking an expectation $\mathbb E$ over the randomness in the samples themselves and taking an expectation $\mathbb E_*$ over the empirical distribution while treating the samples as fixed.
+
+We can also calculate the variance similarly. Since $\mathbb E_*X^* = \overline x$, we have $\operatorname{Var}_*(X^*) = \mathbb E_*(X^* - \overline x)^2$. By the same argument as for the expectation, we have
+$$ \begin{align}
+\operatorname{Var}_*(X^*) &= \sum_x \big(x - \overline x\big)^2 \, p^*(x)  \\
+&= \sum_x \big(x - \overline x\big)^2 \,\frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(x_j) \\
+&= \frac{1}{m} \sum_{j=1}^m \sum_x \big(x - \overline x\big)^2 \,\mathbb{I}_{\{x\}}(x_j) \\
+&= \frac{1}{m} \sum_{j=1}^m \big(x_j - \overline x\big)^2 .
+\end{align} $$
+This is almost the sample variance -- it just has $\frac{1}{m}$ in front instead of the usual $\frac{1}{m-1}$. This won't make much difference when $m$ is large.
+
+Third, its often more mathematically pleasant to work with is the **empirical cumulative distribution function** $F^*$. This is $F^*(x) = \mathbb P(X^* \leq x)$.
+We can calculate the empirical CDF as
+$$ \begin{align}
+F^*(x) = \sum_{y \leq x} p^*(y) &= \sum_{y \leq x} \frac{1}{m}\, \big| \{j : x_j = y \} \big| \\
+&= \frac{1}{m}\sum_{y \leq x}\big| \{j : x_j = y \} \big| \\
+&= \frac{1}{m}\, \big| \{j : x_j \leq x \} \big| .
+\end{align} $$
+So this is just the proportion of the datapoints that are less than or equal to $x_j$. This tends to be more mathematically convenient, because the CDF works equally well for discrete and continuous random variables, so this is flexible to the fact that the empirical distribution is always discrete while the true distribution may be continuous.
+-->
+::: {#exm-heights}
+The heights (in cm) of 20 student's surveyed in one of Dr Voss's modules is as follows:
+
+```{r}
+heights <- c(
+  180, 182, 182, 181, 164, 180, 154, 153, 177, 190,
+  182, 175, 167, 168, 185, 153, 172, 177, 176, 170
+)
+m <- length(heights)
+```
+
+In R, the `table()` function tells us how many outcomes we had of each value. We can then find the empirical PMF $p^*$ by dividing this by $m$.
+
+```{r}
+table(heights)
+table(heights) / m
+plot(table(heights) / m, lwd = 3, col = "blue", ylab = "p*")
+```
+
+We can sample from the empirical distribution $X^*$. Recall that we said taking IID samples from $X^*$ is equivalent to sampling from $\mathbf x$ with replacement. Here is a sample of $n = 30$ heights. (Note that this is more than the $m = 20$ datapoints we had -- but this is no problem if we are sampling with replacement.) 
+
+```{r}
+sample(heights, 30, replace = TRUE)
+```
+
+Make sure you use `replace = TRUE` to ensure you are sampling *with* replacement.
+
+The expectation and variance of the empirical distribution are as follows.
+
+```{r}
+heights_mean <- mean(heights)
+heights_var <- sum((heights - heights_mean)^2) / m
+c(heights_mean, heights_var)
+```
+
+We can form the empirical CDF in R with the `ecdf()` function.
+
+```{r}
+Fstar <- ecdf(heights)
+plot(Fstar, main = "Empirical CDF of heights", xlab = "height (cm)")
+```
+
+
+The object produced by `ecdf()` is a function. So we can find, for example, the empirical CDF at 172, $F^*(172)$, which is the proportion of a dataset with heights less than or equal to 172 cm.
+
+```{r}
+Fstar(172)
+```
+:::
+<!--
+One more thing on the empirical distribution $X^*$. If we pick an index $J$ uniformly from $\{1, 2, \dots, m\}$, then $x_J = X^*$. That is, we can think of $X^*$ as picking one of the datapoints uniformly at random. (This way of looking at $X^*$ is used a lot in the book of Voss.)
+
+## Plug-in estimation
+
+Let's suppose that the data actually comes from a distribution $X$; that is, suppose $\mathbf X = (X_1, X_2, \dots, X_m)$ is an IID random sample from $X$. We observe the samples $\mathbf X$, but probably to not know the distribution $X$ they are drawn from. However, from this sample $\mathbf X$, we can certainly calculate the associated empirical distribution $X^*$.
+
+The idea behind the bootstrap is to replace calculations with the true distribution $X$ (which we don't know) by the same calculation but with the empirical distribution $X^*$ (which we do know) taking $X$'s place. This is called the **plug-in principle**, and such an estimator is a **plug-in estimator** -- the idea is that we simply "plug $X^*$ in" to the existing formula.
+
+So, for example, suppose we wanted to estimate the expectation $\mathbb EX$ of the true distribution $X$. To estimate this, we instead plug in the empirical distribution $X^*$ in place of $X$ and the empirical expectation $\mathbb E_*$ in place of the expectation over the samples $\mathbb E$. So our estimator is instead $\mathbb E_*X^*$. We saw earlier that $\mathbb E_*X^*$ is the sample mean $\overline X$. So the plug-in estimator for the expectation is the sample mean.
+
+Remember that $\mathbb E_*$ is expectation of the empirical distribution, treating the samples as fixed. An alternative (if slightly more cumbersome) way to write $\operatorname{\mathbb E}_* \phi(X)$ would be as a conditional expectation $\mathbb E\big(\phi(X) \mid \mathbf X\big)$ given the samples $\mathbf X = (X_1, \dots, X_n)$. Here, then, we could also write $\mathbb E(X^* \mid \mathbf X) = \overline X$.
+
+Suppose we wanted to estimate the variance $\operatorname{Var}(X)$ of the true distribution. Again, we plug in $X^*$, to instead find $\operatorname{Var}_*(X^*)$, which we saw earlier is
+$$ \operatorname{Var}_*(X^*) = \frac{1}{m} \sum_{j = 1}^m \big(X_j - \overline X\big)^2 , $$
+which is very similar to our standard estimator
+$$ S^2 = \frac{1}{m-1} \sum_{j = 1}^m \big(X_j - \overline X\big)^2 . $$
+Again, $\operatorname{Var}_*$ means the variance over the empirical distribution treating the samples as fixed. We could alternatively write $\operatorname{Var}(X^* \mid \mathbf X)$ to make the dependence on the fixed samples $\mathbf X$ more explicit.
+
+If we wanted to estimate $\operatorname{\mathbb E}\phi(X)$, the plug-in estimator is
+$$ \begin{align}
+\operatorname{\mathbb{E}}_* \phi(X^*) &= \sum_x \phi(x)\,p^*(x) \\
+&=\sum_x \phi(x)\, \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(X_j)  \\
+&= \frac{1}{m} \sum_{j=1}^m \sum_x \phi(x)\, \mathbb{I}_{\{x\}}(X_j) \\
+&= \frac{1}{m} \sum_{j=1}^m \phi(X_j) ,
+\end{align} $$
+by the same logic we used for the expectation and variance earlier.
+This is the Monte Carlo estimator from the beginning of this module -- we have a sample $X_1, X_2, \dots, X_m$ and we have form the Monte Carlo estimator $\operatorname{\mathbb E}\phi(X)$. This shows there are deep connections between Monte Carlo estimation and the plug-in/bootstrap ideas we will look at over the next three lectures.
+
+In a sense, this means we haven't done anything particularly new yet -- just dressed up old ideas in new notation. But in the next lectures, we will develop the bootstrap idea further, to look at bias, variance and confidence intervals for these estimators, which is where the power of the bootstrap really shines.
+
+-->

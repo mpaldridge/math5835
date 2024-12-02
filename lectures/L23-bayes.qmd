@@ -34,7 +34,7 @@ A crucial point that we haven't mentioned yet, is that Metropolis--Hastings work
 ## Example
 
 ::: {#exm-mcmc-bayes}
-Consider a statistical model where $X_i$ are IID and normally distributed with unknown mean $\mu$ and and standard deviation $\sigma$. Here our parameter $\boldsymbol\theta = (\mu, \sigma)$ is two-dimensional. So the likelihood is $$ f(\mathbf x \mid \mu, \sigma) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\,\exp \left(\frac{(x_i-\mu)^2}{2\sigma^2}\right) = (2\pi\sigma^2)^{-n/2} \,\exp \left( \frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2 \right) . $$
+Consider a statistical model where $X_i$ are IID and normally distributed with unknown mean $\mu$ and and standard deviation $\sigma$. Here our parameter $\boldsymbol\theta = (\mu, \sigma)$ is two-dimensional. So the likelihood is $$ f(\mathbf x \mid \mu, \sigma) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\,\exp \left(-\frac{(x_i-\mu)^2}{2\sigma^2}\right) = (2\pi\sigma^2)^{-n/2} \,\exp \left( -\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2 \right) . $$
 
 There are some special priors for which the posterior here has a very simple distribution. For example, if the prior for $\mu$ is a normal distribution and the prior for $\sigma$ is that $1/\sigma^2$ has a Gamma distribution and these are independent, then the posterior has the same form but with different parameters. But if your beliefs about $\mu$ and $\sigma$ aren't well represented by a distribution of this form, then it will be very difficult or impossible to get a closed-form expression for the posterior.
 

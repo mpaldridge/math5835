@@ -46,9 +46,9 @@ book:
         - problems/P4.qmd
         - lectures/L22-mcmc-error.qmd
         - lectures/L23-bayes.qmd
-#    - part: "Bootstrap"
-#      chapters:
-#        - lectures/L24-empirical.qmd
+    - part: "Bootstrap"
+      chapters:
+        - lectures/L24-empirical.qmd
 #        - lectures/L25-bootstrap.qmd
 #        - lectures/L26-bootstrap-error.qmd
 #        - lectures/L27-bootstrap-ci.qmd
