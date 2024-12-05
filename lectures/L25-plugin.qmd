@@ -1,5 +1,5 @@
-# Plug-in estimation & Introduction to the bootstrap
-<!--
+# Plug-in estimation & Bootstrap I
+
 Last time, we defined the empirical distribution of a dataset $\mathbf x = (x_1, x_2, \dots, x_m)$. We saw that the empirical distribution $X^*$ has probability mass function $$ p^*(x) = \frac{1}{m} \sum_{j=1}^m \mathbb I_{\{x\}}(x_j) , $$ which is simply the proportion of datapoints taking the value $x_j$.
 
 ## The "plug-in" principle
@@ -45,17 +45,17 @@ Suppose a statistician is interested in a statistic $T = T(X_1, X_2, \dots, X_n)
 
 -   Suppose a supermarket distributor buys 1001 beef steaks; what is the median weight of the steaks? Here $X$ is the distribution of weights of steaks, $n = 1001$, and the statistic is $$ T = T(X_1, X_2, \dots, X_{1000}) = \operatorname{median} (X_1, X_2, \dots, X_{1001}) . $$
 
-The statistician is likely to be interested in properties of this statistic. Three of the most important things the statistician is likely to want to know are
+The statistician is likely to be interested in properties of this statistic. For example, three of the most important things the statistician is likely to want to know are:
 
 -   The **expectation** $\mathbb ET = \mathbb ET(X_1, \dots, X_n)$ of the statistic.
 
--   The **variance** $\operatorname{Var}(T) = \operatorname{Var}(T(X_1, \dots, X_n))$ of the statistics -- or related concepts like the standard deviation.
+-   The **variance** $\operatorname{Var}(T) = \operatorname{Var}(T(X_1, \dots, X_n))$ of the statistic -- or related concepts like the standard deviation.
 
 -   A **confidence interval** $[U,V]$ for the statistic, such that $\mathbb P(T \in [U,V]) = 1-\alpha$.
 
-Now, if the statistician knew the true distribution $X$, and if it were simple enough to work with, then she could calculate the true values of these. But suppose the distribution is unknown (or too complicated to work with). Instead, the statistician just has $m$ samples $\mathbf X = (X_1, X_2, \dots, X_m)$. You could think of these as data measurements that are modelled as coming from the distribution $X$, or you could think of them as output from a computer program that can sample from $X$.
+Now, if the statistician knew the true distribution $X$, and if it were simple enough to work with, then she could calculate the true values of these. But suppose the distribution is unknown (or too complicated to work with). Instead, the statistician just has $m$ samples $\mathbf X = (X_1, X_2, \dots, X_m)$. You could think of these as data measurements that are modelled as coming from the distribution $X$, or you could think of them as output from a computer program that can sample from $X$ exactly.
 
-Note that there's two numbers here: $n$ is the number of samples required to calculate the statistic $T = T(X_1, X_2, \dots, X_n)$ once, and $m$ is the total number of samples we have available. The usual situation is "$m$ is somewhat bigger than $n$, although not vastly bigger", but the mathematical definitions are valid for any $n$ and $m$.
+Note that there's two numbers here: $n$ is the number of samples required to calculate the statistic $T = T(X_1, X_2, \dots, X_n)$ once, and $m$ is the total number of samples we have available. The most common situation is "$m$ is somewhat bigger than $n$, although not vastly bigger", but the mathematical definitions are valid for any $n$ and $m$.
 
 The **bootstrap** method is the following idea:
 
@@ -63,26 +63,26 @@ The **bootstrap** method is the following idea:
 
 2.  Repeat step 1 many times; let's say $B$ times. Keep taking $n$ of the samples with replacement and evaluating the statistic. We now have $B$ versions of that statistic $T^*_1, T^*_2, \dots, T^*_B$.
 
-3.  Use these $B$ versions of the statistic to get a **bootstrap estimate** of the expectation, variance, or confidence interval. Details to follow of this step in the remainder of this lecture and the next.
+3.  Use these $B$ versions of the statistic to get a **bootstrap estimate** of the expectation, variance, or confidence interval. To estimate the expectation of the statistic $\mathbb ET = \mathbb ET(X_1, \dots, X_n)$, use the sample mean of the evaluated statistics $\overline{T^*} = \frac{1}{B} \sum_{k=1}^B T^*_B$. To estimate the variance $\operatorname{Var}(T)$ use the sample variance
+$$ \sum{1}{B-1} \sum_{k=1}^B \big(T^*_k - \overline{T^*}\big) .$$
+We'll come back to the confidence interval later.
 
-## Bootstrap for expectation
--->
+## Bootstrap for expectation and variance
+
 ::: {#exm-cafe}
-Let's take the cafe example above. The statistic in question is $$ T = T(X_1, X_2, X_3, X_4, X_5) = \min\{X_1, X_2, X_3, X_4, X_5\} . $$
-A researcher wants to estimate the expectation of this statistic.
+Let's take the cafe example above. The statistic in question is $$ T = T(X_1, X_2, X_3, X_4, X_5) = \min\{X_1, X_2, X_3, X_4, X_5\} . $$ A researcher wants to estimate the expectation of this statistic.
 
 The researcher visits The Edit Room at 30 random occasion and notes the following data.
 
 | **Queue length**        |  0  |  1  |  2  |  3  |  4  |  5  |  7  | 11  | Total |
-|:-----------------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:------:|
+|:------------------------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:-----:|
 | **Number of occasions** | 11  |  5  |  7  |  3  |  1  |  1  |  1  |  1  |  30   |
 
  
 
-We start by taking 5 samples from the empirical distribution -- that is, we choose 5 of the datapoints uniformly at random with replacement. Let's say these are $(0, 1, 4, 4, 5)$. (It turns out we sampled the value 4 twice, even though it only occured once -- that does happen sometimes when we're sampling with replacement.) The value of the statistic for this sample is
-$$ T_1^* = T(0, 1, 4, 4, 5) = \max \{0, 1, 4, 4, 5\} = 5 .$$
+We start by taking 5 samples from the empirical distribution -- that is, we choose 5 of the datapoints uniformly at random with replacement. Let's say these are $(0, 1, 4, 4, 5)$. (It turns out we sampled the value 4 twice, even though it only occured once -- that does happen sometimes when we're sampling with replacement.) The value of the statistic for this sample is $$ T_1^* = T(0, 1, 4, 4, 5) = \max \{0, 1, 4, 4, 5\} = 5 .$$
 
-We keep doing this many times -- we pick five samples with replacement, and calculate their maximum. We then take the sample mean $\overline{T^*}$ of these maxima -- that's the bootstrap estimation of $\mathbb ET$.
+We keep doing this many times -- we pick five samples with replacement, and calculate their maximum.
 
 ```{r}
 queues <- c(rep(0, 11), rep(1, 5), rep(2, 7), rep(3, 3), 4, 5, 7, 11)
@@ -93,8 +93,22 @@ for (k in 1:boots) {
   minisample <- sample(queues, 5, replace = TRUE)
   maxes[k] <- max(minisample)
 }
-mean(maxes)
 ```
+
+This gives us 1000 realisations of the test statistic. We can use these to look at the distribution of the test statistic:
+
+```{r}
+dist <- table(maxes) / boots
+dist
+plot(dist)
+```
+
+We can also look at particular figures of interest. For example, the expectation of $T$ should be close to the sample mean of our $T^*$s, and the variance of $T$ should be close to the sample variance of our $T^*s$.
+
+```{r}
+c(mean(maxes), var(maxes))
+```
+
 :::
 
 Next time, we'll look into bootstrap methods in more detail.
