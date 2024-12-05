@@ -6,11 +6,11 @@ display: none !important;
 }
 </style>
 
-<!--
+
 ::: {.mysummary}
-**[Full solutions](#P2-sols)** are now available.
+**[Full solutions](#P4-sols)** are now available.
 :::
--->
+
 
 
 ::: {.mysummary}

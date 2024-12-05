@@ -389,7 +389,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/L25-plugin.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation &amp; Introduction to the bootstrap</span></span></a>
   </div>
 </li>
       </ul>
@@ -533,7 +533,7 @@ display: none !important;
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">signif</span>(<span class="fu">c</span>(var1, var2, var3, var4), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 8.42e-05 1.42e-05 6.69e-06 1.92e-06</code></pre>
+<pre><code>[1] 8.23e-05 1.37e-05 6.64e-06 1.92e-06</code></pre>
 </div>
 </div>
 <p>(For the fourth PDF, we used that the PDF of <span class="math inline">\(3 + Z\)</span> is <span class="math inline">\(f_Z(z-3)\)</span>.)</p>
@@ -550,10 +550,10 @@ display: none !important;
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>IS_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>((<span class="fu">pdf_x</span>(samples_y4) <span class="sc">/</span> <span class="fu">pdf_y4</span>(samples_y4)) <span class="sc">*</span> <span class="fu">phi</span>(samples_y4)) <span class="sc">/</span> n</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(ISest, <span class="fu">sqrt</span>(IS_MSE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.313002e-03 1.384902e-06</code></pre>
+<pre><code>[1] 1.324307e-03 1.387280e-06</code></pre>
 </div>
 </div>
-<p>So our estimate is <span class="math inline">\(\widehat\theta = 0.00131\)</span>. Since the RMSE is three orders of magnitude less than the estimate, so the estimate is probably accurate to a couple of significant figures.</p>
+<p>So our estimate is <span class="math inline">\(\widehat\theta = 0.00132\)</span>. Since the RMSE is three orders of magnitude less than the estimate, so the estimate is probably accurate to a couple of significant figures.</p>
 </div>
 </div>
 <div class="subq">
@@ -564,7 +564,7 @@ display: none !important;
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>eps <span class="ot">&lt;-</span> <span class="fl">0.01</span> <span class="sc">*</span> ISest</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(var1, var2, var3, var4) <span class="sc">/</span> eps<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 488251  82441  38786  11125</code></pre>
+<pre><code>[1] 469455  78347  37833  10974</code></pre>
 </div>
 </div>
 </div>
