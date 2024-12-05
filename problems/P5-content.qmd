@@ -1,0 +1,92 @@
+{{< include ../_header.qmd >}}
+
+::::: {.myq}
+**1.**     The Gamma distribution $X \sim \Gamma(m, \lambda)$ has PDF
+$$ f(x) = \frac{\lambda^m}{(m-1)!} \,\alpha^{m-1}\,\mathrm{e}^{-\lambda x} . $$
+(This PDF can be evaluated with the `dgamma()` function in R.) The time between eruptions of a volcano, measured in years, is modelled as $X \sim \Gamma(5, \theta)$, IID over eruptions, where $\theta$ is unknown. A scientist beliefs about $\theta$ are represented in a prior distribution $\theta \sim \operatorname{Exp}(6)$.
+
+The following times between eruptions are available in the historical record:
+```
+       56.55,  2.57, 29.97, 10.27,  4.32, 17.91, 51.98,  7.06, 11.40, 54.80
+```
+
+            Sample from the posterior distribution for $\theta$, using the random walk Metropolis algorithm. Explain how you chose the stepsize for your algorithm and how you checked it was a good choice.
+
+Draw a histogram of the posterior distribution, and comment on how it differs from the prior.
+:::::
+
+::::: {.myq}
+**2.**     *[2019 exam, Question 4]*
+
+:::: {.subq}
+**(a)**   Introducing any notation you use, state the Metropolis--Hastings algorithm for discrete state space, and explain the purpose of this algorithm.
+::::
+
+:::: {.subq}
+**(b)**   Using the Metropolis--Hasting algorithm, find a Markov chain with state space $\mathbb N = \{1, 2, 3, \dots\}$ that has stationary distribution $\mathbb P(X_n = x) = 2^{-x}$ for $x \in \mathbb N$.
+::::
+
+:::: {.subq}
+**(c)**   In a Bayesian setting, assume we have observations $Z_1, X_2, \dots, Z_n$ from an $\operatorname{N}(0, \sigma^2)$ distribution, where the prior distribution for $\sigma^2$ is $\operatorname{Exp}(1)$. Using the Metropolis--Hastings algorithm, describe in detail a method for sampling from the posterior distribution of $\sigma^2$.
+::::
+
+:::: {.subq}
+**(d)**   Let the set $A \subset \mathbb R^2$ be given by
+$$
+A = \big([0,3]\times[0,1]\big) \cup \big([0,1]\times [4,5]\big) 
+\cup \big([4,5]\times[0,1]\big) \cup \big([4,5] \times [3,5]\big) .
+$$
+Consider the Metropolis--Hastings algorithm on $\mathbb R^2$ with target density
+$$ \pi(\mathbf x) = \begin{cases} \frac17 & \text{if }\mathbf x \in A \\
+0 & \text{otherwise} \end{cases} $$
+for all $x \in \mathbb R^2$, and where the proposals $\mathbf Y_{i+1}$ are chosen uniformly distributed on a disk of radius $r$ around the previous state -- that is,
+$$ Y_{j+1} \sim \operatorname{U} \Big(\big\{ \mathbf y \in \mathbb R^2 : |\mathbf y - \mathbf X_i | \leq r \big\}\Big) . $$
+Assume the algorithm starts at $\mathbf X_1 = (0.5, 0.5)$.
+
+**i.**      For every $r > 0$, determine the stationary distribution of the resulting Markov chain.
+
+**ii.**    For what values of $r$ does the algorithm work correctly?
+::::
+:::::
+
+::::: {.myq}
+**3.**     *[2017 exam, Question 5]*
+
+:::: {.subq}
+**(a)**   Give the definition of a Markov chain with state space $\mathcal S$.
+
+Let $(Z_i)$ be a sequence of IID random variables whose distribution is known. Consider the stochastic processes $(U_i)$, $(V_i)$, $(W_i)$ defined by
+$$ \begin{align}
+U_i &= Z_1 + Z_2 + \cdots + Z_i \\
+V_i &= \frac{1}{i} (Z_1 + Z_2 + \cdots + Z_i) \\
+W_i &= \max \{Z_j : 1 \leq j \leq i-1\} + Z_i
+\end{align} $$
+for $i = 1, 2, \dots$. Which of these processes are Markov chains? Justify your answers.
+::::
+
+:::: {.subq}
+**(b)**   Defining any notation you use, state the random walk Metropolis algorithm. What is the purpose of this algorithm?
+::::
+
+:::: {.subq}
+**(c)**   Use the Metropolis--Hastings algorithm to construct a Markov chain $(X_n)$ on $\mathcal S = \{0, 1, 2, \dots \}$ whose stationary distribution is the Poisson distribution $\pi(x) = \mathrm{e}^{-\lambda} \lambda^x/x!$.
+::::
+
+:::::
+
+
+::::: {.myq}
+**4.**     Let $\mathbf X = (X_1, \dots, X_n)$ be IID samples from a random variable $X$ with cumulative distribution function $F$. Let $F^*$ be the empirical cumulative distribution function of the samples $\mathbf X$.
+
+:::: {.subq}
+**(a)**   For fixed $x$, show that $\operatorname{\mathbb E}F^*(x) = F(x)$.
+::::
+
+:::: {.subq}
+**(b)**   For fixed $x$, show that $\operatorname{Var}\big(F^*(x)\big) = \displaystyle\frac{1}{n}F(x)\big(1 - F(x)\big)$.
+::::
+
+:::: {.subq}
+**(c)**   For fixed $x$ and $y$ with $y > x$, find $\operatorname{Cov}\big(F^*(y), F^*(x)\big)$.
+::::
+:::::

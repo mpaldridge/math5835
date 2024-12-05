@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>10&nbsp; Generating random numbers – MATH5835M Statistical Computing</title>
+<title>Problem Sheet 5 – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L11-lcg.html" rel="next">
-<link href="../lectures/L09-is-2.html" rel="prev">
+<link href="../coursework/coursework.html" rel="next">
+<link href="../lectures/L25-plugin.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +111,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generating random numbers</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html">Bootstrap</a></li><li class="breadcrumb-item"><a href="../problems/P5.html">Problem Sheet 5</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -258,7 +224,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L10-rng-intro.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L10-rng-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generating random numbers</span></span></a>
   </div>
 </li>
@@ -394,7 +360,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../problems/P5.html" class="sidebar-item-text sidebar-link">
+  <a href="../problems/P5.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Problem Sheet 5</span></a>
   </div>
 </li>
@@ -417,23 +383,15 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#why-generate-random-numbers" id="toc-why-generate-random-numbers" class="nav-link active" data-scroll-target="#why-generate-random-numbers"><span class="header-section-number">10.1</span> Why generate random numbers?</a></li>
-  <li><a href="#random-numbers-on-computers" id="toc-random-numbers-on-computers" class="nav-link" data-scroll-target="#random-numbers-on-computers"><span class="header-section-number">10.2</span> Random numbers on computers</a></li>
-  <li><a href="#prngs" id="toc-prngs" class="nav-link" data-scroll-target="#prngs"><span class="header-section-number">10.3</span> PRNGs</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generating random numbers</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html">Bootstrap</a></li><li class="breadcrumb-item"><a href="../problems/P5.html">Problem Sheet 5</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generating random numbers</span></h1>
+<h1 class="title"><span id="P5" class="quarto-section-identifier">Problem Sheet 5</span></h1>
 </div>
 
 
@@ -450,81 +408,90 @@ window.Quarto = {
 </header>
 
 
+<style>
+.myanswers { 
+display: none !important;
+}
+</style>
+<!--
+::: {.mysummary}
+**[Full solutions](#P2-sols)** are now available.
+:::
+-->
 <div class="mysummary">
-<p>Please complete the <a href="https://forms.office.com/e/vp9uSWUAxi?or"><strong>mid-semester survey</strong></a>!</p>
+<p>This is Problem Sheet 5, which covers material from Lectures 22 to 27. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of <strong>Thursday 11 December</strong>. If you are stuck on any of the questions, you are welcome to discuss them with me in my office hours on Mondays at 1500.</p>
+<p>This problem sheet is to help you practice material from the module. It is <em>not</em> for assessment and will not be marked.</p>
+<p>Full solutions should be released on <strong>Friday 12 December</strong>.</p>
+<p>Remember that <strong>Thursday 12 December at 1400</strong> is also the deadline for the module <a href="../index.html#coursework">coursework</a></p>
 </div>
-<section id="why-generate-random-numbers" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="why-generate-random-numbers"><span class="header-section-number">10.1</span> Why generate random numbers?</h2>
-<p>So far in this module, we have made a lot of use of generating random numbers – for us, this has been when performing Monte Carlo estimation. We will also need random numbers for many other purposes later in the module. There are lots of other situations in statistics, mathematics and data science where we want to use random numbers to help us solve problems. But where do we get these random numbers from?</p>
-<p>When performing Monte Carlo estimation, we have used lots of samples from the distribution of some random variable <span class="math inline">\(X\)</span>. We did this using R’s built-in functions for random number generation, like <code>runif()</code>, <code>rnorm()</code>, <code>rexp()</code>, and so on.</p>
-<p>In this part of the module, we are interested in these questions:</p>
-<ul>
-<li><p>How do these random number generation functions in R actually <em>work</em>?</p></li>
-<li><p>What if we want to sample from a distribution for which R doesn’t have a built-in function – how can we do that?</p></li>
-</ul>
-<p>It turns out that this will break down into two questions that we can treat largely separately:</p>
-<ol type="1">
-<li><p>How do we generate some randomness – any randomness – in the first place? We usually think of this as generating <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>, a uniform random number between 0 and 1. (We will look at this today and in the next lecture.)</p></li>
-<li><p>How do we transform that uniform randomness <span class="math inline">\(U\)</span> to get it to behave like the particular distribution <span class="math inline">\(X\)</span> that we want to sample from? (We will look at this in Lectures 12–16.)</p></li>
-</ol>
-</section>
-<section id="random-numbers-on-computers" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="random-numbers-on-computers"><span class="header-section-number">10.2</span> Random numbers on computers</h2>
-<p>We start by considering the question of how to generate a uniform random number between 0 and 1.</p>
-<p>The first thing to know is that computers do not perfectly store exact real numbers in decimals of unending length – that’s impossible! Instead, it stores a number to a certain accuracy, in terms of the number of decimal places. To be more precise, computers store numbers in <em>binary</em>; that is, written as a sequence of 0s and 1s. (In the presentation here, we will somewhat simplify matters – computer science experts will be able to spot where I’m lying, or “gently smoothing out the truth”.)</p>
-<p>A number between 0 and 1 could be (approximately) stored as a 32-bit binary number, for example. A 32-bit number is a number like</p>
-<pre><code>0. 00110100 11110100 10001111 10011001</code></pre>
-<p>that is “0.” followed by a string of 32 binary digits, or “bits” (0s and 1s). A string <span class="math inline">\(0.x_1x_2\cdots x_{31}x_{32}\)</span> represents the number <span class="math display">\[ x = \sum_{i=1}^{32} x_i 2^{-i} . \]</span> So the number above represents <span class="math display">\[ \begin{align} &amp;0\times 2^{-1} + 0 \times 2^{-2} + 1 \times 2^{-3} + \cdots + 0 \times 2^{-31} + 1 \times 2^{-32} \\ &amp;\qquad\qquad {}=2^{-3} + 2^{-4} + 2^{-6} + \dots + 2^{-29} + 2^{-32} \\ &amp;\qquad\qquad {}= 0.20685670361854135990142822265625.\end{align}\]</span></p>
-<p>We could generate such a 32-bit (or, more generally, <span class="math inline">\(b\)</span>-bit) number in two different ways:</p>
-<ul>
-<li>A sequence of 32 0s and 1s (each being 50:50 likely to be 0 or 1 and each being independent of the others). This then represents a number in its binary expansion, as above.
-<ul>
-<li>Or, more generally, we want a string of <span class="math inline">\(b\)</span> 0s and 1s.</li>
-</ul></li>
-<li>A integer at random between <span class="math inline">\(0\)</span> and <span class="math inline">\(2^{32} - 1\)</span>, which we can then divide by <span class="math inline">\(2^{32}\)</span> to get a number between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>.
-<ul>
-<li>Or, more generally, we want a random integer between <span class="math inline">\(0\)</span> and <span class="math inline">\(m - 1\)</span> for some <span class="math inline">\(m\)</span>, which we can then divide by <span class="math inline">\(m\)</span>. Usually <span class="math inline">\(m = 2^b\)</span> for some <span class="math inline">\(b\)</span>, to give a <span class="math inline">\(b\)</span>-bit number.</li>
-</ul></li>
-</ul>
-<p>There are two ways we can do this. First, we can use <strong>true physical randomness</strong>. Second, we can use <strong>computer-generated “pseudorandomness”</strong>.</p>
-<p>True physical randomness means randomness by some real-life random process. For example, you could toss a coin 32 times, and write down “1” each time it lands heads and “0” each time it lands tails: this would give a random 32-bit number. While this will be genuinely random, it is, of course, very slow if you need a large amount of randomness. For example, when we have done Monte Carlo estimation, we have often used one million random numbers in about 1 second – it’s obviously completely infeasible to toss 32 million coins that quickly!</p>
-<p>For a greater amount of physical randomness more quickly, one could look at times between the decay of radioactive particles, thermal noise in electrical circuits, the behaviour of photons in a laser beam, and so on. But these are quite expensive, and even these may not be quick enough for some applications.</p>
-<p>Here’s a cool video by the YouTuber <a href="https://www.youtube.com/@TomScottGo">Tom Scott</a> about an internet company that uses a wall of lava lamps for their true physical randomness:</p>
-<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/1cUUfMeOijg" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
-</section>
-<section id="prngs" class="level2" data-number="10.3">
-<h2 data-number="10.3" class="anchored" data-anchor-id="prngs"><span class="header-section-number">10.3</span> PRNGs</h2>
-<p>A <strong>pseudorandom number generator</strong> (<strong>PRNG</strong>) is a computer program that outputs a sequence of numbers that appear to be random. Of course, the numbers are not <em>actually</em> random – a computer program always performs exactly what you tell it to, exactly the same every time. But for a PRNG – or at least for a good PRNG – there should be no obvious patterns in the sequence of numbers produced, so they should act for all practical purposes <em>as if</em> they were random numbers. (“Pseudo” is a prefix that means something like “appears to be, even though it’s not”.)</p>
-<p>Many pseudorandom number generators work by applying a recurrence. Suppose we want (pseudo)random integers between <span class="math inline">\(0\)</span> and <span class="math inline">\(m-1\)</span>. Then we have a <strong>seed</strong> <span class="math inline">\(x_1\)</span>, which behaves as a starting point for the sequence, and a function <span class="math inline">\(f\)</span> from <span class="math inline">\(\{0, 1, \dots, m-1\}\)</span> to <span class="math inline">\(\{0, 1, \dots, m-1\}\)</span>. Then starting from <span class="math inline">\(x_1\)</span>, we apply <span class="math inline">\(f\)</span> to get the next number in the sequence <span class="math inline">\(f(x_1) = x_2\)</span>. Then we apply <span class="math inline">\(f\)</span> to <em>that</em>, to get the next point <span class="math inline">\(x_3 = f(x_2)\)</span>. Then apply <span class="math inline">\(f\)</span> to <em>that</em> to get the next number, and so on. So the sequence would be <span class="math display">\[ \begin{align} x_1&amp; &amp; x_2 &amp;= f(x_1) &amp; x_3 &amp;= f(x_2) = f(f(x_1)) \\
-x_4 &amp;= f(x_3) = f(f(f(x_1))) &amp; &amp;\cdots &amp; x_{i+1} &amp;= f(x_i) =f(f(\cdots (f(x_1))\cdots))\end{align} \]</span> and so on.</p>
-<p>Some functions <span class="math inline">\(f\)</span> would be not produce a very random-looking sequence of numbers: think of a silly example like <span class="math inline">\(f(x) = (x+1) \bmod m\)</span>, so <span class="math inline">\(x_{i+1} = (x_i + 1) \bmod m\)</span> just increases by 1 each time (before “wrapping around” back to 0 when it gets to <span class="math inline">\(m\)</span>). But mathematicians have come up with lots of examples of functions <span class="math inline">\(f\)</span> which, for all possible practical purposes, seem to have outputs that appear just as random as an actual random sequence.</p>
-<p>One example of such a function <span class="math inline">\(f\)</span> would be <span class="math inline">\(f(x) = (ax+c) \bmod m\)</span>, so <span class="math inline">\(x_{i+1} = (ax_i + c)\bmod m\)</span>, which can be a very good PRNG for some values of <span class="math inline">\(a\)</span> and <span class="math inline">\(c\)</span>. In this case, the PRNG is known as a <strong>linear congruential generator</strong> (or <strong>LCG</strong>). We’ll talk more about LCGs in the next lecture.</p>
-<p>R’s default method is of this form – well, it’s <em>almost</em> of this form. It actually uses a method called the <a href="https://en.wikipedia.org/wiki/Mersenne_Twister">Mersenne Twister</a>, which uses a recurrence of the form <span class="math inline">\(x_{i+1} = (f(x_i) + i) \bmod m\)</span> for a complicated function <span class="math inline">\(f\)</span>; here the “plus <span class="math inline">\(i\)</span>”, where <span class="math inline">\(i\)</span> is the step number, means we have a slightly different update rule each timestep.</p>
-<p>But how do we pick the seed – the starting point <span class="math inline">\(x_1\)</span>? Normally, we use some true physical randomness to pick the seed. The benefit here is that just a small amount of true physical randomness can “start you off” by choosing the seed, and then the PRNG can produces huge amounts of pseudorandomness incredibly quickly. Indeed, that’s what the wall of lava lamps in the video did – the lava lamps were just for producing lots of seeds for the PRNGs.</p>
-<p>However, it is possible, and sometimes desirable, to set the seed “by hand”. This is useful if you want to produce the same “random-looking” numbers as someone else (or yourself, previously). This is because if two people set the same seed <span class="math inline">\(x_1\)</span>, then the numbers <span class="math inline">\(x_2, x_3, \dots\)</span> produced after that will still appear to be random, but because the process is completely deterministic after the seed is chosen, both people will actually produce exactly the same sequence of numbers. This can be useful for checking accuracy of code, for example.</p>
-<p>In R, by default, the seed is set based the current time on your computer, measured down to about 10 milliseconds. However, you can set the seed yourself, using <code>set.seed()</code>. For example, the following code sets the seed to be 123456, then generates 10 uniform pseudorandom numbers.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123456</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] 0.79778432 0.75356509 0.39125568 0.34155670 0.36129411 0.19834473
- [7] 0.53485796 0.09652624 0.98784694 0.16756948</code></pre>
+<div class="hidden">
+<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
+\newcommand{\Ex}{\mathbb{E}}
+\newcommand{\Ind}{\mathbb{I}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\ee}{\mathrm{e}}\]</span></p>
+</div>
+<div class="myq">
+<p><strong>1.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Gamma distribution <span class="math inline">\(X \sim \Gamma(m, \lambda)\)</span> has PDF <span class="math display">\[ f(x) = \frac{\lambda^m}{(m-1)!} \,\alpha^{m-1}\,\mathrm{e}^{-\lambda x} . \]</span> (This PDF can be evaluated with the <code>dgamma()</code> function in R.) The time between eruptions of a volcano, measured in years, is modelled as <span class="math inline">\(X \sim \Gamma(5, \theta)\)</span>, IID over eruptions, where <span class="math inline">\(\theta\)</span> is unknown. A scientist beliefs about <span class="math inline">\(\theta\)</span> are represented in a prior distribution <span class="math inline">\(\theta \sim \operatorname{Exp}(6)\)</span>.</p>
+<p>The following times between eruptions are available in the historical record:</p>
+<pre><code>       56.55,  2.57, 29.97, 10.27,  4.32, 17.91, 51.98,  7.06, 11.40, 54.80</code></pre>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sample from the posterior distribution for <span class="math inline">\(\theta\)</span>, using the random walk Metropolis algorithm. Explain how you chose the stepsize for your algorithm and how you checked it was a good choice.</p>
+<p>Draw a histogram of the posterior distribution, and comment on how it differs from the prior.</p>
+</div>
+<div class="myq">
+<p><strong>2.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>[2019 exam, Question 4]</em></p>
+<div class="subq">
+<p><strong>(a)</strong>&nbsp;&nbsp;&nbsp;Introducing any notation you use, state the Metropolis–Hastings algorithm for discrete state space, and explain the purpose of this algorithm.</p>
+</div>
+<div class="subq">
+<p><strong>(b)</strong>&nbsp;&nbsp;&nbsp;Using the Metropolis–Hasting algorithm, find a Markov chain with state space <span class="math inline">\(\mathbb N = \{1, 2, 3, \dots\}\)</span> that has stationary distribution <span class="math inline">\(\mathbb P(X_n = x) = 2^{-x}\)</span> for <span class="math inline">\(x \in \mathbb N\)</span>.</p>
+</div>
+<div class="subq">
+<p><strong>(c)</strong>&nbsp;&nbsp;&nbsp;In a Bayesian setting, assume we have observations <span class="math inline">\(Z_1, X_2, \dots, Z_n\)</span> from an <span class="math inline">\(\operatorname{N}(0, \sigma^2)\)</span> distribution, where the prior distribution for <span class="math inline">\(\sigma^2\)</span> is <span class="math inline">\(\operatorname{Exp}(1)\)</span>. Using the Metropolis–Hastings algorithm, describe in detail a method for sampling from the posterior distribution of <span class="math inline">\(\sigma^2\)</span>.</p>
+</div>
+<div class="subq">
+<p><strong>(d)</strong>&nbsp;&nbsp;&nbsp;Let the set <span class="math inline">\(A \subset \mathbb R^2\)</span> be given by <span class="math display">\[
+A = \big([0,3]\times[0,1]\big) \cup \big([0,1]\times [4,5]\big)
+\cup \big([4,5]\times[0,1]\big) \cup \big([4,5] \times [3,5]\big) .
+\]</span> Consider the Metropolis–Hastings algorithm on <span class="math inline">\(\mathbb R^2\)</span> with target density <span class="math display">\[ \pi(\mathbf x) = \begin{cases} \frac17 &amp; \text{if }\mathbf x \in A \\
+0 &amp; \text{otherwise} \end{cases} \]</span> for all <span class="math inline">\(x \in \mathbb R^2\)</span>, and where the proposals <span class="math inline">\(\mathbf Y_{i+1}\)</span> are chosen uniformly distributed on a disk of radius <span class="math inline">\(r\)</span> around the previous state – that is, <span class="math display">\[ Y_{j+1} \sim \operatorname{U} \Big(\big\{ \mathbf y \in \mathbb R^2 : |\mathbf y - \mathbf X_i | \leq r \big\}\Big) . \]</span> Assume the algorithm starts at <span class="math inline">\(\mathbf X_1 = (0.5, 0.5)\)</span>.</p>
+<p><strong>i.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For every <span class="math inline">\(r &gt; 0\)</span>, determine the stationary distribution of the resulting Markov chain.</p>
+<p><strong>ii.</strong>&nbsp;&nbsp;&nbsp;&nbsp;For what values of <span class="math inline">\(r\)</span> does the algorithm work correctly?</p>
 </div>
 </div>
-<p>Those numbers certainly appear to be random. But if you run those two lines of code on your computer, you should get exactly the same 10 numbers. That’s because you will also start with the same seed 123456, and then R will run the same pseudorandom – that is, completely deterministic – function to generate the next 10 numbers.</p>
-<p><strong>Next time:</strong> <em>We’ll take a closer look at pseudorandom number generation using linear congruential generators.</em></p>
-<div class="mysummary">
-<p><strong>Summary:</strong></p>
-<ul>
-<li><p>Random number generation has two problems: how to generate uniform random numbers between 0 and 1, and who to convert these to your desired distribution.</p></li>
-<li><p>Uniform random numbers can be generated from true physical randomness or using a pseudorandom number generator on a computer.</p></li>
-<li><p>Linear congruential generators are a type of pseudorandom number generator.</p></li>
-</ul>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, introduction to Chapter 1, introduction to Section 1.1, and Subsection 1.1.3.</p>
+<div class="myq">
+<p><strong>3.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>[2017 exam, Question 5]</em></p>
+<div class="subq">
+<p><strong>(a)</strong>&nbsp;&nbsp;&nbsp;Give the definition of a Markov chain with state space <span class="math inline">\(\mathcal S\)</span>.</p>
+<p>Let <span class="math inline">\((Z_i)\)</span> be a sequence of IID random variables whose distribution is known. Consider the stochastic processes <span class="math inline">\((U_i)\)</span>, <span class="math inline">\((V_i)\)</span>, <span class="math inline">\((W_i)\)</span> defined by <span class="math display">\[ \begin{align}
+U_i &amp;= Z_1 + Z_2 + \cdots + Z_i \\
+V_i &amp;= \frac{1}{i} (Z_1 + Z_2 + \cdots + Z_i) \\
+W_i &amp;= \max \{Z_j : 1 \leq j \leq i-1\} + Z_i
+\end{align} \]</span> for <span class="math inline">\(i = 1, 2, \dots\)</span>. Which of these processes are Markov chains? Justify your answers.</p>
+</div>
+<div class="subq">
+<p><strong>(b)</strong>&nbsp;&nbsp;&nbsp;Defining any notation you use, state the random walk Metropolis algorithm. What is the purpose of this algorithm?</p>
+</div>
+<div class="subq">
+<p><strong>(c)</strong>&nbsp;&nbsp;&nbsp;Use the Metropolis–Hastings algorithm to construct a Markov chain <span class="math inline">\((X_n)\)</span> on <span class="math inline">\(\mathcal S = \{0, 1, 2, \dots \}\)</span> whose stationary distribution is the Poisson distribution <span class="math inline">\(\pi(x) = \mathrm{e}^{-\lambda} \lambda^x/x!\)</span>.</p>
+</div>
+</div>
+<div class="myq">
+<p><strong>4.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(\mathbf X = (X_1, \dots, X_n)\)</span> be IID samples from a random variable <span class="math inline">\(X\)</span> with cumulative distribution function <span class="math inline">\(F\)</span>. Let <span class="math inline">\(F^*\)</span> be the empirical cumulative distribution function of the samples <span class="math inline">\(\mathbf X\)</span>.</p>
+<div class="subq">
+<p><strong>(a)</strong>&nbsp;&nbsp;&nbsp;For fixed <span class="math inline">\(x\)</span>, show that <span class="math inline">\(\operatorname{\mathbb E}F^*(x) = F(x)\)</span>.</p>
+</div>
+<div class="subq">
+<p><strong>(b)</strong>&nbsp;&nbsp;&nbsp;For fixed <span class="math inline">\(x\)</span>, show that <span class="math inline">\(\operatorname{Var}\big(F^*(x)\big) = \displaystyle\frac{1}{n}F(x)\big(1 - F(x)\big)\)</span>.</p>
+</div>
+<div class="subq">
+<p><strong>(c)</strong>&nbsp;&nbsp;&nbsp;For fixed <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> with <span class="math inline">\(y &gt; x\)</span>, find <span class="math inline">\(\operatorname{Cov}\big(F^*(y), F^*(x)\big)\)</span>.</p>
+</div>
 </div>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -949,13 +916,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L09-is-2.html" class="pagination-link" aria-label="Importance sampling II">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Importance sampling II</span></span>
+      <a href="../lectures/L25-plugin.html" class="pagination-link" aria-label="Plug-in estimation &amp; Introduction to the bootstrap">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation &amp; Introduction to the bootstrap</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L11-lcg.html" class="pagination-link" aria-label="LCGs">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../coursework/coursework.html" class="pagination-link" aria-label="Computational coursework">
+        <span class="nav-page-text">Computational coursework</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

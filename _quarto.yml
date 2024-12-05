@@ -52,7 +52,7 @@ book:
         - lectures/L25-plugin.qmd
 #        - lectures/L26-bootstrap-error.qmd
 #        - lectures/L27-bootstrap-ci.qmd
-#        - problems/P5.qmd
+        - problems/P5.qmd
 #    - lectures/L28-faq.qmd
     - coursework/coursework.qmd
     - problems/solutions.qmd

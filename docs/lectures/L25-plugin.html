@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../coursework/coursework.html" rel="next">
+<link href="../problems/P5.html" rel="next">
 <link href="../lectures/L24-empirical.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -392,6 +392,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation &amp; Introduction to the bootstrap</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../problems/P5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Problem Sheet 5</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -411,16 +417,8 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#the-plug-in-principle" id="toc-the-plug-in-principle" class="nav-link active" data-scroll-target="#the-plug-in-principle"><span class="header-section-number">25.1</span> The “plug-in” principle</a></li>
-  <li><a href="#the-bootstrap-set-up" id="toc-the-bootstrap-set-up" class="nav-link" data-scroll-target="#the-bootstrap-set-up"><span class="header-section-number">25.2</span> The bootstrap set-up</a></li>
-  <li><a href="#bootstrap-for-expectation" id="toc-bootstrap-for-expectation" class="nav-link" data-scroll-target="#bootstrap-for-expectation"><span class="header-section-number">25.3</span> Bootstrap for expectation</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -444,55 +442,74 @@ window.Quarto = {
 </header>
 
 
-<p>Last time, we defined the empirical distribution of a dataset <span class="math inline">\(\mathbf x = (x_1, x_2, \dots, x_m)\)</span>. We saw that the empirical distribution <span class="math inline">\(X^*\)</span> has probability mass function <span class="math display">\[ p^*(x) = \frac{1}{m} \sum_{j=1}^m \mathbb I_{\{x\}}(x_j) , \]</span> which is simply the proportion of datapoints taking the value <span class="math inline">\(x_j\)</span>.</p>
-<section id="the-plug-in-principle" class="level2" data-number="25.1">
-<h2 data-number="25.1" class="anchored" data-anchor-id="the-plug-in-principle"><span class="header-section-number">25.1</span> The “plug-in” principle</h2>
-<p>We have one thing we didn’t get to last time, which is “plug-in estimation”.</p>
-<p>Suppose now that <span class="math inline">\(\mathbf X = (X_1, X_2, \dots, X_m)\)</span> is an IID sample from a distribution <span class="math inline">\(X\)</span> that is either unknown or too difficult to work with directly. How can we find out things about this distribution <span class="math inline">\(X\)</span>?</p>
-<p>Well, we could form the empirical distribution <span class="math inline">\(X^*\)</span> from these samples, and work with that instead.</p>
-<p>We have to be a bit careful here, because there two levels of randomness here.</p>
-<ol type="1">
-<li><p>First, there is the fact that the samples <span class="math inline">\(\mathbf X = (X_1, X_2, \dots, X_m)\)</span> are random IID samples from <span class="math inline">\(X\)</span>.</p></li>
-<li><p>Once we have the samples <span class="math inline">\(\mathbf X\)</span>, that fixes the empirical PMF <span class="math inline">\(p^*\)</span>. Then <span class="math inline">\(X^*\)</span> is itself a random variable, with PMF <span class="math inline">\(p^*\)</span>.</p></li>
-</ol>
-<p>We will write <span class="math inline">\(\mathbb E\)</span>, <span class="math inline">\(\mathbb P\)</span>, <span class="math inline">\(\operatorname{Var}\)</span> and so on for the first type of randomness – that is, randomness coming from the random variable <span class="math inline">\(X\)</span>. We will write <span class="math inline">\(\mathbb E_*\)</span>, <span class="math inline">\(\mathbb P_*\)</span>, <span class="math inline">\(\operatorname{Var}_*\)</span> and so on for randomness coming from the empirical random variable <span class="math inline">\(X^*\)</span> <em>treating the samples</em> <span class="math inline">\(\mathbf X\)</span> as fixed. So, for example, the expectation <span class="math inline">\(\mathbb E_*(\phi(X^*))\)</span> is really shorthand for the <em>conditional</em> expectation <span class="math inline">\(\mathbb E_*(\phi(X^*) \mid \mathbf X)\)</span>.</p>
-<p>One way to estimate something about the random variable <span class="math inline">\(X\)</span> is to take the formula involving <span class="math inline">\(X\)</span>, then keep that same formula, but replace the true random variable <span class="math inline">\(X\)</span> with the empirical random variable <span class="math inline">\(X^*\)</span>. This is called the <strong>plug-in principle</strong>, and such an estimator is a <strong>plug-in estimator</strong> – the idea is that we simply “plug <span class="math inline">\(X^*\)</span> in” to the existing formula.</p>
-<p>This is easier to see if we take some examples.</p>
-<p>Suppose we wanted to estimate the expectation <span class="math inline">\(\mathbb EX\)</span> of the true distribution <span class="math inline">\(X\)</span>. To estimate this, we instead plug in the empirical distribution <span class="math inline">\(X^*\)</span> in place of <span class="math inline">\(X\)</span> and the empirical expectation <span class="math inline">\(\mathbb E_*\)</span> in place of the expectation over the random samples <span class="math inline">\(\mathbb E\)</span>. So our estimator is instead <span class="math inline">\(\mathbb E_*X^*\)</span>. We saw last time that <span class="math inline">\(\mathbb E_*X^*\)</span> is the sample mean <span class="math display">\[\overline X = \frac{1}{m} \sum_{j=1}^m X_j .\]</span> So the plug-in estimator for the expectation <span class="math inline">\(\mathbb EX\)</span> is the sample mean <span class="math inline">\(\overline X\)</span>.</p>
-<p>Suppose we wanted to estimate the variance <span class="math inline">\(\operatorname{Var}(X)\)</span> of the true distribution. Again, we plug in <span class="math inline">\(X^*\)</span>, to instead find <span class="math inline">\(\operatorname{Var}_*(X^*)\)</span>, which we saw last time is <span class="math display">\[ \operatorname{Var}_*(X^*) = \frac{1}{m} \sum_{j = 1}^m \big(X_j - \overline X\big)^2 , \]</span> which is very similar to the sample variance of <span class="math inline">\(\mathbf X\)</span>.</p>
-<p>Suppose wanted to estimate <span class="math inline">\(\operatorname{\mathbb E}\phi(X)\)</span> for some function <span class="math inline">\(\phi\)</span>. The plug-in estimator for this is <span class="math display">\[ \begin{align}
-\operatorname{\mathbb{E}}_* \phi(X^*) &amp;= \sum_x \phi(x)\,p^*(x) \\
-&amp;=\sum_x \phi(x)\, \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(X_j)  \\
-&amp;= \frac{1}{m} \sum_{j=1}^m \sum_x \phi(x)\, \mathbb{I}_{\{x\}}(X_j) \\
-&amp;= \frac{1}{m} \sum_{j=1}^m \phi(X_j) ,
-\end{align} \]</span> by the same logic we used for the expectation and variance last time. This is the Monte Carlo estimator from the beginning of this module – we have a sample <span class="math inline">\(X_1, X_2, \dots, X_m\)</span> and we have form the Monte Carlo estimator <span class="math inline">\(\operatorname{\mathbb E}\phi(X)\)</span>. This shows there are deep connections between Monte Carlo estimation and the the empirical distribution and plug-in estimation.</p>
-</section>
-<section id="the-bootstrap-set-up" class="level2" data-number="25.2">
-<h2 data-number="25.2" class="anchored" data-anchor-id="the-bootstrap-set-up"><span class="header-section-number">25.2</span> The bootstrap set-up</h2>
-<p>OK, we’re now moving on to a slightly different topic: the bootstrap.</p>
-<p>Suppose a statistician is interested in a statistic <span class="math inline">\(T = T(X_1, X_2, \dots, X_n)\)</span> of <span class="math inline">\(n\)</span> IID samples from a random variable <span class="math inline">\(X\)</span>. For example, this might be:</p>
-<ul>
-<li><p>Suppose I pick a basketball squad of 12 players at random; what is their average height? Here, <span class="math inline">\(X\)</span> is the distribution of rugby players’ weights, <span class="math inline">\(n = 12\)</span>, and the statistic is <span class="math display">\[ T = T(X_1, X_2, \dots, X_{12}) = \frac{1}{12} \sum_{i=1}^{12} X_i . \]</span></p></li>
-<li><p>Suppose I visit The Edit Room cafe 5 times; what’s the longest queue I have to deal with. Here, <span class="math inline">\(X\)</span> is the distribution of queue lengths at The Edit Room, <span class="math inline">\(n = 5\)</span>, and the statistic is <span class="math display">\[ T = T(X_1, X_2, X_3, X_4, X_5) = \min\{X_1, X_2, X_3, X_4, X_5\} . \]</span></p></li>
-<li><p>Suppose a supermarket distributor buys 1001 beef steaks; what is the median weight of the steaks? Here <span class="math inline">\(X\)</span> is the distribution of weights of steaks, <span class="math inline">\(n = 1001\)</span>, and the statistic is <span class="math display">\[ T = T(X_1, X_2, \dots, X_{1000}) = \operatorname{median} (X_1, X_2, \dots, X_{1001}) . \]</span></p></li>
-</ul>
-<p>The statistician is likely to be interested in properties of this statistic. Three of the most important things the statistician is likely to want to know are</p>
-<ul>
-<li><p>The <strong>expectation</strong> <span class="math inline">\(\mathbb ET = \mathbb ET(X_1, \dots, X_n)\)</span> of the statistic.</p></li>
-<li><p>The <strong>variance</strong> <span class="math inline">\(\operatorname{Var}(T) = \operatorname{Var}(T(X_1, \dots, X_n))\)</span>, or related concepts like the standard deviation.</p></li>
-<li><p>A <strong>confidence interval</strong> <span class="math inline">\([U,V]\)</span> for the statistic, such that <span class="math inline">\(\mathbb P(T \in [U,V]) = 1-\alpha\)</span>.</p></li>
-</ul>
-<p>Now, if the statistician knew the true distribution <span class="math inline">\(X\)</span>, and it was simple enough to work with, then she could calculate the true values of these. But instead, the statistician just has <span class="math inline">\(m\)</span> samples <span class="math inline">\(\mathbf X = (X_1, X_2, \dots, X_m)\)</span>. You could think of these as data measurements that are modelled as coming from the distribution <span class="math inline">\(X\)</span>, or you could think of them as output from a computer program that samples from <span class="math inline">\(X\)</span>.</p>
-<p>Note that there’s two numbers here: <span class="math inline">\(n\)</span> is the number of samples required to calculate the statistic <span class="math inline">\(T = T(X_1, X_2, \dots, X_n)\)</span> once, and <span class="math inline">\(m\)</span> is the total number of samples we have available. The usual situation is “<span class="math inline">\(m\)</span> is somewhat bigger than <span class="math inline">\(n\)</span>, although not vastly bigger”, but the mathematical definitions are valid for any <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>.</p>
-<p>The <strong>bootstrap</strong> method is the following idea:</p>
-<ol type="1">
-<li><p>Take <span class="math inline">\(n\)</span> samples from the empirical distribution <span class="math inline">\(X^*\)</span> of <span class="math inline">\(\mathbf X\)</span>. This is equivalent to sampling <span class="math inline">\(n\)</span> of the values <span class="math inline">\(X_1, X_2, \dots, X_m\)</span> with replacement. Let’s call these samples <span class="math inline">\(X^*_1, X^*2, \dots, X^*_n\)</span>. Evaluate the statistic with these samples <span class="math display">\[ T^* = T(X_1^*, X_2^*, \dots, X_n^*) . \]</span></p></li>
-<li><p>Repeat step 1 many times; let’s say <span class="math inline">\(B\)</span> times. Keep taking <span class="math inline">\(n\)</span> of the samples with replacement and Evaluate the statistic. We now have <span class="math inline">\(B\)</span> versions of that statistic <span class="math inline">\(T^*_1, T^*_2, \dots, T^*_B\)</span>.</p></li>
-<li><p>Use these <span class="math inline">\(B\)</span> versions of the statistic to get a <strong>bootstrap estimate</strong> of the expectation, variance, or confidence interval. Details to follow of this step in the remainder of this lecture and the next.</p></li>
-</ol>
-</section>
-<section id="bootstrap-for-expectation" class="level2" data-number="25.3">
-<h2 data-number="25.3" class="anchored" data-anchor-id="bootstrap-for-expectation"><span class="header-section-number">25.3</span> Bootstrap for expectation</h2>
+<!--
+Last time, we defined the empirical distribution of a dataset $\mathbf x = (x_1, x_2, \dots, x_m)$. We saw that the empirical distribution $X^*$ has probability mass function $$ p^*(x) = \frac{1}{m} \sum_{j=1}^m \mathbb I_{\{x\}}(x_j) , $$ which is simply the proportion of datapoints taking the value $x_j$.
+
+## The "plug-in" principle
+
+We have one thing we didn't get to last time, which is "plug-in estimation".
+
+Suppose now that $\mathbf X = (X_1, X_2, \dots, X_m)$ is an IID sample from a distribution $X$ that is either unknown or too difficult to work with directly. How can we find out things about this distribution $X$?
+
+Well, we could form the empirical distribution $X^*$ from these samples, and work with that instead.
+
+We have to be a bit careful here, because there two levels of randomness here.
+
+1.  First, there is the fact that the samples $\mathbf X = (X_1, X_2, \dots, X_m)$ are random IID samples from $X$.
+
+2.  Once we have the samples $\mathbf X$, that fixes the empirical PMF $p^*$. Then $X^*$ is itself a random variable, with PMF $p^*$.
+
+We will write $\mathbb E$, $\mathbb P$, $\operatorname{Var}$ and so on for the first type of randomness -- that is, randomness coming from the random variable $X$. We will write $\mathbb E_*$, $\mathbb P_*$, $\operatorname{Var}_*$ and so on for randomness coming from the empirical random variable $X^*$ *treating the samples* $\mathbf X$ as fixed. So, for example, the expectation $\mathbb E_*(\phi(X^*))$ is really shorthand for the *conditional* expectation $\mathbb E_*(\phi(X^*) \mid \mathbf X)$.
+
+One way to estimate something about the random variable $X$ is to take the formula involving $X$, then keep that same formula, but replace the true random variable $X$ with the empirical random variable $X^*$. This is called the **plug-in principle**, and such an estimator is a **plug-in estimator** -- the idea is that we simply "plug $X^*$ in" to the existing formula.
+
+This is easier to see if we take some examples.
+
+Suppose we wanted to estimate the expectation $\mathbb EX$ of the true distribution $X$. To estimate this, we instead plug in the empirical distribution $X^*$ in place of $X$ and the empirical expectation $\mathbb E_*$ in place of the expectation over the random samples $\mathbb E$. So our estimator is instead $\mathbb E_*X^*$. We saw last time that $\mathbb E_*X^*$ is the sample mean $$\overline X = \frac{1}{m} \sum_{j=1}^m X_j .$$ So the plug-in estimator for the expectation $\mathbb EX$ is the sample mean $\overline X$.
+
+Suppose we wanted to estimate the variance $\operatorname{Var}(X)$ of the true distribution. Again, we plug in $X^*$, to instead find $\operatorname{Var}_*(X^*)$, which we saw last time is $$ \operatorname{Var}_*(X^*) = \frac{1}{m} \sum_{j = 1}^m \big(X_j - \overline X\big)^2 , $$ which is very similar to the sample variance of $\mathbf X$.
+
+Suppose wanted to estimate $\operatorname{\mathbb E}\phi(X)$ for some function $\phi$. The plug-in estimator for this is $$ \begin{align}
+\operatorname{\mathbb{E}}_* \phi(X^*) &= \sum_x \phi(x)\,p^*(x) \\
+&=\sum_x \phi(x)\, \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(X_j)  \\
+&= \frac{1}{m} \sum_{j=1}^m \sum_x \phi(x)\, \mathbb{I}_{\{x\}}(X_j) \\
+&= \frac{1}{m} \sum_{j=1}^m \phi(X_j) ,
+\end{align} $$ by the same logic we used for the expectation and variance last time. This is the Monte Carlo estimator from the beginning of this module -- we have a sample $X_1, X_2, \dots, X_m$ and we have form the Monte Carlo estimator $\operatorname{\mathbb E}\phi(X)$. This shows there are deep connections between Monte Carlo estimation and the the empirical distribution and plug-in estimation.
+
+## The bootstrap set-up
+
+OK, we're now moving on from the empirical distribution to a slightly different but related topic: the bootstrap.
+
+Suppose a statistician is interested in a statistic $T = T(X_1, X_2, \dots, X_n)$ of $n$ IID samples from a random variable $X$. For example, this might be:
+
+-   Suppose I pick a basketball squad of 12 players at random; what is their average height? Here, $X$ is the distribution of basketball players' heights, $n = 12$, and the statistic is $$ T = T(X_1, X_2, \dots, X_{12}) = \frac{1}{12} \sum_{i=1}^{12} X_i . $$
+
+-   Suppose I visit The Edit Room cafe 5 times; what's the longest queue I have to deal with. Here, $X$ is the distribution of queue lengths at The Edit Room, $n = 5$, and the statistic is $$ T = T(X_1, X_2, X_3, X_4, X_5) = \max\{X_1, X_2, X_3, X_4, X_5\} . $$
+
+-   Suppose a supermarket distributor buys 1001 beef steaks; what is the median weight of the steaks? Here $X$ is the distribution of weights of steaks, $n = 1001$, and the statistic is $$ T = T(X_1, X_2, \dots, X_{1000}) = \operatorname{median} (X_1, X_2, \dots, X_{1001}) . $$
+
+The statistician is likely to be interested in properties of this statistic. Three of the most important things the statistician is likely to want to know are
+
+-   The **expectation** $\mathbb ET = \mathbb ET(X_1, \dots, X_n)$ of the statistic.
+
+-   The **variance** $\operatorname{Var}(T) = \operatorname{Var}(T(X_1, \dots, X_n))$ of the statistics -- or related concepts like the standard deviation.
+
+-   A **confidence interval** $[U,V]$ for the statistic, such that $\mathbb P(T \in [U,V]) = 1-\alpha$.
+
+Now, if the statistician knew the true distribution $X$, and if it were simple enough to work with, then she could calculate the true values of these. But suppose the distribution is unknown (or too complicated to work with). Instead, the statistician just has $m$ samples $\mathbf X = (X_1, X_2, \dots, X_m)$. You could think of these as data measurements that are modelled as coming from the distribution $X$, or you could think of them as output from a computer program that can sample from $X$.
+
+Note that there's two numbers here: $n$ is the number of samples required to calculate the statistic $T = T(X_1, X_2, \dots, X_n)$ once, and $m$ is the total number of samples we have available. The usual situation is "$m$ is somewhat bigger than $n$, although not vastly bigger", but the mathematical definitions are valid for any $n$ and $m$.
+
+The **bootstrap** method is the following idea:
+
+1.  Take $n$ samples from the empirical distribution $X^*$ of $\mathbf X$. This is equivalent to sampling $n$ of the values $X_1, X_2, \dots, X_m$ with replacement. Let's call these samples $X^*_1, X^*_2, \dots, X^*_n$. Evaluate the statistic with these samples $$ T^* = T(X_1^*, X_2^*, \dots, X_n^*) . $$
+
+2.  Repeat step 1 many times; let's say $B$ times. Keep taking $n$ of the samples with replacement and evaluating the statistic. We now have $B$ versions of that statistic $T^*_1, T^*_2, \dots, T^*_B$.
+
+3.  Use these $B$ versions of the statistic to get a **bootstrap estimate** of the expectation, variance, or confidence interval. Details to follow of this step in the remainder of this lecture and the next.
+
+## Bootstrap for expectation
+-->
 <div id="exm-cafe" class="theorem example">
 <p><span class="theorem-title"><strong>Example 25.1</strong></span> Let’s take the cafe example above. The statistic in question is <span class="math display">\[ T = T(X_1, X_2, X_3, X_4, X_5) = \min\{X_1, X_2, X_3, X_4, X_5\} . \]</span> A researcher wants to estimate the expectation of this statistic.</p>
 <p>The researcher visits The Edit Room at 30 random occasion and notes the following data.</p>
@@ -552,14 +569,13 @@ window.Quarto = {
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(maxes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4.888</code></pre>
+<pre><code>[1] 4.949</code></pre>
 </div>
 </div>
 </div>
 <p>Next time, we’ll look into bootstrap methods in more detail.</p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -989,8 +1005,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../coursework/coursework.html" class="pagination-link" aria-label="Computational coursework">
-        <span class="nav-page-text">Computational coursework</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/P5.html" class="pagination-link" aria-label="Problem Sheet 5">
+        <span class="nav-page-text">Problem Sheet 5</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
