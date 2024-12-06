@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../problems/P5.html" rel="next">
+<link href="../lectures/L26-bootstrap-error.html" rel="next">
 <link href="../lectures/L24-empirical.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -394,6 +394,12 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../lectures/L26-bootstrap-error.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bootstrap II</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../problems/P5.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 5</span></a>
   </div>
@@ -486,7 +492,7 @@ window.Quarto = {
 <ul>
 <li><p>The <strong>expectation</strong> <span class="math inline">\(\mathbb ET = \mathbb ET(X_1, \dots, X_n)\)</span> of the statistic.</p></li>
 <li><p>The <strong>variance</strong> <span class="math inline">\(\operatorname{Var}(T) = \operatorname{Var}(T(X_1, \dots, X_n))\)</span> of the statistic – or related concepts like the standard deviation.</p></li>
-<li><p>A <strong>confidence interval</strong> <span class="math inline">\([U,V]\)</span> for the statistic, such that <span class="math inline">\(\mathbb P(T \in [U,V]) = 1-\alpha\)</span>.</p></li>
+<li><p>A <strong>prediction interval</strong> <span class="math inline">\([U,V]\)</span> for the statistic, such that <span class="math inline">\(\mathbb P(T \in [U,V]) = 1-\alpha\)</span>.</p></li>
 </ul>
 <p>Now, if the statistician knew the true distribution <span class="math inline">\(X\)</span>, and if it were simple enough to work with, then she could calculate the true values of these. But suppose the distribution is unknown (or too complicated to work with). Instead, the statistician just has <span class="math inline">\(m\)</span> samples <span class="math inline">\(\mathbf X = (X_1, X_2, \dots, X_m)\)</span>. You could think of these as data measurements that are modelled as coming from the distribution <span class="math inline">\(X\)</span>, or you could think of them as output from a computer program that can sample from <span class="math inline">\(X\)</span> exactly.</p>
 <p>Note that there’s two numbers here: <span class="math inline">\(n\)</span> is the number of samples required to calculate the statistic <span class="math inline">\(T = T(X_1, X_2, \dots, X_n)\)</span> once, and <span class="math inline">\(m\)</span> is the total number of samples we have available. The most common situation is “<span class="math inline">\(m\)</span> is somewhat bigger than <span class="math inline">\(n\)</span>, although not vastly bigger”, but the mathematical definitions are valid for any <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>.</p>
@@ -494,8 +500,9 @@ window.Quarto = {
 <ol type="1">
 <li><p>Take <span class="math inline">\(n\)</span> samples from the empirical distribution <span class="math inline">\(X^*\)</span> of <span class="math inline">\(\mathbf X\)</span>. This is equivalent to sampling <span class="math inline">\(n\)</span> of the values <span class="math inline">\(X_1, X_2, \dots, X_m\)</span> with replacement. Let’s call these samples <span class="math inline">\(X^*_1, X^*_2, \dots, X^*_n\)</span>. Evaluate the statistic with these samples <span class="math display">\[ T^* = T(X_1^*, X_2^*, \dots, X_n^*) . \]</span></p></li>
 <li><p>Repeat step 1 many times; let’s say <span class="math inline">\(B\)</span> times. Keep taking <span class="math inline">\(n\)</span> of the samples with replacement and evaluating the statistic. We now have <span class="math inline">\(B\)</span> versions of that statistic <span class="math inline">\(T^*_1, T^*_2, \dots, T^*_B\)</span>.</p></li>
-<li><p>Use these <span class="math inline">\(B\)</span> versions of the statistic to get a <strong>bootstrap estimate</strong> of the expectation, variance, or confidence interval. To estimate the expectation of the statistic <span class="math inline">\(\mathbb ET = \mathbb ET(X_1, \dots, X_n)\)</span>, use the sample mean of the evaluated statistics <span class="math inline">\(\overline{T^*} = \frac{1}{B} \sum_{k=1}^B T^*_B\)</span>. To estimate the variance <span class="math inline">\(\operatorname{Var}(T)\)</span> use the sample variance <span class="math display">\[ \sum{1}{B-1} \sum_{k=1}^B \big(T^*_k - \overline{T^*}\big) .\]</span> We’ll come back to the confidence interval later.</p></li>
+<li><p>Use these <span class="math inline">\(B\)</span> versions of the statistic to get a <strong>bootstrap estimate</strong> of the expectation, variance, or prediction interval. To estimate the expectation of the statistic <span class="math inline">\(\mathbb ET = \mathbb ET(X_1, \dots, X_n)\)</span>, use the sample mean of the evaluated statistics <span class="math inline">\(\overline{T^*} = \frac{1}{B} \sum_{k=1}^B T^*_B\)</span>. To estimate the variance <span class="math inline">\(\operatorname{Var}(T)\)</span> use the sample variance <span class="math display">\[ \sum{1}{B-1} \sum_{k=1}^B \big(T^*_k - \overline{T^*}\big) .\]</span> We’ll come back to the prediction interval next time.</p></li>
 </ol>
+<p>The bootstrap concept was discovered by the American statistician Bradley Efron in a hugely influential paper <a href="https://doi.org/10.1214/aos/1176344552">“Bootstrap methods: another look at the jackknife”</a> in 1979. The name “bootstrap” comes from the phrase “to pull yourself up by your bootstraps”, which roughly means to make progress without any outside help, in a way that might initially seem impossible – similarly, the bootstrap manages to estimate properties of a statistic by just reusing the same set of samples over and over again. (The “jackknife” in the title of Efron’s paper was and earlier, simpler, less powerful idea along similar lines, named after the multipurpose tool the jackknife.)</p>
 </section>
 <section id="bootstrap-for-expectation-and-variance" class="level2" data-number="25.3">
 <h2 data-number="25.3" class="anchored" data-anchor-id="bootstrap-for-expectation-and-variance"><span class="header-section-number">25.3</span> Bootstrap for expectation and variance</h2>
@@ -1016,8 +1023,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../problems/P5.html" class="pagination-link" aria-label="Problem Sheet 5">
-        <span class="nav-page-text">Problem Sheet 5</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L26-bootstrap-error.html" class="pagination-link" aria-label="Bootstrap II">
+        <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bootstrap II</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

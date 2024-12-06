@@ -69,9 +69,14 @@ for $i = 1, 2, \dots$. Which of these processes are Markov chains? Justify your 
 ::::
 
 :::: {.subq}
-**(c)**   Use the Metropolis--Hastings algorithm to construct a Markov chain $(X_n)$ on $\mathcal S = \{0, 1, 2, \dots \}$ whose stationary distribution is the Poisson distribution $\pi(x) = \mathrm{e}^{-\lambda} \lambda^x/x!$.
+**(c)**   Use the Metropolis--Hastings algorithm to define a Markov chain $(X_n)$ on $\mathcal S = \{0, 1, 2, \dots \}$ whose stationary distribution is the Poisson distribution $\pi(x) = \mathrm{e}^{-\lambda} \lambda^x/x!$.
 ::::
 
+::: {.subq}
+**(d)**   Let $(X_i)$ be a Markov chain with values in $\mathbb R$ and stationary distribution $\pi$. Consider the estimator
+$$\widehat{\theta}_n^{\mathrm{MCMC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i)  $$
+for $\theta = \operatorname{\mathbb E}(\phi(X))$ for $X$ having PDF $\pi$. Assuming $X_1$ has PDF $\pi$, derive the result
+$$ \operatorname{Var} \big(\widehat{\theta}_n^{\mathrm{MCMC}}\big) \approx \frac{\operatorname{Var}(\phi(X))}{n} \left(1 + 2 \sum_{i=2}^\infty \operatorname{Corr}\big(\phi(X_1),\phi(X_i)\big) \right) . $$
 :::::
 
 
@@ -88,5 +93,28 @@ for $i = 1, 2, \dots$. Which of these processes are Markov chains? Justify your 
 
 :::: {.subq}
 **(c)**   For fixed $x$ and $y$ with $y > x$, find $\operatorname{Cov}\big(F^*(y), F^*(x)\big)$.
+::::
+:::::
+
+::::: {.myq}
+**5.**     A random variable $X$ has bounded support, and a statistician wishes to estimate $\theta = \max X$, the maximum value $X$ can take. The statistician has access to 24 IID samples $X_1, X_2, \dots, X_{20}$ from this random variable which can be read into R as follows:
+
+```{r}
+samples <- c(12.40,  2.99, 14.79,  3.59, 24.92,  4.11,
+             22.68, 28.30,  0.90,  8.84, 24.17, 31.31,
+             12.97, 12.43, 20.34, 14.75, 20.61, 10.93,
+             17.59, 30.88, 28.13,  0.83, 17.43, 20.78)
+```
+
+:::: {.subq}
+**(a)**   Explain why the plug-in estimator is $\theta^* = \max \{X_j : j = 1, \dots, m\}$, and find the $\theta^*$ for this data.
+::::
+
+:::: {.subq}
+**(b)** Use the bootstrap to estimate the bias of the plug-in estimator.
+::::
+
+:::: {.subq}
+**(c)** Improve the plug-in estimator by using your estimation of the bias to (approximately) "de-bias" the plug-in estimate.
 ::::
 :::::

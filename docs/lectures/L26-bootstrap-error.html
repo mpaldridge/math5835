@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>7&nbsp; Antithetic variables II – MATH5835M Statistical Computing</title>
+<title>26&nbsp; Bootstrap II – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L08-is-1.html" rel="next">
-<link href="../problems/P1.html" rel="prev">
+<link href="../problems/P5.html" rel="next">
+<link href="../lectures/L25-plugin.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L07-antithetic-2.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html">Bootstrap</a></li><li class="breadcrumb-item"><a href="../lectures/L26-bootstrap-error.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bootstrap II</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -229,7 +229,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L07-antithetic-2.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L07-antithetic-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span></a>
   </div>
 </li>
@@ -394,7 +394,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L26-bootstrap-error.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L26-bootstrap-error.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bootstrap II</span></span></a>
   </div>
 </li>
@@ -428,18 +428,20 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#error-with-antithetic-variables" id="toc-error-with-antithetic-variables" class="nav-link active" data-scroll-target="#error-with-antithetic-variables"><span class="header-section-number">7.1</span> Error with antithetic variables</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">7.2</span> Examples</a></li>
-  <li><a href="#finding-antithetic-variables" id="toc-finding-antithetic-variables" class="nav-link" data-scroll-target="#finding-antithetic-variables"><span class="header-section-number">7.3</span> Finding antithetic variables</a></li>
+  <li><a href="#bootstrap-with-a-prediction-interval" id="toc-bootstrap-with-a-prediction-interval" class="nav-link active" data-scroll-target="#bootstrap-with-a-prediction-interval"><span class="header-section-number">26.1</span> Bootstrap with a prediction interval</a></li>
+  <li><a href="#bootstrap-for-statistical-inference" id="toc-bootstrap-for-statistical-inference" class="nav-link" data-scroll-target="#bootstrap-for-statistical-inference"><span class="header-section-number">26.2</span> Bootstrap for statistical inference</a></li>
+  <li><a href="#bootstrap-estimation-of-bias" id="toc-bootstrap-estimation-of-bias" class="nav-link" data-scroll-target="#bootstrap-estimation-of-bias"><span class="header-section-number">26.3</span> Bootstrap estimation of bias</a></li>
+  <li><a href="#bootstrap-estimation-of-variance-and-intervals" id="toc-bootstrap-estimation-of-variance-and-intervals" class="nav-link" data-scroll-target="#bootstrap-estimation-of-variance-and-intervals"><span class="header-section-number">26.4</span> Bootstrap estimation of variance and intervals</a></li>
+  <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals"><span class="header-section-number">26.5</span> Confidence intervals</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L07-antithetic-2.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html">Bootstrap</a></li><li class="breadcrumb-item"><a href="../lectures/L26-bootstrap-error.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bootstrap II</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></h1>
+<h1 class="title"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bootstrap II</span></h1>
 </div>
 
 
@@ -456,151 +458,131 @@ window.Quarto = {
 </header>
 
 
-<div class="hidden">
-<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
-\newcommand{\Ex}{\mathbb{E}}
-\newcommand{\Ind}{\mathbb{I}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}
-\newcommand{\ee}{\mathrm{e}}\]</span></p>
+<section id="bootstrap-with-a-prediction-interval" class="level2" data-number="26.1">
+<h2 data-number="26.1" class="anchored" data-anchor-id="bootstrap-with-a-prediction-interval"><span class="header-section-number">26.1</span> Bootstrap with a prediction interval</h2>
+<p>Recall where we had got to last time. We are interested in a statistic <span class="math inline">\(T = T(X_1, \dots, X_n)\)</span>, where <span class="math inline">\(X_1, \dots, X_n\)</span> are IID copies of a random variable <span class="math inline">\(X\)</span>. We want to find out about the distribution of <span class="math inline">\(T\)</span>. But all we have to work with is <span class="math inline">\(X_1, \dots, X_m\)</span>, where are<span class="math inline">\(m\)</span> IID samples from <span class="math inline">\(X\)</span>.</p>
+<p>So the bootstrap procedure is to repeatedly choose <span class="math inline">\(n\)</span> samples <span class="math inline">\(X^*_1, \dots, X^*_n\)</span> from the empirical distribution <span class="math inline">\(X^*\)</span> – or, equivalently, choose <span class="math inline">\(n\)</span> of the values <span class="math inline">\(X_1, \dots, X_m\)</span> with replacement, and calculate the statistic <span class="math inline">\(T^*_k = T(X^*_1, \dots, X^*_n)\)</span>. The distribution of the <span class="math inline">\(T^*_k\)</span> should be similar to the distribution of <span class="math inline">\(T\)</span>.</p>
+<p>In particular, to estimate <span class="math inline">\(\mathbb ET\)</span> we can use the sample mean of the <span class="math inline">\(T^*_1, \dots, T^*_B\)</span>, and to estimate <span class="math inline">\(\operatorname{Var}(T)\)</span>, we can use the sample variance <span class="math inline">\(S^2\)</span> of the <span class="math inline">\(T^*_k\)</span>.</p>
+<p>What if we want to estimate a prediction interval – that is, an interval <span class="math inline">\([U, V]\)</span> such that <span class="math inline">\(\mathbb P(U \leq T \leq V) \approx 1- \alpha\)</span>?</p>
+<p>There is a lazy way to do this, which is to hope that the <span class="math inline">\(T^*_k\)</span> are approximately normally distributed. With <span class="math inline">\(\overline{T^*}\)</span> as the sample mean and <span class="math inline">\(S^2\)</span> as the sample variance of our observed statistics, we could take <span class="math display">\[ \left[\overline{T^*} - z_{\alpha/2}\,S,\, \overline{T^*} + z_{\alpha/2}\,S\right] .\]</span> But we can do better than this by taking the actual distribution of the <span class="math inline">\(T^*_k\)</span>, which might not be normal, into account.</p>
+<p>Instead, we can take the sample quantiles of the <span class="math inline">\(T^*_k\)</span>. That is, put <span class="math inline">\(T^*_1, \dots, T^*_B\)</span> in increasing order. Go <span class="math inline">\(\alpha/2\)</span> of the way up the list to get the lower-<span class="math inline">\(\alpha/2\)</span> sample quantile, and <span class="math inline">\(1 - \alpha/2\)</span> of the way up the list to get the upper-<span class="math inline">\(\alpha/2\)</span> sample quantile. These two values can be our prediction interval.</p>
+<div id="exm-boot-pi" class="theorem example">
+<p><span class="theorem-title"><strong>Example 26.1</strong></span> Let’s go back to The Edit Room cafe queues from last time. The statistic in question was the maximum queue length from 5 visits. The data and our bootstrap samples were these:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>queues <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">11</span>), <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>), <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">3</span>), <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">11</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>boots <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>maxes <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, boots)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>boots) {</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  minisample <span class="ot">&lt;-</span> <span class="fu">sample</span>(queues, <span class="dv">5</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  maxes[k] <span class="ot">&lt;-</span> <span class="fu">max</span>(minisample)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="error-with-antithetic-variables" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="error-with-antithetic-variables"><span class="header-section-number">7.1</span> Error with antithetic variables</h2>
-<p>Recall from last time the antithetic variables Monte Carlo estimator. We take sample pairs <span class="math display">\[ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X_{n/2}') , \]</span> where samples are independent between different pairs but <em>not</em> independent within the same pair. The estimator of <span class="math inline">\(\theta = \Exg \phi(X)\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) .\]</span> We hope this is better than the standard Monte Carlo estimator if <span class="math inline">\(\phi(X)\)</span> and <span class="math inline">\(\phi(X')\)</span> are negatively correlated.</p>
-<div id="thm-AVerr" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 7.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(X'\)</span> have the same distribution as <span class="math inline">\(X\)</span>, and write <span class="math inline">\(\rho = \operatorname{Corr}(\phi(X_i),\phi(X'_i))\)</span>. Let <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X_i')\big) \]</span> be the antithetic variables Monte Carlo estimator of <span class="math inline">\(\theta\)</span>. Then:</p>
+<p>We saw that our estimates for the expectation and the variance of the statistic were the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>max_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(maxes)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>max_var <span class="ot">&lt;-</span> <span class="fu">var</span>(maxes)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(max_mean, max_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  4.91700 10.50462</code></pre>
+</div>
+</div>
+<p>A lazy 80% prediction interval under a normal assumption would be the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>max_mean <span class="sc">+</span> <span class="fu">qnorm</span>(<span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>)) <span class="sc">*</span> <span class="fu">sqrt</span>(max_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7633857 9.0706143</code></pre>
+</div>
+</div>
+<p>But that seems a bit silly – our queue length isn’t going to be a real number with seven decimal places. Better is to use the actual quantiles of the statistics we evaluated.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(maxes, <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>10% 90% 
+  2  11 </code></pre>
+</div>
+</div>
+<p>I usually get the interval <span class="math inline">\([2, 11]\)</span> from this data. this much better reflects the actual data. It also takes into account the “skew” of the data (lots of values of 0, where there was no queue, but no negative values, of course), to give a tighter lower boundary than the crude and inaccurate normal approximation.</p>
+</div>
+</section>
+<section id="bootstrap-for-statistical-inference" class="level2" data-number="26.2">
+<h2 data-number="26.2" class="anchored" data-anchor-id="bootstrap-for-statistical-inference"><span class="header-section-number">26.2</span> Bootstrap for statistical inference</h2>
+<p>So we’ve seen two ideas here about what to do when we only have samples from a distribution (for example, some data measurements).</p>
 <ol type="1">
-<li><p><span class="math inline">\(\widehat{\theta}_n^{\mathrm{AV}}\)</span> is unbiased, in that <span class="math inline">\(\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = 0\)</span>.</p></li>
-<li><p>The variance of of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{AV}}\)</span> is <span class="math display">\[ \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). \]</span></p></li>
-<li><p>The mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{AV}}\)</span> is <span class="math display">\[ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). \]</span></p></li>
-<li><p>The root-mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{AV}}\)</span> is <span class="math display">\[ \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{\sqrt{2n}} \sqrt{\operatorname{Var}\big(\phi(X) + \phi(X')\big)} = \frac{\sqrt{1+\rho}}{\sqrt{n}}\sqrt{\Var\big(\phi(X)\big)}. \]</span></p></li>
+<li><p>The first idea was that to estimate something about the distribution, use the <strong>plug-in estimator</strong>.</p></li>
+<li><p>The second ideas was the to find out about properties of a statistic, use <strong>bootstrap</strong> sampling.</p></li>
 </ol>
+<p>But an estimator <span class="math inline">\(\widehat\theta\)</span> is just a special type of statistic – one that is hoped to be close to some true parameter <span class="math inline">\(\theta\)</span>. So we can combine these two ideas together. Suppose we have <span class="math inline">\(m\)</span> samples <span class="math inline">\(X_1, X_2, \dots, X_m\)</span>.</p>
+<ol type="1">
+<li><p>To estimate a parameter <span class="math inline">\(\theta\)</span>, use the plug-in estimator.</p></li>
+<li><p>To find out things about that parameter – for example, its bias, variance, mean-square error, or a confidence interval – use bootstrap sampling.</p></li>
+</ol>
+</section>
+<section id="bootstrap-estimation-of-bias" class="level2" data-number="26.3">
+<h2 data-number="26.3" class="anchored" data-anchor-id="bootstrap-estimation-of-bias"><span class="header-section-number">26.3</span> Bootstrap estimation of bias</h2>
+<div id="exm-sleep" class="theorem example">
+<p><span class="theorem-title"><strong>Example 26.2</strong></span> Let’s talk through an example. Let’s suppose we want to estimate the average number of hours sleep people have per night. That is, we want to know <span class="math inline">\(\theta = \mathbb EX\)</span>, where <span class="math inline">\(X\)</span> is the random distribution of sleep times for the entire population.</p>
+<p>We have data on <span class="math inline">\(m = 1991\)</span> people thanks to a survey by the US Centers for Disease Control and Prevention. (Credit: <a href="https://bookdown.org/jgscott/DSGI/the-bootstrap.html">Scott, <em>Data Science in R</em></a>.) We can read this into R as follows.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sleep <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://bookdown.org/jgscott/DSGI/data/NHANES_sleep.csv"</span>)<span class="sc">$</span>SleepHrsNight</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(sleep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In points 2, 3 and 4, generally the first expression, involving the variance <span class="math inline">\(\operatorname{Var}(\phi(X) + \phi(X'))\)</span>, is the most convenient for computation. We can estimate this easily from data using the sample variance in the usual way (as we will in the examples below).</p>
-<p>The second expression, involving the correlation <span class="math inline">\(\rho\)</span>, is usually clearer for understanding. Comparing these to the same results for the standard Monte Carlo estimator (<a href="L03-mc-error-1.html#thm-MCerr" class="quarto-xref">Theorem&nbsp;<span>3.2</span></a>), we see that the antithetic variables method is an improvement (that is, has a smaller mean-square error) when <span class="math inline">\(\rho &lt; 0\)</span>, but is worse when <span class="math inline">\(\rho &gt; 0\)</span>. This proves that negative correlation improves our estimator.</p>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>For unbiasedness, we have <span class="math display">\[ \Ex \widehat{\theta}_n^{\mathrm{AV}} = \Ex \left(\frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X_i')\big)\right) = \frac{1}{n} \,\frac{n}{2} \big(\Exg\phi(X) + \Exg \phi(X')) = \frac{1}{2}(\theta+ \theta) = \theta ,\]</span> since <span class="math inline">\(X'\)</span> has the same distribution as <span class="math inline">\(X\)</span>.</p>
-<p>For the other three points, each of the first expressions follows straightforwardly in essentially the same way. (You can fill in the details yourself, if you need to.) For the second expressions, we have <span class="math display">\[\begin{align*}
-\Var \big(\phi(X) + \phi(X')\big)
-&amp;= \Var\big(\phi(X)\big) + \Var\big(\phi(X')\big) + 2\operatorname{Cov}\big(\phi(X),\phi(X')\big) \\
-&amp;= \Var\big(\phi(X)\big) + \Var\big(\phi(X')\big) + 2\rho\sqrt{\Var\big(\phi(X)\big) \Var\big(\phi(X')\big)} \\
-&amp;= \Var\big(\phi(X)\big) + \Var\big(\phi(X)\big) + 2\rho\sqrt{\Var\big(\phi(X)\big) \Var\big(\phi(X)\big)} \\
-&amp;= 2(1+\rho)\Var\big(\phi(X)\big) .
-\end{align*}\]</span> The results then follow.</p>
+<p>Our estimate for the average sleep time <span class="math inline">\(\theta = \mathbb EX\)</span> will be the plug-in estimator <span class="math inline">\(\theta^* \mathbb E_*X^*\)</span>, which, as we have discussed before, is the sample mean <span class="math inline">\(\theta^* = \overline{X}\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>estimate <span class="ot">&lt;-</span> <span class="fu">mean</span>(sleep)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.878955</code></pre>
+</div>
+</div>
+<p>This is a bit under 7 hours.</p>
+<p>But we should check whether our estimator is likely to be biased or not. How can we estimate the bias (in order to check it’s close to 0)? Well, the bias is, of course, <span class="math display">\[ \operatorname{bias}(\theta^*) = \mathbb E(\theta^*) - \theta . \]</span> How will we estimate each of those terms. Well, we’ve already estimated the second term <span class="math inline">\(\theta\)</span> by <span class="math inline">\(\theta^* = 6.8790\)</span>. And the first term, we have just discussed how to estimate that using bootstrapping.</p>
+<p>Here our estimator/statistic is using all <span class="math inline">\(m\)</span> pieces of data so, in our previous notation, <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span> are the same: we will take <span class="math inline">\(n = 1991\)</span> samples from our <span class="math inline">\(m = 1991\)</span> pieces of data. Note that these are sampling <em>with replacement</em>, so we’re not just getting the same thing every time.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>boots <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>bootests <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, boots)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>boots) {</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  resample <span class="ot">&lt;-</span> <span class="fu">sample</span>(sleep, m, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  bootests[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>(resample)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>est_exp <span class="ot">&lt;-</span> <span class="fu">mean</span>(bootests)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>est_exp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.878924</code></pre>
+</div>
+</div>
+<p>This typically comes out as very close to the original estimate. With the seed set as 3 for reproducibility, we get 6.8795. So our estimate of the bias is <span class="math display">\[ \widehat{\operatorname{bias}}(\theta) = \widehat{\mathbb E(\theta^*)} - \theta^* = 6.8795 - 6.8790 = 0.0005 .\]</span></p>
+</div>
+<p>Note here that we are the bias <span class="math display">\[ \operatorname{bias}(\theta^*) = \mathbb E(\theta^*) - \theta  \]</span> is estimated by <span class="math display">\[ \widehat{\operatorname{bias}}(\theta) = \widehat{\mathbb E(\theta^*)} - \theta^*\]</span> In the first, true, expression, <span class="math inline">\(\theta^*\)</span> is playing the role of the estimator in the first term on the right-hand side; but in the second, estimated, expression, <span class="math inline">\(\theta^*\)</span> is playing the role of (the estimate of) the true value in the second term on the right-hand side.</p>
+<p>On this occasion our estimator turned out to be unbiased – or at least extremely close to unbiased.</p>
+<p>&lt;!–But had we found some bias, it is often preferable to improve our estimator by removing that bias. Our refined, or “debiased”, estimator would be <span class="math display">\[ \theta^* - \widehat{\operatorname{bias}}(\theta) = \theta^* - \Big(\widehat{\mathbb E(\theta^*)} - \theta^*\Big) = 2\theta^* - \widehat{\mathbb E(\theta^*)} . \]</span></p>
+</section>
+<section id="bootstrap-estimation-of-variance-and-intervals" class="level2" data-number="26.4">
+<h2 data-number="26.4" class="anchored" data-anchor-id="bootstrap-estimation-of-variance-and-intervals"><span class="header-section-number">26.4</span> Bootstrap estimation of variance and intervals</h2>
+<p>What about the error in our estimator? We measure that through the variance, because the variance equals the mean-square error for an unbiased estimator. (For a biased estimator, the MSE is the bias-square plus the variance – remember s@thm-MSE-bias a long time ago). Again, we can use the bootstrap.</p>
+<div id="exm-sleep2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 26.3</strong></span> We continue the sleep example.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(miniests)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0008712956</code></pre>
+</div>
+</div>
+<p>This is 0.09, which is a pretty good estimate for the variance.</p>
+<p>However, this sample variance is calculated as <span class="math display">\[ S^2 = \frac{1}{B-1} \sum_{k=1}^B \big(T^*_k - \overline{T^*}\big)^2 . \]</span> But it’s a bit strange to be looking at squared-difference from <span class="math inline">\(\overline T^*\)</span>, a Monte Carlo-like estimate of <span class="math inline">\(\theta\)</span>, when we have the plug-in estimate <span class="math inline">\(\theta^*\)</span> available, which we would think is better. So preferable to use is <span class="math display">\[ \frac{1}{B-1} \sum_{k=1}^B \big(T^*_k - \theta^*\big)^2 . \]</span> Here, this is the following</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">1</span> <span class="sc">/</span> (boots <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">*</span> <span class="fu">sum</span>((bootests <span class="sc">-</span> estimate)<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0008780498</code></pre>
+</div>
+</div>
+<p>In this case, with plenty of samples and well-behaved data, this is identical to 6 decimal places. But on other occasions, with fewer samples and weirder data, it could be an improvement.</p>
 </div>
 </section>
-<section id="examples" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="examples"><span class="header-section-number">7.2</span> Examples</h2>
-<p>Let’s return to the two examples we tried last time.</p>
-<div id="exm-MCprob5" class="theorem example">
-<p><span class="theorem-title"><strong>Example 7.1</strong></span> In <a href="L06-antithetic-1.html#exm-MCprob4" class="quarto-xref">Example&nbsp;<span>6.1</span></a>, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span> for <span class="math inline">\(Z\)</span> a standard normal.</p>
-<p>The basic Monte Carlo estimate and its root-mean-square error are</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest   <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MC_RMSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">/</span> n)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MCest, MC_RMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0225920000 0.0001485989</code></pre>
-</div>
-</div>
-<p>We then used <span class="math inline">\(Z' = -Z\)</span> as an antithetic variable. its root-mean-square error are</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>samples1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>samples2 <span class="ot">&lt;-</span> <span class="sc">-</span>samples1</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>AVest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>((samples1 <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">+</span> (samples2 <span class="sc">&gt;</span> <span class="dv">2</span>))</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>AV_RMSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>((samples1 <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">+</span> (samples2 <span class="sc">&gt;</span> <span class="dv">2</span>)) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> n))</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(AVest, AV_RMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0227100000 0.0001472364</code></pre>
-</div>
-</div>
-<p>This looked like it made very little difference – perhaps a small improvement. This can be confirmed by looking at the sample correlation with R’s <code>cor()</code> function.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(samples1 <span class="sc">&gt;</span> <span class="dv">2</span>, samples2 <span class="sc">&gt;</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.02323712</code></pre>
-</div>
-</div>
-<p>We see there was a very small but negative correlation: the variance, and hence the mean-square error, was reduced by about 2%.</p>
-</div>
-<div id="exm-AV" class="theorem example">
-<p><span class="theorem-title"><strong>Example 7.2</strong></span> In <a href="L06-antithetic-1.html#exm-AVunif" class="quarto-xref">Example&nbsp;<span>6.2</span></a>, we were estimating <span class="math inline">\(\mathbb E \sin U\)</span>, where <span class="math inline">\(U\)</span> is continuous uniform on <span class="math inline">\([0,1]\)</span>.</p>
-<p>The basic Monte Carlo estimate and its root-mean square error is</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">sin</span>(samples))</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>MC_RMSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(<span class="fu">sin</span>(samples)) <span class="sc">/</span> n)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MCest, MC_RMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.459211568 0.000247734</code></pre>
-</div>
-</div>
-<p>We then used <span class="math inline">\(U' = 1 - U\)</span> as an antithetic variable</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>samples1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>samples2 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> samples1</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>AVest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>(<span class="fu">sin</span>(samples1) <span class="sc">+</span> <span class="fu">sin</span>(samples2))</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>AV_RMSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(<span class="fu">sin</span>(samples1) <span class="sc">+</span> <span class="fu">sin</span>(samples2)) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> n))</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(AVest, AV_RMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4.596740e-01 2.483349e-05</code></pre>
-</div>
-</div>
-<p>This time, we see a big improvement: the root-mean-square error has gone down by a whole order of magnitude, from <span class="math inline">\(2\times 10^{-4}\)</span> to <span class="math inline">\(2\times 10^{-5}\)</span>. It would normally take 100 times as many samples to reduce the RMSE by a factor of 10, but we’ve got the extra 99 million samples for free by using antithetic variables!</p>
-<p>The benefit here can be confirmed by looking at the sample correlation.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">sin</span>(samples1), <span class="fu">sin</span>(samples2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.9899602</code></pre>
-</div>
-</div>
-<p>That’s a very large negative correlation, which shows why the antithetic variables made such a huge improvement.</p>
-</div>
-</section>
-<section id="finding-antithetic-variables" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="finding-antithetic-variables"><span class="header-section-number">7.3</span> Finding antithetic variables</h2>
-<p>Antithetic variables can provide a huge advantage compared to standard Monte Carlo, as we saw in the second example above. The downside is that it can often be difficult to <em>find</em> an appropriate antithetic variable.</p>
-<p>To even be able to <em>try</em> the antithetic variables method, we need to find a random variable <span class="math inline">\(X'\)</span> with the same distribution as <span class="math inline">\(X\)</span> that isn’t merely an independent copy. Both the examples we have seen of this use a symmetric distribution; that is, a distribution <span class="math inline">\(X\)</span> such that <span class="math inline">\(X' = a - X\)</span> has the same distribution as <span class="math inline">\(X\)</span>, for some <span class="math inline">\(a\)</span>.</p>
-<ul>
-<li><p>We saw that if <span class="math inline">\(X \sim \operatorname{N}(0, 1)\)</span> is a standard normal distribution, then <span class="math inline">\(X' = -X \sim \operatorname{N}(0, 1)\)</span> too. More generally, if <span class="math inline">\(X\sim \operatorname{N}(\mu, \sigma^2)\)</span>, then <span class="math inline">\(X' = 2\mu - X \sim \operatorname{N}(\mu, \sigma^2)\)</span> can be tried as an antithetic variable.</p></li>
-<li><p>We saw that if <span class="math inline">\(U \sim \operatorname{U}[0, 1]\)</span> is a continuous uniform distribution on <span class="math inline">\([0,1]\)</span>, then <span class="math inline">\(U' = 1-U \sim \operatorname{U}[0, 1]\)</span> too. More generally, if <span class="math inline">\(X\sim \operatorname{U}[a, b]\)</span>, then <span class="math inline">\(X' = (a + b) - X \sim \operatorname{U}[a, b]\)</span> can be tried as an antithetic variable.</p></li>
-</ul>
-<p>Later, when we study the inverse transform method (in Lecture 13) we will see another, more general, way to generate antithetic variables.</p>
-<p>But to be a <em>good</em> antithetic variable, we need <span class="math inline">\(\phi(X)\)</span> and <span class="math inline">\(\phi(X')\)</span> to be negatively correlated too – preferably strongly so. Often, this is a matter of trial-and-error – it’s difficult to set out hard principles. But there are some results that try to formalise the idea that “nice functions of negatively correlated random variables are themselves negatively correlated”, which can be useful. We give one example of such a result here.</p>
-<div id="thm-neg" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 7.2</strong></span> Let <span class="math inline">\(U \sim \operatorname{U}[0, 1]\)</span> and <span class="math inline">\(U' = 1 - U\)</span>. Let <span class="math inline">\(\phi\)</span> be a monotonically increasing function. Then <span class="math inline">\(\phi(U)\)</span> and <span class="math inline">\(\phi'(U)\)</span> are negatively correlated, in that <span class="math inline">\(\operatorname{Cov}\big(\phi(U), \phi(U')\big) \leq 0\)</span>.</p>
-</div>
-<p>If I were to just write out the proof of this theorem, the proof would be fairly short and easy to understand. But it would be difficult to understand <em>why</em> I had taken the steps I had. So I will try to explain why each of the steps in the proof is a natural one – although doing so may make the proof seem longer and more complicated than it really is.</p>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>The covariance in question is <span class="math display">\[ \operatorname{Cov}\big(\phi(U), \phi(U')\big) = \Exg \phi(U)\phi(1-U) - \big(\Exg\phi(U)\big) \big(\Exg\phi(1-U)\big) . \]</span></p>
-<p>We would like to take a single expectation sign all the way outside. But we can’t do this yet, because <span class="math inline">\(\big(\Exg\phi(U)\big) \big(\Exg\phi(1-U)\big)\)</span> and <span class="math inline">\(\Exg\phi(U)\phi(1-U)\)</span> are different things. However, we can do this if we introduce a new random variable <span class="math inline">\(V\)</span> that is also <span class="math inline">\(\operatorname{U}[0,1]\)</span> but is independent of <span class="math inline">\(U\)</span>. Then we <em>so</em> have <span class="math display">\[\big(\Exg\phi(U)\big) \big(\Exg\phi(1-U)\big) = \big(\Exg\phi(U)\big) \big(\Exg\phi(1-V)\big) = \Exg \phi(U)\phi(1-V).\]</span> So now we can write <span class="math display">\[ \operatorname{Cov}\big(\phi(U), \phi(U')\big) = \Exg \big(\phi(U)\phi(1-U) - \phi(U)\phi(1-V)\big) . \]</span></p>
-<p>We’ve got a slightly odd asymmetry between <span class="math inline">\(U\)</span> and <span class="math inline">\(V\)</span> here, though. Why is the first term <span class="math inline">\(\phi(U)\phi(1-U)\)</span> and not <span class="math inline">\(\phi(V)\phi(1-V)\)</span>? Why is the second term <span class="math inline">\(\phi(U)\phi(1-V)\)</span> and not <span class="math inline">\(\phi(V)\phi(1-U)\)</span>? Well, maybe to even things up, we can write them as half of one and half of the other. That is, <span class="math display">\[\begin{align*}
-\operatorname{Cov}\big(\phi(U), \phi(U')\big) &amp;= \tfrac12 \Exg \big(\phi(U)\phi(1-U) +\phi(V)\phi(1-V) \\
-&amp;\qquad\qquad\quad {}- \phi(U)\phi(1-V) - \phi(V)\phi(1-U)\big) . \end{align*}\]</span></p>
-<p>This expression will factorise nicely. It’s <span class="math display">\[ \operatorname{Cov}\big(\phi(U), \phi(U')\big) = \tfrac12 \Exg \big(\phi(U)-\phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big) . \]</span></p>
-<p>We now claim that this expectation is negative. In fact, we have a stronger result: <span id="eq-cross"><span class="math display">\[\big(\phi(U) - \phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big) \tag{7.1}\]</span></span> is <em>always</em> negative, so its expectation certainly is. To see this, think separately of the two cases <span class="math inline">\(U \leq V\)</span> and <span class="math inline">\(V \leq U\)</span>.</p>
-<ul>
-<li><p>If <span class="math inline">\(U \leq V\)</span>, then <span class="math inline">\(\phi(U) \leq \phi(V)\)</span> too, since <span class="math inline">\(\phi\)</span> is increasing. But, also this means that <span class="math inline">\(1-U \geq 1-V\)</span>, so <span class="math inline">\(\phi(1 - U) \geq \phi(1-V)\)</span>. This means that, in <a href="#eq-cross" class="quarto-xref">Equation&nbsp;<span>7.1</span></a>, the first term is negative and the second term is positive, so the product is negative.</p></li>
-<li><p>If <span class="math inline">\(V \leq U\)</span>, then <span class="math inline">\(\phi(V) \leq \phi(U)\)</span> too, since <span class="math inline">\(\phi\)</span> is increasing. But, also this means that <span class="math inline">\(1-V \geq 1-U\)</span>, so <span class="math inline">\(\phi(1 - V) \geq \phi(1-U)\)</span>. This means that, in <a href="#eq-cross" class="quarto-xref">Equation&nbsp;<span>7.1</span></a>, the first term is positive and the second term is negative, so the product is negative.</p></li>
-</ul>
-<p>This completes the proof.</p>
-</div>
-<p><strong>Next time:</strong> <em>We come to the third, and most important, variance reduction scheme: importance sampling.</em></p>
-<div class="mysummary">
-<p><strong>Summary:</strong></p>
-<ul>
-<li><p>The antithetic variables estimator is unbiased and has mean-square error <span class="math display">\[ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). \]</span></p></li>
-<li><p>If <span class="math inline">\(U \sim \operatorname{U}[0, 1]\)</span> and <span class="math inline">\(\phi\)</span> is monotonically increasing, then <span class="math inline">\(\phi(U)\)</span> and <span class="math inline">\(\phi(1-U)\)</span> are negatively correlated.</p></li>
-</ul>
-<p>On Thursday’s lecture, we will be discussing your answers to <a href="../problems/P1.html"><strong>Problem Sheet 1</strong></a>.</p>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.3.2.</p>
-</div>
+<section id="confidence-intervals" class="level2" data-number="26.5">
+<h2 data-number="26.5" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">26.5</span> Confidence intervals</h2>
+<p>As with the variance, we could form our confidence intervals just as the upper and lower quantiles of the data; let’s call this <span class="math inline">\(\theta^*_{\mathrm{L}}\)</span> and <span class="math inline">\(\theta^*_{\mathrm{U}}\)</span>.</p>
 
 
 </section>
@@ -1028,13 +1010,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../problems/P1.html" class="pagination-link" aria-label="Problem Sheet 1">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Problem Sheet 1</span>
+      <a href="../lectures/L25-plugin.html" class="pagination-link" aria-label="Plug-in estimation &amp; Bootstrap I">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation &amp; Bootstrap I</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L08-is-1.html" class="pagination-link" aria-label="Importance sampling I">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/P5.html" class="pagination-link" aria-label="Problem Sheet 5">
+        <span class="nav-page-text">Problem Sheet 5</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

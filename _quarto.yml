@@ -3,6 +3,7 @@ project:
   output-dir: docs
   resources:
   - "coursework/*"
+  - "data/*"
 
 book:
   title: "MATH5835M Statistical Computing"
@@ -50,7 +51,7 @@ book:
       chapters:
         - lectures/L24-empirical.qmd
         - lectures/L25-plugin.qmd
-#        - lectures/L26-bootstrap-error.qmd
+        - lectures/L26-bootstrap-error.qmd
 #        - lectures/L27-bootstrap-ci.qmd
         - problems/P5.qmd
 #    - lectures/L28-faq.qmd

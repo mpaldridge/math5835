@@ -1,1 +1,139 @@
-# Bootstrap error
+# Bootstrap II
+
+## Bootstrap with a prediction interval
+
+Recall where we had got to last time. We are interested in a statistic $T = T(X_1, \dots, X_n)$, where $X_1, \dots, X_n$ are IID copies of a random variable $X$. We want to find out about the distribution of $T$. But all we have to work with is $X_1, \dots, X_m$, where are$m$ IID samples from $X$.
+
+So the bootstrap procedure is to repeatedly choose $n$ samples $X^*_1, \dots, X^*_n$ from the empirical distribution $X^*$ -- or, equivalently, choose $n$ of the values $X_1, \dots, X_m$ with replacement, and calculate the statistic $T^*_k = T(X^*_1, \dots, X^*_n)$. The distribution of the $T^*_k$ should be similar to the distribution of $T$.
+
+In particular, to estimate $\mathbb ET$ we can use the sample mean of the $T^*_1, \dots, T^*_B$, and to estimate $\operatorname{Var}(T)$, we can use the sample variance $S^2$ of the $T^*_k$.
+
+What if we want to estimate a prediction interval -- that is, an interval $[U, V]$ such that $\mathbb P(U \leq T \leq V) \approx 1- \alpha$?
+
+There is a lazy way to do this, which is to hope that the $T^*_k$ are approximately normally distributed. With $\overline{T^*}$ as the sample mean and $S^2$ as the sample variance of our observed statistics, we could take $$ \left[\overline{T^*} - z_{\alpha/2}\,S,\, \overline{T^*} + z_{\alpha/2}\,S\right] .$$ But we can do better than this by taking the actual distribution of the $T^*_k$, which might not be normal, into account.
+
+Instead, we can take the sample quantiles of the $T^*_k$. That is, put $T^*_1, \dots, T^*_B$ in increasing order. Go $\alpha/2$ of the way up the list to get the lower-$\alpha/2$ sample quantile, and $1 - \alpha/2$ of the way up the list to get the upper-$\alpha/2$ sample quantile. These two values can be our prediction interval.
+
+::: {#exm-boot-pi}
+Let's go back to The Edit Room cafe queues from last time. The statistic in question was the maximum queue length from 5 visits. The data and our bootstrap samples were these:
+
+```{r}
+queues <- c(rep(0, 11), rep(1, 5), rep(2, 7), rep(3, 3), 4, 5, 7, 11)
+
+boots <- 1000
+maxes <- rep(0, boots)
+for (k in 1:boots) {
+  minisample <- sample(queues, 5, replace = TRUE)
+  maxes[k] <- max(minisample)
+}
+```
+
+We saw that our estimates for the expectation and the variance of the statistic were the following:
+
+```{r}
+max_mean <- mean(maxes)
+max_var <- var(maxes)
+c(max_mean, max_var)
+```
+
+A lazy 80% prediction interval under a normal assumption would be the following:
+
+```{r}
+max_mean + qnorm(c(0.1, 0.9)) * sqrt(max_var)
+```
+
+But that seems a bit silly -- our queue length isn't going to be a real number with seven decimal places. Better is to use the actual quantiles of the statistics we evaluated.
+
+```{r}
+quantile(maxes, c(0.1, 0.9))
+```
+
+I usually get the interval $[2, 11]$ from this data. this much better reflects the actual data. It also takes into account the "skew" of the data (lots of values of 0, where there was no queue, but no negative values, of course), to give a tighter lower boundary than the crude and inaccurate normal approximation.
+:::
+
+## Bootstrap for statistical inference
+
+So we've seen two ideas here about what to do when we only have samples from a distribution (for example, some data measurements).
+
+1.  The first idea was that to estimate something about the distribution, use the **plug-in estimator**.
+
+2.  The second ideas was the to find out about properties of a statistic, use **bootstrap** sampling.
+
+But an estimator $\widehat\theta$ is just a special type of statistic -- one that is hoped to be close to some true parameter $\theta$. So we can combine these two ideas together. Suppose we have $m$ samples $X_1, X_2, \dots, X_m$.
+
+1.  To estimate a parameter $\theta$, use the plug-in estimator.
+
+2.  To find out things about that parameter -- for example, its bias, variance, mean-square error, or a confidence interval -- use bootstrap sampling.
+
+## Bootstrap estimation of bias
+
+::: {#exm-sleep}
+Let's talk through an example. Let's suppose we want to estimate the average number of hours sleep people have per night. That is, we want to know $\theta = \mathbb EX$, where $X$ is the random distribution of sleep times for the entire population.
+
+We have data on $m = 1991$ people thanks to a survey by the US Centers for Disease Control and Prevention. (Credit: [Scott, *Data Science in R*](https://bookdown.org/jgscott/DSGI/the-bootstrap.html).) We can read this into R as follows.
+
+```{r}
+sleep <- read.csv("https://bookdown.org/jgscott/DSGI/data/NHANES_sleep.csv")$SleepHrsNight
+m <- length(sleep)
+```
+
+Our estimate for the average sleep time $\theta = \mathbb EX$ will be the plug-in estimator $\theta^* \mathbb E_*X^*$, which, as we have discussed before, is the sample mean $\theta^* = \overline{X}$.
+
+```{r}
+estimate <- mean(sleep)
+estimate
+```
+
+This is a bit under 7 hours.
+
+But we should check whether our estimator is likely to be biased or not. How can we estimate the bias (in order to check it's close to 0)? Well, the bias is, of course, $$ \operatorname{bias}(\theta^*) = \mathbb E(\theta^*) - \theta . $$ How will we estimate each of those terms. Well, we've already estimated the second term $\theta$ by $\theta^* = 6.8790$. And the first term, we have just discussed how to estimate that using bootstrapping.
+
+Here our estimator/statistic is using all $m$ pieces of data so, in our previous notation, $n$ and $m$ are the same: we will take $n = 1991$ samples from our $m = 1991$ pieces of data. Note that these are sampling *with replacement*, so we're not just getting the same thing every time.
+
+```{r}
+set.seed(3)
+boots <- 1e5
+bootests <- rep(0, boots)
+for (k in 1:boots) {
+  resample <- sample(sleep, m, replace = TRUE)
+  bootests[k] <- mean(resample)
+}
+est_exp <- mean(bootests)
+est_exp
+```
+
+This typically comes out as very close to the original estimate. With the seed set as 3 for reproducibility, we get 6.8795. So our estimate of the bias is $$ \widehat{\operatorname{bias}}(\theta) = \widehat{\mathbb E(\theta^*)} - \theta^* = 6.8795 - 6.8790 = 0.0005 .$$
+:::
+
+Note here that we are the bias $$ \operatorname{bias}(\theta^*) = \mathbb E(\theta^*) - \theta  $$ is estimated by $$ \widehat{\operatorname{bias}}(\theta) = \widehat{\mathbb E(\theta^*)} - \theta^*$$ In the first, true, expression, $\theta^*$ is playing the role of the estimator in the first term on the right-hand side; but in the second, estimated, expression, $\theta^*$ is playing the role of (the estimate of) the true value in the second term on the right-hand side.
+
+On this occasion our estimator turned out to be unbiased -- or at least extremely close to unbiased.
+
+<!--But had we found some bias, it is often preferable to improve our estimator by removing that bias. Our refined, or "debiased", estimator would be
+$$ \theta^* - \widehat{\operatorname{bias}}(\theta) = \theta^* - \Big(\widehat{\mathbb E(\theta^*)} - \theta^*\Big) = 2\theta^* - \widehat{\mathbb E(\theta^*)} . $$
+
+## Bootstrap estimation of variance and intervals
+
+What about the error in our estimator? We measure that through the variance, because the variance equals the mean-square error for an unbiased estimator. (For a biased estimator, the MSE is the bias-square plus the variance -- remember s\@thm-MSE-bias a long time ago). Again, we can use the bootstrap.
+
+::: {#exm-sleep2}
+We continue the sleep example.
+
+```{r}
+var(miniests)
+```
+
+This is 0.09, which is a pretty good estimate for the variance.
+
+However, this sample variance is calculated as $$ S^2 = \frac{1}{B-1} \sum_{k=1}^B \big(T^*_k - \overline{T^*}\big)^2 . $$ But it's a bit strange to be looking at squared-difference from $\overline T^*$, a Monte Carlo-like estimate of $\theta$, when we have the plug-in estimate $\theta^*$ available, which we would think is better. So preferable to use is $$ \frac{1}{B-1} \sum_{k=1}^B \big(T^*_k - \theta^*\big)^2 . $$ Here, this is the following
+
+```{r}
+(1 / (boots - 1)) * sum((bootests - estimate)^2)
+```
+
+In this case, with plenty of samples and well-behaved data, this is identical to 6 decimal places. But on other occasions, with fewer samples and weirder data, it could be an improvement.
+:::
+
+## Confidence intervals
+
+As with the variance, we could form our confidence intervals just as the upper and lower quantiles of the data; let's call this $\theta^*_{\mathrm{L}}$ and $\theta^*_{\mathrm{U}}$.
