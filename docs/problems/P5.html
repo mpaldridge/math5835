@@ -533,21 +533,21 @@ W_i &amp;= \max \{Z_j : 1 \leq j \leq i-1\} + Z_i
 </div>
 </div>
 <div class="myq">
-<p><strong>5.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A random variable <span class="math inline">\(X\)</span> has bounded support, and a statistician wishes to estimate <span class="math inline">\(\theta = \max X\)</span>, the maximum value <span class="math inline">\(X\)</span> can take. The statistician has access to 24 IID samples <span class="math inline">\(X_1, X_2, \dots, X_{20}\)</span> from this random variable which can be read into R as follows:</p>
+<p><strong>5.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A random variable <span class="math inline">\(X\)</span> has bounded support, and a statistician wishes to estimate <span class="math inline">\(\theta = \max X\)</span>, the maximum value <span class="math inline">\(X\)</span> can take. The statistician has access to 24 IID samples <span class="math inline">\(X_1, X_2, \dots, X_{24}\)</span> from this random variable which can be read into R as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">12.40</span>,  <span class="fl">2.99</span>, <span class="fl">14.79</span>,  <span class="fl">3.59</span>, <span class="fl">24.92</span>,  <span class="fl">4.11</span>,</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>   samples <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">12.40</span>,  <span class="fl">2.99</span>, <span class="fl">14.79</span>,  <span class="fl">3.59</span>, <span class="fl">24.92</span>,  <span class="fl">4.11</span>,</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>             <span class="fl">22.68</span>, <span class="fl">28.30</span>,  <span class="fl">0.90</span>,  <span class="fl">8.84</span>, <span class="fl">24.17</span>, <span class="fl">31.31</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>             <span class="fl">12.97</span>, <span class="fl">12.43</span>, <span class="fl">20.34</span>, <span class="fl">14.75</span>, <span class="fl">20.61</span>, <span class="fl">10.93</span>,</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>             <span class="fl">17.59</span>, <span class="fl">30.88</span>, <span class="fl">28.13</span>,  <span class="fl">0.83</span>, <span class="fl">17.43</span>, <span class="fl">20.78</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="subq">
-<p><strong>(a)</strong>&nbsp;&nbsp;&nbsp;Explain why the plug-in estimator is <span class="math inline">\(\theta^* = \max \{X_j : j = 1, \dots, m\}\)</span>, and find the <span class="math inline">\(\theta^*\)</span> for this data.</p>
+<p><strong>(a)</strong>&nbsp;&nbsp;&nbsp;Explain why the plug-in estimator is <span class="math inline">\(\theta^* = \max \{X_j : j = 1, \dots, 24\}\)</span>, and find the <span class="math inline">\(\theta^*\)</span> for this data.</p>
 </div>
 <div class="subq">
-<p><strong>(b)</strong> Use the bootstrap to estimate the bias of the plug-in estimator.</p>
+<p><strong>(b)</strong>&nbsp;&nbsp;&nbsp;Use the bootstrap to estimate the bias of the plug-in estimator.</p>
 </div>
 <div class="subq">
-<p><strong>(c)</strong> Improve the plug-in estimator by using your estimation of the bias to (approximately) “de-bias” the plug-in estimate.</p>
+<p><strong>(c)</strong>&nbsp;&nbsp;&nbsp;Improve the plug-in estimator by using your estimation of the bias to (approximately) “de-bias” the plug-in estimate.</p>
 </div>
 </div>
 
