@@ -102,7 +102,7 @@ est_exp <- mean(bootests)
 est_exp
 ```
 
-This typically comes out as very close to the original estimate. With the seed set as 3 for reproducibility, we get 6.8795. So our estimate of the bias is $$ \widehat{\operatorname{bias}}(\theta) = \widehat{\mathbb E(\theta^*)} - \theta^* = 6.8795 - 6.8790 = 0.0005 .$$
+This typically comes out as very close to the original estimate. With the seed set as 3 for reproducibility, we get 6.8795. So our estimate of the bias is $$ \widehat{\operatorname{bias}}(\theta^*) = \widehat{\mathbb E(\theta^*)} - \theta^* = 6.8795 - 6.8790 = 0.0005 .$$
 :::
 
 Note here that we are the bias $$ \operatorname{bias}(\theta^*) = \mathbb E(\theta^*) - \theta  $$ is estimated by $$ \widehat{\operatorname{bias}}(\theta) = \widehat{\mathbb E(\theta^*)} - \theta^*$$ In the first, true, expression, $\theta^*$ is playing the role of the estimator in the first term on the right-hand side; but in the second, estimated, expression, $\theta^*$ is playing the role of (the estimate of) the true value in the second term on the right-hand side.

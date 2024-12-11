@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../problems/P5.html" rel="next">
+<link href="../lectures/L27-bootstrap-ci.html" rel="next">
 <link href="../lectures/L25-plugin.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -400,6 +400,12 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../lectures/L27-bootstrap-ci.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Bootstrap III</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../problems/P5.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 5</span></a>
   </div>
@@ -552,7 +558,7 @@ window.Quarto = {
 <pre><code>[1] 6.878924</code></pre>
 </div>
 </div>
-<p>This typically comes out as very close to the original estimate. With the seed set as 3 for reproducibility, we get 6.8795. So our estimate of the bias is <span class="math display">\[ \widehat{\operatorname{bias}}(\theta) = \widehat{\mathbb E(\theta^*)} - \theta^* = 6.8795 - 6.8790 = 0.0005 .\]</span></p>
+<p>This typically comes out as very close to the original estimate. With the seed set as 3 for reproducibility, we get 6.8795. So our estimate of the bias is <span class="math display">\[ \widehat{\operatorname{bias}}(\theta^*) = \widehat{\mathbb E(\theta^*)} - \theta^* = 6.8795 - 6.8790 = 0.0005 .\]</span></p>
 </div>
 <p>Note here that we are the bias <span class="math display">\[ \operatorname{bias}(\theta^*) = \mathbb E(\theta^*) - \theta  \]</span> is estimated by <span class="math display">\[ \widehat{\operatorname{bias}}(\theta) = \widehat{\mathbb E(\theta^*)} - \theta^*\]</span> In the first, true, expression, <span class="math inline">\(\theta^*\)</span> is playing the role of the estimator in the first term on the right-hand side; but in the second, estimated, expression, <span class="math inline">\(\theta^*\)</span> is playing the role of (the estimate of) the true value in the second term on the right-hand side.</p>
 <p>On this occasion our estimator turned out to be unbiased – or at least extremely close to unbiased.</p>
@@ -1015,8 +1021,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../problems/P5.html" class="pagination-link" aria-label="Problem Sheet 5">
-        <span class="nav-page-text">Problem Sheet 5</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L27-bootstrap-ci.html" class="pagination-link" aria-label="Bootstrap III">
+        <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Bootstrap III</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

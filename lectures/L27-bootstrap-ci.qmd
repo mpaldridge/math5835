@@ -1,1 +1,96 @@
-# Bootstrap confidence intervals
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+# Bootstrap III
+
+## Bootstrap summary
+
+A reminder where we have got to with the bootstrap.
+
+To estimate a parameter $\theta$ from random samples
+$X_1, X_2, \dots, X_m$, we use the plug-in estimator $\theta^*$.
+
+We can also get bootstrap statistics $T^*_k$ by sampling $m$ of the
+datapoints *with replacement* and using those resampled points to
+re-calculate the estimator.
+
+-   **The real-world:** Treating the samples $X_1, X_2, \dots, X_m$ as
+    random, there is variability of our estimator $\theta^*$ around the
+    true value $\theta$.
+
+-   **The bootstrap world:** Treating the samples $X_1, X_2, \dots, X_m$
+    as fixed, there is variability of the bootstrap statistics $T^*_k$
+    around the plug-in estimate $\theta^*$.
+
+The idea of bootstrapping is that the variability of $\theta^*$ around
+$\theta$ can be approximated by the variability of the $T^*_k$ around
+$\theta^*$.
+
+We saw that we can estimate the **bias** by
+$$ \widehat{\operatorname{bias}}(\theta^*) = \overline{T^*} - \theta^* .$$
+If the bias appears to be significant, it can be appropriate to
+"de-bias" the plug-in estimator by instead using
+$$ \theta^* - \widehat{\operatorname{bias}}(\theta^*) = \theta^* - \big(\overline{T^*} - \theta^*\big) = 2\theta^* -\overline{T^*} . $$
+
+We saw that we can estimate the **variance** by
+$$ S^2 = \frac{1}{B-1} \sum_{k=1}^B \big(T^*_k - \overline{T^*}\big) , $$
+although it can be more appropriate to centre the approximation at the
+plug-in estimator, and use
+$$ \frac{1}{B-1} \sum_{k=1}^B \big(T^*_k - \theta^*\big)  $$ instead.
+
+## Bootstrap confidence intervals
+
+The one thing left is to look at confidence intervals. We saw that we
+can create a $(1-\alpha)$-prediction interval
+$(T_\mathrm{L}, T_\mathrm{U})$ for a statistic by taking $T_\mathrm{L}$
+to be the lower $\alpha/2$-quantile -- let's call it $T^*_\mathrm{L}$ --
+of the $T^*_k$'s and taking $T_\mathrm{U}$ to be the upper
+$\alpha/2$-quantile $T^*_\mathrm{U}$ of the $T^*_k$'s.
+
+However, it can again be more appropriate to anchor these to the plug-in
+estimator. We have $$ \begin{align}
+1 - \alpha &= \mathbb P\big(T^*_\mathrm{L} \leq \overline{T^*} \leq T^*_\mathrm{U} \big) \\
+&= \mathbb P\big(T^*_\mathrm{L} - \theta^* \leq \overline{T^*}-\theta^* \leq T^*_\mathrm{U} -\theta^*\big) \\
+&= \mathbb P\big(\theta^* - T^*_\mathrm{L}   \geq \theta^* - \overline{T^*} \geq  \theta^* - T^*_\mathrm{U}\big) \\
+&= \mathbb P\big(\theta^* + \overline{T^*} - T^*_\mathrm{L}   \geq \theta^*  \geq  \theta^* +  \overline{T^*}- T^*_\mathrm{U}\big) \\
+&= \mathbb P\big(\theta^* +  \overline{T^*}- T^*_\mathrm{U}  \leq \theta^*  \leq \theta^* + \overline{T^*} - T^*_\mathrm{L} \big) .
+\end{align} $$ Replacing $\overline T^*$ by the plug-in estimator
+$\theta^*$ therefore suggests we should take the lower limit to be
+$\theta^* + \theta^* - T^*_\mathrm{U} = 2\theta^* - T^*_\mathrm{U}$ and
+the upper limit to be
+$\theta^* + \theta^* - T^*_\mathrm{L} = 2\theta^* - T^*_\mathrm{L}$.
+
+::: {#exm-sleepagain}
+We return to the sleep data example of last time. We seek a 95%
+confidence interval.
+
+```{r}
+sleep <- read.csv("https://bookdown.org/jgscott/DSGI/data/NHANES_sleep.csv")$SleepHrsNight
+m <- length(sleep)
+
+estimate <- mean(sleep)
+
+boots <- 1e5
+bootests <- rep(0, boots)
+for (k in 1:boots) {
+  resample <- sample(sleep, m, replace = TRUE)
+  bootests[k] <- mean(resample)
+}
+
+Tlower <- quantile(bootests, 0.025)
+Tupper <- quantile(bootests, 0.975)
+
+c(Tlower, Tupper)
+2 * estimate - c(Tupper, Tlower)
+```
+
+Again, our data here was very well behaved, so anchoring to the plug-in
+estimator, using the second method, did not make much difference. But
+this can be important with a biased estimator or heavily skewed data.
+:::
+
+Researchers have looked into lots of other ways to build bootstrap
+confidence intervals, but we won't go into those here.
