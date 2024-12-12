@@ -2,8 +2,8 @@
 
 ::::: {.myq}
 **1.**     The Gamma distribution $X \sim \Gamma(m, \lambda)$ has PDF
-$$ f(x) = \frac{\lambda^m}{(m-1)!} \,\alpha^{m-1}\,\mathrm{e}^{-\lambda x} . $$
-(This PDF can be evaluated with the `dgamma()` function in R.) The time between eruptions of a volcano, measured in years, is modelled as $X \sim \Gamma(5, \theta)$, IID over eruptions, where $\theta$ is unknown. A scientist beliefs about $\theta$ are represented in a prior distribution $\theta \sim \operatorname{Exp}(6)$.
+$$ f(x) = \frac{\lambda^m}{(m-1)!} \,x^{m-1}\,\mathrm{e}^{-\lambda x} . $$
+[**Correction:** *There was a typo in this PDF earlier.*] (This PDF can be evaluated with the `dgamma()` function in R.) The time between eruptions of a volcano, measured in years, is modelled as $X \sim \Gamma(5, \theta)$, IID over eruptions, where $\theta$ is unknown. A scientist beliefs about $\theta$ are represented in a prior distribution $\theta \sim \operatorname{Exp}(6)$.
 
 The following times between eruptions are available in the historical record:
 ```
@@ -13,6 +13,43 @@ The following times between eruptions are available in the historical record:
             Sample from the posterior distribution for $\theta$, using the random walk Metropolis algorithm. Explain how you chose the stepsize for your algorithm and how you checked it was a good choice.
 
 Draw a histogram of the posterior distribution, and comment on how it differs from the prior.
+
+:::{.myanswers}
+*Solution.* The posterior distribution is
+$$ \pi(\theta \mid \mathbf x) \propto 6\mathrm{e}^{-6\theta} \times \prod_{i=1}^{10} x_i^{4} \, \mathrm{e}^{-\theta x_i} . $$
+
+The code for the Metropolis random walk algorithm will be the following.
+
+```{r}
+x <- c(56.55,  2.57, 29.97, 10.27,  4.32,
+       17.91, 51.98,  7.06, 11.40, 54.80)
+
+prior <- function(theta) dexp(theta, 6)
+like  <- function(theta) prod(dgamma(x, 5, theta))
+post  <- function(theta) prior(theta) * like(theta)
+
+accept <- function(curr, prop) post(prop) / post(curr)
+initial <- 1
+n <- 1e5
+sigma <- 0.25
+
+MRW <- rep(0, n)
+MRW[1] <- initial
+for (i in 1:(n - 1)) {
+  prop <- MRW[i] + rnorm(1, 0, sigma)
+  if (prop < 0)                             MRW[i + 1] <- MRW[i]
+  else if (runif(1) < accept(MRW[i], prop)) MRW[i + 1] <- prop
+  else                                      MRW[i + 1] <- MRW[i]
+}
+
+hist(MRW[-(1:99)], probability = TRUE, xlim = c(0, 0.5))
+curve(prior, add = TRUE, col = "blue", lwd = 2)
+```
+
+A little experimentation suggested $\sigma = 0.2$ worked about right -- $\sigma = 0.5$ rejected too many changes. With my initial start point of 1, I found a short burn-in period was necessary, so my histogram starts with the 100th step of the random walk. (I could have just started from 0.2 instead, I suppose.)
+
+We see that while the prior though any number between 0 and $\tfrac12$, maybe even more, was plausible for $\theta$, we can see the prior has become concentrated in the interval $[0.11, 0.32]$ or so, with values around 0.2 the most common. The posterior variance is much smaller than the prior, so we have gained certainty from the results.
+:::
 :::::
 
 ::::: {.myq}
@@ -20,14 +57,50 @@ Draw a histogram of the posterior distribution, and comment on how it differs fr
 
 :::: {.subq}
 **(a)**   Introducing any notation you use, state the Metropolis--Hastings algorithm for discrete state space, and explain the purpose of this algorithm.
+
+::: {.myanswers}
+*Solution.* The Metropolis--Hastings algorithm is a method to sample from a distribution $\pi$ on a discrete space $\mathcal S$ by setting up a Markov chain $(X_i)$ on $\mathcal S$ with stationary distribution $\pi$.
+
+Suppose the Markov chain is at $X_i = x$. The Metropolis--Hastings algorithm proposes a move to $y$ with probability $r(x, y)$, where $\mathsf R = (r(x, y))$ is the transition matrix for an irreducible Markov chain on $\mathcal S$. This move is accepted with probability
+$$ \alpha(x, y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)},\, 1\right\} , $$
+meaning that $X_{i+1} = y$, or rejected otherwise, meaning that $X_{i+1} = X_i = x$.
+
+After being run for a large number of steps (possibly with a burn-in period), the values $X_i$ should be approximately distributed like $\pi$.
+:::
 ::::
 
 :::: {.subq}
-**(b)**   Using the Metropolis--Hasting algorithm, find a Markov chain with state space $\mathbb N = \{1, 2, 3, \dots\}$ that has stationary distribution $\mathbb P(X_n = x) = 2^{-x}$ for $x \in \mathbb N$.
+**(b)**   Using the Metropolis--Hastings algorithm, find a Markov chain with state space $\mathbb N = \{1, 2, 3, \dots\}$ that has stationary distribution $\mathbb P(X_n = x) = 2^{-x}$ for $x \in \mathbb N$.
+
+::: {.myanswers}
+*Solution.* Although this isn't the only way, I will use $\mathsf R$ to be the transition matrix of the simple symmetric random walk on $\mathbf Z$. Because this is symmetric, the acceptance probabilities are
+$$ \begin{align}
+\alpha(x, x+1) &= \min \left\{ \frac{\pi(x+1)}{\pi(x)},\, 1 \right\} = \min\big\{\tfrac12,\, 1\big\} = \tfrac 12 \\
+\alpha(x, x-1) &= \min \left\{ \frac{\pi(x-1)}{\pi(x)},\, 1 \right\} = \min\{2,\, 1\} = 1,
+\end{align} $$
+except that $\alpha(1, 0) = 1$.
+
+I'll choose the starting point $X = 1$. From here, the Markov chain repeatedly proposes a move up 1 with probability $\tfrac12$, which is accepted with probability $\tfrac12$, or a move down 1 with probability $\tfrac12$, which is always accepted -- except for a move from 1 down to 0 which is always rejected.
+:::
 ::::
 
 :::: {.subq}
 **(c)**   In a Bayesian setting, assume we have observations $Z_1, X_2, \dots, Z_n$ from an $\operatorname{N}(0, \sigma^2)$ distribution, where the prior distribution for $\sigma^2$ is $\operatorname{Exp}(1)$. Using the Metropolis--Hastings algorithm, describe in detail a method for sampling from the posterior distribution of $\sigma^2$.
+
+::: {.myanswers}
+*Solution* The posterior distribution is given by
+$$ \begin{align}
+\pi(\sigma^2 \mid \mathbf Z) &\propto \pi(\sigma^2) \prod_{i=1}^n f(z_i \mid \sigma^2) \\
+  &= \mathrm{e}^{-\sigma^2} \prod_{i=1}^n \frac{1}{\sqrt{\sigma^2}} \,\exp\left(- \frac{Z_i^2}{2\sigma^2} \right) \\
+  &=  \mathrm{e}^{-\sigma^2} \,\sigma^{-n/2} \,\exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n Z_i^2 \right) .
+\end{align} $$
+
+I will choose as the Markov chain a symmetric Gaussian random walk on $\mathbb R$, meaning that the Markov chain is $X_{i+1} = X_i + \mathrm{N}(0, s^2)$. (The special case is known as the random walk Metropolis algorithm in continuous space.) Because this is symmetric, the acceptance probability is
+$$ \alpha(x, y) = \min \left\{ \frac{ \pi(x \mid \mathbf Z)}{\pi(y \mid \mathbf Z)},\,1\right\} , $$
+for $y \geq 0$, where the constant of proportionality in the $\pi$s cancel out, of $\alpha(x, y) = 0$ for $y < 0$.
+
+I would suggest starting from $X_1$ between $1$ (the prior variance) and the sample variance of the $Z_i$ (the posterior variance in the large sample limit $n \to \infty$). I would suggest choosing the step size $s$ by experiment, with smaller $s$ for large $n$, and vice versa.
+:::
 ::::
 
 :::: {.subq}
@@ -46,6 +119,26 @@ Assume the algorithm starts at $\mathbf X_1 = (0.5, 0.5)$.
 **i.**      For every $r > 0$, determine the stationary distribution of the resulting Markov chain.
 
 **ii.**    For what values of $r$ does the algorithm work correctly?
+
+::: {.myanswers}
+*Solution.* To see what's going on where, we need to draw a picture of the set $A$.
+
+The question is: for what $r$ will it be possible to jump between the different blocks. We start from $(0.5, 0.5)$ which is in the bottom-left block. To jump from bottom-left to bottom-right, we need $r > 1$. To jump from bottom-right to top-right, we need $r > 2$. To jump from bottom-left to top-left, we need $r > 3$.
+
+**(i)** The distribution is uniform, so as long as the Markov chain can *reach* an area, the stationary distribution will be uniform there. So the stationary distribution is uniform on the following sets:
+
+* $0 < r \leq 1$: $\big([0,3]\times[0,1]\big)$
+
+* $1 < r \leq 2$: $\big([0,3]\times[0,1]\big) \cup \big([4,5]\times[0,1]\big)$
+
+* $2 < r \leq 3$: $\big([0,3]\times[0,1]\big) \cup \big([4,5]\times[0,1]\big) \cup \big([4,5] \times [3,5]\big)$
+
+* $r > 3$: $A$
+
+(If $r$ is only *just* above the boundary, convergence to the stationary distribution may be extremely slow.)
+
+**(ii)** The stationary distribution is the desired distribution for $r > 3$, which is the values for which the algorithm technically "works", as $n \to \infty$. To work "well", $r$ will need to be comfortably bigger than 3 (so that movement to and from the top-left is reasonably common) while not being so huge that most steps are to ridiculously far away.
+:::
 ::::
 :::::
 
