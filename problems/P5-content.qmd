@@ -1,12 +1,11 @@
 {{< include ../_header.qmd >}}
 
-::::: {.myq}
-**1.**     The Gamma distribution $X \sim \Gamma(m, \lambda)$ has PDF
-$$ f(x) = \frac{\lambda^m}{(m-1)!} \,x^{m-1}\,\mathrm{e}^{-\lambda x} . $$
-[**Correction:** *There was a typo in this PDF earlier.*] (This PDF can be evaluated with the `dgamma()` function in R.) The time between eruptions of a volcano, measured in years, is modelled as $X \sim \Gamma(5, \theta)$, IID over eruptions, where $\theta$ is unknown. A scientist beliefs about $\theta$ are represented in a prior distribution $\theta \sim \operatorname{Exp}(6)$.
+:::: myq
+**1.**     The Gamma distribution $X \sim \Gamma(m, \lambda)$ has PDF $$ f(x) = \frac{\lambda^m}{(m-1)!} \,x^{m-1}\,\mathrm{e}^{-\lambda x} . $$ \[**Correction:** *There was a typo in this PDF earlier.*\] (This PDF can be evaluated with the `dgamma()` function in R.) The time between eruptions of a volcano, measured in years, is modelled as $X \sim \Gamma(5, \theta)$, IID over eruptions, where $\theta$ is unknown. A scientist beliefs about $\theta$ are represented in a prior distribution $\theta \sim \operatorname{Exp}(6)$.
 
 The following times between eruptions are available in the historical record:
-```
+
+```         
        56.55,  2.57, 29.97, 10.27,  4.32, 17.91, 51.98,  7.06, 11.40, 54.80
 ```
 
@@ -14,9 +13,8 @@ The following times between eruptions are available in the historical record:
 
 Draw a histogram of the posterior distribution, and comment on how it differs from the prior.
 
-:::{.myanswers}
-*Solution.* The posterior distribution is
-$$ \pi(\theta \mid \mathbf x) \propto 6\mathrm{e}^{-6\theta} \times \prod_{i=1}^{10} x_i^{4} \, \mathrm{e}^{-\theta x_i} . $$
+::: myanswers
+*Solution.* The posterior distribution is $$ \pi(\theta \mid \mathbf x) \propto 6\mathrm{e}^{-6\theta} \times \prod_{i=1}^{10} x_i^{4} \, \mathrm{e}^{-\theta x_i} . $$
 
 The code for the Metropolis random walk algorithm will be the following.
 
@@ -50,146 +48,127 @@ A little experimentation suggested $\sigma = 0.2$ worked about right -- $\sigma 
 
 We see that while the prior though any number between 0 and $\tfrac12$, maybe even more, was plausible for $\theta$, we can see the prior has become concentrated in the interval $[0.11, 0.32]$ or so, with values around 0.2 the most common. The posterior variance is much smaller than the prior, so we have gained certainty from the results.
 :::
-:::::
+::::
 
-::::: {.myq}
-**2.**     *[2019 exam, Question 4]*
+::::::::::: myq
+**2.**     *\[2019 exam, Question 4\]*
 
-:::: {.subq}
+:::: subq
 **(a)**   Introducing any notation you use, state the Metropolis--Hastings algorithm for discrete state space, and explain the purpose of this algorithm.
 
-::: {.myanswers}
+::: myanswers
 *Solution.* The Metropolis--Hastings algorithm is a method to sample from a distribution $\pi$ on a discrete space $\mathcal S$ by setting up a Markov chain $(X_i)$ on $\mathcal S$ with stationary distribution $\pi$.
 
-Suppose the Markov chain is at $X_i = x$. The Metropolis--Hastings algorithm proposes a move to $y$ with probability $r(x, y)$, where $\mathsf R = (r(x, y))$ is the transition matrix for an irreducible Markov chain on $\mathcal S$. This move is accepted with probability
-$$ \alpha(x, y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)},\, 1\right\} , $$
-meaning that $X_{i+1} = y$, or rejected otherwise, meaning that $X_{i+1} = X_i = x$.
+Suppose the Markov chain is at $X_i = x$. The Metropolis--Hastings algorithm proposes a move to $y$ with probability $r(x, y)$, where $\mathsf R = (r(x, y))$ is the transition matrix for an irreducible Markov chain on $\mathcal S$. This move is accepted with probability $$ \alpha(x, y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)},\, 1\right\} , $$ meaning that $X_{i+1} = y$, or rejected otherwise, meaning that $X_{i+1} = X_i = x$.
 
 After being run for a large number of steps (possibly with a burn-in period), the values $X_i$ should be approximately distributed like $\pi$.
 :::
 ::::
 
-:::: {.subq}
+:::: subq
 **(b)**   Using the Metropolis--Hastings algorithm, find a Markov chain with state space $\mathbb N = \{1, 2, 3, \dots\}$ that has stationary distribution $\mathbb P(X_n = x) = 2^{-x}$ for $x \in \mathbb N$.
 
-::: {.myanswers}
-*Solution.* Although this isn't the only way, I will use $\mathsf R$ to be the transition matrix of the simple symmetric random walk on $\mathbf Z$. Because this is symmetric, the acceptance probabilities are
-$$ \begin{align}
+::: myanswers
+*Solution.* Although this isn't the only way, I will use $\mathsf R$ to be the transition matrix of the simple symmetric random walk on $\mathbf Z$. Because this is symmetric, the acceptance probabilities are $$ \begin{align}
 \alpha(x, x+1) &= \min \left\{ \frac{\pi(x+1)}{\pi(x)},\, 1 \right\} = \min\big\{\tfrac12,\, 1\big\} = \tfrac 12 \\
 \alpha(x, x-1) &= \min \left\{ \frac{\pi(x-1)}{\pi(x)},\, 1 \right\} = \min\{2,\, 1\} = 1,
-\end{align} $$
-except that $\alpha(1, 0) = 1$.
+\end{align} $$ except that $\alpha(1, 0) = 1$.
 
 I'll choose the starting point $X = 1$. From here, the Markov chain repeatedly proposes a move up 1 with probability $\tfrac12$, which is accepted with probability $\tfrac12$, or a move down 1 with probability $\tfrac12$, which is always accepted -- except for a move from 1 down to 0 which is always rejected.
 :::
 ::::
 
-:::: {.subq}
+:::: subq
 **(c)**   In a Bayesian setting, assume we have observations $Z_1, X_2, \dots, Z_n$ from an $\operatorname{N}(0, \sigma^2)$ distribution, where the prior distribution for $\sigma^2$ is $\operatorname{Exp}(1)$. Using the Metropolis--Hastings algorithm, describe in detail a method for sampling from the posterior distribution of $\sigma^2$.
 
-::: {.myanswers}
-*Solution* The posterior distribution is given by
-$$ \begin{align}
+::: myanswers
+*Solution* The posterior distribution is given by $$ \begin{align}
 \pi(\sigma^2 \mid \mathbf Z) &\propto \pi(\sigma^2) \prod_{i=1}^n f(z_i \mid \sigma^2) \\
   &= \mathrm{e}^{-\sigma^2} \prod_{i=1}^n \frac{1}{\sqrt{\sigma^2}} \,\exp\left(- \frac{Z_i^2}{2\sigma^2} \right) \\
   &=  \mathrm{e}^{-\sigma^2} \,\sigma^{-n/2} \,\exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n Z_i^2 \right) .
 \end{align} $$
 
-I will choose as the Markov chain a symmetric Gaussian random walk on $\mathbb R$, meaning that the Markov chain is $X_{i+1} = X_i + \mathrm{N}(0, s^2)$. (The special case is known as the random walk Metropolis algorithm in continuous space.) Because this is symmetric, the acceptance probability is
-$$ \alpha(x, y) = \min \left\{ \frac{ \pi(x \mid \mathbf Z)}{\pi(y \mid \mathbf Z)},\,1\right\} , $$
-for $y \geq 0$, where the constant of proportionality in the $\pi$s cancel out, of $\alpha(x, y) = 0$ for $y < 0$.
+I will choose as the Markov chain a symmetric Gaussian random walk on $\mathbb R$, meaning that the Markov chain is $X_{i+1} = X_i + \mathrm{N}(0, s^2)$. (The special case is known as the random walk Metropolis algorithm in continuous space.) Because this is symmetric, the acceptance probability is $$ \alpha(x, y) = \min \left\{ \frac{ \pi(x \mid \mathbf Z)}{\pi(y \mid \mathbf Z)},\,1\right\} , $$ for $y \geq 0$, where the constant of proportionality in the $\pi$s cancel out, of $\alpha(x, y) = 0$ for $y < 0$.
 
 I would suggest starting from $X_1$ between $1$ (the prior variance) and the sample variance of the $Z_i$ (the posterior variance in the large sample limit $n \to \infty$). I would suggest choosing the step size $s$ by experiment, with smaller $s$ for large $n$, and vice versa.
 :::
 ::::
 
-:::: {.subq}
-**(d)**   Let the set $A \subset \mathbb R^2$ be given by
-$$
+:::: subq
+**(d)**   Let the set $A \subset \mathbb R^2$ be given by $$
 A = \big([0,3]\times[0,1]\big) \cup \big([0,1]\times [4,5]\big) 
 \cup \big([4,5]\times[0,1]\big) \cup \big([4,5] \times [3,5]\big) .
-$$
-Consider the Metropolis--Hastings algorithm on $\mathbb R^2$ with target density
-$$ \pi(\mathbf x) = \begin{cases} \frac17 & \text{if }\mathbf x \in A \\
-0 & \text{otherwise} \end{cases} $$
-for all $x \in \mathbb R^2$, and where the proposals $\mathbf Y_{i+1}$ are chosen uniformly distributed on a disk of radius $r$ around the previous state -- that is,
-$$ Y_{j+1} \sim \operatorname{U} \Big(\big\{ \mathbf y \in \mathbb R^2 : |\mathbf y - \mathbf X_i | \leq r \big\}\Big) . $$
-Assume the algorithm starts at $\mathbf X_1 = (0.5, 0.5)$.
+$$ Consider the Metropolis--Hastings algorithm on $\mathbb R^2$ with target density $$ \pi(\mathbf x) = \begin{cases} \frac17 & \text{if }\mathbf x \in A \\
+0 & \text{otherwise} \end{cases} $$ for all $x \in \mathbb R^2$, and where the proposals $\mathbf Y_{i+1}$ are chosen uniformly distributed on a disk of radius $r$ around the previous state -- that is, $$ Y_{j+1} \sim \operatorname{U} \Big(\big\{ \mathbf y \in \mathbb R^2 : |\mathbf y - \mathbf X_i | \leq r \big\}\Big) . $$ Assume the algorithm starts at $\mathbf X_1 = (0.5, 0.5)$.
 
 **i.**      For every $r > 0$, determine the stationary distribution of the resulting Markov chain.
 
 **ii.**    For what values of $r$ does the algorithm work correctly?
 
-::: {.myanswers}
+::: myanswers
 *Solution.* To see what's going on where, we need to draw a picture of the set $A$.
 
 The question is: for what $r$ will it be possible to jump between the different blocks. We start from $(0.5, 0.5)$ which is in the bottom-left block. To jump from bottom-left to bottom-right, we need $r > 1$. To jump from bottom-right to top-right, we need $r > 2$. To jump from bottom-left to top-left, we need $r > 3$.
 
 **(i)** The distribution is uniform, so as long as the Markov chain can *reach* an area, the stationary distribution will be uniform there. So the stationary distribution is uniform on the following sets:
 
-* $0 < r \leq 1$: $\big([0,3]\times[0,1]\big)$
+-   $0 < r \leq 1$: $\big([0,3]\times[0,1]\big)$
 
-* $1 < r \leq 2$: $\big([0,3]\times[0,1]\big) \cup \big([4,5]\times[0,1]\big)$
+-   $1 < r \leq 2$: $\big([0,3]\times[0,1]\big) \cup \big([4,5]\times[0,1]\big)$
 
-* $2 < r \leq 3$: $\big([0,3]\times[0,1]\big) \cup \big([4,5]\times[0,1]\big) \cup \big([4,5] \times [3,5]\big)$
+-   $2 < r \leq 3$: $\big([0,3]\times[0,1]\big) \cup \big([4,5]\times[0,1]\big) \cup \big([4,5] \times [3,5]\big)$
 
-* $r > 3$: $A$
+-   $r > 3$: $A$
 
 (If $r$ is only *just* above the boundary, convergence to the stationary distribution may be extremely slow.)
 
 **(ii)** The stationary distribution is the desired distribution for $r > 3$, which is the values for which the algorithm technically "works", as $n \to \infty$. To work "well", $r$ will need to be comfortably bigger than 3 (so that movement to and from the top-left is reasonably common) while not being so huge that most steps are to ridiculously far away.
 :::
 ::::
-:::::
+:::::::::::
 
-::::: {.myq}
-**3.**     *[2017 exam, Question 5]*
+::::::::::::::: myq
+**3.**     *\[2017 exam, Question 5\]*
 
-:::: {.subq}
+::: subq
 **(a)**   Give the definition of a Markov chain with state space $\mathcal S$.
 
-Let $(Z_i)$ be a sequence of IID random variables whose distribution is known. Consider the stochastic processes $(U_i)$, $(V_i)$, $(W_i)$ defined by
-$$ \begin{align}
+Let $(Z_i)$ be a sequence of IID random variables whose distribution is known. Consider the stochastic processes $(U_i)$, $(V_i)$, $(W_i)$ defined by $$ \begin{align}
 U_i &= Z_1 + Z_2 + \cdots + Z_i \\
 V_i &= \frac{1}{i} (Z_1 + Z_2 + \cdots + Z_i) \\
 W_i &= \max \{Z_j : 1 \leq j \leq i-1\} + Z_i
-\end{align} $$
-for $i = 1, 2, \dots$. Which of these processes are Markov chains? Justify your answers.
-::::
+\end{align} $$ for $i = 1, 2, \dots$. Which of these processes are Markov chains? Justify your answers.
+:::
 
-:::: {.subq}
+::: subq
 **(b)**   Defining any notation you use, state the random walk Metropolis algorithm. What is the purpose of this algorithm?
-::::
+:::
 
-:::: {.subq}
+::: subq
 **(c)**   Use the Metropolis--Hastings algorithm to define a Markov chain $(X_n)$ on $\mathcal S = \{0, 1, 2, \dots \}$ whose stationary distribution is the Poisson distribution $\pi(x) = \mathrm{e}^{-\lambda} \lambda^x/x!$.
-::::
+:::
 
-::: {.subq}
-**(d)**   Let $(X_i)$ be a Markov chain with values in $\mathbb R$ and stationary distribution $\pi$. Consider the estimator
-$$\widehat{\theta}_n^{\mathrm{MCMC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i)  $$
-for $\theta = \operatorname{\mathbb E}(\phi(X))$ for $X$ having PDF $\pi$. Assuming $X_1$ has PDF $\pi$, derive the result
-$$ \operatorname{Var} \big(\widehat{\theta}_n^{\mathrm{MCMC}}\big) \approx \frac{\operatorname{Var}(\phi(X))}{n} \left(1 + 2 \sum_{i=2}^\infty \operatorname{Corr}\big(\phi(X_1),\phi(X_i)\big) \right) . $$
-:::::
+::: subq
+**(d)**   Let $(X_i)$ be a Markov chain with values in $\mathbb R$ and stationary distribution $\pi$. Consider the estimator $$\widehat{\theta}_n^{\mathrm{MCMC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i)  $$ for $\theta = \operatorname{\mathbb E}(\phi(X))$ for $X$ having PDF $\pi$. Assuming $X_1$ has PDF $\pi$, derive the result $$ \operatorname{Var} \big(\widehat{\theta}_n^{\mathrm{MCMC}}\big) \approx \frac{\operatorname{Var}(\phi(X))}{n} \left(1 + 2 \sum_{i=2}^\infty \operatorname{Corr}\big(\phi(X_1),\phi(X_i)\big) \right) . $$
+:::
 
-
-::::: {.myq}
+:::::: myq
 **4.**     Let $\mathbf X = (X_1, \dots, X_n)$ be IID samples from a random variable $X$ with cumulative distribution function $F$. Let $F^*$ be the empirical cumulative distribution function of the samples $\mathbf X$.
 
-:::: {.subq}
+::: subq
 **(a)**   For fixed $x$, show that $\operatorname{\mathbb E}F^*(x) = F(x)$.
-::::
+:::
 
-:::: {.subq}
+::: subq
 **(b)**   For fixed $x$, show that $\operatorname{Var}\big(F^*(x)\big) = \displaystyle\frac{1}{n}F(x)\big(1 - F(x)\big)$.
-::::
+:::
 
-:::: {.subq}
+::: subq
 **(c)**   For fixed $x$ and $y$ with $y > x$, find $\operatorname{Cov}\big(F^*(y), F^*(x)\big)$.
-::::
-:::::
+:::
+::::::
 
-::::: {.myq}
+:::::: myq
 **5.**     A random variable $X$ has bounded support, and a statistician wishes to estimate $\theta = \max X$, the maximum value $X$ can take. The statistician has access to 24 IID samples $X_1, X_2, \dots, X_{24}$ from this random variable which can be read into R as follows:
 
 ```{r}
@@ -199,15 +178,16 @@ $$ \operatorname{Var} \big(\widehat{\theta}_n^{\mathrm{MCMC}}\big) \approx \frac
              17.59, 30.88, 28.13,  0.83, 17.43, 20.78)
 ```
 
-:::: {.subq}
+::: subq
 **(a)**   Explain why the plug-in estimator is $\theta^* = \max \{X_j : j = 1, \dots, 24\}$, and find the $\theta^*$ for this data.
-::::
+:::
 
-:::: {.subq}
+::: subq
 **(b)**   Use the bootstrap to estimate the bias of the plug-in estimator.
-::::
+:::
 
-:::: {.subq}
+::: subq
 **(c)**   Improve the plug-in estimator by using your estimation of the bias to (approximately) "de-bias" the plug-in estimate.
-::::
-:::::
+:::
+::::::
+:::::::::::::::
