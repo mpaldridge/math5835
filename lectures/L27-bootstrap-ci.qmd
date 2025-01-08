@@ -1,9 +1,3 @@
----
-editor: 
-  markdown: 
-    wrap: 72
----
-
 # Bootstrap III
 
 ## Bootstrap summary
@@ -36,10 +30,11 @@ If the bias appears to be significant, it can be appropriate to
 $$ \theta^* - \widehat{\operatorname{bias}}(\theta^*) = \theta^* - \big(\overline{T^*} - \theta^*\big) = 2\theta^* -\overline{T^*} . $$
 
 We saw that we can estimate the **variance** by
-$$ S^2 = \frac{1}{B-1} \sum_{k=1}^B \big(T^*_k - \overline{T^*}\big) , $$
+$$ S^2 = \frac{1}{B-1} \sum_{k=1}^B \big(T^*_k - \overline{T^*}\big)^2 , $$
 although it can be more appropriate to centre the approximation at the
 plug-in estimator, and use
-$$ \frac{1}{B-1} \sum_{k=1}^B \big(T^*_k - \theta^*\big)  $$ instead.
+$$ \frac{1}{B-1} \sum_{k=1}^B \big(T^*_k - \theta^*\big)^2  $$
+instead.
 
 ## Bootstrap confidence intervals
 
