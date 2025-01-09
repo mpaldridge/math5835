@@ -109,7 +109,7 @@ Note here that we are the bias $$ \operatorname{bias}(\theta^*) = \mathbb E(\the
 
 On this occasion our estimator turned out to be unbiased -- or at least extremely close to unbiased.
 
-<!--But had we found some bias, it is often preferable to improve our estimator by removing that bias. Our refined, or "debiased", estimator would be
+But had we found some bias, it is often preferable to improve our estimator by removing that bias. Our refined, or "debiased", estimator would be
 $$ \theta^* - \widehat{\operatorname{bias}}(\theta) = \theta^* - \Big(\widehat{\mathbb E(\theta^*)} - \theta^*\Big) = 2\theta^* - \widehat{\mathbb E(\theta^*)} . $$
 
 ## Bootstrap estimation of variance and intervals
@@ -120,7 +120,7 @@ What about the error in our estimator? We measure that through the variance, bec
 We continue the sleep example.
 
 ```{r}
-var(miniests)
+var(bootests)
 ```
 
 This is 0.09, which is a pretty good estimate for the variance.
@@ -133,7 +133,7 @@ However, this sample variance is calculated as $$ S^2 = \frac{1}{B-1} \sum_{k=1}
 
 In this case, with plenty of samples and well-behaved data, this is identical to 6 decimal places. But on other occasions, with fewer samples and weirder data, it could be an improvement.
 :::
-
+<!--
 ## Confidence intervals
 
-As with the variance, we could form our confidence intervals just as the upper and lower quantiles of the data; let's call this $\theta^*_{\mathrm{L}}$ and $\theta^*_{\mathrm{U}}$.
+As with the variance, we could form our confidence intervals just as the upper and lower quantiles of the data; let's call this $\theta^*_{\mathrm{L}}$ and $\theta^*_{\mathrm{U}}$.-->

@@ -604,28 +604,85 @@ W_i &amp;= \max \{Z_j : 1 \leq j \leq i-1\} + Z_i
 <p><strong>(a)</strong>&nbsp;&nbsp;&nbsp;For fixed <span class="math inline">\(x\)</span>, show that <span class="math inline">\(\operatorname{\mathbb E}F^*(x) = F(x)\)</span>.</p>
 </div>
 <div class="subq">
-<p><strong>(b)</strong>&nbsp;&nbsp;&nbsp;For fixed <span class="math inline">\(x\)</span>, show that <span class="math inline">\(\operatorname{Var}\big(F^*(x)\big) = \displaystyle\frac{1}{n}F(x)\big(1 - F(x)\big)\)</span>.</p>
+<p><strong>(a)</strong> For fixed <span class="math inline">\(x\)</span>, show that <span class="math inline">\(\operatorname{\mathbb E}F^*(x) = F(x)\)</span>.</p>
+<div class="myanswers">
+<p><em>Solution.</em> We have <span class="math display">\[ F^*(x) = \frac{1}{n} \sum_{i=1}^n\mathbb{I}_{(-\infty, x]}(X_i) . \]</span> So <span class="math display">\[ \begin{multline}
+\operatorname{\mathbb E}F^*(x) = \mathbb E \left( \frac{1}{n} \sum_{i=1}^n\mathbb{I}_{(-\infty, x]}(X_i) \right) = \frac{1}{n} \sum_{i=1}^n \operatorname{\mathbb E} \mathbb{I}_{(-\infty, x]}(X_i) \\ = \frac{1}{n}\,\sum_{i=1}^n \mathbb P\big(X_i \in (\infty, x]\big) = \frac{1}{n}\,n\,\mathbb P\big(X_i \in (\infty, x]\big) = F(x)
+\end{multline} \]</span></p>
+</div>
 </div>
 <div class="subq">
-<p><strong>(c)</strong>&nbsp;&nbsp;&nbsp;For fixed <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> with <span class="math inline">\(y &gt; x\)</span>, find <span class="math inline">\(\operatorname{Cov}\big(F^*(y), F^*(x)\big)\)</span>.</p>
+<p><strong>(b)</strong> For fixed <span class="math inline">\(x\)</span>, show that <span class="math inline">\(\operatorname{Var}\big(F^*(x)\big) = \displaystyle\frac{1}{n}F(x)\big(1 - F(x)\big)\)</span>.</p>
+<div class="myanswers">
+<p><em>Solution.</em> With the same notation as part (a), <span class="math display">\[ \begin{multline}
+\operatorname{Var}\big(F^*(x)\big) = \operatorname{Var} \left( \frac{1}{n} \sum_{i=1}^n\mathbb{I}_{(-\infty, x]}(X_i) \right) = \frac{1}{n^2} \sum_{i=1}^n \operatorname{Var}\big(\mathbb{I}_{(-\infty, x]}(X_i)\big) \\ = \frac{1}{n^2}\,\sum_{i=1}^n F(x) \big(1 - F(x)\big) = \frac{1}{n^2}\,n\,F(x) \big(1 - F(x)\big) = \frac{1}{n} F(x) \big(1 - F(x)\big)
+\end{multline} \]</span></p>
 </div>
 </div>
-<div class="myq">
-<p><strong>5.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A random variable <span class="math inline">\(X\)</span> has bounded support, and a statistician wishes to estimate <span class="math inline">\(\theta = \max X\)</span>, the maximum value <span class="math inline">\(X\)</span> can take. The statistician has access to 24 IID samples <span class="math inline">\(X_1, X_2, \dots, X_{24}\)</span> from this random variable which can be read into R as follows:</p>
+<div class="subq">
+<p><strong>(c)</strong> For fixed <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> with <span class="math inline">\(y &gt; x\)</span>, find <span class="math inline">\(\operatorname{Cov}\big(F^*(y), F^*(x)\big)\)</span>. <strong>(c)</strong> For fixed <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> with <span class="math inline">\(x \leq y\)</span>, find <span class="math inline">\(\operatorname{Cov}\big(F^*(y), F^*(x)\big)\)</span>.</p>
+<div class="myanswers">
+<p><em>Solution.</em> Using the same notation again, <span class="math display">\[ \begin{align}
+\operatorname{Cov}\big(F(x), F(y)\big)
+&amp;= \operatorname{Cov} \left( \frac1n\sum_{i=1}^n \mathbb{I}_{(-\infty, x]}(X_i) ,  \frac1n\sum_{i=1}^n \mathbb{I}_{(-\infty, y]}(X_i) \right) \\
+&amp;= \frac{1}{n^2} \left( \sum_{i=1}^n \operatorname{Cov} \big( \mathbb{I}_{(-\infty, x]}(X_i), \mathbb{I}_{(-\infty, y]}(X_i)\big) + 2 \sum_{i&lt;j} \operatorname{Cov} \big( \mathbb{I}_{(-\infty, x]}(X_i), \mathbb{I}_{(-\infty, y]}(X_j)\big) \right) \\
+&amp;= \frac{1}{n^2} \left(n \operatorname{Cov} \big( \mathbb{I}_{(-\infty, x]}(X_i), \mathbb{I}_{(-\infty, y]}(X_i)\big) + 0\right) \\
+&amp;= \frac{1}{n} \operatorname{Cov} \big( \mathbb{I}_{(-\infty, x]}(X_i), \mathbb{I}_{(-\infty, y]}(X_i)\big)
+\end{align} .\]</span></p>
+<p>So we need to find that covariance. In particular, we need <span class="math display">\[\operatorname{\mathbb E} \big( \mathbb{I}_{(-\infty, x]}(X_i) \mathbb{I}_{(-\infty, y]}(X_i)\big) = F(x),\]</span> since the produce of indicator function is 1 if and only if both indicators are 1, which is if <span class="math inline">\(X_i \leq x\)</span> and <span class="math inline">\(X_i \leq y\)</span>. Since <span class="math inline">\(x\)</span> is the smaller, this is <span class="math inline">\(F(x)\)</span>.</p>
+<p>Hence we have <span class="math display">\[ \operatorname{Cov}\big(F^*(y), F^*(x)\big) = \frac{1}{n} \big(F(x) - F(x)F(y)\big) = \frac{1}{n}\,F(x) \big(1 - F(y)\big) . \]</span></p>
+</div>
+</div>
+</div>
+<p>@@ -201,13 +235,52 @@ $$ (_n^{}) </p>
+<div class="subq">
+<p><strong>(a)</strong> Explain why the plug-in estimator is <span class="math inline">\(\theta^* = \max \{X_j : j = 1, \dots, 24\}\)</span>, and find the <span class="math inline">\(\theta^*\)</span> for this data.</p>
+<div class="myanswers">
+<p><em>Solution.</em> This is basically just the definition of the plug-in estimator. (Not sure why I set that as part of the question…) The maximum value of <span class="math inline">\(X_i\)</span> here is</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>   samples <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">12.40</span>,  <span class="fl">2.99</span>, <span class="fl">14.79</span>,  <span class="fl">3.59</span>, <span class="fl">24.92</span>,  <span class="fl">4.11</span>,</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">12.40</span>,  <span class="fl">2.99</span>, <span class="fl">14.79</span>,  <span class="fl">3.59</span>, <span class="fl">24.92</span>,  <span class="fl">4.11</span>,</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>             <span class="fl">22.68</span>, <span class="fl">28.30</span>,  <span class="fl">0.90</span>,  <span class="fl">8.84</span>, <span class="fl">24.17</span>, <span class="fl">31.31</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>             <span class="fl">12.97</span>, <span class="fl">12.43</span>, <span class="fl">20.34</span>, <span class="fl">14.75</span>, <span class="fl">20.61</span>, <span class="fl">10.93</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>             <span class="fl">17.59</span>, <span class="fl">30.88</span>, <span class="fl">28.13</span>,  <span class="fl">0.83</span>, <span class="fl">17.43</span>, <span class="fl">20.78</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>             <span class="fl">17.59</span>, <span class="fl">30.88</span>, <span class="fl">28.13</span>,  <span class="fl">0.83</span>, <span class="fl">17.43</span>, <span class="fl">20.78</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>plugin <span class="ot">&lt;-</span> <span class="fu">max</span>(samples)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>plugin</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 31.31</code></pre>
+</div>
+</div>
+<p>So <span class="math inline">\(\theta^* = 31.31\)</span>.</p>
+</div>
 </div>
 <div class="subq">
-<p><strong>(a)</strong>&nbsp;&nbsp;&nbsp;Explain why the plug-in estimator is <span class="math inline">\(\theta^* = \max \{X_j : j = 1, \dots, 24\}\)</span>, and find the <span class="math inline">\(\theta^*\)</span> for this data.</p>
+<p><strong>(b)</strong> Use the bootstrap to estimate the bias of the plug-in estimator.</p>
+<div class="myanswers">
+<p><em>Solution.</em> The idea is to pick 24 samples <em>with replacement</em> and look at how the maximum of those differs from the overall maximum 31.31.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>boots <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(samples)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>bootests <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, boots)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>boots) {</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  resample <span class="ot">&lt;-</span> <span class="fu">sample</span>(samples, m, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  bootests[k] <span class="ot">&lt;-</span> <span class="fu">max</span>(resample)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>bias <span class="ot">&lt;-</span> <span class="fu">mean</span>(bootests) <span class="sc">-</span> plugin</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>bias</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.5307819</code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="subq">
-<p><strong>(b)</strong>&nbsp;&nbsp;&nbsp;Use the bootstrap to estimate the bias of the plug-in estimator.</p>
+<p><strong>(c)</strong> Improve the plug-in estimator by using your estimation of the bias to (approximately) “de-bias” the plug-in estimate.</p>
+<div class="myanswers">
+<p><em>Solution.</em> We want to subtract the bias from the plugin estimator to debias it. In maths, this is <span class="math inline">\(\theta^* - (\overline{T^*} - \theta^*) = 2\theta^* - \overline{T^*}\)</span>. In code, this is</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plugin <span class="sc">-</span> bias</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 31.84078</code></pre>
 </div>
-<div class="subq">
-<p><strong>(c)</strong>&nbsp;&nbsp;&nbsp;Improve the plug-in estimator by using your estimation of the bias to (approximately) “de-bias” the plug-in estimate.</p>
+</div>
 </div>
 </div>
 </div>

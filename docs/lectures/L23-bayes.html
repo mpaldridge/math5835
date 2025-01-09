@@ -530,7 +530,7 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">mean</span>(MCmu), <span class="fu">mean</span>(MCsigma))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.286321 5.092001</code></pre>
+<pre><code>[1] 6.294983 5.072932</code></pre>
 </div>
 </div>
 <p>Compare these to the posterior means of <span class="math inline">\(0\)</span> and <span class="math inline">\(1/0.3 = 3.33\)</span> respectively.</p>
@@ -559,7 +559,7 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(MCmu, MCsigma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.08209921</code></pre>
+<pre><code>[1] -0.06948407</code></pre>
 </div>
 </div>
 <p>It appears there’s now a slight negative correlation (if <span class="math inline">\(\mu\)</span> is smaller than we expect, <span class="math inline">\(\sigma\)</span> has to be a little bit bigger to allow the data to fit).</p>

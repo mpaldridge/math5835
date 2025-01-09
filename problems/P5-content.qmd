@@ -159,35 +159,105 @@ W_i &= \max \{Z_j : 1 \leq j \leq i-1\} + Z_i
 **(a)**   For fixed $x$, show that $\operatorname{\mathbb E}F^*(x) = F(x)$.
 :::
 
-::: subq
-**(b)**   For fixed $x$, show that $\operatorname{Var}\big(F^*(x)\big) = \displaystyle\frac{1}{n}F(x)\big(1 - F(x)\big)$.
-:::
+:::: {.subq}
+**(a)**   For fixed $x$, show that $\operatorname{\mathbb E}F^*(x) = F(x)$.
 
-::: subq
-**(c)**   For fixed $x$ and $y$ with $y > x$, find $\operatorname{Cov}\big(F^*(y), F^*(x)\big)$.
+::: {.myanswers}
+*Solution.* We have
+$$ F^*(x) = \frac{1}{n} \sum_{i=1}^n\mathbb{I}_{(-\infty, x]}(X_i) . $$
+So
+$$ \begin{multline}
+\operatorname{\mathbb E}F^*(x) = \mathbb E \left( \frac{1}{n} \sum_{i=1}^n\mathbb{I}_{(-\infty, x]}(X_i) \right) = \frac{1}{n} \sum_{i=1}^n \operatorname{\mathbb E} \mathbb{I}_{(-\infty, x]}(X_i) \\ = \frac{1}{n}\,\sum_{i=1}^n \mathbb P\big(X_i \in (\infty, x]\big) = \frac{1}{n}\,n\,\mathbb P\big(X_i \in (\infty, x]\big) = F(x) 
+\end{multline} $$
 :::
-::::::
+::::
 
-:::::: myq
-**5.**     A random variable $X$ has bounded support, and a statistician wishes to estimate $\theta = \max X$, the maximum value $X$ can take. The statistician has access to 24 IID samples $X_1, X_2, \dots, X_{24}$ from this random variable which can be read into R as follows:
+:::: {.subq}
+**(b)**   For fixed $x$, show that $\operatorname{Var}\big(F^*(x)\big) = \displaystyle\frac{1}{n}F(x)\big(1 - F(x)\big)$.
+
+::: {.myanswers}
+*Solution.* With the same notation as part (a),
+$$ \begin{multline}
+\operatorname{Var}\big(F^*(x)\big) = \operatorname{Var} \left( \frac{1}{n} \sum_{i=1}^n\mathbb{I}_{(-\infty, x]}(X_i) \right) = \frac{1}{n^2} \sum_{i=1}^n \operatorname{Var}\big(\mathbb{I}_{(-\infty, x]}(X_i)\big) \\ = \frac{1}{n^2}\,\sum_{i=1}^n F(x) \big(1 - F(x)\big) = \frac{1}{n^2}\,n\,F(x) \big(1 - F(x)\big) = \frac{1}{n} F(x) \big(1 - F(x)\big)
+\end{multline} $$
+:::
+::::
+
+:::: {.subq}
+**(c)**   For fixed $x$ and $y$ with $y > x$, find $\operatorname{Cov}\big(F^*(y), F^*(x)\big)$.
+**(c)**   For fixed $x$ and $y$ with $x \leq y$, find $\operatorname{Cov}\big(F^*(y), F^*(x)\big)$.
+
+::: {.myanswers}
+*Solution.* Using the same notation again,
+$$ \begin{align}
+\operatorname{Cov}\big(F(x), F(y)\big)
+&= \operatorname{Cov} \left( \frac1n\sum_{i=1}^n \mathbb{I}_{(-\infty, x]}(X_i) ,  \frac1n\sum_{i=1}^n \mathbb{I}_{(-\infty, y]}(X_i) \right) \\
+&= \frac{1}{n^2} \left( \sum_{i=1}^n \operatorname{Cov} \big( \mathbb{I}_{(-\infty, x]}(X_i), \mathbb{I}_{(-\infty, y]}(X_i)\big) + 2 \sum_{i<j} \operatorname{Cov} \big( \mathbb{I}_{(-\infty, x]}(X_i), \mathbb{I}_{(-\infty, y]}(X_j)\big) \right) \\
+&= \frac{1}{n^2} \left(n \operatorname{Cov} \big( \mathbb{I}_{(-\infty, x]}(X_i), \mathbb{I}_{(-\infty, y]}(X_i)\big) + 0\right) \\
+&= \frac{1}{n} \operatorname{Cov} \big( \mathbb{I}_{(-\infty, x]}(X_i), \mathbb{I}_{(-\infty, y]}(X_i)\big)
+\end{align} .$$
+
+So we need to find that covariance. In particular, we need
+$$\operatorname{\mathbb E} \big( \mathbb{I}_{(-\infty, x]}(X_i) \mathbb{I}_{(-\infty, y]}(X_i)\big) = F(x),$$
+since the produce of indicator function is 1 if and only if both indicators are 1, which is if $X_i \leq x$ and $X_i \leq y$. Since $x$ is the smaller, this is $F(x)$.
+
+Hence we have
+$$ \operatorname{Cov}\big(F^*(y), F^*(x)\big) = \frac{1}{n} \big(F(x) - F(x)F(y)\big) = \frac{1}{n}\,F(x) \big(1 - F(y)\big) . $$
+:::
+::::
+:::::
+
+
+@@ -201,13 +235,52 @@ $$ \operatorname{Var} \big(\widehat{\theta}_n^{\mathrm{MCMC}}\big) \approx \frac
+
+:::: {.subq}
+**(a)**   Explain why the plug-in estimator is $\theta^* = \max \{X_j : j = 1, \dots, 24\}$, and find the $\theta^*$ for this data.
+
+::: {.myanswers}
+*Solution.* This is basically just the definition of the plug-in estimator. (Not sure why I set that as part of the question...) The maximum value of $X_i$ here is
 
 ```{r}
-   samples <- c(12.40,  2.99, 14.79,  3.59, 24.92,  4.11,
+samples <- c(12.40,  2.99, 14.79,  3.59, 24.92,  4.11,
              22.68, 28.30,  0.90,  8.84, 24.17, 31.31,
              12.97, 12.43, 20.34, 14.75, 20.61, 10.93,
              17.59, 30.88, 28.13,  0.83, 17.43, 20.78)
+plugin <- max(samples)
+plugin
 ```
 
-::: subq
-**(a)**   Explain why the plug-in estimator is $\theta^* = \max \{X_j : j = 1, \dots, 24\}$, and find the $\theta^*$ for this data.
+So $\theta^* = 31.31$.
 :::
+::::
 
-::: subq
-**(b)**   Use the bootstrap to estimate the bias of the plug-in estimator.
-:::
+:::: {.subq}
+**(b)**   Use the bootstrap to estimate the bias of the plug-in estimator.
 
-::: subq
-**(c)**   Improve the plug-in estimator by using your estimation of the bias to (approximately) "de-bias" the plug-in estimate.
+::: {.myanswers}
+*Solution.* The idea is to pick 24 samples *with replacement* and look at how the maximum of those differs from the overall maximum 31.31.
+
+```{r}
+boots <- 1e5
+m <- length(samples)
+bootests <- rep(0, boots)
+for (k in 1:boots) {
+  resample <- sample(samples, m, replace = TRUE)
+  bootests[k] <- max(resample)
+}
+bias <- mean(bootests) - plugin
+bias
+```
 :::
-::::::
-:::::::::::::::
+::::
+
+:::: {.subq}
+**(c)**   Improve the plug-in estimator by using your estimation of the bias to (approximately) "de-bias" the plug-in estimate.
+
+::: {.myanswers}
+*Solution.* We want to subtract the bias from the plugin estimator to debias it. In maths, this is $\theta^* - (\overline{T^*} - \theta^*) = 2\theta^* - \overline{T^*}$. In code, this is
+
+```{r}
+plugin - bias
+```
+:::
+::::
+:::::
