@@ -634,18 +634,24 @@ W_i &amp;= \max \{Z_j : 1 \leq j \leq i-1\} + Z_i
 </div>
 </div>
 </div>
-<p>@@ -201,13 +235,52 @@ $$ (_n^{}) </p>
+<p><strong>5.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A random variable <span class="math inline">\(X\)</span> has bounded support, and a statistician wishes to estimate <span class="math inline">\(\theta = \max X\)</span>, the maximum value <span class="math inline">\(X\)</span> can take. The statistician has access to 24 IID samples <span class="math inline">\(X_1, X_2, \dots, X_{24}\)</span> from this random variable which can be read into R as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>   samples <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">12.40</span>,  <span class="fl">2.99</span>, <span class="fl">14.79</span>,  <span class="fl">3.59</span>, <span class="fl">24.92</span>,  <span class="fl">4.11</span>,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>             <span class="fl">22.68</span>, <span class="fl">28.30</span>,  <span class="fl">0.90</span>,  <span class="fl">8.84</span>, <span class="fl">24.17</span>, <span class="fl">31.31</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>             <span class="fl">12.97</span>, <span class="fl">12.43</span>, <span class="fl">20.34</span>, <span class="fl">14.75</span>, <span class="fl">20.61</span>, <span class="fl">10.93</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>             <span class="fl">17.59</span>, <span class="fl">30.88</span>, <span class="fl">28.13</span>,  <span class="fl">0.83</span>, <span class="fl">17.43</span>, <span class="fl">20.78</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="subq">
 <p><strong>(a)</strong> Explain why the plug-in estimator is <span class="math inline">\(\theta^* = \max \{X_j : j = 1, \dots, 24\}\)</span>, and find the <span class="math inline">\(\theta^*\)</span> for this data.</p>
 <div class="myanswers">
 <p><em>Solution.</em> This is basically just the definition of the plug-in estimator. (Not sure why I set that as part of the question…) The maximum value of <span class="math inline">\(X_i\)</span> here is</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">12.40</span>,  <span class="fl">2.99</span>, <span class="fl">14.79</span>,  <span class="fl">3.59</span>, <span class="fl">24.92</span>,  <span class="fl">4.11</span>,</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>             <span class="fl">22.68</span>, <span class="fl">28.30</span>,  <span class="fl">0.90</span>,  <span class="fl">8.84</span>, <span class="fl">24.17</span>, <span class="fl">31.31</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>             <span class="fl">12.97</span>, <span class="fl">12.43</span>, <span class="fl">20.34</span>, <span class="fl">14.75</span>, <span class="fl">20.61</span>, <span class="fl">10.93</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>             <span class="fl">17.59</span>, <span class="fl">30.88</span>, <span class="fl">28.13</span>,  <span class="fl">0.83</span>, <span class="fl">17.43</span>, <span class="fl">20.78</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>plugin <span class="ot">&lt;-</span> <span class="fu">max</span>(samples)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>plugin</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">12.40</span>,  <span class="fl">2.99</span>, <span class="fl">14.79</span>,  <span class="fl">3.59</span>, <span class="fl">24.92</span>,  <span class="fl">4.11</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>             <span class="fl">22.68</span>, <span class="fl">28.30</span>,  <span class="fl">0.90</span>,  <span class="fl">8.84</span>, <span class="fl">24.17</span>, <span class="fl">31.31</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>             <span class="fl">12.97</span>, <span class="fl">12.43</span>, <span class="fl">20.34</span>, <span class="fl">14.75</span>, <span class="fl">20.61</span>, <span class="fl">10.93</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>             <span class="fl">17.59</span>, <span class="fl">30.88</span>, <span class="fl">28.13</span>,  <span class="fl">0.83</span>, <span class="fl">17.43</span>, <span class="fl">20.78</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>plugin <span class="ot">&lt;-</span> <span class="fu">max</span>(samples)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>plugin</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 31.31</code></pre>
 </div>
@@ -658,17 +664,17 @@ W_i &amp;= \max \{Z_j : 1 \leq j \leq i-1\} + Z_i
 <div class="myanswers">
 <p><em>Solution.</em> The idea is to pick 24 samples <em>with replacement</em> and look at how the maximum of those differs from the overall maximum 31.31.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>boots <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(samples)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>bootests <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, boots)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>boots) {</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  resample <span class="ot">&lt;-</span> <span class="fu">sample</span>(samples, m, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  bootests[k] <span class="ot">&lt;-</span> <span class="fu">max</span>(resample)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>bias <span class="ot">&lt;-</span> <span class="fu">mean</span>(bootests) <span class="sc">-</span> plugin</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>bias</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>boots <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(samples)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>bootests <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, boots)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>boots) {</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  resample <span class="ot">&lt;-</span> <span class="fu">sample</span>(samples, m, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  bootests[k] <span class="ot">&lt;-</span> <span class="fu">max</span>(resample)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>bias <span class="ot">&lt;-</span> <span class="fu">mean</span>(bootests) <span class="sc">-</span> plugin</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>bias</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.5307819</code></pre>
+<pre><code>[1] -0.5259627</code></pre>
 </div>
 </div>
 </div>
@@ -678,9 +684,9 @@ W_i &amp;= \max \{Z_j : 1 \leq j \leq i-1\} + Z_i
 <div class="myanswers">
 <p><em>Solution.</em> We want to subtract the bias from the plugin estimator to debias it. In maths, this is <span class="math inline">\(\theta^* - (\overline{T^*} - \theta^*) = 2\theta^* - \overline{T^*}\)</span>. In code, this is</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plugin <span class="sc">-</span> bias</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plugin <span class="sc">-</span> bias</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 31.84078</code></pre>
+<pre><code>[1] 31.83596</code></pre>
 </div>
 </div>
 </div>

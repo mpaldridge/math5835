@@ -489,14 +489,14 @@ window.Quarto = {
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>max_var <span class="ot">&lt;-</span> <span class="fu">var</span>(maxes)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(max_mean, max_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4.90900 9.93065</code></pre>
+<pre><code>[1]  4.91700 10.50462</code></pre>
 </div>
 </div>
 <p>A lazy 80% prediction interval under a normal assumption would be the following:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>max_mean <span class="sc">+</span> <span class="fu">qnorm</span>(<span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>)) <span class="sc">*</span> <span class="fu">sqrt</span>(max_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.8704551 8.9475449</code></pre>
+<pre><code>[1] 0.7633857 9.0706143</code></pre>
 </div>
 </div>
 <p>But that seems a bit silly – our queue length isn’t going to be a real number with seven decimal places. Better is to use the actual quantiles of the statistics we evaluated.</p>
