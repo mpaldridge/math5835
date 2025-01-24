@@ -635,13 +635,13 @@ g(y) &amp;= \frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 (y-\mu)^2 \big) \\
 \int_{-\infty}^{+\infty} \frac{f(y)^2 \phi(y)^2}{g(y)}\,\mathrm{d}y
 &amp;= \int_{-\infty}^{+\infty}  \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y - (a - \mu)\big)^2\Big)\exp(\mu^2 + 2a) \,\mathrm{d}y\\
 &amp;= \exp(\mu^2 + 2a) \int_{-\infty}^{+\infty}  \frac{1}{\sqrt{2\pi}} \exp \Big(-\tfrac12 \big(y - (a - \mu)\big)^2\Big)\,\mathrm{d}y \\
-&amp;= \exp(\mu^2 + a\mu) ,
+&amp;= \exp(\mu^2 - a\mu) ,
 \end{align} \]</span> since the big integral on the right is the integral of the PDF of a normal <span class="math inline">\(\operatorname{N}(a-\mu, 1)\)</span> distribution, so equals 1.</p>
 <p>Hence, we have proved the result.</p>
 </div>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For fixed <span class="math inline">\(n\)</span> and <span class="math inline">\(a\)</span>, find the value of <span class="math inline">\(\mu\)</span> for which the importance sampling estimator has the smallest mean-square error. Comment on the result.</p>
 <div class="myanswers">
-<p><em>Solution.</em> Minimising this expression is equivalent to minimising <span class="math inline">\(\mu^2 + a\mu\)</span>. By differentiating with respect to <span class="math inline">\(\mu\)</span> (or otherwise), we see that this is at <span class="math inline">\(a = \tfrac12 \mu\)</span>.</p>
+<p><em>Solution.</em> Minimising this expression is equivalent to minimising <span class="math inline">\(\mu^2 + a\mu\)</span>. By differentiating with respect to <span class="math inline">\(\mu\)</span> (or otherwise), we see that this is at <span class="math inline">\(a = 2 \mu\)</span> or <span class="math inline">\(\mu = \frac12 a\)</span>.</p>
 </div>
 </div>
 </div>
