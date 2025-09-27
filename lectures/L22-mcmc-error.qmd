@@ -49,7 +49,7 @@ $$  \begin{align}
 When we studied antithetic variables, we found it more convenient to work with the correlation
 $$ \operatorname{Corr}\big(\phi(X_i),\phi(X_j)\big) = \frac{\operatorname{Cov}\big(\phi(X_i),\phi(X_j)\big)}{\sqrt{\operatorname{Var}\big(\phi(X_i)\big)\operatorname{Var}\big(\phi(X_i)\big)}} . $$
 In equilibrium, this is
-$$ \rho(j - i) = \operatorname{Corr}\big(\phi(X_i),\phi(X_j)\big) = \frac{\gamma{j-i}}{\sqrt{\sigma^2\,\sigma^2}} = \frac{\gamma(j-i)}{\sigma^2}, $$
+$$ \rho(j - i) = \operatorname{Corr}\big(\phi(X_i),\phi(X_j)\big) = \frac{\gamma(j-i)}{\sqrt{\sigma^2\,\sigma^2}} = \frac{\gamma(j-i)}{\sigma^2}, $$
 where $\rho(k)$ is called the **autocorrelation** at lag $k$.
 
 So now we have

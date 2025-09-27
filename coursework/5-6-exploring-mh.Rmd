@@ -1,0 +1,133 @@
+---
+title:  "Lab 5.6: Exploring Metropolis--Hastings"
+author: "MATH5300 Statistical Computing"
+output: html_document
+---
+
+In Readings 5.4 and 5.5 we've discussed quite a lot of theory to do with the Metropolis–Hastings algorithm in continuous space. Now it's the time to look at an example in detail.
+
+Throughout this Lab, we will stick with the basic case of the random walk Metropolis algorithm. Recall that, as with the discrete case, when the transition density is symmetric, in that $r(y, x) = r(x, y)$ for all $x, y \in \mathcal S$, then the acceptance probability simplifies to $$\alpha(x,y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1\right\} ,$$and we call it just the **Metropolis algorithm**. Further, when the proposal is simply a symmetric normally distributed jump $y = x + \operatorname{N}(0, \sigma^2)$, we call it the **random walk Metropolis algorithm**. We call $\sigma$ the **step size**.
+
+## Random walk Metropolis in continuous space
+
+Throughout this Lab, we will stick with the following simple example. We wish to sample from an exponential distribution $X \sim \operatorname{Exp}(\lambda)$, which has PDF $\pi(x) = \lambda \mathrm{e}^{-\lambda x}$ for $x \geq 0$. Because this is a very simple distribution, we could just use the inverse transform method from Unit 3. Instead, we will try random walk Metropolis.
+
+From $X_i = x$, we propose a move to $y = x + \operatorname{N}(0, \sigma^2) = \operatorname{N}(x, \sigma^2)$. If $y \geq 0$, we accept the proposed move with probability $$\alpha(x,y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1\right\} =  \min \left\{ \frac{\lambda\mathrm{e}^{-\lambda y}}{\lambda\mathrm{e}^{-\lambda x}} , \, 1\right\} = \min \big\{ \mathrm{e}^{-\lambda(y - x)},\, 1\big\} .$$So if $0 \leq y \leq x$, then we always accept the move with probability 1, while if $y > x$ then we accept with probability $\alpha(x, y) = \mathrm{e}^{-\lambda(y-x)} < 1$. If $y < 0$, then $\pi(y) = 0$, so $\alpha(x, y) = 0$, and we always reject.
+
+The following R function carries this out.
+
+```{r}
+metroexp <- function(n, rate, sigma, initial) {
+  MC <- rep(0, n)
+  accept <- function(x, y) exp(-rate * (y - x))
+
+  MC[1] <- initial
+  for (i in 1:(n - 1)) {
+    prop <- MC[i] + rnorm(1, 0, sigma)
+    if (prop < 0)  MC[i + 1] <- MC[i]
+    else if (runif(1) <= accept(MC[i], prop)) MC[i + 1] <- prop
+    else MC[i + 1] <- MC[i]
+  }
+  
+  return(MC)
+}
+```
+
+Run this code (for example, by pressing the green 'play' button in RStudio's "Visual" mode).
+
+We used a cunning trick to slightly simplify the above code: in the acceptance probability function `accept`, we did not take the minimum with 1. However, a little though tells us this will still work anyway: if $\pi(y) / \pi(x) > 1$, then the acceptance probability is 1, but we will certainly have $U \leq 1 < \pi(y) / \pi(x)$, so the proposal will definitely be accepted, as it should be.
+
+Let's try to sample from the exponential distribution with rate $\lambda = 0.1$. We'll try a step size of $\sigma = 15$.
+
+```{r}
+RWM <- metroexp(1e6, 0.1, 15, 0)
+
+hist(RWM, probability = TRUE, xlim = c(0, 50), ylim = c(0, 0.1), breaks = 100)
+curve(dexp(x, 0.1), add = TRUE, lwd = 2, col = "blue")
+```
+
+Run this code. This plots a histogram of the Markov chain output against the density of the $\operatorname{Exp}(0.1)$ distribution. You should find that it looks like an excellent match.
+
+## Burn-in period
+
+You may have noticed that we set the value `initial = 0` for the starting point of the Metropolis algorithm here. This seems a sensible choice for the exponential distribution, as this is the mode of the distribution (the value where the PDF is maximised).
+
+But we mentioned in Reading 5.5 that for harder examples, where we don't know a good starting point, it can be useful to use a **burn-in period**. This is where we run the Markov chain for a while to 'reach equilibrium' – that is, get it to a state more representative of the distribution of $\pi$ – before starting to use any of the samples we get.
+
+We continue with the previous example, with step size $\sigma = 1$. What if we had started at $X_1 = 100$ instead -- what then would the Markov chain look like.
+
+```{r}
+RWM <- metroexp(4000, 0.1, 1, 100)
+plot(RWM, lwd = 2, col = "red", type = "l", xlab = "steps")
+```
+
+> **Erercise 2.** Run this code. Describe the plot. Roughly how many steps would you say the Markov chain has taken to 'reach equilibrium'.
+>
+> Run the code again – how many steps this time? Run the code many times. How many steps would you recommend a statistician uses for a burn-in period.
+
+You should see that, at the start, it takes us a while to move away from the "bad" initial state $X_1 = 100$ and to get to the "typical values" of $[0, 35]$ that we expect to see from this $\operatorname{Exp}(0.1)$ distribution. You likely found that this sometimes happens in 1000 steps or even fewer, but occasionally takes much longer, maybe 3500 or more.
+
+If we have time to take lots of samples, we can afford to through more away in the burn-in period. If, for example, I could afford to take a million samples from this Markov chain, I'd happily throw away the first 10,000 – a mere 1% of my sample. If I could only afford to take 25,000 samples, I would try to be stingier and perhaps take a burn-in period of around 2,500 steps. Your opinion may be different, and can be equally as valid – this is another example of where statistical computing is as much art as science, and where different design choices can be made.
+
+## Experimenting with the step size
+
+In the random walk Metropolis algorithm, we had to pick the value for the parameter $\sigma$. In this algorithm, $\sigma$ can be interpreted as a "typical step size", in that the standard deviation of the step proposal $y - x$ is $\sigma$. The ergodic theorem will still hold for any value of $\sigma$ in the limit as $n \to \infty$, so the algorithm will work in theory – but the practical performance at finite $n$ may be different for different values of $\sigma$.
+
+Let's have a look at how the Markov chain moved with our step size of $\sigma = 15$
+
+```{r}
+RWM <- metroexp(1000, 0.1, 15, 0)
+plot(RWM, ylim = c(0, 50),
+     lwd = 2, col = "red", type = "l", xlab = "steps", ylab = "samples") 
+```
+
+Run this code, to see what 1000 steps with typical step size $\sigma = 15$ look like. You may like to run the code many times, to get a range of plots. You should find that, while it's clear this isn't a perfect independent sample, since this is not purely 'exponentially distributed noise', it nonetheless seems to exploring the range of different values an $\operatorname{Exp}(0.1)$ distribution is likely to take very rapidly.
+
+What if we had chosen a much larger step size, like $\sigma = 400$, or a much smaller one, like $\sigma = 1$?
+
+> **Exercise 1.** Repeat the above experiment with $\sigma = 400$ and $\sigma = 1$. Again, you can try each one multiple times. Describe the features of the plots you find. Do you think these are giving better or worse samples of the exponential distribution? Why do you think this is?
+
+You should have found that that when $\sigma = 400$, there are lots of "flat parts" of the graph. This is where the Markov chain did not move, because it was rejecting lots of proposed moves. This would be because large steps would often produce either negative proposals, which are always rejected, or very large proposals, where the acceptance probability is very small. This Markov chain is rarely moving at all, so is not exploring the state space very quickly.
+
+You should also have found that when $\sigma = 1$, the Markov chain was often accepting moves, but only making small steps. Compared to the $\sigma = 15$ case, you plots should have looked much less "busy", and looked more like a slow crawl through the state space – especially the lower numbers between 0 and 20 – rather than a rapid exploration through the whole range of plausible values of the distributions. So although this Markov chain is moving through the state space, it is strolling through space quite slowly.
+
+You can try some other values of the step size $\sigma$ too. You should find the same general pattern – and the same when choosing the step size in any random walk Metropolis algorithm:
+
+-   If the step size is too large, then too many proposals are rejected. This means you often stay in the same state for a long time, and you only rarely move to explore a new state.
+
+-   If the step size is too small, then proposals are very close to the current state. This means you often stay in the same approximate area for a long time, and you crawl through the state space very slowly.
+
+You want to try and pick the "Goldilocks" step size – not too small, and not too big! There is no perfect recipe you can follow to pick the ideal step size – MCMC is an art as well as a science. If you are able to, it can be helpful to think about what typical values you hope to be sampling. In our example, ranges of between 0 and 30 or so are typical for $\operatorname{Exp}(0.1)$, so you want a step size that will explore such a range well without too regularly stepping outside of it. Our choice of $\sigma = 15$, being half of that $[0, 30]$ range seemed to do quite well. It's also worth doing short "pilot" runs, where you try different values of $\sigma$ and examine what seems to work best.
+
+## Estimating the error
+
+In Reading 5.5, we introduced $\rho(k)$, the **autocorrelation** at lag $k$.
+
+We can plot the autocorrelation $\rho(k)$ in R using the `acf()` function. Let's do this for our same exponential distribution example with step size $\sigma = 15$, simply taking the identity function $\phi(x) = x$.
+
+```{r}
+RWM <- metroexp(1e6, 0.1, 15, 0)
+acf(RWM, lag.max = 50)
+```
+
+(It is often preferable – although not always necessary – to set the maximum lag on the x-axis by hand with the `lag.max = ...` option.)
+
+Run the above code. Remember that our goal is for the autocorrelation to die away as quickly as possible. In this example, with $\sigma = 15$, we typically see that the autocorrelation has decayed to 0.1 by around lag 16 and to 0.05 by around lag 25.
+
+> **Exercise 3.** Plot the autocorrelation functions for the alternative step sizes $\sigma = 400$ and $\sigma = 1$. What do you see? Do you think these show evidence of better or worse samples of the exponential distribution? Why do you think this is?
+
+You should find the the large $\sigma = 400$ and small $\sigma =1$ step sizes have autocorrelation decaying much more slowly than the medium $\sigma = 15$ step size. (If you don't find this, make sure your plots have the same x-axes.) This matches our discussion in the previous section. When $\sigma$ is very large, most proposals are rejected, meaning that the the Markov chain stays in place for a long time: this gives large autocorrelations. When $\sigma$ is very small, following steps will all be very close to the current one, even if many of the the proposals are accepted: this also gives large autocorrelations. Again, we want the middle ground, where proposal steps are fairly large, but still get accepted fairly often: this should lead to the autocorrelation dying down reasonably quickly.
+
+Remember from Reading 5.5 that the relevant term in the variance of the MCMC estimator is $1 + 2\sum_{k=1}^\infty \rho(k)$. Specifically, to get the equivalent of 1 independent sample we need to take $1 + 2\sum_{k=1}^\infty \rho(k)$ samples from a Markov chain, so we would like this number to be as small as possible. The following code calculates this term when the step size is $\sigma = 15$.
+
+```{r}
+RWM <- metroexp(1e6, 0.1, 1, 0)
+term <- 1 + 2 * sum(acf(RWM, lag.max = 1000, plot = FALSE)$acf)
+print(signif(term, 4))
+```
+
+(It is recommended to set a large value of `lag.max`, which is the number of terms actually added up in the 'infinite sum'; the R default can be too small sometimes, giving an overly rosy impression of the quality of your samples.)
+
+With $\sigma = 15$, this typically gives values around 14 or 15, so we are getting the equivalent of 1 independent sample from the distribution for every 14 or 15 samples from the Markov chain.
+
+> **Exercise 4.** Repeat this experiment for for the alternative step sizes $\sigma = 400$ and $\sigma = 1$. What do you find? Explore other values of $\sigma$ too. What step size $\sigma$ would you recommend a statistician uses for this experiment?

@@ -1,0 +1,91 @@
+---
+title:  "Lab 6.7: Bootstrap statistics in R"
+author: "MATH5300 Statistical Computing"
+output: html_document
+---
+
+In Reading 6.6 we introduced the concept of bootstrap statistics. Let's look at how that works in practice.
+
+## Bootstrap statistics
+
+We will work with the Post Office queue example. Recall that the statistic in question is the maximum queue length in a week$$ T = T(X_1, X_2, X_3, X_4, X_5, X_6, X_7) = \min\{X_1, X_2, X_3, X_4, X_5, X_6, X_7\} , $$so $n=7$. Let's suppose that we have collected one month of data on queue lengths, so $m = 31$. The data is shown below
+
+| **Queue length**     |  0  |  1  |  2  |  3  |  4  |  5  |  7  | 11  | Total |
+|:---------------------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:-----:|
+| **No. of occasions** | 12  |  5  |  7  |  3  |  1  |  1  |  1  |  1  |  31   |
+
+We start by reading this data into R and checking it matches the table above.
+
+```{r}
+queues <- c(rep(0, 12), rep(1, 5), rep(2, 7), rep(3, 3), 4, 5, 7, 11)
+table(queues)
+```
+
+(Run this code and check the tables match.)
+
+Let's collect $B = 1000$ bootstrap statistics. Recall the way that we do this:
+
+1.  Take $n = 7$ bootstrap samples $X^*_1, \dots, X^*_7$ by sampling from the datapoints with replacement. Calculate the bootstrap statistic $T^* = \max\{X^*_1, \dots, X^*_7\}$.
+
+2.  Repeat this process $B = 1000$ times to get a collection of bootstrap statistics $T^*_1, \dots, T^*_{1000}$.
+
+For example, let's suppose our first set of 7 bootstrap samples is $(0, 0, 0, 1, 4, 4, 5)$. (It turns out we sampled the value 4 twice, even though it only occurred once in the data set – that does happen sometimes when we're sampling with replacement and is totally fine.) The value of the statistic for this sample is $$ T_1^* = T(0, 0, 0, 1, 4, 4, 5) = \max \{0, 0, 0, 1, 4, 4, 5\} = 5 .$$
+
+So our first bootstrap statistic is $T^*_1 = 5$. We repeat this 999 more times.
+
+In R code, we can do that like this:
+
+```{r}
+boots <- 1000
+boot_stats <- rep(0, boots)
+
+for (k in 1:boots) {
+  boot_samp <- sample(queues, 7, replace = TRUE)
+  boot_stats[k] <- max(boot_samp)
+}
+```
+
+This gives us 1000 realisations of the test statistic. We can use these to look at the distribution of the test statistic:
+
+```{r}
+boot_dist <- table(boot_stats) / boots
+boot_dist
+plot(boot_dist, xlab = "Bootstrap statistic", ylab = "Proportion of occurence")
+```
+
+I usually find that 3 and 11 are the most common values of the bootstrap statistic, while 1 is rare and 0 extremely rare. So although having no queue at the Post Office happens fairly often, it would be extremely surprising if I never had any queue at the Post Office in a whole week.
+
+## Expectation, variance, prediction interval
+
+We also saw in Reading 6.6 how to estimate particular figures of interest.
+
+We saw, for example, expectation $\mathbb{E}T$ of the statistic $T$ can be estimated by the sample mean $\overline{T^*}$ of our bootstrap statistics $T^*_k$. So we estimate that, on average, the maximum queue we see during a week will be as calculated here:
+
+```{r}
+boot_exp <- mean(boot_stats)
+boot_var <- var(boot_stats)
+boot_exp
+```
+
+> **Exercise 1.** Estimate the variance $\operatorname{Var}(T)$ of $T$, and save your value as an object called `boot_var`.
+
+(You should find the estimate is about 10.5.)
+
+We also saw two ways to calculate prediction intervals.
+
+The "lazy" way was to use a normal approximation.
+
+```{r}
+sig <- 0.05
+boot_exp + qnorm(c(sig / 2, 1 - sig / 2)) * sqrt(boot_var)
+```
+
+I get an interval something like $[-0.8, 11.9]$. But this is a silly answer – it's impossible to get negative length queues, so even a 100% prediction intervals need only go down to 0. And why does the confidence interval have long decimals in its endpoints when the queue length is always an integer? Indeed, if we look at the graph of the bootstrap statistics we drew above, it doesn't look at all like a normal distribution. So this seems a poor way to make a prediction interval.
+
+Better, is to use the sample quantiles.
+
+```{r}
+quantile(boot_stats, c(sig / 2, 1 - sig / 2))
+```
+
+This typically gives the much more sensible answer $[2, 11]$.

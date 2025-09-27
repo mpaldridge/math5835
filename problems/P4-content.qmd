@@ -194,7 +194,7 @@ I found my Markov chain always gets it right to the nearest integer and often ge
 
 If $X \sim \operatorname{N}(\mu, \sigma^2)$, then $\alpha X \sim \operatorname{N}(\alpha\mu, \alpha^2\sigma^2)$ and $\alpha X + Z \sim \operatorname{N}(\alpha\mu, \alpha^2\sigma^2 + 1)$. To have $X$ with the same distribution as $\alpha X + Z$, we need $\operatorname{N}(\mu, \sigma^2) = \operatorname{N}(\alpha\mu, \alpha^2\sigma^2 + 1)$.
 
-This will hold true if the parameters are the same on bother sides. Looking at the mean parameters, we need $\mu = \alpha\mu$, which forces $\mu = 0$. Looking at the variance parameters, we need $\sigma^2 = \alpha^2 \sigma^2 + 1$, so $\sigma^2 = 1/(1 - \alpha^2)$. These satisfy the equation. So a stationary distribution is $$ \operatorname{N}\bigg(0, \,\frac{1}{1 - \alpha^2}\bigg) . $$
+This will hold true if the parameters are the same on both sides. Looking at the mean parameters, we need $\mu = \alpha\mu$, which forces $\mu = 0$. Looking at the variance parameters, we need $\sigma^2 = \alpha^2 \sigma^2 + 1$, so $\sigma^2 = 1/(1 - \alpha^2)$. These satisfy the equation. So a stationary distribution is $$ \operatorname{N}\bigg(0, \,\frac{1}{1 - \alpha^2}\bigg) . $$
 :::
 ::::
 :::::::

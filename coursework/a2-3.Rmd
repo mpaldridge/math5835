@@ -1,0 +1,41 @@
+---
+title:  "Assessment 2, Part 3: MCMC"
+author: "MATH5300 Statistical Computing"
+output: html_document
+---
+
+This sheet sets out the tasks for the second part of Assessment 3. These tasks cover material on Markov chain Monte Carlo from Units 4 and 5. You should write a short report explaining your solutions to these tasks. For administrative and other information about this coursework, see the instructions on the main Coursera page for this assessment. [EDITOR'S NOTE: Replace last sentence with appropriate instructions.]
+
+This R Markdown file should be opened in RStudio; I recommend the "Visual" editor -- see the top-left of the editing window.
+
+## Task 1
+
+We continue with the model of changes in the price of a stock from Part 2 of the assessment. Recall that it is assumed that the price is multiplied by a random variable $X$ that follows a log-normal distribution with parameters $m$ and $s$, so $\log X \sim \operatorname{N}(m, s^2)$. We assume that $m = 0$ is known, while we choose to adopt a Bayesian approach to estimate the unknown $s$. We take a prior distribution that $s \sim \operatorname{Exp}(1)$ is exponentially distributed with rate 1. We observe that the daily changes by the following factors: $$ x_1 = 0.50 \quad x_2 = 1.67 \quad x_3 = 2.22 \quad x_4 = 0.22 \quad x_5 = 4.36 . $$ We wish to sample from the posterior distribution.
+
+In the last part, we sampled from the posterior using rejection sampling. In this part, we will sample from the posterior using MCMC -- specifically, the random walk Metropolis algorithm in continuous space.
+
+1.  Sample from the posterior distribution $\pi(\cdot \mid \mathbf x)$ using the random walk Metropolis algorithm. Explain how you chose the stepsize $\sigma$, and explain any other design choices you make. Check that your method has produced samples following the correct distribution.
+
+2.  What are the advantages and disadvantages of this method compared to the previous method using rejection sampling? Which method would you recommend for this application?
+
+## Task 2
+
+We will work in this task with a model inspired by particle physics. However, no understanding of the underlying physics is required -- only the mathematical and statistical details.
+
+There are $n$ particles in a line each of which has a positive or negative **spin**, denoted by $x_i = +1$ or $x_i = -1$ for $i = 1, 2, \dots, n$. We write $\mathbf x = (x_1, x_2, \dots, x_n) \in \{+1, -1\}^n$ for the vector of these spins, which is called a **state**.
+
+All possible states $\mathbf{x}$ have an associated **score** $$S(\mathbf x) = \sum_{i=1}^{n-1} x_i x_{i+1} \qquad \mathbf{x} \in \{+1,-1\}^n.$$Note that $x_i x_{i+1}$ is $+1$ if particles $i$ and $i+1$ have the same spin as each other, and is $-1$ if those twoparticles have different spins. So we get a high score when neighbouring particles tend to have like spins.
+
+The system is most likely to be found in a state with high score. We model this by the probability mass function $$ \pi(\mathbf x) \propto \mathrm{e}^{kS(\mathbf{x})} $$for some constant $k$ called the **inverse temperature**.
+
+3.  Explain why, for large $n$, it will be difficult to work with this probability mass function analytically.
+
+We wish to sample from this distribution using the Metropolis--Hastings algorithm in discrete space.
+
+4.  Suggest an appropriate proposal transition function on $\mathcal S = \{+1, -1\}^n$ for this Metropolis--Hastings algorithm. Remember that proposals should be random and should typically make only a small change to the state while keeping it in the state space.
+
+5.  Calculate the acceptance probability for the Metropolis--Hastings algorithm with your proposal. Simplify this expression by using the structure of the probability mass function and of the score, if it is possible to do so.
+
+6.  Use your Metropolis--Hastings algorithm to sample from the distribution for $n = 20$ particles and inverse temperature $k = 0.5$.
+
+7.  Let $\phi(\mathbf{x})$ be the number of particles with the majority spin -- that is, the number of $i$ such that $x_i = +1$, if that is at least $n/2$, or the number of $i$ such that $x_i = -1$ otherwise. Estimate the expected value $\operatorname{\mathbb{E}}\phi(\mathbf X)$ when $\mathbf{X}$ is sampled from this model.

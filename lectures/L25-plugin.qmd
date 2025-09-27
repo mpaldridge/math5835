@@ -105,7 +105,7 @@ dist
 plot(dist)
 ```
 
-We can also look at particular figures of interest. For example, the expectation of $T$ should be close to the sample mean of our $T^*$s, and the variance of $T$ should be close to the sample variance of our $T^*s$.
+We can also look at particular figures of interest. For example, the expectation of $T$ should be close to the sample mean of our $T^*$s, and the variance of $T$ should be close to the sample variance of our $T^*$s.
 
 ```{r}
 c(mean(maxes), var(maxes))
