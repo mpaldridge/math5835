@@ -208,7 +208,14 @@ $$ \operatorname{Cov}\big(F^*(y), F^*(x)\big) = \frac{1}{n} \big(F(x) - F(x)F(y)
 :::::
 
 
-@@ -201,13 +235,52 @@ $$ \operatorname{Var} \big(\widehat{\theta}_n^{\mathrm{MCMC}}\big) \approx \frac
+**5.**     A random variable $X$ has bounded support, and a statistician wishes to estimate $\theta = \max X$, the maximum value $X$ can take. The statistician has access to 24 IID samples $X_1, X_2, \dots, X_{24}$ from this random variable which can be read into R as follows:
+
+```{r}
+   samples <- c(12.40,  2.99, 14.79,  3.59, 24.92,  4.11,
+             22.68, 28.30,  0.90,  8.84, 24.17, 31.31,
+             12.97, 12.43, 20.34, 14.75, 20.61, 10.93,
+             17.59, 30.88, 28.13,  0.83, 17.43, 20.78)
+```
 
 :::: {.subq}
 **(a)**   Explain why the plug-in estimator is $\theta^* = \max \{X_j : j = 1, \dots, 24\}$, and find the $\theta^*$ for this data.
