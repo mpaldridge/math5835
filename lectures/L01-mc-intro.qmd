@@ -2,7 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
-
+<!--
 Today, we'll start the first main topic of the module, which is called "Monte Carlo estimation". But first, a bit about the subject as a whole.
 
 ## What is statistical computing?
@@ -57,7 +57,7 @@ The name "Monte Carlo" was chosen because the use of randomness to solve such pr
 ## Examples
 
 Let's see some simple examples of Monte Carlo estimation using R.
-
+-->
 :::: {#exm-MCexp}
 {{< include ../examples/L01-1-MCexp.qmd >}}
 ::::
@@ -67,8 +67,9 @@ By the way: all R code "chunks" displayed in the notes should work perfectly if 
 ::: {#exm-MC2}
 {{< include ../examples/L01-2-MC2.qmd >}}
 :::
-
+<!--
 **Next time:** *We look at more examples of things we can estimate using the Monte Carlo method.*
+-->
 
 ::: {.mysummary}
 **Summary:**

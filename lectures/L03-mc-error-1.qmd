@@ -2,6 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
+<!--
 ## Estimation error
 
 Today we are going to analysing the accuracy of Monte Carlo estimation. But before talking about Monte Carlo estimation specifically, let's first remind ourselves of some concepts about error in statistical estimation more generally. We will use the following definitions.
@@ -108,16 +109,18 @@ Then we can similarly estimate the mean-square and root-mean-square errors by
 $$ \text{MSE} \approx \frac{1}{n}S^2 \qquad \text{and} \qquad \text{RMSE} \approx \sqrt{\frac{1}{n} S^2} = \frac{1}{\sqrt{n}}\,S  $$
 respectively.
 
-
+-->
 
 ::: {#exm-MCexp2}
 {{< include ../examples/L03-1-MCexp2.qmd >}}
 :::
 
+<!--
 Do another example!
 
 
 **Next time:** *We'll continue analysing Monte Carlo error, with more examples.*
+-->
 
 ::: {.mysummary}
 **Summary:**

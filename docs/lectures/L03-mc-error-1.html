@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,10 +71,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -216,16 +216,8 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#estimation-error" id="toc-estimation-error" class="nav-link active" data-scroll-target="#estimation-error"><span class="header-section-number">3.1</span> Estimation error</a></li>
-  <li><a href="#error-of-monte-carlo-estimator-theory" id="toc-error-of-monte-carlo-estimator-theory" class="nav-link" data-scroll-target="#error-of-monte-carlo-estimator-theory"><span class="header-section-number">3.2</span> Error of Monte Carlo estimator: theory</a></li>
-  <li><a href="#error-of-monte-carlo-estimator-practice" id="toc-error-of-monte-carlo-estimator-practice" class="nav-link" data-scroll-target="#error-of-monte-carlo-estimator-practice"><span class="header-section-number">3.3</span> Error of Monte Carlo estimator: practice</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -258,70 +250,114 @@ window.Quarto = {
 \newcommand{\Corr}{\operatorname{Corr}}
 \newcommand{\ee}{\mathrm{e}}\]</span></p>
 </div>
-<section id="estimation-error" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="estimation-error"><span class="header-section-number">3.1</span> Estimation error</h2>
-<p>Today we are going to analysing the accuracy of Monte Carlo estimation. But before talking about Monte Carlo estimation specifically, let’s first remind ourselves of some concepts about error in statistical estimation more generally. We will use the following definitions.</p>
-<div id="def-stats" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 3.1</strong></span> Let <span class="math inline">\(\widehat\theta\)</span> be an estimator of a parameter <span class="math inline">\(\theta\)</span>. Then we have the following definitions of the estimate <span class="math inline">\(\widehat\theta\)</span>:</p>
-<ul>
-<li><p>The <strong>bias</strong> is <span class="math inline">\(\operatorname{bias}\big(\widehat\theta\big) = \mathbb E\big(\widehat\theta - \theta\big)  = \mathbb E\widehat\theta - \theta\)</span>.</p></li>
-<li><p>The <strong>mean-square error</strong> is <span class="math inline">\(\operatorname{MSE}\big(\widehat\theta\big) = \mathbb E \big(\widehat\theta - \theta\big)^2\)</span>.</p></li>
-<li><p>The <strong>root-mean-square error</strong> is the square-root of the mean-square error, <span class="math display">\[\operatorname{RMSE}\big(\widehat\theta\big) = \sqrt{\operatorname{MSE}(\widehat\theta)} = \sqrt{\mathbb E (\widehat\theta - \theta)^2} . \]</span></p></li>
-</ul>
-</div>
-<p>Usually, the main goal of estimation is to get the mean-square error of an estimate as small as possible. This is because the MSE measures by what distance we are missing on average. It can be easier to interpret what the root-mean-square error means, as the RMSE has the same units as the parameter being measured: if <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\widehat{\theta}\)</span> are in metres, say, then the MSE is in metres-squared, whereas the RMSE error is in metres again. If you minimise the MSE you also minimise the RMSE and vice versa.</p>
-<p>It’s nice to have an “unbiased” estimator – that is, one with bias 0. This is because bias measures any systematic error in a particular direction. However, unbiasedness by itself is not enough for an estimate to be good – we need low variance too. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the right, then claims to have “hit the target on average.”)</p>
-<p>(Remember also that “bias” is simply the word statisticians use for <span class="math inline">\(\mathbb E(\widehat\theta - \theta)\)</span>; we don’t mean “bias” in the derogatory way it is sometimes used in political arguments, for example.)</p>
-<p>You probably also remember the relationship between the mean-square error, the bias, and the variance:</p>
-<div id="thm-MSE-bias" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 3.1</strong></span> &nbsp; <span class="math inline">\(\operatorname{MSE}\big(\widehat\theta\big) = \operatorname{bias}\big(\widehat\theta\big)^2 + \operatorname{Var}\big(\widehat\theta\big)\)</span>.</p>
-</div>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>The MSE is <span class="math display">\[\begin{align}
+<!--
+## Estimation error
+
+Today we are going to analysing the accuracy of Monte Carlo estimation. But before talking about Monte Carlo estimation specifically, let's first remind ourselves of some concepts about error in statistical estimation more generally. We will use the following definitions.
+
+::: {#def-stats}
+Let $\widehat\theta$ be an estimator of a parameter $\theta$. Then we have the following definitions of the estimate $\widehat\theta$:
+
+* The **bias** is $\operatorname{bias}\big(\widehat\theta\big) = \mathbb E\big(\widehat\theta - \theta\big)  = \mathbb E\widehat\theta - \theta$.
+
+* The **mean-square error** is $\operatorname{MSE}\big(\widehat\theta\big) = \mathbb E \big(\widehat\theta - \theta\big)^2$.
+
+* The **root-mean-square error** is the square-root of the mean-square error, $$\operatorname{RMSE}\big(\widehat\theta\big) = \sqrt{\operatorname{MSE}(\widehat\theta)} = \sqrt{\mathbb E (\widehat\theta - \theta)^2} . $$
+:::
+
+Usually, the main goal of estimation is to get the mean-square error of an estimate as small as possible. This is because the MSE measures by what distance we are missing on average. It can be easier to interpret what the root-mean-square error means, as the RMSE has the same units as the parameter being measured: if $\theta$ and $\widehat{\theta}$ are in metres, say, then the MSE is in metres-squared, whereas the RMSE error is in metres again. If you minimise the MSE you also minimise the RMSE and vice versa.
+
+It's nice to have an "unbiased" estimator -- that is, one with bias 0. This is because bias measures any systematic error in a particular direction. However, unbiasedness by itself is not enough for an estimate to be good -- we need low variance too. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the right, then claims to have "hit the target on average.")
+
+(Remember also that "bias" is simply the word statisticians use for $\mathbb E(\widehat\theta - \theta)$; we don't mean "bias" in the derogatory way it is sometimes used in political arguments, for example.)
+
+You probably also remember the relationship between the mean-square error, the bias, and the variance:
+
+::: {#thm-MSE-bias}
+ 
+$\operatorname{MSE}\big(\widehat\theta\big) = \operatorname{bias}\big(\widehat\theta\big)^2 + \operatorname{Var}\big(\widehat\theta\big)$.
+:::
+
+::: {.proof}
+The MSE is
+\begin{align}
   \operatorname{MSE}\big(\widehat\theta\big) = \Exg\big(\widehat\theta - \theta\big)^2
-    &amp;= \Exg \big(\widehat\theta^2 - 2\theta\widehat\theta + \theta\big)^2 \\
-    &amp;= \Exg \widehat\theta^2 - 2\theta \Exg \widehat\theta + \theta^2 ,
-\end{align}\]</span> where we have expanded the brackets and bought the expectation inside (remembering that <span class="math inline">\(\theta\)</span> is a constant). Since the variance can be written as <span class="math inline">\(\Var(\widehat\theta) = \Exg\widehat\theta^2 - (\Exg \widehat\theta)^2\)</span>, we can use a cunning trick of both subtracting and adding <span class="math inline">\((\Exg \widehat\theta)^2\)</span>. This gives <span class="math display">\[\begin{align}
+    &= \Exg \big(\widehat\theta^2 - 2\theta\widehat\theta + \theta\big)^2 \\
+    &= \Exg \widehat\theta^2 - 2\theta \Exg \widehat\theta + \theta^2 ,
+\end{align}
+where we have expanded the brackets and bought the expectation inside (remembering that $\theta$ is a constant). Since the variance can be written as $\Var(\widehat\theta) = \Exg\widehat\theta^2 - (\Exg \widehat\theta)^2$, we can use a cunning trick of both subtracting and adding $(\Exg \widehat\theta)^2$. This gives
+\begin{align}
 \operatorname{MSE}\big(\widehat\theta\big)
-  &amp;= \Exg \widehat\theta^2 - \big(\!\Exg \widehat\theta\big)^2 + \big(\!\Exg \widehat\theta\big)^2 - 2\theta \Exg \widehat\theta + \theta^2 \\
-  &amp;= \Var\big(\widehat\theta\big) + \big( (\Exg \widehat\theta)^2 - 2\theta \Exg \widehat\theta + \theta^2 \big) \\
-  &amp;= \Var\big(\widehat\theta\big) + \big( \! \Exg \widehat\theta - \theta\big)^2 \\
-  &amp;= \Var\big(\widehat\theta\big) + \operatorname{bias}(\widehat\theta)^2 .
-\end{align}\]</span> This proves the result.</p>
-</div>
-<p>Since the bias contributes to the mean-square error, that’s another reason to like estimator with low – or preferably zero – bias. But again, unbiasedness isn’t enough by itself; we want low variance too. (There are some situations where there’s a “bias–variance tradeoff”, where allowing some bias reduces the variance and so can reduce the MSE. It turns out that Monte Carlo is not one of these cases, however.)</p>
-</section>
-<section id="error-of-monte-carlo-estimator-theory" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="error-of-monte-carlo-estimator-theory"><span class="header-section-number">3.2</span> Error of Monte Carlo estimator: theory</h2>
-<p>In this lecture, we’re going to be looking more carefully at the size of the errors made by the Monte Carlo estimator <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) . \]</span></p>
-<p>Our main result is the following.</p>
-<div id="thm-MCerr" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 3.2</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) \]</span> be the Monte Carlo estimator of <span class="math inline">\(\theta\)</span>. Then:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is unbiased, in that <span class="math inline">\(\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = 0\)</span>.</p></li>
-<li><p>The variance of of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>The mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>The root-mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math display">\[{\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} = \frac{1}{\sqrt{n}} \, \operatorname{sd}\big(\phi(X)\big)}. \]</span></p></li>
-</ol>
-</div>
-<p>Before we get to the proof, let’s recap some relevant probability.</p>
-<p>Let <span class="math inline">\(Y_1, Y_2, \dots\)</span> be IID random variables with common expectation <span class="math inline">\(\mathbb EY_1 = \mu\)</span> and common variance <span class="math inline">\(\operatorname{Var}(Y_1) = \sigma^2\)</span>. Consider the mean of the first <span class="math inline">\(n\)</span> random variables, <span class="math display">\[ \overline{Y}_n = \frac{1}{n} \sum_{i=1}^n Y_i . \]</span> Then the expectation of <span class="math inline">\(\overline{Y}_n\)</span> is <span class="math display">\[ \mathbb E \overline{Y}_n = \mathbb E\left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \frac{1}{n}
-\sum_{i=1}^n \mathbb{E}Y_i = \frac{1}{n}\,n\,\mu = \mu . \]</span> The variance of <span class="math inline">\(\overline{Y}_n\)</span> is <span class="math display">\[ \operatorname{Var}\big(  \overline{Y}_n \big)= \operatorname{Var} \left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \bigg(\frac{1}{n}\bigg)^2
-\sum_{i=1}^n \operatorname{Var}(Y_i) = \frac{1}{n^2}\,n\,\sigma^2 = \frac{\sigma^2}{n} , \]</span> where, for this one, we used the independence of the random variables.</p>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>Apply the probability facts from above with <span class="math inline">\(Y = \phi(X)\)</span>. This gives:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex \overline Y_n = \Ex Y = \Exg \phi(X)\)</span>, so <span class="math inline">\(\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0\)</span>.</p></li>
-<li><p><span class="math inline">\({\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \operatorname{Var}\big(\overline Y_n\big) = \frac{1}{n} \operatorname{Var}(Y) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>Using <a href="#thm-MSE-bias" class="quarto-xref">Theorem&nbsp;<span>3.1</span></a>, <span class="math display">\[\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}})^2 + \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = 0^2 + \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) . \]</span></p></li>
-<li><p>Take the square root of part 3.</p></li>
-</ol>
-</div>
-</section>
-<section id="error-of-monte-carlo-estimator-practice" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="error-of-monte-carlo-estimator-practice"><span class="header-section-number">3.3</span> Error of Monte Carlo estimator: practice</h2>
-<p>There’s a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we <em>couldn’t</em> calculate <span class="math inline">\(\Exg \phi(X)\)</span>. So it seems very unlikely we’ll be able to calculate the variance <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span> either. So how will be able to assess the mean-square (or root-mean-square) error of our Monte Carlo estimator?</p>
-<p>Well, we can’t know it exactly. But we <em>can</em> estimate the variance from the samples we are already using: by taking the sample variance of the samples <span class="math inline">\(\phi(x_i)\)</span>. That is, we can estimate the variance of the Monte Carlo estimator by the sample variance <span class="math display">\[ S^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(X_i) - \widehat{\theta}_n^{\mathrm{MC}} \big)^2 . \]</span> Then we can similarly estimate the mean-square and root-mean-square errors by <span class="math display">\[ \text{MSE} \approx \frac{1}{n}S^2 \qquad \text{and} \qquad \text{RMSE} \approx \sqrt{\frac{1}{n} S^2} = \frac{1}{\sqrt{n}}\,S  \]</span> respectively.</p>
+  &= \Exg \widehat\theta^2 - \big(\!\Exg \widehat\theta\big)^2 + \big(\!\Exg \widehat\theta\big)^2 - 2\theta \Exg \widehat\theta + \theta^2 \\
+  &= \Var\big(\widehat\theta\big) + \big( (\Exg \widehat\theta)^2 - 2\theta \Exg \widehat\theta + \theta^2 \big) \\
+  &= \Var\big(\widehat\theta\big) + \big( \! \Exg \widehat\theta - \theta\big)^2 \\
+  &= \Var\big(\widehat\theta\big) + \operatorname{bias}(\widehat\theta)^2 .
+\end{align}
+This proves the result.
+:::
+
+Since the bias contributes to the mean-square error, that's another reason to like estimator with low -- or preferably zero -- bias. But again, unbiasedness isn't enough by itself; we want low variance too. (There are some situations where there's a "bias--variance tradeoff", where allowing some bias reduces the variance and so can reduce the MSE. It turns out that Monte Carlo is not one of these cases, however.)
+
+## Error of Monte Carlo estimator: theory
+
+In this lecture, we're going to be looking more carefully at the size of the errors made by the Monte Carlo estimator
+$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) . $$
+
+Our main result is the following.
+
+::: {#thm-MCerr}
+Let $X$ be a random variable, $\phi$ a function, and $\theta = \Exg\phi(X)$. Let
+$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) $$
+be the Monte Carlo estimator of $\theta$. Then:
+
+1. $\widehat{\theta}_n^{\mathrm{MC}}$ is unbiased, in that $\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = 0$.
+
+1. The variance of of $\widehat{\theta}_n^{\mathrm{MC}}$ is 
+${\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$.
+
+1. The mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is 
+${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$.
+
+1. The root-mean-square error of $\widehat{\theta}_n^{\mathrm{MC}}$ is 
+$${\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} = \frac{1}{\sqrt{n}} \, \operatorname{sd}\big(\phi(X)\big)}. $$
+:::
+
+Before we get to the proof, let's recap some relevant probability.
+
+Let $Y_1, Y_2, \dots$ be IID random variables with common expectation $\mathbb EY_1 = \mu$ and common variance $\operatorname{Var}(Y_1) = \sigma^2$. Consider the mean of the first $n$ random variables,
+$$ \overline{Y}_n = \frac{1}{n} \sum_{i=1}^n Y_i . $$
+Then the expectation of $\overline{Y}_n$ is
+$$ \mathbb E \overline{Y}_n = \mathbb E\left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \frac{1}{n} 
+\sum_{i=1}^n \mathbb{E}Y_i = \frac{1}{n}\,n\,\mu = \mu . $$
+The variance of $\overline{Y}_n$ is
+$$ \operatorname{Var}\big(  \overline{Y}_n \big)= \operatorname{Var} \left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \bigg(\frac{1}{n}\bigg)^2 
+\sum_{i=1}^n \operatorname{Var}(Y_i) = \frac{1}{n^2}\,n\,\sigma^2 = \frac{\sigma^2}{n} , $$
+where, for this one, we used the independence of the random variables.
+
+::: {.proof}
+Apply the probability facts from above with $Y = \phi(X)$. This gives:
+
+1. $\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex \overline Y_n = \Ex Y = \Exg \phi(X)$, so $\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0$.
+
+1. ${\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \operatorname{Var}\big(\overline Y_n\big) = \frac{1}{n} \operatorname{Var}(Y) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}$.
+
+1. Using @thm-MSE-bias,
+$$\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}})^2 + \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = 0^2 + \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) . $$
+
+1. Take the square root of part 3.
+:::
+
+## Error of Monte Carlo estimator: practice
+
+There's a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we *couldn't* calculate $\Exg \phi(X)$. So it seems very unlikely we'll be able to calculate the variance $\operatorname{Var}(\phi(X))$ either. So how will be able to assess the mean-square (or root-mean-square) error of our Monte Carlo estimator?
+
+Well, we can't know it exactly. But we *can* estimate the variance from the samples we are already using: by taking the sample variance of the samples $\phi(x_i)$. That is, we can estimate the variance of the Monte Carlo estimator by the sample variance
+$$ S^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(X_i) - \widehat{\theta}_n^{\mathrm{MC}} \big)^2 . $$
+Then we can similarly estimate the mean-square and root-mean-square errors by
+$$ \text{MSE} \approx \frac{1}{n}S^2 \qquad \text{and} \qquad \text{RMSE} \approx \sqrt{\frac{1}{n} S^2} = \frac{1}{\sqrt{n}}\,S  $$
+respectively.
+
+-->
 <div id="exm-MCexp2" class="theorem example">
 <p><span class="theorem-title"><strong>Example 3.1</strong></span> Let’s go back to the very first example in the module, <a href="L01-mc-intro.html#exm-MCexp" class="quarto-xref">Example&nbsp;<span>1.1</span></a>, where we were trying to find the expectation of an <span class="math inline">\(\operatorname{Exp}(2)\)</span> random variable. We used this R code:</p>
 <div class="cell">
@@ -330,7 +366,7 @@ window.Quarto = {
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5001026</code></pre>
+<pre><code>[1] 0.4997326</code></pre>
 </div>
 </div>
 <p>(Because Monte Carlo estimation is random, this won’t be the <em>exact</em> same estimate we had before, of course.)</p>
@@ -341,16 +377,20 @@ window.Quarto = {
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>RMSEest <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(MSEest)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(var_est, MSEest, RMSEest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.508338e-01 2.508338e-07 5.008331e-04</code></pre>
+<pre><code>[1] 2.497426e-01 2.497426e-07 4.997425e-04</code></pre>
 </div>
 </div>
-<p>The first number is <code>var_est</code> <span class="math inline">\(= 0.251\)</span>, the sample variance of our <span class="math inline">\(\phi(x_i)\)</span>s:<br>
+<p>The first number is <code>var_est</code> <span class="math inline">\(= 0.25\)</span>, the sample variance of our <span class="math inline">\(\phi(x_i)\)</span>s:<br>
 <span class="math display">\[ s^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(x_i) - \widehat{\theta}_n^{\mathrm{MC}}\big)^2 . \]</span> This should be a good estimate of the true variance <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span>. In fact, in this simple case, we know that <span class="math inline">\(\operatorname{Var}(X) = \frac{1}{2^2} = 0.25\)</span>, so we know that the estimate was good. In calculating this in the code, we used R’s <code>var()</code> function, which calculates the sample variance of some values.</p>
-<p>The second number is <code>MSEest</code> <span class="math inline">\(= 2.51\times 10^{-7}\)</span>, our estimate of the mean-square error. Since <span class="math inline">\(\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(\phi(X))\)</span>, then <span class="math inline">\(\frac{1}{n} s^2\)</span> should be a good estimate of the MSE.</p>
-<p>The third number is <code>RMSEest</code> <span class="math inline">\(= 5.01\times 10^{-4}\)</span> our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.</p>
+<p>The second number is <code>MSEest</code> <span class="math inline">\(= 2.5\times 10^{-7}\)</span>, our estimate of the mean-square error. Since <span class="math inline">\(\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(\phi(X))\)</span>, then <span class="math inline">\(\frac{1}{n} s^2\)</span> should be a good estimate of the MSE.</p>
+<p>The third number is <code>RMSEest</code> <span class="math inline">\(= 5\times 10^{-4}\)</span> our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.</p>
 </div>
-<p>Do another example!</p>
-<p><strong>Next time:</strong> <em>We’ll continue analysing Monte Carlo error, with more examples.</em></p>
+<!--
+Do another example!
+
+
+**Next time:** *We'll continue analysing Monte Carlo error, with more examples.*
+-->
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
@@ -358,12 +398,10 @@ window.Quarto = {
 <li><p>The Monte Carlo estimator has mean-square error <span class="math inline">\(\Var(\phi(X))/n\)</span>, so the root-mean-square error scales like <span class="math inline">\(1/\sqrt{n}\)</span>.</p></li>
 <li><p>The mean-square error can be estimated by <span class="math inline">\(S^2 / n\)</span>, where <span class="math inline">\(S^2\)</span> is the sample variance of <span class="math inline">\(\phi(X)\)</span>.</p></li>
 </ul>
-<p>On <a href="../problems/P1.html"><strong>Problem Sheet 1</strong></a>, you should now be able to answers Questions 1–6, except 2(c).</p>
 <p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.2.2.</p>
 </div>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -448,8 +486,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -560,7 +596,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
