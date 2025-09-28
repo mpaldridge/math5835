@@ -128,7 +128,5 @@ Do another example!
 
 * The mean-square error can be estimated by $S^2 / n$, where $S^2$ is the sample variance of $\phi(X)$.
 
-On [**Problem Sheet 1**](#P1), you should now be able to answers Questions 1--6, except 2(c).
-
 **Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 3.2.2.
 :::
