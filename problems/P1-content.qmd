@@ -101,7 +101,21 @@ We will probably spend a long time waiting for that much rain!
 :::::
 
 ::::: {.myq}
-**4.**      Let $h(x) = 1/(x + 0.1)$. We wish to estimate $\int_0^5 h(x) \, \mathrm{d}x$ using a Monte Carlo method.
+**4.**     ★ *(2024--25 exam, Question 1(d))* A statistician wants to estimate $\mathbb E(\cos X)$, where $X \sim \operatorname{Exp(4)}$ is an exponential
+distribution with rate 4. The statistician begins with a pilot study, as shown in the R session below:
+
+```{r, eval = FALSE}
+   > n <- 1e4
+> samples <- rexp(n, 4)
+> var(cos(samples))
+[1] 0.01416
+```
+
+            The statistician wants to get the root-mean-square error of her estimator down to $10^{−4}$. Approximately how many samples will she need for the full study? Explain your answer.
+:::::
+
+::::: {.myq}
+**5.**      Let $h(x) = 1/(x + 0.1)$. We wish to estimate $\int_0^5 h(x) \, \mathrm{d}x$ using a Monte Carlo method.
 
 :::: {.subq}
 **(a)**   Estimate the integral using $X$ uniform on $[0,5]$.
@@ -173,8 +187,9 @@ mean(phi(samples2))
 ::::
 :::::
 
+<!--
 :::: {.myq}
-**5.**      When calculating a Monte Carlo estimate $\frac{1}{n} \sum_{i=1}^n \phi(x_i)$, one might wish to first generate the $n$ samples $(x_1, x_2, \dots, x_n)$ and store them, and only then, after all samples are generated, finally calculate the estimate. However, when $n$ is extremely large, storing all $n$ samples uses up a lot of space in a computer's memory. Describe (in words, in R code, or in a mixture of the two) how the Monte Carlo estimate could be produced using much less memory.
+**6.**      When calculating a Monte Carlo estimate $\frac{1}{n} \sum_{i=1}^n \phi(x_i)$, one might wish to first generate the $n$ samples $(x_1, x_2, \dots, x_n)$ and store them, and only then, after all samples are generated, finally calculate the estimate. However, when $n$ is extremely large, storing all $n$ samples uses up a lot of space in a computer's memory. Describe (in words, in R code, or in a mixture of the two) how the Monte Carlo estimate could be produced using much less memory.
 
 ::: {.myanswers}
 *Solution.* The idea is to keep a "running total" of the $\phi(x_i)$s. Then we only have to store that running total, not all the samples. Once this has been done $n$ times, then divide by $n$ to get the estimate.
@@ -195,9 +210,10 @@ MCest <- total / n
 ```
 :::
 ::::
+-->
 
 :::: {.myq}
-**6.**      Show that the indicator functions $\mathbb I_A(X)$ and $\mathbb I_B(X)$ have correlation 0 if and only if the events $\{X \in A\}$ and $\{X \in B\}$ are independent.
+**6.**      ★ Show that the indicator functions $\mathbb I_A(X)$ and $\mathbb I_B(X)$ have correlation 0 if and only if the events $\{X \in A\}$ and $\{X \in B\}$ are independent.
 
 ::: {.myanswers}
 *Solution.* Recall that two random variables $U$, $V$ have correlation 0 if and only if their covariance $\Cov(U,V) = \Ex UV - (\Ex U)(\Ex V)$ is 0 too.
@@ -209,6 +225,7 @@ $$ \Cov \big(\Ind_A(X), \Ind_B(X) \big) = \mathbb P(X \in A \text{ and } X \in B
 If this is 0, then $\mathbb P(X \in A \text{ and } X \in B) = \mathbb P(X \in A)\, \mathbb P(X \in B)$, which is precisely the definition of those two events being independent.
 :::
 ::::
+
 
 
 ::::: {.myq}
@@ -262,7 +279,7 @@ So the control variates method is much, much better.
 :::::
 
 :::: {.myq}
-**8.**      Let $Z$ be a standard normal distribution. A statistician has been investigating Monte Carlo estimates of $\mathbb EZ^k$ for different positive integers values of $k$. Her colleague suggests using $Z' = -Z$ as an antithetic variable. Without running any R code, explain whether or not this is a good idea **(a)** when $k$ is even; **(b)** when $k$ is odd.
+**8.**      ★ Let $Z$ be a standard normal distribution. A statistician has been investigating Monte Carlo estimates of $\mathbb EZ^k$ for different positive integers values of $k$. Her colleague suggests using $Z' = -Z$ as an antithetic variable. Without running any R code, explain whether or not this is a good idea **(a)** when $k$ is even; **(b)** when $k$ is odd.
 
 ::: {.myanswers}
 *Solution.*

@@ -1,0 +1,33 @@
+---
+title:  "Assessment 2, Part 2: Random number generation"
+author: "MATH5300 Statistical Computing"
+output: html_document
+---
+
+This sheet sets out the tasks for the second part of Assessment 2. These tasks cover material on Monte Carlo estimation from Unit 3. You should write a short report explaining your solutions to these tasks. For administrative and other information about this coursework, see the instructions on the main Coursera page for this assessment. [EDITOR'S NOTE: Replace last sentence with appropriate instructions.]
+
+This R Markdown file should be opened in RStudio; I recommend the "Visual" editor -- see the top-left of the editing window.
+
+## Tasks
+
+The daily change in the the price of a stock is modelled as follows: it is assumed that the price is multiplied by a random variable $X$ that follows a log-normal distribution with parameters $m$ and $s$, so $\log X \sim \operatorname{N}(m, s^2)$. Recall from the first part of this assessment that R contains functions for dealing with the log-normal distribution, such as the function `dnorm(x, m, s)` for evaluating the PDF at $x$.
+
+We wish to investigate the distribution of the daily changes in the stock price. We assume that the "drift" $m = 0$ is known, while we choose to adopt a Bayesian approach to estimate the unknown "volatility" $s$. We take a prior distribution that $s \sim \operatorname{Exp}(1)$ is exponentially distributed with rate 1.
+
+Over one week, we observe that the daily changes by the following factors: $$ x_1 = 0.50 \quad x_2 = 1.67 \quad x_3 = 2.22 \quad x_4 = 0.22 \quad x_5 = 4.36 . $$ Using this data we want to learn about the volatility $s$.
+
+From Bayes' theorem we know that the posterior distribution of $s$ given the data $\mathbf{x} = (x_1, \dots, x_5)$ has density $$ \pi(s \mid \mathbf{x}) \propto \pi(s) \prod_{i=1}^5 f(x_i \mid s) , $$ where the prior distribution $\pi = \pi(s)$ is the density of the $\operatorname{Exp}(1)$ distribution and the likelihood $f(x_i \mid s)$ is the density of the log-normal distribution with parameters $m = 0$ and $s$.
+
+1. Explain why investigating the posterior analytically using "pencil and paper" might be very difficult.
+
+We decide to investigate the posterior by sampling from the posterior density $\pi(\cdot \mid \mathbf{x})$ using envelope rejection sampling.
+
+2.  Produce a plot of $\pi(s \mid \mathbf{x})$ (up to the unknown constant) as a function of $s$ for the observations $\mathbf{x}$ listed above.
+
+3. Choose an appropriate proposal density $g = g(s)$ for the rejection sampling method. Choose a value for the constant $c$ in the envelope rejection sampling algorithm. Explain why you made these choices, using plots where this helps justify your choices.
+
+4. Implement the envelope rejection sampling algorithm. Generate at least $n = 10\,000$ samples from the posterior density $\pi(\cdot \mid \mathbf{x})$. Plot a histogram of these samples.
+
+5. Compare the posterior distribution to the prior distribution, and comment on any similarities or differences.
+
+6. Discuss some ways in which we might improve our investigation of the changes of the price of this stock. Your answer should cover improvements to the modelling, to the computational approach, and any other issues you think could be improved.

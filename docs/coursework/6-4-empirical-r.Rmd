@@ -1,0 +1,59 @@
+---
+title:  "Lab 6.4: Empirical distributions in R"
+author: "MATH5300 Statistical Computing"
+output: html_document
+---
+
+In Reading 6.3 we introduced the empirical distribution $X^*$. Recall that, given a dataset $\mathbf{x} = (x_1, x_2, \dots, x_m)$, the empirical distribution has PMF $p^*$, where $p^*(x)$ is the proportion of datapoints whose value was $x$, or the number of datapoints whose value was $x$ divided by $m$.
+
+We will use the following data set. The heights (in cm) of 20 student's surveyed in a University of Leeds statistics module a few years ago was as follows.
+
+```{r}
+heights <- c(
+  180, 182, 182, 181, 164, 180, 154, 153, 177, 190,
+  182, 175, 167, 168, 185, 153, 172, 177, 176, 170
+)
+m <- length(heights)
+```
+
+Run this code (for example by pressing the green "play" button, if you are using RStudio's "Visual" mode).
+
+In R, the `table()` function tells us how many outcomes we had of each value. We can then find the empirical PMF $p^*$ by dividing this by $m$.
+
+```{r}
+table(heights)
+emp <- table(heights) / m
+emp
+plot(emp, lwd = 3, col = "blue", ylab = "p*")
+```
+
+We can also sample from the empirical distribution $X^*$. Recall that we said taking IID samples from $X^*$ is equivalent to sampling from $\mathbf x$ with replacement. Here is a sample of $n = 30$ heights. (Note that this is more than the $m = 20$ datapoints we had – but this is no problem if we are sampling with replacement.)
+
+```{r}
+sample(heights, 30, replace = TRUE)
+```
+
+Make sure you use `replace = TRUE` to ensure you are sampling **with** replacement.
+
+We also saw in the last reading that the expectation of the empirical distribution is the sample mean, and that the variance of the empirical distribution is like the sample variance except divided by $m$, not $m-1$. These expectation of the empirical distribution can be calculated in R as follows.
+
+```{r}
+emp_exp <- mean(heights)
+emp_exp
+```
+
+> **Exercise 1.** Add code to calculate variance of the empirical distribution.
+
+(You should find that the answer is 109.64.)
+
+We also discussed how it can be more convenient to work with the empirical CDF $F^*$. R has a special function for forming the empirical CDF, which is `ecdf()`.
+
+```{r}
+Fstar <- ecdf(heights)
+plot(Fstar, main = "Empirical CDF of heights",
+     xlab = "height (cm)", ylab = "empirical CDF")
+```
+
+The object produced by `ecdf()` is a function. So now that we have formed the function `Fstar()` using `ecdf()` we can use `Fstar()` as a function and evaluate it at different values.
+
+> **Exercise 2.** What is the empirical CDF of the height data evaluated at 172.3? What proportion of students in the class had height below the average height?

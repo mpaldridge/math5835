@@ -1,7 +1,7 @@
 Let's suppose we've forgotten the expectation of the exponential distribution $X \sim \operatorname{Exp}(2)$ with rate 2. In this simple case, we could work out the answer using the PDF $f(x) = 2\mathrm{e}^{-2x}$ as\
-$$ \mathbb E X = \int_0^\infty x\,2\mathrm{e}^{-2x}\,\mathrm{d}x $$(and, without too much difficulty, get the answer $\frac12$). But instead, let's do this the Monte Carlo way.
+$$ \mathbb E X = \int_0^\infty x\,2\mathrm{e}^{-2x}\,\mathrm{d}x $$and, without too much difficulty, get the answer $\frac12$. But instead, let's do this the Monte Carlo way.
 
-In R, we can use the `rexp()` function to get IID samples from the exponential distribution: the full syntax is `rexp(n, rate)`, which gives `n` samples from an exponential distribution with rate `rate`. So our code here should be
+In R, we can use the `rexp()` function to get IID samples from the exponential distribution: the full syntax is `rexp(n, rate)`, which gives `n` samples from an exponential distribution with rate `rate`. The following code takes the mean of $n = 100$ samples from the exponential distribution.
 
 ```{r}
 n <- 100
@@ -10,9 +10,9 @@ MCest <- (1 / n) * sum(samples)
 MCest
 ```
 
-So our Monte Carlo estimate is `{r} format(round(MCest, 5), nsmall = 5)`, to 5 decimal places.
+So our Monte Carlo estimate is `{r} format(round(MCest, 4), nsmall = 4)`, to 4 decimal places.
 
-To get a (hopefully) more accurate estimation, we can use more samples. We could also simplify the third line of this code by using the `mean()` function.
+That's fairly close to the correct answer of $\frac12$. But we should (hopefully) be able to get a more accurate estimation if we use more samples. We could also simplify the third line of our code by using the `mean()` function.
 
 ```{r}
 n <- 1e6
@@ -21,6 +21,6 @@ MCest <- mean(samples)
 MCest
 ```
 
-(In the second line, `1e6` is R code for the scientific notation $1 \times 10^6$, or a million. I just picked this as "a big number, but where my code still only took a few seconds to run.")
+In the second line, `1e6` is R code for the scientific notation $1 \times 10^6$, or a million. I just picked this as "a big number, but where my code still only took a few seconds to run."
 
-Our new Monte Carlo estimate is `{r} format(round(MCest, 5), nsmall = 5)`, which is much closer to the true value of $\frac12$.
+Our new Monte Carlo estimate is `{r} format(round(MCest, 4), nsmall = 4)`, which is (probably) much closer to the true value of $\frac12$.

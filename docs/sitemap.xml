@@ -2,142 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://mpaldridge.github.io/math5835/index.html</loc>
-    <lastmod>2024-11-28T11:30:04.738Z</lastmod>
+    <lastmod>2025-09-27T21:03:03.090Z</lastmod>
   </url>
   <url>
     <loc>https://mpaldridge.github.io/math5835/lectures/L01-mc-intro.html</loc>
-    <lastmod>2024-10-04T16:59:09.171Z</lastmod>
+    <lastmod>2025-09-28T18:12:21.005Z</lastmod>
   </url>
   <url>
     <loc>https://mpaldridge.github.io/math5835/lectures/L02-mc-uses.html</loc>
-    <lastmod>2024-10-03T08:43:09.168Z</lastmod>
+    <lastmod>2024-10-08T09:27:19.310Z</lastmod>
   </url>
   <url>
     <loc>https://mpaldridge.github.io/math5835/lectures/L03-mc-error-1.html</loc>
-    <lastmod>2024-10-04T12:22:58.403Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L04-mc-error-2.html</loc>
-    <lastmod>2024-10-07T16:14:10.442Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L05-cv.html</loc>
-    <lastmod>2024-10-11T12:29:58.597Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L06-antithetic-1.html</loc>
-    <lastmod>2024-10-14T15:07:32.552Z</lastmod>
+    <lastmod>2025-09-28T19:01:18.355Z</lastmod>
   </url>
   <url>
     <loc>https://mpaldridge.github.io/math5835/problems/P1.html</loc>
-    <lastmod>2024-10-17T12:42:44.340Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L07-antithetic-2.html</loc>
-    <lastmod>2024-10-17T23:52:04.343Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L08-is-1.html</loc>
-    <lastmod>2024-10-21T10:02:20.989Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L09-is-2.html</loc>
-    <lastmod>2024-11-08T02:18:13.168Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L10-rng-intro.html</loc>
-    <lastmod>2024-10-28T19:17:54.904Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L11-lcg.html</loc>
-    <lastmod>2024-10-28T08:31:08.439Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/problems/P2.html</loc>
-    <lastmod>2024-10-31T13:12:21.096Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L12-uniform-discrete.html</loc>
-    <lastmod>2024-10-29T12:16:49.929Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L13-inverse.html</loc>
-    <lastmod>2024-11-04T12:39:31.970Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L14-rejection.html</loc>
-    <lastmod>2024-11-04T23:34:29.517Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L15-envelope-1.html</loc>
-    <lastmod>2024-11-09T14:04:34.144Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L16-envelope-2.html</loc>
-    <lastmod>2024-11-11T13:06:16.541Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/problems/P3.html</loc>
-    <lastmod>2024-11-25T10:30:23.897Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L17-markov-intro.html</loc>
-    <lastmod>2024-11-15T12:18:12.557Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L18-markov-longrun.html</loc>
-    <lastmod>2024-11-18T10:56:09.597Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L19-mh-1.html</loc>
-    <lastmod>2024-11-18T22:35:54.281Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L20-markov-cont.html</loc>
-    <lastmod>2024-11-21T12:49:41.877Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L21-mh-2.html</loc>
-    <lastmod>2024-11-25T21:22:25.136Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/problems/P4.html</loc>
-    <lastmod>2024-12-05T09:27:33.995Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L22-mcmc-error.html</loc>
-    <lastmod>2024-11-25T13:47:18.393Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L23-bayes.html</loc>
-    <lastmod>2024-11-30T01:16:04.651Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L24-empirical.html</loc>
-    <lastmod>2024-12-02T15:12:05.170Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L25-plugin.html</loc>
-    <lastmod>2024-12-05T22:20:56.350Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L26-bootstrap-error.html</loc>
-    <lastmod>2025-01-13T16:42:50.269Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/lectures/L27-bootstrap-ci.html</loc>
-    <lastmod>2025-01-08T10:45:50.666Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/problems/P5.html</loc>
-    <lastmod>2024-12-05T09:27:33.996Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/coursework/coursework.html</loc>
-    <lastmod>2024-12-02T13:21:45.745Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mpaldridge.github.io/math5835/problems/solutions.html</loc>
-    <lastmod>2024-12-30T10:51:30.897Z</lastmod>
+    <lastmod>2025-09-28T21:54:05.507Z</lastmod>
   </url>
 </urlset>
