@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -279,31 +245,69 @@ With this idea in hand, how do we estimate $\theta = \mathbb P(X \in A)$ using t
 We remember that $\Ind_A(X_i)$ is 1 if $X_i \in A$ and 0 otherwise. So if we add up $n$ of these, we count an extra +1 each time we have an $X_i \in A$. So $\sum_{i=1}^n \Ind_A(X_i)$ counts the total number of the $X_i$ that are in $A$. So the Monte Carlo estimator can be written as $$  \widehat{\theta}_n^{\mathrm{MC}} = \frac{\# \text{ of } X_i \text{ that are in $A$}}{n} . $$
 
 Although we've had to do a bit of work to get here, this a totally logical outcome! The right-hand side here is the proportion of the samples for which $X_i \in A$. And if we want to estimate the probability something happens, looking at the proportion of times it happens in a random sample is very much the "intuitive" estimate to take. And that intuitive estimate is indeed the Monte Carlo estimate!
--->
-<div id="exm-MCprob" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.1</strong></span> <em>Let</em> <span class="math inline">\(Z \sim \operatorname{N}(0,1)\)</span> <em>be a standard normal distribution. Estimate</em> <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span><em>.</em></p>
-<p>This is a question that it is impossible to answer exactly using a pencil and paper: there’s no closed form for <span class="math display">\[ \mathbb P(Z &gt; 2) = \int_2^\infty \frac{1}{\sqrt{2\pi}}\,\mathrm{e}^{-z^2/2}\,\mathrm{d}z , \]</span> so we’ll have to use an estimation method.</p>
-<p>The Monte Carlo estimate means taking a random sample <span class="math inline">\(Z_1, Z_2, \dots, Z_n\)</span> of standard normals, and calculating what proportion of them are greater than 2. In R, we can do this as follows.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022873</code></pre>
-</div>
-</div>
-<p>In the second line, we could have written <code>rnorm(n, 0, 1)</code>. But, if you don’t give the parameters <code>mean</code> and <code>sd</code> to the function <code>rnorm()</code>, R just assumes you want the standard normal with <code>mean = 0</code> and <code>sd = 1</code>.</p>
-<p>We can check our answer: R’s inbuilt <code>pnorm()</code> function estimates probabilities for the normal distribution (using a method that, in this specific case, is much quicker and more accurate than Monte Carlo estimation). The true answer is very close to</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">2</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.02275013</code></pre>
-</div>
-</div>
-<p>so our estimate was pretty good.</p>
-</div>
-<!--
+
+
+::: {#exm-MCprob}
+
+*Let* $Z \sim \operatorname{N}(0,1)$ *be a standard normal distribution. Estimate* $\mathbb P(Z > 2)$*.*
+
+This is a question that it is impossible to answer exactly using a pencil and paper: there's no closed form for $$ \mathbb P(Z > 2) = \int_2^\infty \frac{1}{\sqrt{2\pi}}\,\mathrm{e}^{-z^2/2}\,\mathrm{d}z , $$ so we'll have to use an estimation method.
+
+The Monte Carlo estimate means taking a random sample $Z_1, Z_2, \dots, Z_n$ of standard normals, and calculating what proportion of them are greater than 2. In R, we can do this as follows.
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+n <- 1e6
+samples <- rnorm(n)
+MCest <- mean(samples > 2)
+MCest
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+[1] 0.022873
+```
+
+
+:::
+:::
+
+
+
+In the second line, we could have written `rnorm(n, 0, 1)`. But, if you don't give the parameters `mean` and `sd` to the function `rnorm()`, R just assumes you want the standard normal with `mean = 0` and `sd = 1`.
+
+We can check our answer: R's inbuilt `pnorm()` function estimates probabilities for the normal distribution (using a method that, in this specific case, is much quicker and more accurate than Monte Carlo estimation). The true answer is very close to
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+pnorm(2, lower.tail = FALSE)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+[1] 0.02275013
+```
+
+
+:::
+:::
+
+
+
+so our estimate was pretty good.
+
+
+:::
+
+
 We should explain the third line in the code we used for the Monte Carlo estimation `mean(samples > 2)`. In R, some statements can be answered "true" or "false": these are often statements involving equality `==` (that's a *double* equals sign) or inequalities like `<`, `<=`, `>=`, `>`, for example. So `5 > 2` is `TRUE` but `3 == 7` is `FALSE`. These can be applied "component by component" to vectors. So, for example, testing which numbers from 1 to 10 are greater than or equal to 7, we get
 
 
@@ -379,70 +383,126 @@ Consider an integral $\theta = \int_a^b h(x)\,\mathrm{d}x$. Let $f$ be the proba
 $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$
 where $X_1, X_2, \dots, X_n$ are a random sample from $X$.
 :::
--->
-<div id="exm-MCint" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.2</strong></span> Suppose we want to approximate the integral <span class="math display">\[ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x . \]</span></p>
-<p>Since this is an integral on the finite interval <span class="math inline">\([0,2]\)</span>, it would seem to make sense to pick <span class="math inline">\(X\)</span> to be uniform on <span class="math inline">\([0,2]\)</span>. This means we should take <span class="math display">\[\phi(x) = \frac{h(x)}{f(x)} = (2-0)h(x) = 2\,x^{1.6}(2-x)^{0.7}.\]</span> We can then approximate this integral in R using the Monte Carlo estimator <span class="math display">\[ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x = \operatorname{\mathbb{E}} \phi(X) \approx \frac{1}{n} \sum_{i=1}^n 2\,X_i^{1.6} (2-X_i)^{0.7} . \]</span></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="fl">1.6</span> <span class="sc">*</span> (<span class="dv">2</span> <span class="sc">-</span> x)<span class="sc">^</span><span class="fl">0.7</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, a, b)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>((b <span class="sc">-</span> a) <span class="sc">*</span> <span class="fu">integrand</span>(samples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.443793</code></pre>
-</div>
-</div>
-<p>You have perhaps noticed that, here and elsewhere, I tend to split my R code up into lots of small bits, perhaps slightly unnecessarily. After all, those 6 lines of code could simply have been written as just 2 lines</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fl">1e6</span>, <span class="dv">0</span>, <span class="dv">2</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="dv">2</span> <span class="sc">*</span> samples<span class="sc">^</span><span class="fl">1.6</span> <span class="sc">*</span> (<span class="dv">2</span> <span class="sc">-</span> samples)<span class="sc">^</span><span class="fl">0.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>There’s nothing <em>wrong</em> with that. However, I find that code is easier to read if divided into small pieces. It also makes it easier to tinker with, if I want to use it to solve some similar but slightly different problem.</p>
-</div>
-<div id="exm-MCint2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.3</strong></span> Suppose we want to approximate the integral <span class="math display">\[ \int_{-\infty}^{+\infty}
-\mathrm{e}^{-0.1|x|} \cos x \, \mathrm{d}x . \]</span> This one is an integral on the whole real line, so we can’t take a uniform distribution. Maybe we should take <span class="math inline">\(f(x)\)</span> to be the PDF of a normal distribution, and then put <span class="math display">\[ \phi(x) = \frac{h(x)}{f(x)} = \frac{\mathrm{e}^{-0.1|x|} \cos x}{f(x)} . \]</span></p>
-<p>But which normal distribution should we take? Well, we’re <em>allowed</em> to take any one – we will still get an accurate estimate in the limit as <span class="math inline">\(n \to \infty\)</span>. But we’d like an estimator that gives accurate results at moderate-sized <span class="math inline">\(n\)</span>, and picking a “good” distribution for <span class="math inline">\(X\)</span> will help that.</p>
-<p>We’ll probably get the best results if we pick a distribution that is likely to mostly take values where <span class="math inline">\(h(x)\)</span> is big – or, rather, where the absolute value <span class="math inline">\(|h(x)|\)</span> is big, to be precise. That is because we don’t want to “waste” too many samples where <span class="math inline">\(h(x)\)</span> is very small, because they don’t contribute much to the integral. But we don’t want to “miss” – or only sample very rarely – places where <span class="math inline">\(h(x)\)</span> is big, which contribute a lot to the integral.</p>
-<p>Let’s have a look at the graph of <span class="math inline">\(h(x) = \mathrm{e}^{-0.1|x|} \cos x\)</span>.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code for drawing this graph</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">abs</span>(x)) <span class="sc">*</span> <span class="fu">cos</span>(x)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  integrand, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="sc">-</span><span class="dv">55</span>, <span class="at">to =</span> <span class="dv">55</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">3</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"integrand h(x)"</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">50</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="L02-mc-uses_files/figure-html/h-graph-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>This suggests to me that a mean of 0 and a standard deviation of 20 might work quite well, since this will tend to take values in <span class="math inline">\([-40,40]\)</span> or so.</p>
-<p>We will use R’s function <code>dnorm()</code> for the probability density function of the normal distribution (which saves us from having to remember what that is).</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">abs</span>(x)) <span class="sc">*</span> <span class="fu">cos</span>(x)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>pdf       <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="dv">0</span>, <span class="dv">20</span>)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>phi       <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">integrand</span>(x) <span class="sc">/</span> <span class="fu">pdf</span>(x)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">20</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">phi</span>(samples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.235336</code></pre>
-</div>
-</div>
-</div>
-<!--
+
+
+::: {#exm-MCint}
+
+Suppose we want to approximate the integral $$ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x . $$
+
+Since this is an integral on the finite interval $[0,2]$, it would seem to make sense to pick $X$ to be uniform on $[0,2]$. This means we should take $$\phi(x) = \frac{h(x)}{f(x)} = (2-0)h(x) = 2\,x^{1.6}(2-x)^{0.7}.$$ We can then approximate this integral in R using the Monte Carlo estimator $$ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x = \operatorname{\mathbb{E}} \phi(X) \approx \frac{1}{n} \sum_{i=1}^n 2\,X_i^{1.6} (2-X_i)^{0.7} . $$
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+n <- 1e6
+integrand <- function(x) x^1.6 * (2 - x)^0.7
+a <- 0
+b <- 2
+samples <- runif(n, a, b)
+mean((b - a) * integrand(samples))
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+[1] 1.443793
+```
+
+
+:::
+:::
+
+
+
+You have perhaps noticed that, here and elsewhere, I tend to split my R code up into lots of small bits, perhaps slightly unnecessarily. After all, those 6 lines of code could simply have been written as just 2 lines
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+samples <- runif(1e6, 0, 2)
+mean(2 * samples^1.6 * (2 - samples)^0.7)
+```
+:::
+
+
+
+There's nothing *wrong* with that. However, I find that code is easier to read if divided into small pieces. It also makes it easier to tinker with, if I want to use it to solve some similar but slightly different problem.
+
+
+:::
+
+
+::: {#exm-MCint2}
+
+Suppose we want to approximate the integral $$ \int_{-\infty}^{+\infty}
+\mathrm{e}^{-0.1|x|} \cos x \, \mathrm{d}x . $$ This one is an integral on the whole real line, so we can't take a uniform distribution. Maybe we should take $f(x)$ to be the PDF of a normal distribution, and then put $$ \phi(x) = \frac{h(x)}{f(x)} = \frac{\mathrm{e}^{-0.1|x|} \cos x}{f(x)} . $$
+
+But which normal distribution should we take? Well, we're *allowed* to take any one – we will still get an accurate estimate in the limit as $n \to \infty$. But we'd like an estimator that gives accurate results at moderate-sized $n$, and picking a "good" distribution for $X$ will help that.
+
+We'll probably get the best results if we pick a distribution that is likely to mostly take values where $h(x)$ is big -- or, rather, where the absolute value $|h(x)|$ is big, to be precise. That is because we don't want to "waste" too many samples where $h(x)$ is very small, because they don't contribute much to the integral. But we don't want to "miss" -- or only sample very rarely -- places where $h(x)$ is big, which contribute a lot to the integral.
+
+Let's have a look at the graph of $h(x) = \mathrm{e}^{-0.1|x|} \cos x$.
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-fold="true" code-summary="Code for drawing this graph"}
+integrand <- function(x) exp(-0.1 * abs(x)) * cos(x)
+
+curve(
+  integrand, n = 1001, from = -55, to = 55,
+  col = "blue", lwd = 3,
+  xlab = "x", ylab = "integrand h(x)", xlim = c(-50,50)
+)
+abline(h = 0)
+```
+
+::: {.cell-output-display}
+![](L02-mc-uses_files/figure-html/h-graph-1.svg){width=672}
+:::
+:::
+
+
+
+This suggests to me that a mean of 0 and a standard deviation of 20 might work quite well, since this will tend to take values in $[-40,40]$ or so.
+
+We will use R's function `dnorm()` for the probability density function of the normal distribution (which saves us from having to remember what that is).
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+n <- 1e6
+integrand <- function(x) exp(-0.1 * abs(x)) * cos(x)
+pdf       <- function(x) dnorm(x, 0, 20)
+phi       <- function(x) integrand(x) / pdf(x)
+
+samples <- rnorm(n, 0, 20)
+mean(phi(samples))
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+[1] 0.235336
+```
+
+
+:::
+:::
+
+
+
+
+:::
+
+
 **Next time:** *We will analyse the accuracy of these Monte Carlo estimates.*
 -->
 <div class="mysummary">

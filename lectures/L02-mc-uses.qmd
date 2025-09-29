@@ -31,13 +31,13 @@ With this idea in hand, how do we estimate $\theta = \mathbb P(X \in A)$ using t
 We remember that $\Ind_A(X_i)$ is 1 if $X_i \in A$ and 0 otherwise. So if we add up $n$ of these, we count an extra +1 each time we have an $X_i \in A$. So $\sum_{i=1}^n \Ind_A(X_i)$ counts the total number of the $X_i$ that are in $A$. So the Monte Carlo estimator can be written as $$  \widehat{\theta}_n^{\mathrm{MC}} = \frac{\# \text{ of } X_i \text{ that are in $A$}}{n} . $$
 
 Although we've had to do a bit of work to get here, this a totally logical outcome! The right-hand side here is the proportion of the samples for which $X_i \in A$. And if we want to estimate the probability something happens, looking at the proportion of times it happens in a random sample is very much the "intuitive" estimate to take. And that intuitive estimate is indeed the Monte Carlo estimate!
--->
+
 
 ::: {#exm-MCprob}
 {{< include ../examples/L02-1-MCprob.qmd >}}
 :::
 
-<!--
+
 We should explain the third line in the code we used for the Monte Carlo estimation `mean(samples > 2)`. In R, some statements can be answered "true" or "false": these are often statements involving equality `==` (that's a *double* equals sign) or inequalities like `<`, `<=`, `>=`, `>`, for example. So `5 > 2` is `TRUE` but `3 == 7` is `FALSE`. These can be applied "component by component" to vectors. So, for example, testing which numbers from 1 to 10 are greater than or equal to 7, we get
 
 ```{r}
@@ -77,7 +77,7 @@ Consider an integral $\theta = \int_a^b h(x)\,\mathrm{d}x$. Let $f$ be the proba
 $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$
 where $X_1, X_2, \dots, X_n$ are a random sample from $X$.
 :::
--->
+
 
 ::: {#exm-MCint}
 {{< include ../examples/L02-2-MCint.qmd >}}
@@ -88,7 +88,7 @@ where $X_1, X_2, \dots, X_n$ are a random sample from $X$.
 {{< include ../examples/L02-3-MCint2.qmd >}}
 :::
 
-<!--
+
 **Next time:** *We will analyse the accuracy of these Monte Carlo estimates.*
 -->
 

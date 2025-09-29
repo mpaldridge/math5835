@@ -109,13 +109,13 @@ Then we can similarly estimate the mean-square and root-mean-square errors by
 $$ \text{MSE} \approx \frac{1}{n}S^2 \qquad \text{and} \qquad \text{RMSE} \approx \sqrt{\frac{1}{n} S^2} = \frac{1}{\sqrt{n}}\,S  $$
 respectively.
 
--->
+
 
 ::: {#exm-MCexp2}
 {{< include ../examples/L03-1-MCexp2.qmd >}}
 :::
 
-<!--
+
 Do another example!
 
 

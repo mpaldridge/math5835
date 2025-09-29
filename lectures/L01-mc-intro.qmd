@@ -1,86 +1,184 @@
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
 # Introduction to Monte Carlo
 
 {{< include ../_header.qmd >}}
 
-<!--
-Today, we'll start the first main topic of the module, which is called "Monte Carlo estimation". But first, a bit about the subject as a whole.
+Today, we'll start the first main topic of the module, which is called
+"Monte Carlo estimation". But first, a bit about the subject as a whole.
 
 ## What is statistical computing?
 
-"Statistical computing" -- or "computational statistics" -- refers to the branch of statistics that involves not attacking statistical problems merely with a pencil and paper, but rather by combining human ingenuity with the immense calculating powers of computers.
+"Statistical computing" -- or "computational statistics" -- refers to
+the branch of statistics that involves not attacking statistical
+problems merely with a pencil and paper, but rather by combining human
+ingenuity with the immense calculating powers of computers.
 
-One of the big ideas here is **simulation**. Simulation is the idea that we can understand the properties of a random model not by cleverly working out the properties using theory -- this is usually impossible for anything but the simplest "toy models" -- but rather by running the model many times on a computer. From these many simulations, we can observe and measure things like the typical (or "expected") behaviour, the spread (or "variance") of the behaviour, and other things. This concept of simulation is at the heart of the module MATH5835M Statistical Computing.
+One of the big ideas here is **simulation**. Simulation is the idea that
+we can understand the properties of a random model not by cleverly
+working out the properties using theory -- this is usually impossible
+for anything but the simplest "toy models" -- but rather by running the
+model many times on a computer. From these many simulations, we can
+observe and measure things like the typical (or "expected") behaviour,
+the spread (or "variance") of the behaviour, and other things. This
+concept of simulation is at the heart of the module MATH5835M
+Statistical Computing.
 
-In particular, we will look at **Monte Carlo** estimation. Monte Carlo is about estimating a parameter, expectation or probability related to a random variable by taking many samples of that random variable, then computing a relevant sample mean from those samples. We will study Monte Carlo in its standard "basic" form, then look at ways we can make MOnte Carlo estimation more accurate (Lectures 1--9).
+In particular, we will look at **Monte Carlo** estimation. Monte Carlo
+is about estimating a parameter, expectation or probability related to a
+random variable by taking many samples of that random variable, then
+computing a relevant sample mean from those samples. We will study Monte
+Carlo in its standard "basic" form, then look at ways we can make Monte
+Carlo estimation more accurate (Lectures 1--9).
 
-To run a simulation -- for example, when performing Monte Carlo estimation -- one needs random numbers with the correct distribution. **Random number generation** (Lectures 10--16) will be an important part of this module. We will look first at how to generate randomness of any sort, and then how to get that randomness into the shape of the distributions we want.
+To run a simulation -- for example, when performing Monte Carlo
+estimation -- one needs random numbers with the correct distribution.
+**Random number generation** (Lectures 10--16) will be an important part
+of this module. We will look first at how to generate randomness of any
+sort, and then how to manipulate that randomness into the shape of the
+distributions we want.
 
-Sometimes, it's not possible to generate perfectly independent samples from exactly the distribution you want. But we can use the output of a process called a "Markov chain" to get "fairly independent" samples from nearly the distribution we want. When we perform Monte Carlo estimation with the output of a Markov chain, this is called **Markov chain Monte Carlo (MCMC)** (Lectures 17--23). MCMC has become a vital part of modern Bayesian statistical analysis.
+Sometimes, it's not possible to generate perfectly independent samples
+from exactly the distribution you want. But we can use the output of a
+process called a "Markov chain" to get "fairly independent" samples from
+nearly the distribution we want. When we perform Monte Carlo estimation
+with the output of a Markov chain, this is called **Markov chain Monte
+Carlo (MCMC)** (Lectures 17--23). MCMC has become a vital part of modern
+Bayesian statistical analysis.
 
-The final section of the module is about dealing with data. Choosing a random piece of data from a given dataset is a lot like generating a random number from a given distribution, and similar Monte Carlo estimation ideas can be used to find out about that data. We think of a dataset as being a sample from a population, and sampling again from that dataset is known as **resampling** (Lecture 24--27). The most important method of finding out about a population by using resampling from a dataset is called the "bootstrap", and we will study the bootstrap in detail.
+The final section of the module is about dealing with data. Choosing a
+random piece of data from a given dataset is a lot like generating a
+random number from a given distribution, and similar Monte Carlo
+estimation ideas can be used to find out about that data. We think of a
+dataset as being a sample from a population, and sampling again from
+that dataset is known as **resampling** (Lecture 24--27). The most
+important method of finding out about a population by using resampling
+from a dataset is called the "bootstrap", and we will study the
+bootstrap in detail.
 
-MATH5835M Statistical Computing is a *mathematics* module that will concentrate on the *mathematical* ideas that underpin statistical computing. It is not a programming module that will go deeply into the practical issues of the most efficient possible coding of the algorithms we study. But we will want to investigate the behaviour of the methods we learn about and to explore their properties, so will be computer programming to help us do that. We will be using the statistical programming language R, (although one could just as easily have used Python or other similar languages). As my PhD supervisor often told me: "You don't really understand a mathematical algorithm until you've coded it up yourself."
-
+MATH5835M Statistical Computing is a *mathematics* module that will
+concentrate on the *mathematical* ideas that underpin statistical
+computing. It is not a programming module that will go deeply into the
+practical issues of the most efficient possible coding of the algorithms
+we study. But we will want to investigate the behaviour of the methods
+we learn about and to explore their properties, so will be computer
+programming to help us do that. We will be using the statistical
+programming language R, (although one could just as easily have used
+Python or other similar languages). As my PhD supervisor often told me:
+"You don't really understand a mathematical algorithm until you've coded
+it up yourself."
 
 ## What is Monte Carlo estimation?
 
-Let $X$ be a random variable. We recall the **expectation** $\Ex X$ of $X$. If $X$ is discrete with probability mass function (PMF)  $p$, then the expectation of $X$ is
-$$ \Ex X = \sum_x x\,p(x) ;$$
-while if $X$ is continuous with probability density function (PDF) $f$, then the expectation is
-$$ \Ex X = \int_{-\infty}^{+\infty} x\,f(x)\,\mathrm{d}x . $$
-More generally, the expectation of a function $\phi$ of $X$ is
+Let $X$ be a random variable. We recall the **expectation** $\Ex X$ of
+$X$. If $X$ is discrete with probability mass function (PMF) $p$, then
+the expectation of $X$ is $$ \Ex X = \sum_x x\,p(x) ;$$ while if $X$ is
+continuous with probability density function (PDF) $f$, then the
+expectation is
+$$ \Ex X = \int_{-\infty}^{+\infty} x\,f(x)\,\mathrm{d}x . $$ More
+generally, the expectation of a function $\phi$ of $X$ is
 $$ \Exg \phi(X) = \begin{cases} {\displaystyle \sum_x \phi(x)\,p(x)} & \text{for $X$ discrete}\\ {\displaystyle \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x}  & \text{for $X$ continuous.} \end{cases}$$
 (This matches with the "plain" expectation when $\phi(x) = x$.)
 
-But how do we actually *calculate* an expectation like one of these? If $X$ is discrete and can only take a small, finite number of values, then we can simply add up the sum $\sum_x \phi(x)\,p(x)$. But otherwise, we just have to hope that $\phi$ and $p$ or $f$ are sufficiently "nice" that we can manage to work out the sum/integral using a pencil and paper (and our brain). But while this is often possible in the sort of "toy example" one comes across in maths or statistics lectures, this is very rare in "real life" problems.
+But how do we actually *calculate* an expectation like one of these? If
+$X$ is discrete and can only take a small, finite number of values, then
+we can simply add up the sum $\sum_x \phi(x)\,p(x)$. But otherwise, we
+just have to hope that $\phi$ and $p$ or $f$ are sufficiently "nice"
+that we can manage to work out the sum/integral using a pencil and paper
+(and our brain). But while this is often possible in the sort of "toy
+example" one comes across in maths or statistics lectures, this is very
+rare in "real life" problems.
 
-**Monte Carlo estimation** is the idea that we can get an approximate answer for $\Ex X$ or $\Exg \phi(X)$ if we have access to lots of samples from $X$. If we have access to $X_1, X_2 \dots, X_n$ , independent and identically distributed (IID) samples with the same distribution as $X$, then we already know that the mean
+**Monte Carlo estimation** is the idea that we can get an approximate
+answer for $\Ex X$ or $\Exg \phi(X)$ if we have access to lots of
+samples from $X$. If we have access to $X_1, X_2 \dots, X_n$ ,
+independent and identically distributed (IID) samples with the same
+distribution as $X$, then we already know that the mean
 $$ \overline X = \frac{1}{n}(X_1 + X_2 + \cdots + X_n) = \frac{1}{n} \sum_{i=1}^n X_i $$
-can be used to estimate the expectation $\mathbb EX$. We know that $\overline X$ is usually close to the expectation $\Ex X$, at least if if the number of samples $n$ is large; this is justified by the "law of large numbers", which says that $\overline X \to \mathbb EX$ as $n \to \infty$.
+can be used to estimate the expectation $\mathbb EX$. We know that
+$\overline X$ is usually close to the expectation $\Ex X$, at least if
+if the number of samples $n$ is large; this is justified by the "law of
+large numbers", which says that $\overline X \to \mathbb EX$ as
+$n \to \infty$.
 
 Similarly, we can use
 $$ \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) $$
-to estimate $\Exg \phi(X)$. Thaw law of large numbers again says that this estimate tends to the correct value $\Exg \phi(X)$ as $n \to \infty$.
+to estimate $\Exg \phi(X)$. The law of large numbers again says that
+this estimate tends to the correct value $\Exg \phi(X)$ as
+$n \to \infty$.
 
-In this module we will write that $X_1, X_2, \dots, X_n$ is a "**random sample** from $X$" to mean that $X_1, X_2, \dots, X_n$ are IID with the same distribution as $X$.
+In this module we will write that $X_1, X_2, \dots, X_n$ is a "**random
+sample** from $X$" to mean that $X_1, X_2, \dots, X_n$ are IID with the
+same distribution as $X$.
 
 ::: {#def-MCest}
-Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Then the **Monte Carlo estimator** $\widehat\theta_n^{\mathrm{MC}}$ of $\theta$ is
+Let $X$ be a random variable, $\phi$ a function, and write
+$\theta = \Exg\phi(X)$. Then the **Monte Carlo estimator**
+$\widehat\theta_n^{\mathrm{MC}}$ of $\theta$ is
 $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$
 where $X_1, X_2, \dots, X_n$ are a random sample from $X$.
 :::
 
-While general ideas for estimating using simulation go back a long time, the modern theory of Monte Carlo estimation was developed by the physicists [Stanislaw Ulam](https://en.wikipedia.org/wiki/Stanisław_Ulam) and [John von Neumann](https://en.wikipedia.org/wiki/John_von_Neumann). Ulam (who was Polish) and von Neumann (who was Hungarian) moved to the US in the early 1940s to work on the Manhattan project to build the atomic bomb (as made famous by the film *Oppenheimer*). Later in the 1940s, they worked together in the Los Alamos National Laboratory continuing their research on nuclear physics generally and nuclear weapons more specifically, where they used simulations on early computers to help them numerically solve difficult mathematical and physical problems.
+While general ideas for estimating using simulation go back a long time,
+the modern theory of Monte Carlo estimation was developed by the
+physicists [Stanislaw
+Ulam](https://en.wikipedia.org/wiki/Stanisław_Ulam) and [John von
+Neumann](https://en.wikipedia.org/wiki/John_von_Neumann). Ulam (who was
+Polish) and von Neumann (who was Hungarian) moved to the US in the early
+1940s to work on the Manhattan project to build the atomic bomb (as made
+famous by the film *Oppenheimer*). Later in the 1940s, they worked
+together in the Los Alamos National Laboratory continuing their research
+on nuclear physics generally and nuclear weapons more specifically,
+where they used simulations on early computers to help them numerically
+solve difficult mathematical and physical problems.
 
-The name "Monte Carlo" was chosen because the use of randomness to solve such problems reminded them of gamblers in the casinos of Monte Carlo, Monaco. Ulam and von Neumann also worked closely with another colleague Nicholas Metropolis, whose work we will study later in this module.
+The name "Monte Carlo" was chosen because the use of randomness to solve
+such problems reminded them of gamblers in the casinos of Monte Carlo,
+Monaco. Ulam and von Neumann also worked closely with another colleague
+Nicholas Metropolis, whose work we will study later in this module.
 
 ## Examples
 
 Let's see some simple examples of Monte Carlo estimation using R.
--->
-:::: {#exm-MCexp}
-{{< include ../examples/L01-1-MCexp.qmd >}}
-::::
 
-By the way: all R code "chunks" displayed in the notes should work perfectly if you copy-and-paste them into RStudio. (Indeed, when I compile these lecture notes in RStudio, all the R code gets run on my computer -- so I'm certain in must work correctly!) If you hover over a code chunk, a little "clipboard" icon should appear in the top-right, and clicking on that will copy it so you can paste it into RStudio. I strongly encourage playing about with the code as a good way to learn this material and explore further!
+::: {#exm-MCexp}
+{{< include ../examples/L01-1-MCexp.qmd >}}
+:::
+
+By the way: all R code "chunks" displayed in the notes should work
+perfectly if you copy-and-paste them into RStudio. (Indeed, when I
+compile these lecture notes in RStudio, all the R code gets run on my
+computer -- so I'm certain in must work correctly!) If you hover over a
+code chunk, a little "clipboard" icon should appear in the top-right,
+and clicking on that will copy it so you can paste it into RStudio. I
+strongly encourage playing about with the code as a good way to learn
+this material and explore further!
 
 ::: {#exm-MC2}
 {{< include ../examples/L01-2-MC2.qmd >}}
 :::
-<!--
-**Next time:** *We look at more examples of things we can estimate using the Monte Carlo method.*
--->
 
-::: {.mysummary}
+**Next time:** *We look at more examples of things we can estimate using
+the Monte Carlo method.*
+
+::: mysummary
 **Summary:**
 
-* Statistical computing is about solving statistical problems by combining human ingenuity with computing power.
+-   Statistical computing is about solving statistical problems by
+    combining human ingenuity with computing power.
 
-* The Monte Carlo estimate of $\Exg \phi(X)$ is
-$$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$
-where $X_1, \dots, X_n$ are IID random samples from $X$.
+-   The Monte Carlo estimate of $\Exg \phi(X)$ is
+    $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$
+    where $X_1, \dots, X_n$ are IID random samples from $X$.
 
-* Monte Carlo estimation typically gets more accurate as the number of samples $n$ gets bigger.
+-   Monte Carlo estimation typically gets more accurate as the number of
+    samples $n$ gets bigger.
 
-**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Section 3.1 and Subsection 3.2.1.
+**Read more:** [Voss, *An Introduction to Statistical
+Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031),
+Section 3.1 and Subsection 3.2.1.
 :::
