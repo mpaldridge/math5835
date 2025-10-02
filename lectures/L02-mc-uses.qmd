@@ -51,7 +51,7 @@ six `FALSE`s (for 1 to 6) followed by four `TRUE`s (for 7 to 10).
 
 We can also use `&` ("and") and `|` ("or") in true/false statements like these.
 
-But R also knows to treat `TRUE` like the number 1 and `FALSE` like the number 0. So if we add up some `TRUE`s and `FALSE`s, R simply counts how many `TRUE`s there are
+But R also knows to treat `TRUE` like the number 1 and `FALSE` like the number 0. (This is just like the concept of the indicator function we've been discussing.) So if we add up some `TRUE`s and `FALSE`s, R simply counts how many `TRUE`s there are
 
 ```{r}
 sum(1:10 >= 7)
