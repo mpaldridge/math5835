@@ -2,12 +2,15 @@
 
 {{< include ../_header.qmd >}}
 
-<!--
-## Monte Carlo for probabilities
-
 Quick recap: Last time we defined the Monte Carlo estimator for an expectation of a function of a random variable $\theta = \Exg \phi(X)$ to be $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , $$ where $X_1, X_2, \dots, X_n$ are independent random samples from $X$.
 
-But what if we want to find a *probability*, rather than an expectation? What if we want $\mathbb P(X = x)$ for some $x$, or $\mathbb P(X \geq a)$ for some $a$, or, more generally, $\mathbb P(X \in A)$ for some set $A$?
+Today we look at two other things we can estimate using Monte Carlo simulation: probabilities, and integrals.
+
+## Monte Carlo for probabilities
+
+
+
+What if we want to find a *probability*, rather than an expectation? What if we want $\mathbb P(X = x)$ for some $x$, or $\mathbb P(X \geq a)$ for some $a$, or, more generally, $\mathbb P(X \in A)$ for some set $A$?
 
 The key thing that will help us here is the *indicator function*. The indicator function simply tells us whether an outcome $x$ is in a set $A$ or not.
 
@@ -28,7 +31,7 @@ So the expectation of an indicator function a set is the probability that $X$ is
 
 With this idea in hand, how do we estimate $\theta = \mathbb P(X \in A)$ using the Monte Carlo method? We write $\theta = \Exg\Ind_A(X)$. Then our Monte Carlo estimator is $$  \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \Ind_A(X_i) . $$
 
-We remember that $\Ind_A(X_i)$ is 1 if $X_i \in A$ and 0 otherwise. So if we add up $n$ of these, we count an extra +1 each time we have an $X_i \in A$. So $\sum_{i=1}^n \Ind_A(X_i)$ counts the total number of the $X_i$ that are in $A$. So the Monte Carlo estimator can be written as $$  \widehat{\theta}_n^{\mathrm{MC}} = \frac{\# \text{ of } X_i \text{ that are in $A$}}{n} . $$
+We remember that $\Ind_A(X_i)$ is 1 if $X_i \in A$ and 0 otherwise. So if we add up $n$ of these, we count an extra +1 each time we have an $X_i \in A$. So $\sum_{i=1}^n \Ind_A(X_i)$ counts the total number of the $X_i$ that are in $A$. So the Monte Carlo estimator can be written as $$  \widehat{\theta}_n^{\mathrm{MC}} = \frac{\# \text{ of } X_i \text{ that are in $A$}}{n} . $$ (I'm using $\#$ as shorthand for "the number of".)
 
 Although we've had to do a bit of work to get here, this a totally logical outcome! The right-hand side here is the proportion of the samples for which $X_i \in A$. And if we want to estimate the probability something happens, looking at the proportion of times it happens in a random sample is very much the "intuitive" estimate to take. And that intuitive estimate is indeed the Monte Carlo estimate!
 
@@ -90,7 +93,7 @@ where $X_1, X_2, \dots, X_n$ are a random sample from $X$.
 
 
 **Next time:** *We will analyse the accuracy of these Monte Carlo estimates.*
--->
+
 
 ::: {.mysummary}
 **Summary:**
