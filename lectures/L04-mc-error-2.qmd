@@ -2,7 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
-
+<!--
 ## Recap
 
 Let's recap where we've got to. We know that the Monte Carlo estimator for $\theta = \Exg \phi(X)$ is 
@@ -69,6 +69,8 @@ More samples take more time, and cost more energy and money. Wouldn't it be nice
 
 
 **Next time:** *We begin our study of clever "variance reduction" methods for Monte Carlo estimation.* 
+
+-->
 
 ::: {.mysummary}
 **Summary:**

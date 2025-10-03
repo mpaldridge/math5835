@@ -2,13 +2,12 @@
 
 {{< include ../_header.qmd >}}
 
-<!--
 ## Estimation error
 
 Today we are going to analysing the accuracy of Monte Carlo estimation. But before talking about Monte Carlo estimation specifically, let's first remind ourselves of some concepts about error in statistical estimation more generally. We will use the following definitions.
 
 ::: {#def-stats}
-Let $\widehat\theta$ be an estimator of a parameter $\theta$. Then we have the following definitions of the estimate $\widehat\theta$:
+Let $\widehat\theta$ be an estimator of a parameter $\theta$. Then we have the following definitions of the estimator $\widehat\theta$:
 
 * The **bias** is $\operatorname{bias}\big(\widehat\theta\big) = \mathbb E\big(\widehat\theta - \theta\big)  = \mathbb E\widehat\theta - \theta$.
 
@@ -99,7 +98,11 @@ $$\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\wi
 1. Take the square root of part 3.
 :::
 
+Let's think about MSE $\frac{1}{n} \Var(\phi(X))$. The variance terms is some fixed fact about the random variable $X$ and the function $\phi$. So as $n$ gets bigger, $\frac{1}{n}$ gets smaller, so the MSE gets smaller, and the estimator gets more accurate. This goes back to what we said when we introduced the Monte Carlo estimator: we get a more accurate estimate by increasing $n$. More specifically, the MSE scales like $1\n$, or -- perhaps a more useful result -- the RMSE scales like $1/\sqrt{n}$. We'll come back to this in the next lecture.
+
 ## Error of Monte Carlo estimator: practice
+
+So when we form a Monte Carlo estimate $\hat\theta_n^{\text{MC}}$, we now know it will be unbiased. We'd also like to know it's mean-square and/or root-mean-square error too.
 
 There's a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we *couldn't* calculate $\Exg \phi(X)$. So it seems very unlikely we'll be able to calculate the variance $\operatorname{Var}(\phi(X))$ either. So how will be able to assess the mean-square (or root-mean-square) error of our Monte Carlo estimator?
 
@@ -115,12 +118,14 @@ respectively.
 {{< include ../examples/L03-1-MCexp2.qmd >}}
 :::
 
+::: {#exm-MCexp2}
+{{< include ../examples/L04-1-MCprob2.qmd >}}
+:::
 
-Do another example!
 
 
-**Next time:** *We'll continue analysing Monte Carlo error, with more examples.*
--->
+**Next time:** *We'll continue analysing Monte Carlo error, looking at confidence intervals and assessing how many samples to take..*
+
 
 ::: {.mysummary}
 **Summary:**
@@ -129,7 +134,7 @@ Do another example!
 
 * The Monte Carlo estimator has mean-square error $\Var(\phi(X))/n$, so the root-mean-square error scales like $1/\sqrt{n}$.
 
-* The mean-square error can be estimated by $S^2 / n$, where $S^2$ is the sample variance of $\phi(X)$.
+* The mean-square error can be estimated by $S^2 / n$, where $S^2$ is the sample variance of the $\phi(X_i)$.
 
 **Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 3.2.2.
 :::

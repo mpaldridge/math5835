@@ -2,6 +2,8 @@
 
 {{< include ../_header.qmd >}}
 
+
+<!--
 ## Estimation with correlation
 
 This lecture and the next, we will be looking at our second variance reduction method for Monte Carlo estimation: the use of antithetic variables." The word "antithetic" refers to using negative correlation to reduce the variance an estimator.
@@ -66,6 +68,8 @@ More generally, you might put a cost $c_1$ on each first variate and $c_2$ on ea
 Are these antithetic variables estimates an improvement on the basic Monte Carlo estimate? We'll find out next time.
 
 **Next time:** *We continue our study of the antithetic variables method with more examples and analysis of the error.*
+
+-->
 
 ::: {.mysummary}
 **Summary:**

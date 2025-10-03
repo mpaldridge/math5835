@@ -12,6 +12,8 @@ MCest
 So our root-mean-square error can be approximated as
 
 ```{r}
-RMSEest <- sqrt(var(samples > 2) / n)
-RMSEest
+MSEest <- var(samples > 2) / n
+sqrt(MSEest)
 ```
+
+since `samples > 2` is the indicator function of whether $X_i > 2$ or not.

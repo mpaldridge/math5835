@@ -1,6 +1,7 @@
 # Control variate
 
 {{< include ../_header.qmd >}}
+<!--
 
 ## Variance reduction
 
@@ -102,6 +103,8 @@ and estimate the MSE and RMSE by $S^2 / n$ and $S / \sqrt{n}$ respectively.
 :::
 
 **Next time:** *We look at our second variance reduction technique: antithetic variables.*
+
+-->
 
 ::: mysummary
 **Summary:**
