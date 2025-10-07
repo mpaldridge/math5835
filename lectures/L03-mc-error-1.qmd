@@ -118,7 +118,7 @@ respectively.
 {{< include ../examples/L03-1-MCexp2.qmd >}}
 :::
 
-::: {#exm-MCexp2}
+::: {#exm-MCprob2}
 {{< include ../examples/L04-1-MCprob2.qmd >}}
 :::
 

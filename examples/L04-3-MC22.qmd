@@ -27,4 +27,4 @@ RMSEest <- sqrt(var(sin(samples)) / n_real)
 RMSEest
 ```
 
-This was very slow, of course. But we see that we have indeed got our Monte Carlo estimate to (near enough) the desired accuracy.
+This second step was quite slow (depending on the speed of the computer being used – it was only about 5 seconds on my pretty-new laptop, but slower on my ancient work desktop). But we see that we have indeed got our Monte Carlo estimate to (near enough) the desired accuracy.
