@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,10 +71,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -350,7 +350,7 @@ window.Quarto = {
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4997326</code></pre>
+<pre><code>[1] 0.5001026</code></pre>
 </div>
 </div>
 <p>(Because Monte Carlo estimation is random, this won’t be the <em>exact</em> same estimate we had before, of course.)</p>
@@ -361,13 +361,13 @@ window.Quarto = {
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>RMSEest <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(MSEest)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(var_est, MSEest, RMSEest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.497426e-01 2.497426e-07 4.997425e-04</code></pre>
+<pre><code>[1] 2.508338e-01 2.508338e-07 5.008331e-04</code></pre>
 </div>
 </div>
-<p>The first number is <code>var_est</code> <span class="math inline">\(= 0.2497\)</span>, the sample variance of our <span class="math inline">\(\phi(x_i)\)</span>s:<br>
+<p>The first number is <code>var_est</code> <span class="math inline">\(= 0.2508\)</span>, the sample variance of our <span class="math inline">\(\phi(x_i)\)</span>s:<br>
 <span class="math display">\[ s^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(x_i) - \widehat{\theta}_n^{\mathrm{MC}}\big)^2 . \]</span> This should be a good estimate of the true variance <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span>. (In fact, in this simple case, we know that <span class="math inline">\(\operatorname{Var}(X) = \frac{1}{2^2} = 0.25\)</span>, so we know that the estimate is good.) In calculating this in the code, we used R’s <code>var()</code> function, which calculates the sample variance of some values.</p>
-<p>The second number is <code>MSEest</code> <span class="math inline">\(= 2.497\times 10^{-7}\)</span>, our estimate of the mean-square error. Since <span class="math inline">\(\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(\phi(X))\)</span>, then <span class="math inline">\(\frac{1}{n} S^2\)</span> should be a good estimate of the MSE.</p>
-<p>The third number is <code>RMSEest</code> <span class="math inline">\(= 5\times 10^{-4}\)</span> our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.</p>
+<p>The second number is <code>MSEest</code> <span class="math inline">\(= 2.508\times 10^{-7}\)</span>, our estimate of the mean-square error. Since <span class="math inline">\(\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(\phi(X))\)</span>, then <span class="math inline">\(\frac{1}{n} S^2\)</span> should be a good estimate of the MSE.</p>
+<p>The third number is <code>RMSEest</code> <span class="math inline">\(= 5.01\times 10^{-4}\)</span> our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.</p>
 </div>
 <div id="exm-MCprob2" class="theorem example">
 <p><span class="theorem-title"><strong>Example 3.2</strong></span> In <a href="L02-mc-uses.html#exm-MCprob" class="quarto-xref">Example&nbsp;<span>2.1</span></a>, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span>, where <span class="math inline">\(Z\)</span> is a standard normal.</p>
@@ -378,7 +378,7 @@ window.Quarto = {
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022299</code></pre>
+<pre><code>[1] 0.022727</code></pre>
 </div>
 </div>
 <p>So our root-mean-square error can be approximated as</p>
@@ -386,7 +386,7 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>MSEest <span class="ot">&lt;-</span> <span class="fu">var</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">/</span> n</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(MSEest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0001476542</code></pre>
+<pre><code>[1] 0.0001490319</code></pre>
 </div>
 </div>
 <p>since <code>samples &gt; 2</code> is the indicator function of whether <span class="math inline">\(X_i &gt; 2\)</span> or not.</p>
@@ -488,6 +488,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -598,6 +600,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
+      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

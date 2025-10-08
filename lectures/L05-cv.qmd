@@ -1,7 +1,6 @@
 # Control variate
 
 {{< include ../_header.qmd >}}
-<!--
 
 ## Variance reduction
 
@@ -15,19 +14,19 @@ Well, the mean-square error is the variance divided by $n$. So if we can't (or d
 
 -   **Antithetic variables:** Instead of using independent samples, we could use correlated samples. If the correlation is negative this can improve our estimate. (Lectures 6 and 7)
 
--   **Importance sampling:** Instead of sampling from $X$, sample from some other more suitable distribution instead, then readjust the answer we get. (Lectures 8 and 9)
+-   **Importance sampling:** Instead of sampling from $X$, sample from some other more suitable distribution instead, then adjust the answer we get. (Lectures 8 and 9)
 
 ## Control variate estimation
 
-In last Friday's lecture, I polled the class on this question: *Estimate the average time it takes to fly from London to Washington D.C.*
+In Monday's lecture, I polled the class on this question: *Estimate the average time it takes to fly from London to New York.*
 
--   The actual answer is: 8 hours and 29 minutes.
+-   The actual answer is: 8 hours.
 
 -   The mean guess for the class was: 7 hours and 37 minutes (52 minutes too little)
 
 -   The root-mean-square error for the guesses was: 133 minutes
 
-After you'd guessed, I gave the following hint: *Hint: The average time it takes to fly from London to New York is 8 hours and 10 minutes.* After the hint:
+After you'd guessed, I gave the following hint: *Hint: The average time it takes to fly from London to Washington D.C. is 8 hours and 15 minutes.* After the hint:
 
 -   The mean guess for the class was: 8 hours and 45 minutes (16 minutes too much)
 
@@ -35,9 +34,9 @@ After you'd guessed, I gave the following hint: *Hint: The average time it takes
 
 So after the hint, the error of the class was reduced by 63%.
 
-Why did the hint help? We were trying to estimate $\theta^{\mathrm{DC}}$, the distance to D.C. But that's a big number, and the first estimates had a big error (over an hour, on average). After the hint, I expect most people thought something like this: "The answer $\theta^{\mathrm{DC}}$ is going to be similar to the $\theta^{\mathrm{NY}} =$ 8:10 to New York, but Washington D.C. is a bit further, so I should increase the number a bit, but not too much."
+Why did the hint help? We were trying to estimate $\theta^{\mathrm{NY}}$, the distance to New York. But that's a big number, and the first estimates had a big error (over an hour, on average). After the hint, I expect most people thought something like this: "The answer $\theta^{\mathrm{NY}}$ is going to be similar to the $\theta^{\mathrm{DC}} =$ 8:10 to Washington D.C., but New York isn't quite as far, so I should decrease the number a bit, but not too much."
 
-To be more mathematical, we could write $$\theta^{\mathrm{DC}} = \theta^{\mathrm{DC}} + \big(\theta^{\mathrm{NY}} - \theta^{\mathrm{NY}}\big)= \underbrace{\big(\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}\big)}_{\text{small}} + \underbrace{\theta^{\mathrm{NY}}\vphantom{\big)}}_{\text{known}} . $$ In that equation, the second term, $\theta^{\mathrm{NY}} =$ 8:10 was completely known, so had error 0, while the first term $\theta^{\mathrm{DC}} - \theta^{\mathrm{NY}}$ (actually 19 minutes) was a small number, so only had a small error.
+To be more mathematical, we could write $$\theta^{\mathrm{NY}} = \theta^{\mathrm{NY}} + \big(\theta^{\mathrm{DC}} - \theta^{\mathrm{DC}}\big) = \underbrace{\big(\theta^{\mathrm{NY}} - \theta^{\mathrm{DC}}\big)}_{\text{small}} + \underbrace{\theta^{\mathrm{DC}}\vphantom{\big)}}_{\text{known}} . $$ In that equation, the second term, $\theta^{\mathrm{DC}} =$ 8:15 was completely known, so had error 0, while the first term $\theta^{\mathrm{NY}} - \theta^{\mathrm{DC}}$ (actually minus 15 minutes) was a small number, so only had a small error.
 
 This idea of improving an estimate by "anchoring" it to some known value is called **controlled estimation**. It is a very useful idea in statistics (and in life!).
 
@@ -104,7 +103,6 @@ and estimate the MSE and RMSE by $S^2 / n$ and $S / \sqrt{n}$ respectively.
 
 **Next time:** *We look at our second variance reduction technique: antithetic variables.*
 
--->
 
 ::: mysummary
 **Summary:**
