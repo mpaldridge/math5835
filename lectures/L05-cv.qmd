@@ -1,7 +1,7 @@
 # Control variate
 
 {{< include ../_header.qmd >}}
-
+<!--
 ## Variance reduction
 
 Let's recap where we've got to. The Monte Carlo estimator of $\theta = \Exg \phi(X)$ is $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i), $$ where $X_1, X_2, \dots, X_n$ are IID random samples from $X$. The mean-square error of this estimator is $${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . $$ If we want a more accurate estimate, we can just take more samples $n$. But the problem is that the root-mean-square error scales like $1/\sqrt{n}$. To double the accuracy, we need four times as many samples; for one more decimal place of accuracy, we need one hundred times as many samples.
@@ -22,21 +22,23 @@ In Monday's lecture, I polled the class on this question: *Estimate the average 
 
 -   The actual answer is: 8 hours.
 
--   The mean guess for the class was: 7 hours and 37 minutes (52 minutes too little)
+-   The mean guess was: 9 hours and 38 minutes (98 minutes too much)
 
--   The root-mean-square error for the guesses was: 133 minutes
+-   The root-mean-square error for the guesses was: 158 minutes
 
 After you'd guessed, I gave the following hint: *Hint: The average time it takes to fly from London to Washington D.C. is 8 hours and 15 minutes.* After the hint:
 
--   The mean guess for the class was: 8 hours and 45 minutes (16 minutes too much)
+-   The mean guess was: 8 hours and 50 minutes (50 minutes too much)
 
--   The root-mean-square error for the guesses was: 49 minutes
+-   The root-mean-square error for the guesses was: 72 minutes
 
-So after the hint, the error of the class was reduced by 63%.
+So after the hint, the error of the class was reduced by 55%.
 
-Why did the hint help? We were trying to estimate $\theta^{\mathrm{NY}}$, the distance to New York. But that's a big number, and the first estimates had a big error (over an hour, on average). After the hint, I expect most people thought something like this: "The answer $\theta^{\mathrm{NY}}$ is going to be similar to the $\theta^{\mathrm{DC}} =$ 8:10 to Washington D.C., but New York isn't quite as far, so I should decrease the number a bit, but not too much."
+(Incidentally, you were about 30% at guessing this than last year's students...)
 
-To be more mathematical, we could write $$\theta^{\mathrm{NY}} = \theta^{\mathrm{NY}} + \big(\theta^{\mathrm{DC}} - \theta^{\mathrm{DC}}\big) = \underbrace{\big(\theta^{\mathrm{NY}} - \theta^{\mathrm{DC}}\big)}_{\text{small}} + \underbrace{\theta^{\mathrm{DC}}\vphantom{\big)}}_{\text{known}} . $$ In that equation, the second term, $\theta^{\mathrm{DC}} =$ 8:15 was completely known, so had error 0, while the first term $\theta^{\mathrm{NY}} - \theta^{\mathrm{DC}}$ (actually minus 15 minutes) was a small number, so only had a small error.
+Why did the hint help? We were trying to estimate $\theta^{\mathrm{NY}}$, the distance to New York. But that's a big number, and the first estimates had a big error (over an hour, on average). After the hint, I expect most people thought something like this: "The answer $\theta^{\mathrm{NY}}$ is going to be similar to the $\theta^{\mathrm{DC}} =$ 8:15 to Washington D.C., but New York isn't quite as far, so I should decrease the number a bit, but not too much."
+
+To be more mathematical, we could write $$\theta^{\mathrm{NY}} = \theta^{\mathrm{NY}} + \big(\theta^{\mathrm{DC}} - \theta^{\mathrm{DC}}\big) =  \underbrace{\theta^{\mathrm{DC}}\vphantom{\big)}}_{\text{known}} + \underbrace{\big(\theta^{\mathrm{NY}} - \theta^{\mathrm{DC}}\big)}_{\text{small}} . $$ In that equation, the first term, $\theta^{\mathrm{DC}} =$ 8:15 was completely known, so had error 0, while the second term $\theta^{\mathrm{NY}} - \theta^{\mathrm{DC}}$ (actually minus 15 minutes) was a small number, so only had a small error.
 
 This idea of improving an estimate by "anchoring" it to some known value is called **controlled estimation**. It is a very useful idea in statistics (and in life!).
 
@@ -102,7 +104,7 @@ and estimate the MSE and RMSE by $S^2 / n$ and $S / \sqrt{n}$ respectively.
 :::
 
 **Next time:** *We look at our second variance reduction technique: antithetic variables.*
-
+-->
 
 ::: mysummary
 **Summary:**
