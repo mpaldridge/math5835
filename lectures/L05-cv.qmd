@@ -2,7 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
-<!--
+
 
 ## Variance reduction
 
@@ -97,8 +97,8 @@ Parts 3 and 4 follow in the usual way.
 
 This tells us that a control variate Monte Carlo estimate is good when the variance of $\phi(X) - \psi(X)$. This variance is likely to be small if $\phi(X) - \psi(X)$ is usually small -- although, to be more precise, it's more important for $\phi(X) - \psi(X)$ to be *consistent*, rather than small per se.
 
-As before, we can't usually calculate the variance $\Var(\phi(X) - \psi(X))$ exactly, but we can estimate it from the samples. Again, we use the sample variance
-$$S^2 = \frac{1}{n-1}\sum_{i=1}^n \Big(\big(\phi(X_i) - \psi(X_i)\big) - \big(\widehat\theta_n^{\mathrm{CV}} + \eta\big)\Big)^2 , $$
+As before, we can't usually calculate the variance $\Var(\phi(X) - \psi(X))$ exactly, but we can estimate it from the samples. Again, we use the sample variance of $\phi(X_i) - \psi(X_i)$,
+$$S^2 = \frac{1}{n-1}\sum_{i=1}^n \Big(\big(\phi(X_i) - \psi(X_i)\big) - \big(\widehat\theta_n^{\mathrm{CV}} - \eta\big)\Big)^2 , $$
 and estimate the MSE and RMSE by $S^2 / n$ and $S / \sqrt{n}$ respectively.
 
 ::: {#exm-control2}
@@ -107,7 +107,7 @@ and estimate the MSE and RMSE by $S^2 / n$ and $S / \sqrt{n}$ respectively.
 
 **Next time:** *We look at our second variance reduction technique: antithetic variables.*
 
--->
+
 
 ::: mysummary
 **Summary:**
