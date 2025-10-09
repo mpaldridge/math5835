@@ -237,5 +237,27 @@
       "Monte Carlo estimation",
       "Problem Sheet 1"
     ]
+  },
+  {
+    "objectID": "lectures/L07-antithetic-2.html",
+    "href": "lectures/L07-antithetic-2.html",
+    "title": "7  Antithetic variables II",
+    "section": "",
+    "text": "\\[ \\newcommand{\\Exg}{\\operatorname{\\mathbb{E}}} \n\\newcommand{\\Ex}{\\mathbb{E}} \n\\newcommand{\\Ind}{\\mathbb{I}}\n\\newcommand{\\Var}{\\operatorname{Var}}\n\\newcommand{\\Cov}{\\operatorname{Cov}}\n\\newcommand{\\Corr}{\\operatorname{Corr}}\n\\newcommand{\\ee}{\\mathrm{e}} \\]\n\n\n\n\n\n\n\\[ \\]\n\n\n\nSummary:\n\nThe antithetic variables estimator is unbiased and has mean-square error \\[ \\operatorname{MSE}\\big(\\widehat{\\theta}_n^{\\mathrm{AV}}\\big) = \\frac{1}{2n} \\operatorname{Var}\\big(\\phi(X) + \\phi(X')\\big) = \\frac{1+\\rho}{n}\\Var\\big(\\phi(X)\\big). \\]\nIf \\(U \\sim \\operatorname{U}[0, 1]\\) and \\(\\phi\\) is monotonically increasing, then \\(\\phi(U)\\) and \\(\\phi(1-U)\\) are negatively correlated.\n\nOn Thursday’s lecture, we will be discussing your answers to Problem Sheet 1.\nRead more: Voss, An Introduction to Statistical Computing, Subsection 3.3.2.",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Antithetic variables II</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L08-is-1.html",
+    "href": "lectures/L08-is-1.html",
+    "title": "8  Importance sampling I",
+    "section": "",
+    "text": "\\[ \\newcommand{\\Exg}{\\operatorname{\\mathbb{E}}} \n\\newcommand{\\Ex}{\\mathbb{E}} \n\\newcommand{\\Ind}{\\mathbb{I}}\n\\newcommand{\\Var}{\\operatorname{Var}}\n\\newcommand{\\Cov}{\\operatorname{Cov}}\n\\newcommand{\\Corr}{\\operatorname{Corr}}\n\\newcommand{\\ee}{\\mathrm{e}} \\]\n\n\n\n\n\n\n\\[ \\]\n\n\n\nSummary:\n\nImportance sampling estimates \\(\\Exg \\phi(X)\\) by sampling from a different distribution \\(Y\\).\nThe importance sampling estimator is \\({\\displaystyle \\widehat{\\theta}_n^{\\mathrm{IS}} = \\frac{1}{n} \\sum_{i=1}^n \\frac{f(Y_i)}{g(Y_i)}\\,\\phi(Y_i)}\\).\nThe importance sampling estimator is unbiased with mean-square error \\[ \\operatorname{MSE}\\big(\\widehat{\\theta}_n^{\\mathrm{IS}}\\big) = \\frac{1}{n} \\operatorname{Var}\\left( \\frac{f(Y)}{g(Y)}\\,\\phi(Y) \\right) . \\]\n\nSolutions are now available for Problem Sheet 1.\nRead more: Voss, An Introduction to Statistical Computing, Subsection 3.3.1.",
+    "crumbs": [
+      "Monte Carlo estimation",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Importance sampling I</span>"
+    ]
   }
 ]

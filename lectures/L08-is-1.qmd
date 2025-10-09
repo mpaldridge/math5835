@@ -2,6 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
+<!--
 ## Sampling from other distributions
 
 So far, we have looked at estimating $\Exg \phi(X)$ using samples $X_1, X_2, \dots, X_n$ that are from the same distribution as $X$. **Importance sampling** is based on the idea of taking samples $Y_1, Y_2, \dots, Y_n$ from some *different* distribution $Y$, but then making an appropriate adjustment, so that we're still estimating $\Exg \phi(X)$.
@@ -96,7 +97,7 @@ As we are now used to, we can estimate the variance using the sample variance.
 :::
 
 **Next time:** *We continue our study of importance sampling -- and complete our study of Monte Carlo estimation, for now -- by considering how to pick a good distribution $Y$.*
-
+-->
 ::: {.mysummary}
 **Summary:**
 

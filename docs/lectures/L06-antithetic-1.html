@@ -196,6 +196,18 @@ window.Quarto = {
  <span class="menu-text">Problem Sheet 1</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L07-antithetic-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L08-is-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -424,9 +436,7 @@ AVest
 
 :::
 
-We have taken $n/2$ pairs of samples, because that means we have $n/2 \times 2 = n$ samples over all, which seems like a fair comparison. This is certainly the case if generating the sample and generating its antithetic pair cost roughly the same in terms of time (or energy, or money). However, if generating the first variate of each pair is slow, but then generating the second antithetic variate is much quicker, it might be a fairer comparison to take a full $n$ pairs.
-
-More generally, you might put a cost $c_1$ on each first variate and $c_2$ on each antithetic pair. Then one can compare a cost of $c_1n$ for standard Monte Carlo with $n$ samples to a cost of $(c_1 + c_2)m$ for antithetic variables Monte Carlo with $m$ pairs.
+We have taken $n/2$ pairs of samples, because that means we have $n/2 \times 2 = n$ samples all together, which seems like a fair comparison. This is certainly the case if generating the sample and generating its antithetic pair cost roughly the same in terms of time (or energy, or money). This is how we will compare methods in this module. However, if generating the first variate of each pair is slow, but then generating the second antithetic variate is much quicker, it might be a fairer comparison to take a full $n$ pairs. You could even consider more complicated ways of assessing the "cost" of Monte Carlo estimation, although we won't get into that here.
 
 Are these antithetic variables estimates an improvement on the basic Monte Carlo estimate? We'll find out next time.
 

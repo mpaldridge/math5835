@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Monte Carlo error I: theory – MATH5835M Statistical Computing</title>
+<title>8&nbsp; Importance sampling I – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L04-mc-error-2.html" rel="next">
-<link href="../lectures/L02-mc-uses.html" rel="prev">
+<link href="../lectures/L07-antithetic-2.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +110,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L03-mc-error-1.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L08-is-1.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -202,7 +167,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span></a>
   </div>
 </li>
@@ -238,7 +203,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L08-is-1.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L08-is-1.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span></a>
   </div>
 </li>
@@ -249,16 +214,8 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#estimation-error" id="toc-estimation-error" class="nav-link active" data-scroll-target="#estimation-error"><span class="header-section-number">3.1</span> Estimation error</a></li>
-  <li><a href="#error-of-monte-carlo-estimator-theory" id="toc-error-of-monte-carlo-estimator-theory" class="nav-link" data-scroll-target="#error-of-monte-carlo-estimator-theory"><span class="header-section-number">3.2</span> Error of Monte Carlo estimator: theory</a></li>
-  <li><a href="#error-of-monte-carlo-estimator-practice" id="toc-error-of-monte-carlo-estimator-practice" class="nav-link" data-scroll-target="#error-of-monte-carlo-estimator-practice"><span class="header-section-number">3.3</span> Error of Monte Carlo estimator: practice</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -272,9 +229,9 @@ window.Quarto = {
 \newcommand{\ee}{\mathrm{e}} \]</span></p>
 </div>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L03-mc-error-1.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L08-is-1.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></h1>
 </div>
 
 
@@ -294,134 +251,272 @@ window.Quarto = {
 <div class="hidden">
 <p><span class="math display">\[ \]</span></p>
 </div>
-<section id="estimation-error" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="estimation-error"><span class="header-section-number">3.1</span> Estimation error</h2>
-<p>Today we are going to analysing the accuracy of Monte Carlo estimation. But before talking about Monte Carlo estimation specifically, let’s first remind ourselves of some concepts about error in statistical estimation more generally. We will use the following definitions.</p>
-<div id="def-stats" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 3.1</strong></span> Let <span class="math inline">\(\widehat\theta\)</span> be an estimator of a parameter <span class="math inline">\(\theta\)</span>. Then we have the following definitions of the estimator <span class="math inline">\(\widehat\theta\)</span>:</p>
-<ul>
-<li><p>The <strong>bias</strong> is <span class="math inline">\(\operatorname{bias}\big(\widehat\theta\big) = \mathbb E\big(\widehat\theta - \theta\big)  = \mathbb E\widehat\theta - \theta\)</span>.</p></li>
-<li><p>The <strong>mean-square error</strong> is <span class="math inline">\(\operatorname{MSE}\big(\widehat\theta\big) = \mathbb E \big(\widehat\theta - \theta\big)^2\)</span>.</p></li>
-<li><p>The <strong>root-mean-square error</strong> is the square-root of the mean-square error, <span class="math display">\[\operatorname{RMSE}\big(\widehat\theta\big) = \sqrt{\operatorname{MSE}(\widehat\theta)} = \sqrt{\mathbb E (\widehat\theta - \theta)^2} . \]</span></p></li>
-</ul>
-</div>
-<p>Usually, the main goal of estimation is to get the mean-square error of an estimate as small as possible. This is because the MSE measures by what distance we are missing on average. It can be easier to interpret what the root-mean-square error means, as the RMSE has the same units as the parameter being measured: if <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\widehat{\theta}\)</span> are in metres, say, then the MSE is in metres-squared, whereas the RMSE error is in metres again. If you minimise the MSE you also minimise the RMSE and vice versa.</p>
-<p>It’s nice to have an “unbiased” estimator – that is, one with bias 0. This is because bias measures any systematic error in a particular direction. However, unbiasedness by itself is not enough for an estimate to be good – we need low variance too. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the right, then claims to have “hit the target on average.”)</p>
-<p>(Remember also that “bias” is simply the word statisticians use for <span class="math inline">\(\mathbb E(\widehat\theta - \theta)\)</span>; we don’t mean “bias” in the derogatory way it is sometimes used in political arguments, for example.)</p>
-<p>You probably also remember the relationship between the mean-square error, the bias, and the variance:</p>
-<div id="thm-MSE-bias" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 3.1</strong></span> &nbsp; <span class="math inline">\(\operatorname{MSE}\big(\widehat\theta\big) = \operatorname{bias}\big(\widehat\theta\big)^2 + \operatorname{Var}\big(\widehat\theta\big)\)</span>.</p>
-</div>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>The MSE is <span class="math display">\[\begin{align}
-  \operatorname{MSE}\big(\widehat\theta\big) = \Exg\big(\widehat\theta - \theta\big)^2
-    &amp;= \Exg \big(\widehat\theta^2 - 2\theta\widehat\theta + \theta\big)^2 \\
-    &amp;= \Exg \widehat\theta^2 - 2\theta \Exg \widehat\theta + \theta^2 ,
-\end{align}\]</span> where we have expanded the brackets and bought the expectation inside (remembering that <span class="math inline">\(\theta\)</span> is a constant). Since the variance can be written as <span class="math inline">\(\Var(\widehat\theta) = \Exg\widehat\theta^2 - (\Exg \widehat\theta)^2\)</span>, we can use a cunning trick of both subtracting and adding <span class="math inline">\((\Exg \widehat\theta)^2\)</span>. This gives <span class="math display">\[\begin{align}
-\operatorname{MSE}\big(\widehat\theta\big)
-  &amp;= \Exg \widehat\theta^2 - \big(\!\Exg \widehat\theta\big)^2 + \big(\!\Exg \widehat\theta\big)^2 - 2\theta \Exg \widehat\theta + \theta^2 \\
-  &amp;= \Var\big(\widehat\theta\big) + \big( (\Exg \widehat\theta)^2 - 2\theta \Exg \widehat\theta + \theta^2 \big) \\
-  &amp;= \Var\big(\widehat\theta\big) + \big( \! \Exg \widehat\theta - \theta\big)^2 \\
-  &amp;= \Var\big(\widehat\theta\big) + \operatorname{bias}(\widehat\theta)^2 .
-\end{align}\]</span> This proves the result.</p>
-</div>
-<p>Since the bias contributes to the mean-square error, that’s another reason to like estimator with low – or preferably zero – bias. But again, unbiasedness isn’t enough by itself; we want low variance too. (There are some situations where there’s a “bias–variance tradeoff”, where allowing some bias reduces the variance and so can reduce the MSE. It turns out that Monte Carlo is not one of these cases, however.)</p>
-</section>
-<section id="error-of-monte-carlo-estimator-theory" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="error-of-monte-carlo-estimator-theory"><span class="header-section-number">3.2</span> Error of Monte Carlo estimator: theory</h2>
-<p>In this lecture, we’re going to be looking more carefully at the size of the errors made by the Monte Carlo estimator <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) . \]</span></p>
-<p>Our main result is the following.</p>
-<div id="thm-MCerr" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 3.2</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) \]</span> be the Monte Carlo estimator of <span class="math inline">\(\theta\)</span>. Then:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is unbiased, in that <span class="math inline">\(\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = 0\)</span>.</p></li>
-<li><p>The variance of of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>The mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>The root-mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math display">\[{\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} = \frac{1}{\sqrt{n}} \, \operatorname{sd}\big(\phi(X)\big)}. \]</span></p></li>
-</ol>
-</div>
-<p>Before we get to the proof, let’s recap some relevant probability.</p>
-<p>Let <span class="math inline">\(Y_1, Y_2, \dots\)</span> be IID random variables with common expectation <span class="math inline">\(\mathbb EY_1 = \mu\)</span> and common variance <span class="math inline">\(\operatorname{Var}(Y_1) = \sigma^2\)</span>. Consider the mean of the first <span class="math inline">\(n\)</span> random variables, <span class="math display">\[ \overline{Y}_n = \frac{1}{n} \sum_{i=1}^n Y_i . \]</span> Then the expectation of <span class="math inline">\(\overline{Y}_n\)</span> is <span class="math display">\[ \mathbb E \overline{Y}_n = \mathbb E\left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \frac{1}{n}
-\sum_{i=1}^n \mathbb{E}Y_i = \frac{1}{n}\,n\,\mu = \mu . \]</span> The variance of <span class="math inline">\(\overline{Y}_n\)</span> is <span class="math display">\[ \operatorname{Var}\big(  \overline{Y}_n \big)= \operatorname{Var} \left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \bigg(\frac{1}{n}\bigg)^2
-\sum_{i=1}^n \operatorname{Var}(Y_i) = \frac{1}{n^2}\,n\,\sigma^2 = \frac{\sigma^2}{n} , \]</span> where, for this one, we used the independence of the random variables.</p>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>Apply the probability facts from above with <span class="math inline">\(Y = \phi(X)\)</span>. This gives:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex \overline Y_n = \Ex Y = \Exg \phi(X)\)</span>, so <span class="math inline">\(\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0\)</span>.</p></li>
-<li><p><span class="math inline">\({\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \operatorname{Var}\big(\overline Y_n\big) = \frac{1}{n} \operatorname{Var}(Y) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>Using <a href="#thm-MSE-bias" class="quarto-xref">Theorem&nbsp;<span>3.1</span></a>, <span class="math display">\[\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}})^2 + \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = 0^2 + \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) . \]</span></p></li>
-<li><p>Take the square root of part 3.</p></li>
-</ol>
-</div>
-<p>Let’s think about MSE <span class="math inline">\(\frac{1}{n} \Var(\phi(X))\)</span>. The variance terms is some fixed fact about the random variable <span class="math inline">\(X\)</span> and the function <span class="math inline">\(\phi\)</span>. So as <span class="math inline">\(n\)</span> gets bigger, <span class="math inline">\(\frac{1}{n}\)</span> gets smaller, so the MSE gets smaller, and the estimator gets more accurate. This goes back to what we said when we introduced the Monte Carlo estimator: we get a more accurate estimate by increasing <span class="math inline">\(n\)</span>. More specifically, the MSE scales like <span class="math inline">\(1/n\)</span>, or – perhaps a more useful result – the RMSE scales like <span class="math inline">\(1/\sqrt{n}\)</span>. We’ll come back to this in the next lecture.</p>
-</section>
-<section id="error-of-monte-carlo-estimator-practice" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="error-of-monte-carlo-estimator-practice"><span class="header-section-number">3.3</span> Error of Monte Carlo estimator: practice</h2>
-<p>So when we form a Monte Carlo estimate <span class="math inline">\(\hat\theta_n^{\text{MC}}\)</span>, we now know it will be unbiased. We’d also like to know it’s mean-square and/or root-mean-square error too.</p>
-<p>There’s a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we <em>couldn’t</em> calculate <span class="math inline">\(\Exg \phi(X)\)</span>. So it seems very unlikely we’ll be able to calculate the variance <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span> either. So how will be able to assess the mean-square (or root-mean-square) error of our Monte Carlo estimator?</p>
-<p>Well, we can’t know it exactly. But we <em>can</em> estimate the variance from the samples we are already using: by taking the sample variance of the samples <span class="math inline">\(\phi(x_i)\)</span>. That is, we can estimate the variance of the Monte Carlo estimator by the sample variance <span class="math display">\[ S^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(X_i) - \widehat{\theta}_n^{\mathrm{MC}} \big)^2 . \]</span> Then we can similarly estimate the mean-square and root-mean-square errors by <span class="math display">\[ \text{MSE} \approx \frac{1}{n}S^2 \qquad \text{and} \qquad \text{RMSE} \approx \sqrt{\frac{1}{n} S^2} = \frac{1}{\sqrt{n}}\,S  \]</span> respectively.</p>
-<div id="exm-MCexp2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 3.1</strong></span> Let’s go back to the very first example in the module, <a href="L01-mc-intro.html#exm-MCexp" class="quarto-xref">Example&nbsp;<span>1.1</span></a>, where we were trying to find the expectation of an <span class="math inline">\(\operatorname{Exp}(2)\)</span> random variable. We used this R code:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4997326</code></pre>
-</div>
-</div>
-<p>(Because Monte Carlo estimation is random, this won’t be the <em>exact</em> same estimate we had before, of course.)</p>
-<p>So if we want to investigate the error, we can use the sample variance of these samples. We will use the sample variance function <code>var()</code> to calculate the sample variance. In this simple case, the function is <span class="math inline">\(\phi(x) = x\)</span>, so we need only use the variance of the samples themselves.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>var_est <span class="ot">&lt;-</span> <span class="fu">var</span>(samples)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>MSEest  <span class="ot">&lt;-</span> var_est <span class="sc">/</span> n</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>RMSEest <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(MSEest)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(var_est, MSEest, RMSEest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.497426e-01 2.497426e-07 4.997425e-04</code></pre>
-</div>
-</div>
-<p>The first number is <code>var_est</code> <span class="math inline">\(= 0.2497\)</span>, the sample variance of our <span class="math inline">\(\phi(x_i)\)</span>s:<br>
-<span class="math display">\[ s^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(x_i) - \widehat{\theta}_n^{\mathrm{MC}}\big)^2 . \]</span> This should be a good estimate of the true variance <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span>. (In fact, in this simple case, we know that <span class="math inline">\(\operatorname{Var}(X) = \frac{1}{2^2} = 0.25\)</span>, so we know that the estimate is good.) In calculating this in the code, we used R’s <code>var()</code> function, which calculates the sample variance of some values.</p>
-<p>The second number is <code>MSEest</code> <span class="math inline">\(= 2.497\times 10^{-7}\)</span>, our estimate of the mean-square error. Since <span class="math inline">\(\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(\phi(X))\)</span>, then <span class="math inline">\(\frac{1}{n} S^2\)</span> should be a good estimate of the MSE.</p>
-<p>The third number is <code>RMSEest</code> <span class="math inline">\(= 5\times 10^{-4}\)</span> our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.</p>
-</div>
-<div id="exm-MCprob2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 3.2</strong></span> In <a href="L02-mc-uses.html#exm-MCprob" class="quarto-xref">Example&nbsp;<span>2.1</span></a>, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span>, where <span class="math inline">\(Z\)</span> is a standard normal.</p>
-<p>Our code was</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022299</code></pre>
-</div>
-</div>
-<p>So our root-mean-square error can be approximated as</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>MSEest <span class="ot">&lt;-</span> <span class="fu">var</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">/</span> n</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(MSEest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0001476542</code></pre>
-</div>
-</div>
-<p>since <code>samples &gt; 2</code> is the indicator function of whether <span class="math inline">\(X_i &gt; 2\)</span> or not.</p>
-</div>
-<p><strong>Next time:</strong> <em>We’ll continue analysing Monte Carlo error, looking at confidence intervals and assessing how many samples to take..</em></p>
+<!--
+## Sampling from other distributions
+
+So far, we have looked at estimating $\Exg \phi(X)$ using samples $X_1, X_2, \dots, X_n$ that are from the same distribution as $X$. **Importance sampling** is based on the idea of taking samples $Y_1, Y_2, \dots, Y_n$ from some *different* distribution $Y$, but then making an appropriate adjustment, so that we're still estimating $\Exg \phi(X)$.
+
+Why might we want to do this? There are two main reasons:
+
+* First, we might not be able to sample from $X$, so we might be forced into sampling from some other distribution $Y$ instead. So far, $X$ has always been a nice pleasant distribution, like a normal, exponential or continuous uniform distribution, for which we can use R's built-in sampling function. But what if $X$ were instead a very unusual or awkward distribution? In that case, we might not be able to sample directly from $X$, so would be forced into sampling from a different distribution.
+
+* Second, we might *prefer* to sample from a distribution other than $Y$. This might be the case if $\phi(x)$ varies a lot over different values of $x$. There might be some areas of $x$ where it's very important to get an accurate estimation, because they contribute a lot to $\Exg\phi(X)$, so we'd like to "oversample" (take lots of samples) there; meanwhile, other areas of $x$ where it is not very important to get an accurate estimation, because they contribute very little to $\Exg\phi(X)$, so we don't mind "undersampling" (taking relatively few samples) there. Then we could sample instead from a distribution $Y$ that concentrates on the most important areas for $\phi$; although we'll need to make sure to adjust our estimator by "down-weighting" the places that we have oversampled.
+
+Consider, for example, trying to estimate $\Exg\phi(X)$ where $X$ is uniform on $[0, 20]$ and $\phi$ is the function shown below.
+
+
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-fold="true" code-summary="Code for drawing this graph"}
+phi <- function(x) sin(5 * x) / (5 * x)
+curve(
+  phi, n = 10001, from = 0, to = 20,
+  lwd = 3, col = "blue",
+  xlab = "x", ylab = expression(phi(x)), ylim = c(-0.2, 1)
+)
+abline(h = 0)
+```
+
+::: {.cell-output-display}
+![](L08-is-1_files/figure-html/importance-1.svg){width=672}
+:::
+:::
+
+
+
+
+
+
+We can see that what happens for small $x$ -- say, for $x$ between 0 and 2, or so -- will have an important effect on the value of $\Exg \phi(X)$, because that where $\phi$ has the biggest (absolute) values. But what happens for large $x$ -- say for $x \geq 10$ or so -- will be much less important for estimating $\Exg\phi(X)$. So it seems wasteful to have all values in $[0, 20]$ to be sampled equally, and it would seem to make sense to take more samples from small values of $x$.
+
+This is all very well in practice, but how exactly should we down-weight those over-sampled areas?
+
+Think about estimating $\Exg \phi(X)$. Let's assume that $X$ is continuous with probability density function $f$. (Throughout this lecture and the next, we will assume all our random variables are continuous. The arguments for discrete random variables are very similar -- just swap probability density functions with probability mass functions and integrals with sums. You can fill in the details yourself, if you like.) Then we are trying to estimate
+$$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x = \int_{-\infty}^{+\infty} \phi(y)\,f(y)\,\mathrm{d}y . $$
+(In the second equality, we merely changed the "dummy variable" from $x$ to $y$, as we are at liberty to do.)
+
+Now suppose we sample from some other continuous distribution $Y$, with PDF $g$. If we estimate $\Exg \psi(Y)$, say, for some function $\psi$, then we are estimating
+$$\Exg \psi(Y) = \int_{-\infty}^{+\infty} \psi(y)\,g(y) \, \mathrm{d}y = \int_{-\infty}^{+\infty} \psi(x)\,g(x) \, \mathrm{d}x . $$
+
+But we want to be estimating $\Exg\phi(X)$, not $\Exg\psi(Y)$. So we will need to pick $\psi$ such that
+$$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(y)\,f(y)\,\mathrm{d}y = \int_{-\infty}^{+\infty} \psi(y)\,g(y) \, \mathrm{d}y = \Exg \psi(Y) . $$
+So we need to pick $\psi$ such that
+$\phi(y)\,f(y) = \psi(y)\,g(y)$. That means that we should take
+$$\psi(y) = \frac{\phi(y) f(y)}{g(y)} = \frac{f(y)}{g(y)}\,\phi(y). $$
+
+So we could build a Monte Carlo estimate for $\Exg \phi(X)$ instead as a Monte Carlo estimate for 
+$$ \Exg \psi(Y) = \Exg \left(\frac{f(Y)}{g(Y)}\,\phi(Y) \right) . $$
+
+There is one other thing: we need to be careful of division by $0$ errors. So we should make sure that $g$ is only 0 when $f$ is 0. In other words, if it's possible for $X$ to take some value, then it must be possible for $Y$ to take that value too.
+
+We are finally ready to define our estimator.
+
+::: {#def-IS}
+Let $X$ be a continuous random variable with probability density function $f$, let $\phi$ be a function, and write $\theta = \Exg\phi(X)$. Let $Y$ be a continuous random variable with probability desnity function $g$, where $g(y) > 0$ for all $y$ where $f(y) > 0$. Then the **importance sampling Monte Carlo estimator** $\widehat\theta_n^{\mathrm{IS}}$ of $\theta$ is
+$$ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^{n} \frac{f(Y_i)}{g(Y_i)}\, \phi(Y_i)   ,$$
+where $Y_1, Y_2, \dots, Y_n$ are independent random samples from $Y$.
+:::
+
+We can think of this as taking a weighted mean of the $\phi(Y_i)$s, where the weights are $f(Y_i)/g(Y_i)$. So if a value $y$ is more likely under $Y$ than under $X$, then $g(y)$ is big compared to $f(y)$, so $f(y)/g(y)$ is small, and $y$ gets a low weight. If a value $y$ is less likely under $Y$ than under $X$, then $g(y)$ is small compared to $f(y)$, so $f(y) / g(y)$ is big, and it gets a high weight. Thus we see that the weighting compensates for values that are likely to be over- or under-sampled.
+
+## Example
+
+::: {#exm-IS1}
+
+Let $X \sim \operatorname{N}(0,1)$ be a standard normal. Suppose we want to estimate $\mathbb P(X > 4)$.
+We could do this the standard Monte Carlo way by sampling from $X$ itself.
+$$ \widehat{\theta}_n^{\mathrm{MS}} = \frac{1}{n} \sum_{i=1}^n \mathbb I_{[4,\infty)}(X_i) . $$
+
+However, this will not be a good estimator. To see the problem, lets run this with $n = 100\,000 = 10^5$ samples, but do it 10 times, and see what all the estimates are.
+
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+n <- 1e5
+MCest <- rep(0, 10)
+for (i in 1:10) MCest[i] <- mean(rnorm(n) > 4)
+MCest
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+ [1] 1e-05 0e+00 1e-05 1e-05 0e+00 2e-05 4e-05 3e-05 1e-05 0e+00
+```
+
+
+:::
+:::
+
+
+
+
+
+We see a big range of values. I get different results each time I run it, but anything between $1 \times 10^{-5}$ and $8 \times 10^{-5}$, and even $0$, comes out fairly regularly as the estimate. The problem is that $X > 4$ is a very rare event -- it only comes out a handful of times (perhaps 0 to 8) out of the 100,000 samples. This means our estimate is (on average) quite inaccurate.
+
+It would be better not to sample from $X$, but rather to sample from a distribution that is greater than 4 a better proportion of the time. We could try anything for this distribution $Y$, but to keep things simple, I'm going to stick with a normal distribution with standard deviation 1. I'll want to increase the mean, though, so that we sample values bigger than 4 more often. Let's try importance sampling with $Y \sim \operatorname{N}(4,1)$.
+
+The PDFs of $X \sim \operatorname{N}(0,1)$ and $Y \sim \operatorname{N}(4,1)$ are
+$$f(x) = \frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 x^2\big) \qquad g(y) = \frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 (y-4)^2\big) , $$
+so the relevant weighting of a sample $y$ is
+$$ \frac{f(y)}{g(y)} = \frac{\exp\big(-\tfrac12 y^2\big)}{\exp\big(-\tfrac12 (y-4)^2\big)} = \exp \big(\tfrac12\big(-y^2 + (y-4)^2\big)\big) = \exp(-4y+8) .  $$
+So our importance sampling estimate will be
+$$ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^n \mathrm{e}^{-4Y_i +8} \, \mathbb I_{[4,\infty)}(Y_i) . $$
+
+Let's try this in R. Although we could use the function $\mathrm{e}^{-4y+8}$ for the weights, I'll do this by using the ratios of the PDFs directly in R (just in case I made a mistake...).
+
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+n <- 1e5
+pdf_x <- function(y) dnorm(y, 0, 1)
+pdf_y <- function(y) dnorm(y, 4, 1)
+samples_y <- rnorm(n, 4, 1)
+ISest <- mean((pdf_x(samples_y) / pdf_y(samples_y)) * (samples_y > 4))
+ISest
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+[1] 3.143342e-05
+```
+
+
+:::
+:::
+
+
+
+
+
+
+:::
+
+## Errors in importance sampling
+
+The following theorem should not by now be a surprise.
+
+::: {#thm-Iserr}
+Let $X$ be a continuous random variable with probability density function $f$, let $\phi$ be a function, and write $\theta = \Exg\phi(X)$. Let $Y$ another continuous random variable with probability density function with probability density function $g$, such that $g(y) = 0$ only when $f(y) = 0$. Let $$ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)}\,\phi(Y_i)  $$ be the importance sampling Monte Carlo estimator of $\theta$. Then:
+
+1.  $\widehat{\theta}_n^{\mathrm{IS}}$ is unbiased, in that $\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = 0$.
+
+2.  The variance of of $\widehat{\theta}_n^{\mathrm{IS}}$ is $$ \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right). $$
+
+3.  The mean-square error of $\widehat{\theta}_n^{\mathrm{IS}}$ is $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . $$
+
+4.  The root-mean-square error of $\widehat{\theta}_n^{\mathrm{IS}}$ is $$ \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{\sqrt{n}} \,\sqrt{\operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right)}. $$
+:::
+
+::: {.proof}
+Part 1 follows essentially the same argument as our discussion at the beginning of this lecture. We have
+$$ \Ex \left( \frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)}\,\phi(Y_i) \right) = \frac{1}{n}\, n\, \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) = \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) . $$
+But
+$$ \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) = \int_{-\infty}^{+\infty} \frac{f(y)}{g(y)}\,\phi(y)\,g(y)\,\mathrm{d}y = \int_{-\infty}^{+\infty} \phi(y) \, f(y) \, \mathrm{d}y = \Exg \phi(X) . $$
+This last step is because $f$ is the PDF of $X$; it doesn't matter whether the dummy variable in the integration is $x$ or $y$. Hence the estimator is unbiased.
+
+Parts 2 to 4 follow in the usual way.
+:::
+
+As we are now used to, we can estimate the variance using the sample variance.
+
+::: {#exm-IS2}
+
+We continue @exm-IS1, where we are estimating $\mathbb P(X > 4)$ for $X \sim \operatorname{N}(0,1)$.
+
+For the standard Monte Carlo method, we estimate the root-mean-square error as
+
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+n <- 1e5
+MC_MSE <- var(rnorm(n) > 4) / n
+sqrt(MC_MSE)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+[1] 2.236023e-05
+```
+
+
+:::
+:::
+
+
+
+
+
+As before, this still varies a lot, but it seems to usually be about $2 \times 10^{-5}$.
+
+For the importance sampling method, we estimate the mean-square error as
+
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+n <- 1e5
+pdf_x <- function(x) dnorm(x, 0, 1)
+pdf_y <- function(y) dnorm(y, 4, 1)
+samples_y <- rnorm(n, 4, 1)
+IS_MSE <- var((pdf_x(samples_y) / pdf_y(samples_y)) * (samples_y > 4)) / n
+sqrt(IS_MSE)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+[1] 2.131441e-07
+```
+
+
+:::
+:::
+
+
+
+
+
+This is about $2 \times 10^{-7}$. This is about 100 times smaller than for the standard method: equivalent to taking about 10,000 times as many samples! That's a huge improvement, which demonstrates the power of importance sampling.
+
+
+:::
+
+**Next time:** *We continue our study of importance sampling -- and complete our study of Monte Carlo estimation, for now -- by considering how to pick a good distribution $Y$.*
+-->
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
-<li><p>The Monte Carlo estimator is unbiased.</p></li>
-<li><p>The Monte Carlo estimator has mean-square error <span class="math inline">\(\Var(\phi(X))/n\)</span>, so the root-mean-square error scales like <span class="math inline">\(1/\sqrt{n}\)</span>.</p></li>
-<li><p>The mean-square error can be estimated by <span class="math inline">\(S^2 / n\)</span>, where <span class="math inline">\(S^2\)</span> is the sample variance of the <span class="math inline">\(\phi(X_i)\)</span>.</p></li>
+<li><p>Importance sampling estimates <span class="math inline">\(\Exg \phi(X)\)</span> by sampling from a different distribution <span class="math inline">\(Y\)</span>.</p></li>
+<li><p>The importance sampling estimator is <span class="math inline">\({\displaystyle \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)}\,\phi(Y_i)}\)</span>.</p></li>
+<li><p>The importance sampling estimator is unbiased with mean-square error <span class="math display">\[ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . \]</span></p></li>
 </ul>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.2.2.</p>
+<p><strong><a href="#solutions">Solutions</a></strong> are now available for Problem Sheet 1.</p>
+<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.3.1.</p>
 </div>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -843,14 +938,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L02-mc-uses.html" class="pagination-link" aria-label="Uses of Monte Carlo">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span>
+      <a href="../lectures/L07-antithetic-2.html" class="pagination-link" aria-label="Antithetic variables II">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L04-mc-error-2.html" class="pagination-link" aria-label="Monte Carlo error II: practice">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
