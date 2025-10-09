@@ -13,15 +13,15 @@ display: none !important;
 -->
 
 ::: {.mysummary}
-This is Problem Sheet 1, which covers material from Lectures 1 to 6. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of **Thursday 16 October**. If you are stuck on any of the questions, you are welcome to discuss them with me in my office hours on Thursdays at 1300.
+This is Problem Sheet 1, which covers material from Lectures 1 to 6. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of **Thursday 16 October**.
 
 This problem sheet is to help you practice material from the module and to help you check your learning. It is *not* for formal assessment and does not count towards your module mark.
 
-However, if, optionally, you would like some brief informal feedback on **Questions 4, 6 and 8** (marked ★), I am happy to provide some. If you want some brief feedback, you should submit your work electronically through Gradescope via the module's Minerva page by 1400 on Tuesday 14 October**. I will return some brief comments on your those two questions by the problems class on **Thursday 16 October. Because this informal feedback, not part of the official assessment, I cannot accept late work for any reason -- but I am always happy to discuss any of your work on any question in my office hours.
+However, if, optionally, you would like some brief informal feedback on **Questions 4, 6 and 8** (marked ★), I am happy to provide some. If you want some brief feedback, you should submit your work electronically through Gradescope via the module's Minerva page by **1400 on Tuesday 14 October**. (If you hand-write solutions on paper, the easiest way to scan-and-submit that work is using the Gradescope app on your phone.) I will return some brief comments on your those two questions by the problems class on Thursday 16 October. Because this informal feedback, and not part of the official assessment, I cannot accept late work for any reason -- but I am always happy to discuss any of your work on any question in my office hours.
 
 Many of these questions will require use of the [R programming language](https://cran.r-project.org) (for example, by using the [program RStudio](https://posit.co/downloads/)).
 
-Full solutions should be released on Friday 17 October.
+Full solutions will be released on Friday 17 October.
 :::
 
 

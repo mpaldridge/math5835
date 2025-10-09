@@ -2,8 +2,8 @@
 
 {{< include ../_header.qmd >}}
 
-
 <!--
+
 ## Estimation with correlation
 
 This lecture and the next, we will be looking at our second variance reduction method for Monte Carlo estimation: the use of antithetic variables." The word "antithetic" refers to using negative correlation to reduce the variance an estimator.

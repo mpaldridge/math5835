@@ -253,6 +253,7 @@ window.Quarto = {
 <p><span class="math display">\[ \]</span></p>
 </div>
 <!--
+
 ## Estimation with correlation
 
 This lecture and the next, we will be looking at our second variance reduction method for Monte Carlo estimation: the use of antithetic variables." The word "antithetic" refers to using negative correlation to reduce the variance an estimator.
@@ -312,6 +313,8 @@ The basic Monte Carlo estimate was
 
 
 
+
+
 ::: {.cell}
 
 ```{.r .cell-code  code-summary="Code for drawing this graph"}
@@ -335,7 +338,11 @@ MCest
 
 
 
+
+
 Can we improve this estimate with an antithetic variable? Well, if $Z$ is a standard normal, then $Z' = -Z$ is also standard normal and is not independent of $Z$. So maybe that could work as an antithetic variable. Let's try
+
+
 
 
 
@@ -366,6 +373,8 @@ AVest
 
 
 
+
+
 :::
 
 ::: {#exm-AVunif}
@@ -373,6 +382,8 @@ AVest
 Let's consider estimating $\mathbb E \sin U$, where $U$ is continuous uniform on $[0,1]$.
 
 The basic Monte Carlo estimate is
+
+
 
 
 
@@ -401,9 +412,13 @@ MCest
 
 
 
+
+
 We used `runif(n, min, max)` to generate $n$ samples on the interval $[\mathtt{min}, \mathtt{max}]$. However, if you omit the `min` and `max` arguments, then R assumes the default values `min = 0`, `max = 1`, which is what we want here.
 
 If $U$ is uniform on $[0,1]$, then $1 - U$ is also uniform on $[0,1]$. We could try using that as an antithetic variable.
+
+
 
 
 
@@ -428,6 +443,8 @@ AVest
 
 :::
 :::
+
+
 
 
 
