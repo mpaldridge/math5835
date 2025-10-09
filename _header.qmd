@@ -1,9 +1,3 @@
 ::: {.hidden}
-$$\newcommand{\Exg}{\operatorname{\mathbb{E}}} 
-\newcommand{\Ex}{\mathbb{E}} 
-\newcommand{\Ind}{\mathbb{I}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}
-\newcommand{\ee}{\mathrm{e}}$$
+$$ $$
 :::

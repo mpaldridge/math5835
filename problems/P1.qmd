@@ -24,7 +24,11 @@ Many of these questions will require use of the [R programming language](https:/
 Full solutions should be released on Friday 17 October.
 :::
 
+\begin{comment}
+
 {{< include P1-content.qmd >}}
+
+\end{comment}
 
 
 

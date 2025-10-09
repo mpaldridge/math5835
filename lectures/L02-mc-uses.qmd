@@ -20,12 +20,12 @@ Let $A$ be a set. Then the **indicator function** $\Ind_A$ is defined by $$ \Ind
 
 The set $A$ could just be a single element $A = \{y\}$. In that case $\Ind_A(x)$ is 1 if $x = y$ and 0 if $x \neq y$. Or $A$ could be a semi-infinite interval, like $A = [a, \infty)$. In that case $\Ind_A(x)$ is 1 if $x \geq a$ and 0 if $x < a$.
 
-Why is this helpful? Well $\Ind_A$ is a function, so let's think about what the expectation $\Exg \Ind_A(X)$ would be for some random variable $X$. Since $\Ind_A$ can only take two values, 0 and 1, we have $$ \begin{align*}
+Why is this helpful? Well $\Ind_A$ is a function, so let's think about what the expectation $\Exg \Ind_A(X)$ would be for some random variable $X$. Since $\Ind_A$ can only take two values, 0 and 1, we have  \begin{align*}
 \Exg \Ind_A(X) &= \sum_{y \in\{0,1\}} y\,\mathbb P\big( \Ind_A(X) = y \big) \\\
   &= 0 \times \mathbb P\big( \Ind_A(X) = 0 \big) + 1 \times \mathbb P\big( \Ind_A(X) = 1 \big) \\
   &= 0 \times \mathbb P(X \notin A) + 1 \times \mathbb P(X \in A) \\
   &= \mathbb P(X \in A) .
-\end{align*} $$ In line three, we used that $\Ind_A(X) = 0$ if and only if $X \notin A$, and that $\Ind_A(X) = 1$ if and only if $X \in A$.
+\end{align*} In line three, we used that $\Ind_A(X) = 0$ if and only if $X \notin A$, and that $\Ind_A(X) = 1$ if and only if $X \in A$.
 
 So the expectation of an indicator function a set is the probability that $X$ is in that set. This idea connects "expectations of functions" back to probabilities: if we want to find $\mathbb P(X \in A)$ we can find the expectation of $\Ind_A(X)$.
 

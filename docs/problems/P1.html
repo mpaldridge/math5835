@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -102,35 +68,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../mystyle.css">
 </head>
@@ -160,6 +97,9 @@ window.Quarto = {
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">MATH5835</a> 
+        <div class="sidebar-tools-main">
+    <a href="../MATH5835M-Statistical-Computing.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -238,6 +178,15 @@ window.Quarto = {
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
+<div class="hidden">
+<p><span class="math display">\[ \newcommand{\Exg}{\operatorname{\mathbb{E}}} 
+\newcommand{\Ex}{\mathbb{E}} 
+\newcommand{\Ind}{\mathbb{I}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\ee}{\mathrm{e}} \]</span></p>
+</div>
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../problems/P1.html">Problem Sheet 1</a></li></ol></nav>
 <div class="quarto-title">
@@ -274,296 +223,6 @@ display: none !important;
 <p>However, if, optionally, you would like some brief informal feedback on <strong>Questions 4, 6 and 8</strong> (marked ★), I am happy to provide some. If you want some brief feedback, you should submit your work electronically through Gradescope via the module’s Minerva page by <strong>1400 on Tuesday 14 October</strong>. I will return some brief comments on your those two questions by the problems class on Thursday 16 October. Because this informal feedback, not part of the official assessment, I cannot accept late work for any reason – but I am always happy to discuss any of your work on any question in my office hours.</p>
 <p>Many of these questions will require use of the <a href="https://cran.r-project.org">R programming language</a> (for example, by using the <a href="https://posit.co/downloads/">program RStudio</a>).</p>
 <p>Full solutions should be released on Friday 17 October.</p>
-</div>
-<div class="hidden">
-<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
-\newcommand{\Ex}{\mathbb{E}}
-\newcommand{\Ind}{\mathbb{I}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}
-\newcommand{\ee}{\mathrm{e}}\]</span></p>
-</div>
-<div class="myq">
-<p><strong>1.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(X\)</span> be uniform on <span class="math inline">\([-1,2]\)</span>.</p>
-<div class="subq">
-<p><strong>(a)</strong> &nbsp;&nbsp;By hand, calculate the exact value of <span class="math inline">\(\Ex X^4\)</span>.</p>
-<div class="myanswers">
-<p><em>Solution.</em></p>
-<p><span class="math display">\[\int_{-1}^2 x^4\,\frac{1}{2-(-1)}\,\mathrm{d}x = \tfrac13 \Big[\tfrac15x^5\Big]_{-1}^2 = \tfrac13\Big(\tfrac{32}{5}-\big(-\tfrac15\big)\Big) = \tfrac{33}{15} = \tfrac{11}{5} = 2.2\]</span></p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(b)</strong> &nbsp;&nbsp;Using R, calculate a Monte Carlo estimate for <span class="math inline">\(\Ex X^4\)</span>.</p>
-<div class="myanswers">
-<p><em>Solution.</em> I used the R code</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.199236</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="myq">
-<p><strong>2.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> both be standard normal distributions. Compute a Monte Carlo estimate of <span class="math inline">\(\Exg \max\{X,Y\}\)</span>. (You may wish to investigate R’s <code>pmax()</code> function.)</p>
-<div class="myanswers">
-<p><em>Solution.</em> By looking at <code>?pmax</code> (or maybe searching on Google) I discovered that <code>pmax()</code> gives the “parallel maxima” of two (or more vectors). That is the first element is the maximum of all the first elements of the vectors; the second element is the maximum of all the second elements of the vectors; and so on.</p>
-<p>So I used the R code</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>xsamples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>ysamples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">pmax</span>(xsamples, ysamples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5645173</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="myq">
-<p><strong>3.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You are trapped alone on an island. All you have with you is a tin can (radius <span class="math inline">\(r\)</span>) and a cardboard box (side lengths <span class="math inline">\(2r \times 2r\)</span>) that it fits snugly inside. You put the can inside the box [left picture].</p>
-<p>When it starts raining, each raindrop that falls in the cardboard box might fall into the tin can [middle picture], or might fall into the corners of the box outside the can [right picture].</p>
-<p><img src="P1-can-box.svg" class="img-fluid" width="600"></p>
-<div class="subq">
-<p><strong>(a)</strong> &nbsp;&nbsp;Using R, simulate rainfall into the box. You may take units such that <span class="math inline">\(r = 1\)</span>. Estimate the probability <span class="math inline">\(\theta\)</span> that a uniformly-random raindrop that falls in the cardboard box falls into the tin can also.</p>
-<div class="myanswers">
-<p><em>Solution.</em> I set things up so that the box is <span class="math inline">\([-1, 1]^2\)</span>, centered at the origin. This means that the inside of the can is the set of points is those <span class="math inline">\((x,y)\)</span> such that <span class="math inline">\(x^2 + y^2 \leq 1\)</span>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>rain_x <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>rain_y <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>in_box <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> y<span class="sc">^</span><span class="dv">2</span> <span class="sc">&lt;=</span> <span class="dv">1</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">in_box</span>(rain_x, rain_y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.785022</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="subq">
-<p><strong>(b)</strong> &nbsp;&nbsp;Calculate exactly the probability <span class="math inline">\(\theta\)</span>.</p>
-<div class="myanswers">
-<p><em>Solution.</em> The area of the box is <span class="math inline">\(2r \times 2r = 4r^2\)</span>. The area of the can is <span class="math inline">\(\pi r^2\)</span>. So the probability a raindrop landing in the box lands in the can is <span class="math display">\[ \frac{\text{area of can}}{\text{area of box}} = \frac{\pi r^2}{4r^2} = \frac{\pi}{4} \approx 0.785. \]</span></p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(c)</strong> &nbsp;&nbsp;You realise that, despite being trapped all alone on the island, you now have a way of approximating the value of <span class="math inline">\(\pi\)</span>. If you want to calculate <span class="math inline">\(\pi\)</span> to 6 decimal places, roughly how many raindrops do you need to fall into the box?</p>
-<div class="myanswers">
-<p><em>Solution.</em> The phrase “to 6 decimal places” isn’t a precise mathematical one. I’m going to interpret this as getting the root-mean-square error below <span class="math inline">\(10^{-6}\)</span>. If you interpret it slightly differently that’s fine – for example, getting the width of a 95% confidence interval below <span class="math inline">\(10^{-6}\)</span> could be another, slightly stricter, criterion.</p>
-<p>One could work this out by hand. Since the variance of a Bernoulli random variable is <span class="math inline">\(p(1-p)\)</span>, the mean-square error of our estimator is <span class="math display">\[ \frac{\frac{\pi}{4}(1 - \frac{\pi}{4})}{n} \approx \frac{0.169}{n} . \]</span> So we need <span class="math display">\[n = \frac{0.169}{(10^{-6})^2} \approx 169 \text{ billion} . \]</span></p>
-<p>That said, if we are trapped on our desert island, maybe we don’t know what <span class="math inline">\(\frac{\pi}{4}(1 - \frac{\pi}{4})\)</span> is. In that case we could do this using the can and the box. Our estimate of the variance is</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>var_est <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">in_box</span>(rain_x, rain_y))</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>var_est <span class="sc">/</span> (<span class="fl">1e-6</span>)<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 168762628281</code></pre>
-</div>
-</div>
-<p>We will probably spend a long time waiting for that much rain!</p>
-</div>
-</div>
-</div>
-<div class="myq">
-<p><strong>4.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;★ <em>(2024–25 exam, Question 1(d))</em> A statistician wants to estimate <span class="math inline">\(\mathbb E(\cos X)\)</span>, where <span class="math inline">\(X \sim \operatorname{Exp(4)}\)</span> is an exponential distribution with rate 4. The statistician begins with a pilot study, as shown in the R session below:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>   <span class="sc">&gt;</span> n <span class="ot">&lt;-</span> <span class="fl">1e4</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">4</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">var</span>(<span class="fu">cos</span>(samples))</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">0.01416</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The statistician wants to get the root-mean-square error of her estimator down to <span class="math inline">\(10^{−4}\)</span>. Approximately how many samples will she need for the full study? Explain your answer.</p>
-</div>
-<div class="myq">
-<p><strong>5.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(h(x) = 1/(x + 0.1)\)</span>. We wish to estimate <span class="math inline">\(\int_0^5 h(x) \, \mathrm{d}x\)</span> using a Monte Carlo method.</p>
-<div class="subq">
-<p><strong>(a)</strong> &nbsp;&nbsp;Estimate the integral using <span class="math inline">\(X\)</span> uniform on <span class="math inline">\([0,5]\)</span>.</p>
-<div class="myanswers">
-<p><em>Solution.</em></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="dv">1</span> <span class="sc">/</span> (x <span class="sc">+</span> <span class="fl">0.1</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>samples1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">5</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">integrand</span>(samples1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.928643</code></pre>
-</div>
-</div>
-<p>(In fact, the true answer is <span class="math inline">\(\log(5.1) - \log(0.1) = 3.932\)</span>, so it looks like this is working correctly.)</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(b)</strong> &nbsp;&nbsp;Can you come up with a choice of <span class="math inline">\(X\)</span> that improves on the estimate from (a)?</p>
-<div class="myanswers">
-<p><em>Solution.</em> Let’s look at a graph of the integrand <span class="math inline">\(h\)</span>.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code for drawing this graph</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  integrand, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">5</span>,</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">3</span>,</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"integrand h(x)"</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="P1_files/figure-html/h2-graph-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>We see that we get a much bigger contribution to the integral from values near 0. So a random variable that picks values nearer to 0 more often might have a chance of giving a more accurate result.</p>
-<!--*(I now have a bit of admission to make. I set this question before actually checking the answers. When I came to solve this problem, I found it surprisingly difficult to beat the uniform distribution! If you tried another distribution, and seemed to get an estimate near 3.93, you should consider that a good enough answer to this question -- even if the mean-square error was quite large.)*-->
-<p>I decided to try an exponential distribution with rate 1, which should sample the smaller values of <span class="math inline">\(x\)</span> more often.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pdf <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dexp</span>(x, <span class="dv">1</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (<span class="fu">integrand</span>(x) <span class="sc">/</span> <span class="fu">pdf</span>(x)) <span class="sc">*</span> (x <span class="sc">&lt;=</span> <span class="dv">5</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>samples2 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">1</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">phi</span>(samples2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.932641</code></pre>
-</div>
-</div>
-<p>(I had to include <code>x &lt;= 5</code> in the expression for <span class="math inline">\(\phi\)</span>, because my exponential distribution will sometimes take samples above 5, but they should count as 0 in an estimate for the integral between 0 and 5.)</p>
-<p>To see whether or not this was an improvement, I estimated the mean-square error.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">integrand</span>(samples1)) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.341696e-05</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(<span class="fu">phi</span>(samples2)) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.064075e-06</code></pre>
-</div>
-</div>
-<p>I found that I had reduced the mean-square error by roughly a factor of 5. <!--
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-pdf <- function(x) dbeta(x / 5, 1, 2) / 5
-phi <- function(x) integrand(x) / pdf(x)
-
-samples2 <- 5 * rbeta(n, 1, 2)
-mean(phi(samples2))
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 3.925519
-```
-
-
-:::
-:::
-
-
---></p>
-</div>
-</div>
-</div>
-<!--
-:::: {.myq}
-**6.**      When calculating a Monte Carlo estimate $\frac{1}{n} \sum_{i=1}^n \phi(x_i)$, one might wish to first generate the $n$ samples $(x_1, x_2, \dots, x_n)$ and store them, and only then, after all samples are generated, finally calculate the estimate. However, when $n$ is extremely large, storing all $n$ samples uses up a lot of space in a computer's memory. Describe (in words, in R code, or in a mixture of the two) how the Monte Carlo estimate could be produced using much less memory.
-
-::: {.myanswers}
-*Solution.* The idea is to keep a "running total" of the $\phi(x_i)$s. Then we only have to store that running total, not all the samples. Once this has been done $n$ times, then divide by $n$ to get the estimate.
-
-In R code, this might be something like
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-n <- 1e6
-
-total <- 0
-for (i in 1:n) {
-  sample <- # sampling code for 1 sample
-  total <- total + phi(sample)
-}
-
-MCest <- total / n
-```
-:::
-
-
-:::
-::::
--->
-<div class="myq">
-<p><strong>6.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;★ Show that the indicator functions <span class="math inline">\(\mathbb I_A(X)\)</span> and <span class="math inline">\(\mathbb I_B(X)\)</span> have correlation 0 if and only if the events <span class="math inline">\(\{X \in A\}\)</span> and <span class="math inline">\(\{X \in B\}\)</span> are independent.</p>
-<div class="myanswers">
-<p><em>Solution.</em> Recall that two random variables <span class="math inline">\(U\)</span>, <span class="math inline">\(V\)</span> have correlation 0 if and only if their covariance <span class="math inline">\(\Cov(U,V) = \Ex UV - (\Ex U)(\Ex V)\)</span> is 0 too.</p>
-<p>We know that <span class="math inline">\(\Exg\Ind_A(X) = \mathbb P(X \in A)\)</span> and <span class="math inline">\(\Exg \Ind_B(Y) = \mathbb P(X \in B)\)</span>. What about <span class="math inline">\(\Exg \Ind_A(X) \Ind_B(X)\)</span>? Well, <span class="math inline">\(\Ind_A(x) \Ind_B(x)\)</span> is 1 if and only if <em>both</em> indicator functions equal 1, which is if and only if both <span class="math inline">\(x \in A\)</span> and <span class="math inline">\(x \in B\)</span>. So <span class="math inline">\(\Exg \Ind_A(X) \Ind_B(X) = \mathbb P(X \in A \text{ and } X \in B)\)</span>.</p>
-<p>So the covariance is <span class="math display">\[ \Cov \big(\Ind_A(X), \Ind_B(X) \big) = \mathbb P(X \in A \text{ and } X \in B) - \mathbb P(X \in A)\, \mathbb P(X \in B) . \]</span> If this is 0, then <span class="math inline">\(\mathbb P(X \in A \text{ and } X \in B) = \mathbb P(X \in A)\, \mathbb P(X \in B)\)</span>, which is precisely the definition of those two events being independent.</p>
-</div>
-</div>
-<div class="myq">
-<p><strong>7.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(X\)</span> be an exponential distribution with rate 1.</p>
-<div class="subq">
-<p><strong>(a)</strong> &nbsp;&nbsp;Estimate <span class="math inline">\(\mathbb EX^{2.1}\)</span> using the standard Monte Carlo method.</p>
-<div class="myanswers">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">1</span>)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="fl">2.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.19966</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="subq">
-<p><strong>(b)</strong> &nbsp;&nbsp;Estimate <span class="math inline">\(\mathbb EX^{2.1}\)</span> using <span class="math inline">\(X^2\)</span> as a control variate. (You may recall that if <span class="math inline">\(Y\)</span> is exponential with rate <span class="math inline">\(\lambda\)</span> then <span class="math inline">\(\mathbb EY^2 = 2/\lambda^2\)</span>.)</p>
-<div class="myanswers">
-<p><em>Solution.</em> We have <span class="math inline">\(\Ex X^2 = 2\)</span>. So, re-using the same sample as before (you don’t have to do this – you could take new samples), our R code is as follows.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(samples<span class="sc">^</span><span class="fl">2.1</span> <span class="sc">-</span> samples<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.198221</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="subq">
-<p><strong>(c)</strong> &nbsp;&nbsp;Which method is better?</p>
-<div class="myanswers">
-<p><em>Solution.</em> The better answer is the one with the smaller mean-square error.</p>
-<p>For the basic method,</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(samples<span class="sc">^</span><span class="fl">2.1</span>) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.807748e-05</code></pre>
-</div>
-</div>
-<p>For the control variate method,</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(samples<span class="sc">^</span><span class="fl">2.1</span> <span class="sc">-</span> samples<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.881275e-07</code></pre>
-</div>
-</div>
-<p>So the control variates method is much, much better.</p>
-</div>
-</div>
-</div>
-<div class="myq">
-<p><strong>8.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;★ Let <span class="math inline">\(Z\)</span> be a standard normal distribution. A statistician has been investigating Monte Carlo estimates of <span class="math inline">\(\mathbb EZ^k\)</span> for different positive integers values of <span class="math inline">\(k\)</span>. Her colleague suggests using <span class="math inline">\(Z' = -Z\)</span> as an antithetic variable. Without running any R code, explain whether or not this is a good idea <strong>(a)</strong> when <span class="math inline">\(k\)</span> is even; <strong>(b)</strong> when <span class="math inline">\(k\)</span> is odd.</p>
-<div class="myanswers">
-<p><em>Solution.</em></p>
-<p><strong>(a)</strong> When <span class="math inline">\(k\)</span> is even, we have <span class="math inline">\(Z^k = (-Z)^k\)</span>. So the antithetic variables method just repeats each sample twice. This is obviously no benefit at all, and just wastes time. Indeed, we have perfect positive correlation <span class="math inline">\(\rho = +1\)</span>, which is the “worst-case scenario”.</p>
-<p><strong>(b)</strong> When <span class="math inline">\(k\)</span> is odd, we have <span class="math inline">\(Z^k = -(-Z)^k\)</span>. In this case we know that <span class="math inline">\(\Ex Z^k = 0\)</span>, because the results for positive <span class="math inline">\(z\)</span> exactly balance out those for negative <span class="math inline">\(z\)</span>, so no Monte Carlo sampling is necessary. If our statistician has somehow forgotten that, though, she will get a pleasant surprise! After just two samples, she will get the estimate <span class="math display">\[\frac{1}{2} \big(Z_1^k + (-Z_1)^k \big) = \frac{1}{2} (Z_1^k - Z_1^k) = 0 ,\]</span> Thereby getting the result exactly right. Indeed, we have perfect negative correlation <span class="math inline">\(\rho = -1\)</span>, which is the “best-case scenario”.</p>
-</div>
 </div>
 
 

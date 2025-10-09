@@ -9,6 +9,8 @@ This module lasts for 11 weeks from 29 September to 12 December 2025. The exam w
 
 The module leader, the lecturer, and the main author of these notes is [Dr Matthew Aldridge](https://mpaldridge.github.io/). (You can call me "Matt", "Matthew", or "Dr Aldridge", pronounced "*old*-ridge".) My email address is [m.aldridge@leeds.ac.uk](mailto:m.aldridge@leeds.ac.uk), although I much prefer questions in person at office hours (see below) rather than by email.
 
+The HTML webpage is the best way to view the course material. There is also a [**PDF version**](MATH5835M-Statistical-Computing.pdf), although I have been much less careful about the presentation of this material, and it does not include the problem sheets.
+
 
 ### Lectures
 

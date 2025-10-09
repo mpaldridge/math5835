@@ -161,6 +161,9 @@ window.Quarto = {
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">MATH5835</a> 
+        <div class="sidebar-tools-main">
+    <a href="../MATH5835M-Statistical-Computing.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -246,6 +249,15 @@ window.Quarto = {
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
+<div class="hidden">
+<p><span class="math display">\[ \newcommand{\Exg}{\operatorname{\mathbb{E}}} 
+\newcommand{\Ex}{\mathbb{E}} 
+\newcommand{\Ind}{\mathbb{I}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\ee}{\mathrm{e}} \]</span></p>
+</div>
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L02-mc-uses.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -267,13 +279,7 @@ window.Quarto = {
 
 
 <div class="hidden">
-<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
-\newcommand{\Ex}{\mathbb{E}}
-\newcommand{\Ind}{\mathbb{I}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}
-\newcommand{\ee}{\mathrm{e}}\]</span></p>
+<p><span class="math display">\[ \]</span></p>
 </div>
 <p>Quick recap: Last time we defined the Monte Carlo estimator for an expectation of a function of a random variable <span class="math inline">\(\theta = \Exg \phi(X)\)</span> to be <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are independent random samples from <span class="math inline">\(X\)</span>.</p>
 <p>Today we look at two other things we can estimate using Monte Carlo simulation: probabilities, and integrals.</p>
@@ -285,12 +291,12 @@ window.Quarto = {
 <p><span class="theorem-title"><strong>Definition 2.1</strong></span> Let <span class="math inline">\(A\)</span> be a set. Then the <strong>indicator function</strong> <span class="math inline">\(\Ind_A\)</span> is defined by <span class="math display">\[ \Ind_A(x) = \begin{cases} 1 &amp; \text{if $x \in A$} \\ 0 &amp; \text{if $x \notin A$.} \end{cases} \]</span></p>
 </div>
 <p>The set <span class="math inline">\(A\)</span> could just be a single element <span class="math inline">\(A = \{y\}\)</span>. In that case <span class="math inline">\(\Ind_A(x)\)</span> is 1 if <span class="math inline">\(x = y\)</span> and 0 if <span class="math inline">\(x \neq y\)</span>. Or <span class="math inline">\(A\)</span> could be a semi-infinite interval, like <span class="math inline">\(A = [a, \infty)\)</span>. In that case <span class="math inline">\(\Ind_A(x)\)</span> is 1 if <span class="math inline">\(x \geq a\)</span> and 0 if <span class="math inline">\(x &lt; a\)</span>.</p>
-<p>Why is this helpful? Well <span class="math inline">\(\Ind_A\)</span> is a function, so let’s think about what the expectation <span class="math inline">\(\Exg \Ind_A(X)\)</span> would be for some random variable <span class="math inline">\(X\)</span>. Since <span class="math inline">\(\Ind_A\)</span> can only take two values, 0 and 1, we have <span class="math display">\[ \begin{align*}
+<p>Why is this helpful? Well <span class="math inline">\(\Ind_A\)</span> is a function, so let’s think about what the expectation <span class="math inline">\(\Exg \Ind_A(X)\)</span> would be for some random variable <span class="math inline">\(X\)</span>. Since <span class="math inline">\(\Ind_A\)</span> can only take two values, 0 and 1, we have <span class="math display">\[\begin{align*}
 \Exg \Ind_A(X) &amp;= \sum_{y \in\{0,1\}} y\,\mathbb P\big( \Ind_A(X) = y \big) \\\
   &amp;= 0 \times \mathbb P\big( \Ind_A(X) = 0 \big) + 1 \times \mathbb P\big( \Ind_A(X) = 1 \big) \\
   &amp;= 0 \times \mathbb P(X \notin A) + 1 \times \mathbb P(X \in A) \\
   &amp;= \mathbb P(X \in A) .
-\end{align*} \]</span> In line three, we used that <span class="math inline">\(\Ind_A(X) = 0\)</span> if and only if <span class="math inline">\(X \notin A\)</span>, and that <span class="math inline">\(\Ind_A(X) = 1\)</span> if and only if <span class="math inline">\(X \in A\)</span>.</p>
+\end{align*}\]</span> P(X A) . \end{align*} In line three, we used that <span class="math inline">\(\Ind_A(X) = 0\)</span> if and only if <span class="math inline">\(X \notin A\)</span>, and that <span class="math inline">\(\Ind_A(X) = 1\)</span> if and only if <span class="math inline">\(X \in A\)</span>.</p>
 <p>So the expectation of an indicator function a set is the probability that <span class="math inline">\(X\)</span> is in that set. This idea connects “expectations of functions” back to probabilities: if we want to find <span class="math inline">\(\mathbb P(X \in A)\)</span> we can find the expectation of <span class="math inline">\(\Ind_A(X)\)</span>.</p>
 <p>With this idea in hand, how do we estimate <span class="math inline">\(\theta = \mathbb P(X \in A)\)</span> using the Monte Carlo method? We write <span class="math inline">\(\theta = \Exg\Ind_A(X)\)</span>. Then our Monte Carlo estimator is <span class="math display">\[  \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \Ind_A(X_i) . \]</span></p>
 <p>We remember that <span class="math inline">\(\Ind_A(X_i)\)</span> is 1 if <span class="math inline">\(X_i \in A\)</span> and 0 otherwise. So if we add up <span class="math inline">\(n\)</span> of these, we count an extra +1 each time we have an <span class="math inline">\(X_i \in A\)</span>. So <span class="math inline">\(\sum_{i=1}^n \Ind_A(X_i)\)</span> counts the total number of the <span class="math inline">\(X_i\)</span> that are in <span class="math inline">\(A\)</span>. So the Monte Carlo estimator can be written as <span class="math display">\[  \widehat{\theta}_n^{\mathrm{MC}} = \frac{\# \text{ of } X_i \text{ that are in $A$}}{n} . \]</span> (I’m using <span class="math inline">\(\#\)</span> as shorthand for “the number of”.)</p>

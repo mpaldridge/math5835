@@ -127,6 +127,9 @@ window.Quarto = {
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">MATH5835</a> 
+        <div class="sidebar-tools-main">
+    <a href="../MATH5835M-Statistical-Computing.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -205,6 +208,15 @@ window.Quarto = {
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
+<div class="hidden">
+<p><span class="math display">\[ \newcommand{\Exg}{\operatorname{\mathbb{E}}} 
+\newcommand{\Ex}{\mathbb{E}} 
+\newcommand{\Ind}{\mathbb{I}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\ee}{\mathrm{e}} \]</span></p>
+</div>
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L05-cv.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -226,15 +238,10 @@ window.Quarto = {
 
 
 <div class="hidden">
-<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
-\newcommand{\Ex}{\mathbb{E}}
-\newcommand{\Ind}{\mathbb{I}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}
-\newcommand{\ee}{\mathrm{e}}\]</span></p>
+<p><span class="math display">\[ \]</span></p>
 </div>
 <!--
+
 ## Variance reduction
 
 Let's recap where we've got to. The Monte Carlo estimator of $\theta = \Exg \phi(X)$ is $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i), $$ where $X_1, X_2, \dots, X_n$ are IID random samples from $X$. The mean-square error of this estimator is $${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . $$ If we want a more accurate estimate, we can just take more samples $n$. But the problem is that the root-mean-square error scales like $1/\sqrt{n}$. To double the accuracy, we need four times as many samples; for one more decimal place of accuracy, we need one hundred times as many samples.
@@ -291,6 +298,8 @@ We could do this the "usual" Monte Carlo way.
 
 
 
+
+
 ::: {.cell}
 
 ```{.r .cell-code  code-summary="Code for drawing this graph"}
@@ -313,9 +322,13 @@ MCest
 
 
 
+
+
 But we could see if we can do better with a control variate. But what should we pick for the control function $\psi$? We want something that's similar to $\phi(x) = \cos(x)$, but where we can actually calculate the expectation.
 
 Here's a suggestion. If we remember our [Taylor series](https://en.wikipedia.org/wiki/Taylor_series), we know that, for $x$ near $0$, $$ \cos x \approx 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots . $$ So how about taking the first two nonzero terms in the Taylor series $$ \psi(x) = 1 - \frac{x^2}{2} . $$ That is quite close to $\cos x$, at least for the values of $x$ near 0 that $X \sim \operatorname{N}(0,1)$ is most likely to take.
+
+
 
 
 
@@ -341,9 +354,13 @@ legend(
 
 
 
+
+
 Not only that, but we know that for $Y \sim \operatorname{N}(\mu, \sigma^2)$ we have $\Ex Y^2 = \mu^2 + \sigma^2$. So $$ \Exg \psi(X) = \Exg \left(1 - \frac{X^2}{2} \right) = 1 - \frac{\Ex X^2}{2} = 1 - \frac{0^2 + 1}{2} = \frac12 . $$
 
 So our control variate estimate is:
+
+
 
 
 
@@ -364,6 +381,8 @@ CVest
 
 :::
 :::
+
+
 
 
 
@@ -423,6 +442,8 @@ The naive Monte Carlo estimate had mean-square and root-mean-square error
 
 
 
+
+
 ::: {.cell}
 
 ```{.r .cell-code  code-summary="Code for drawing this graph"}
@@ -445,7 +466,11 @@ c(MC_MSE, sqrt(MC_MSE))
 
 
 
+
+
 The variance and root-mean-square error of our control variate estimate, on the other hand, are
+
+
 
 
 
@@ -469,6 +494,8 @@ c(CV_MSE, sqrt(CV_MSE))
 
 
 
+
+
 This was a success! The mean-square error roughly halved, from $2\times 10^{-7}$ to $9.3\times 10^{-8}$. This meant the root-mean-square went down by about a third, from $4.5\times 10^{-4}$ to $3.1\times 10^{-4}$.
 
 Halving the mean-square error would normally have required doubling the number of samples $n$, so we have effectively doubled the sample size by using the control variate.
@@ -477,6 +504,7 @@ Halving the mean-square error would normally have required doubling the number o
 :::
 
 **Next time:** *We look at our second variance reduction technique: antithetic variables.*
+
 -->
 <div class="mysummary">
 <p><strong>Summary:</strong></p>

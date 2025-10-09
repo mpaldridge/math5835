@@ -1,7 +1,9 @@
 # Control variate
 
 {{< include ../_header.qmd >}}
+
 <!--
+
 ## Variance reduction
 
 Let's recap where we've got to. The Monte Carlo estimator of $\theta = \Exg \phi(X)$ is $$ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i), $$ where $X_1, X_2, \dots, X_n$ are IID random samples from $X$. The mean-square error of this estimator is $${\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} . $$ If we want a more accurate estimate, we can just take more samples $n$. But the problem is that the root-mean-square error scales like $1/\sqrt{n}$. To double the accuracy, we need four times as many samples; for one more decimal place of accuracy, we need one hundred times as many samples.
@@ -104,6 +106,7 @@ and estimate the MSE and RMSE by $S^2 / n$ and $S / \sqrt{n}$ respectively.
 :::
 
 **Next time:** *We look at our second variance reduction technique: antithetic variables.*
+
 -->
 
 ::: mysummary

@@ -6,7 +6,7 @@
 :::: {.subq}
 **(a)**   By hand, calculate the exact value of $\Ex X^4$.
 
-::: {.myanswers}
+::: {.myanswers data-latex=""}
 *Solution.*
 
 $$\int_{-1}^2 x^4\,\frac{1}{2-(-1)}\,\mathrm{d}x = \tfrac13 \Big[\tfrac15x^5\Big]_{-1}^2 = \tfrac13\Big(\tfrac{32}{5}-\big(-\tfrac15\big)\Big) = \tfrac{33}{15} = \tfrac{11}{5} = 2.2$$
@@ -16,7 +16,7 @@ $$\int_{-1}^2 x^4\,\frac{1}{2-(-1)}\,\mathrm{d}x = \tfrac13 \Big[\tfrac15x^5\Big
 :::: {.subq}
 **(b)**   Using R, calculate a Monte Carlo estimate for $\Ex X^4$.
 
-::: {.myanswers}
+::: {.myanswers data-latex=""}
 *Solution.* I used the R code
 
 ```{r}
@@ -31,7 +31,7 @@ mean(samples^4)
 :::: {.myq}
 **2.**      Let $X$ and $Y$ both be standard normal distributions. Compute a Monte Carlo estimate of $\Exg \max\{X,Y\}$. (You may wish to investigate R's `pmax()` function.)
 
-::: {.myanswers}
+::: {.myanswers data-latex=""}
 *Solution.* By looking at `?pmax` (or maybe searching on Google) I discovered that `pmax()` gives the "parallel maxima" of two (or more vectors). That is the first element is the maximum of all the first elements of the vectors; the second element is the maximum of all the second elements of the vectors; and so on.
 
 So I used the R code
@@ -55,7 +55,7 @@ When it starts raining, each raindrop that falls in the cardboard box might fall
 :::: {.subq}
 **(a)**   Using R, simulate rainfall into the box. You may take units such that $r = 1$. Estimate the probability $\theta$ that a uniformly-random raindrop that falls in the cardboard box falls into the tin can also.
 
-::: {.myanswers}
+::: {.myanswers data-latex=""}
 *Solution.* I set things up so that the box is $[-1, 1]^2$, centered at the origin. This means that the inside of the can is the set of points is those $(x,y)$ such that $x^2 + y^2 \leq 1$.
 
 ```{r}
@@ -71,7 +71,7 @@ mean(in_box(rain_x, rain_y))
 :::: {.subq}
 **(b)**   Calculate exactly the probability $\theta$.
 
-::: {.myanswers}
+::: {.myanswers data-latex=""}
 *Solution.* The area of the box is $2r \times 2r = 4r^2$. The area of the can is $\pi r^2$. So the probability a raindrop landing in the box lands in the can is
 $$ \frac{\text{area of can}}{\text{area of box}} = \frac{\pi r^2}{4r^2} = \frac{\pi}{4} \approx 0.785. $$
 :::
@@ -80,7 +80,7 @@ $$ \frac{\text{area of can}}{\text{area of box}} = \frac{\pi r^2}{4r^2} = \frac{
 :::: {.subq}
 **(c)**   You realise that, despite being trapped all alone on the island, you now have a way of approximating the value of $\pi$. If you want to calculate $\pi$ to 6 decimal places, roughly how many raindrops do you need to fall into the box?
 
-::: {.myanswers}
+::: {.myanswers data-latex=""}
 *Solution.* The phrase "to 6 decimal places" isn't a precise mathematical one. I'm going to interpret this as getting the root-mean-square error below $10^{-6}$. If you interpret it slightly differently that's fine -- for example, getting the width of a 95% confidence interval below $10^{-6}$ could be another, slightly stricter, criterion.
 
 One could work this out by hand. Since the variance of a Bernoulli random variable is $p(1-p)$, the mean-square error of our estimator is
@@ -120,7 +120,7 @@ distribution with rate 4. The statistician begins with a pilot study, as shown i
 :::: {.subq}
 **(a)**   Estimate the integral using $X$ uniform on $[0,5]$.
 
-:::{.myanswers}
+:::{.myanswers data-latex=""}
 *Solution.*
 
 ```{r}
@@ -137,7 +137,7 @@ mean(5 * integrand(samples1))
 :::: {.subq}
 **(b)**   Can you come up with a choice of $X$ that improves on the estimate from (a)?
 
-::: {.myanswers}
+::: {.myanswers data-latex=""}
 *Solution.* Let's look at a graph of the integrand $h$.
 
 ```{r h2-graph}
@@ -191,7 +191,7 @@ mean(phi(samples2))
 :::: {.myq}
 **6.**      When calculating a Monte Carlo estimate $\frac{1}{n} \sum_{i=1}^n \phi(x_i)$, one might wish to first generate the $n$ samples $(x_1, x_2, \dots, x_n)$ and store them, and only then, after all samples are generated, finally calculate the estimate. However, when $n$ is extremely large, storing all $n$ samples uses up a lot of space in a computer's memory. Describe (in words, in R code, or in a mixture of the two) how the Monte Carlo estimate could be produced using much less memory.
 
-::: {.myanswers}
+::: {.myanswers data-latex=""}
 *Solution.* The idea is to keep a "running total" of the $\phi(x_i)$s. Then we only have to store that running total, not all the samples. Once this has been done $n$ times, then divide by $n$ to get the estimate.
 
 In R code, this might be something like
@@ -215,7 +215,7 @@ MCest <- total / n
 :::: {.myq}
 **6.**      ★ Show that the indicator functions $\mathbb I_A(X)$ and $\mathbb I_B(X)$ have correlation 0 if and only if the events $\{X \in A\}$ and $\{X \in B\}$ are independent.
 
-::: {.myanswers}
+::: {.myanswers data-latex=""}
 *Solution.* Recall that two random variables $U$, $V$ have correlation 0 if and only if their covariance $\Cov(U,V) = \Ex UV - (\Ex U)(\Ex V)$ is 0 too.
 
 We know that $\Exg\Ind_A(X) = \mathbb P(X \in A)$ and $\Exg \Ind_B(Y) = \mathbb P(X \in B)$. What about $\Exg \Ind_A(X) \Ind_B(X)$? Well, $\Ind_A(x) \Ind_B(x)$ is 1 if and only if *both* indicator functions equal 1, which is if and only if both $x \in A$ and $x \in B$. So $\Exg \Ind_A(X) \Ind_B(X) = \mathbb P(X \in A \text{ and } X \in B)$.
@@ -234,7 +234,7 @@ If this is 0, then $\mathbb P(X \in A \text{ and } X \in B) = \mathbb P(X \in A)
 :::: {.subq}
 **(a)**   Estimate $\mathbb EX^{2.1}$ using the standard Monte Carlo method.
 
-::: {.myanswers}
+::: {.myanswers data-latex=""}
 ```{r}
 n <- 1e6
 samples <- rexp(n, 1)
@@ -246,7 +246,7 @@ mean(samples^2.1)
 :::: {.subq}
 **(b)**   Estimate $\mathbb EX^{2.1}$ using $X^2$ as a control variate. (You may recall that if $Y$ is exponential with rate $\lambda$ then $\mathbb EY^2 = 2/\lambda^2$.)
 
-::: {.myanswers}
+::: {.myanswers data-latex=""}
 *Solution.* We have $\Ex X^2 = 2$. So, re-using the same sample as before (you don't have to do this -- you could take new samples), our R code is as follows.
 
 ```{r}
@@ -258,7 +258,7 @@ mean(samples^2.1 - samples^2) + 2
 :::: {.subq}
 **(c)**   Which method is better?
 
-::: {.myanswers}
+::: {.myanswers data-latex=""}
 *Solution.* The better answer is the one with the smaller mean-square error.
 
 For the basic method,
@@ -281,7 +281,7 @@ So the control variates method is much, much better.
 :::: {.myq}
 **8.**      ★ Let $Z$ be a standard normal distribution. A statistician has been investigating Monte Carlo estimates of $\mathbb EZ^k$ for different positive integers values of $k$. Her colleague suggests using $Z' = -Z$ as an antithetic variable. Without running any R code, explain whether or not this is a good idea **(a)** when $k$ is even; **(b)** when $k$ is odd.
 
-::: {.myanswers}
+::: {.myanswers data-latex=""}
 *Solution.*
 
 **(a)** When $k$ is even, we have $Z^k = (-Z)^k$. So the antithetic variables method just repeats each sample twice. This is obviously no benefit at all, and just wastes time. Indeed, we have perfect positive correlation $\rho = +1$, which is the "worst-case scenario".

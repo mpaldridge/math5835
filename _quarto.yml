@@ -8,8 +8,9 @@ project:
 book:
   title: "MATH5835M Statistical Computing"
   author: "Matthew Aldridge"
-  date: "09/30/24"
+  date: "09/30/25"
   site-url: https://mpaldridge.github.io/math5835/
+  downloads: [pdf]
   sidebar:
     title: MATH5835
   chapters:
@@ -62,8 +63,29 @@ format:
   html:
     theme: cosmo
     css: mystyle.css
-#  pdf:
-#    documentclass: scrreprt
+    include-before-body:
+      - text: |
+          <div class="hidden">
+          <p><span class="math display">\[ \newcommand{\Exg}{\operatorname{\mathbb{E}}} 
+          \newcommand{\Ex}{\mathbb{E}} 
+          \newcommand{\Ind}{\mathbb{I}}
+          \newcommand{\Var}{\operatorname{Var}}
+          \newcommand{\Cov}{\operatorname{Cov}}
+          \newcommand{\Corr}{\operatorname{Corr}}
+          \newcommand{\ee}{\mathrm{e}} \]</p>
+          </span></div>
+  pdf:
+    documentclass: scrreprt
+    include-in-header:
+      - text: |
+          \newcommand{\Exg}{\operatorname{\mathbb{E}}} 
+          \newcommand{\Ex}{\mathbb{E}} 
+          \newcommand{\Ind}{\mathbb{I}}
+          \newcommand{\Var}{\operatorname{Var}}
+          \newcommand{\Cov}{\operatorname{Cov}}
+          \newcommand{\Corr}{\operatorname{Corr}}
+          \newcommand{\ee}{\mathrm{e}}
+          \usepackage{comment}
 
 filters:
   - diagram

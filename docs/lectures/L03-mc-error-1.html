@@ -161,6 +161,9 @@ window.Quarto = {
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">MATH5835</a> 
+        <div class="sidebar-tools-main">
+    <a href="../MATH5835M-Statistical-Computing.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -247,6 +250,15 @@ window.Quarto = {
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
+<div class="hidden">
+<p><span class="math display">\[ \newcommand{\Exg}{\operatorname{\mathbb{E}}} 
+\newcommand{\Ex}{\mathbb{E}} 
+\newcommand{\Ind}{\mathbb{I}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\ee}{\mathrm{e}} \]</span></p>
+</div>
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L03-mc-error-1.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -268,13 +280,7 @@ window.Quarto = {
 
 
 <div class="hidden">
-<p><span class="math display">\[\newcommand{\Exg}{\operatorname{\mathbb{E}}}
-\newcommand{\Ex}{\mathbb{E}}
-\newcommand{\Ind}{\mathbb{I}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Corr}{\operatorname{Corr}}
-\newcommand{\ee}{\mathrm{e}}\]</span></p>
+<p><span class="math display">\[ \]</span></p>
 </div>
 <section id="estimation-error" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="estimation-error"><span class="header-section-number">3.1</span> Estimation error</h2>
@@ -335,7 +341,7 @@ window.Quarto = {
 <li><p>Take the square root of part 3.</p></li>
 </ol>
 </div>
-<p>Let’s think about MSE <span class="math inline">\(\frac{1}{n} \Var(\phi(X))\)</span>. The variance terms is some fixed fact about the random variable <span class="math inline">\(X\)</span> and the function <span class="math inline">\(\phi\)</span>. So as <span class="math inline">\(n\)</span> gets bigger, <span class="math inline">\(\frac{1}{n}\)</span> gets smaller, so the MSE gets smaller, and the estimator gets more accurate. This goes back to what we said when we introduced the Monte Carlo estimator: we get a more accurate estimate by increasing <span class="math inline">\(n\)</span>. More specifically, the MSE scales like <span class="math inline">\(1\n\)</span>, or – perhaps a more useful result – the RMSE scales like <span class="math inline">\(1/\sqrt{n}\)</span>. We’ll come back to this in the next lecture.</p>
+<p>Let’s think about MSE <span class="math inline">\(\frac{1}{n} \Var(\phi(X))\)</span>. The variance terms is some fixed fact about the random variable <span class="math inline">\(X\)</span> and the function <span class="math inline">\(\phi\)</span>. So as <span class="math inline">\(n\)</span> gets bigger, <span class="math inline">\(\frac{1}{n}\)</span> gets smaller, so the MSE gets smaller, and the estimator gets more accurate. This goes back to what we said when we introduced the Monte Carlo estimator: we get a more accurate estimate by increasing <span class="math inline">\(n\)</span>. More specifically, the MSE scales like <span class="math inline">\(1/n\)</span>, or – perhaps a more useful result – the RMSE scales like <span class="math inline">\(1/\sqrt{n}\)</span>. We’ll come back to this in the next lecture.</p>
 </section>
 <section id="error-of-monte-carlo-estimator-practice" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="error-of-monte-carlo-estimator-practice"><span class="header-section-number">3.3</span> Error of Monte Carlo estimator: practice</h2>

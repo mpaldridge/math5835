@@ -98,7 +98,7 @@ $$\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\wi
 1. Take the square root of part 3.
 :::
 
-Let's think about MSE $\frac{1}{n} \Var(\phi(X))$. The variance terms is some fixed fact about the random variable $X$ and the function $\phi$. So as $n$ gets bigger, $\frac{1}{n}$ gets smaller, so the MSE gets smaller, and the estimator gets more accurate. This goes back to what we said when we introduced the Monte Carlo estimator: we get a more accurate estimate by increasing $n$. More specifically, the MSE scales like $1\n$, or -- perhaps a more useful result -- the RMSE scales like $1/\sqrt{n}$. We'll come back to this in the next lecture.
+Let's think about MSE $\frac{1}{n} \Var(\phi(X))$. The variance terms is some fixed fact about the random variable $X$ and the function $\phi$. So as $n$ gets bigger, $\frac{1}{n}$ gets smaller, so the MSE gets smaller, and the estimator gets more accurate. This goes back to what we said when we introduced the Monte Carlo estimator: we get a more accurate estimate by increasing $n$. More specifically, the MSE scales like $1/n$, or -- perhaps a more useful result -- the RMSE scales like $1/\sqrt{n}$. We'll come back to this in the next lecture.
 
 ## Error of Monte Carlo estimator: practice
 
