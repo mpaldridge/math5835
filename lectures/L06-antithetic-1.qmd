@@ -2,7 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
-<!--
+
 
 ## Estimation with correlation
 
@@ -67,7 +67,7 @@ Are these antithetic variables estimates an improvement on the basic Monte Carlo
 
 **Next time:** *We continue our study of the antithetic variables method with more examples and analysis of the error.*
 
--->
+
 ::: {.mysummary}
 **Summary:**
 

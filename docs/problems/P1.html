@@ -466,8 +466,6 @@ display: none !important;
 
 
 
-
-
 ::: {.cell}
 
 ```{.r .cell-code  code-summary="Code for drawing this graph"}
@@ -491,8 +489,6 @@ mean(phi(samples2))
 
 
 
-
-
 --></p>
 </div>
 </div>
@@ -505,8 +501,6 @@ mean(phi(samples2))
 *Solution.* The idea is to keep a "running total" of the $\phi(x_i)$s. Then we only have to store that running total, not all the samples. Once this has been done $n$ times, then divide by $n$ to get the estimate.
 
 In R code, this might be something like
-
-
 
 
 
@@ -526,8 +520,6 @@ for (i in 1:n) {
 MCest <- total / n
 ```
 :::
-
-
 
 
 

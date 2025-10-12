@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -215,8 +249,16 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#estimation-with-correlation" id="toc-estimation-with-correlation" class="nav-link active" data-scroll-target="#estimation-with-correlation"><span class="header-section-number">6.1</span> Estimation with correlation</a></li>
+  <li><a href="#monte-carlo-with-antithetic-variables" id="toc-monte-carlo-with-antithetic-variables" class="nav-link" data-scroll-target="#monte-carlo-with-antithetic-variables"><span class="header-section-number">6.2</span> Monte Carlo with antithetic variables</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">6.3</span> Examples</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -252,214 +294,80 @@ window.Quarto = {
 <div class="hidden">
 <p><span class="math display">\[ \]</span></p>
 </div>
-<!--
-
-## Estimation with correlation
-
-This lecture and the next, we will be looking at our second variance reduction method for Monte Carlo estimation: the use of antithetic variables." The word "antithetic" refers to using negative correlation to reduce the variance an estimator.
-
-Let's start with the simple example of estimating an expectation from $n = 2$ samples. Suppose $Y$ has expectation $\mu = \Ex Y$ and variance $\Var(Y) = \sigma^2$. Suppose $Y_1$ and $Y_2$ are independent samples from $Y$. Then the Monte Carlo estimator is
-$$ \overline Y = \tfrac12(Y_1 + Y_2) . $$
-This estimator is unbiased, since
-$$ \Ex \overline Y = \Ex \big(\tfrac12(Y_1 + Y_2)\big) = \tfrac12 ( \Ex Y_1 + \Ex Y_2 ) = \tfrac12 (\mu + \mu) = \mu . $$
-Thus the mean-square error equals the variance, which is
-$$ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) \big)= \tfrac14 (\sigma^2 + \sigma^2) = \tfrac12 \sigma^2 . $$
-
-But what if $Y_1$ and $Y_2$ still have the same distribution as $Y$ but now are *not* independent? The expectation is still the same, so the estimator is still unbiased. But the variance (and hence mean-square error) is now
-$$ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) + 2 \Cov(Y_1, Y_2) \big) . $$
-Write $\rho$ for the correlation
-$$ \rho = \Corr(Y_1, Y_2) = \frac{\Cov(Y_1, Y_2)}{\sqrt{\Var(Y_1) \Var(Y_2)}} = \frac{\Cov(Y_1, Y_2)}{\sqrt{\sigma^2 \times \sigma^2}} = \frac{\Cov(Y_1, Y_2)}{\sigma^2} . $$
-(Remember that $-1 \leq \rho \leq +1$.)
-Then the variance is 
-$$ \Var \big( \overline Y\big) = \tfrac14 ( \sigma^2 + \sigma^2 + 2 \rho \sigma^2 ) = \frac{1+\rho}{2} \,\sigma^2 . $$
-
-We can compare this with the variance $\frac12 \sigma^2$ from the independent-sample case:
-
-* If $Y_1$ and $Y_2$ are **positively correlated**, in that $\rho > 0$, then the variance, and hence the mean-square error, has got bigger. This means the estimator is worse. This is because, with positive correlation, errors compound each other -- if one sample is bigger than average, then the other one is likely to be bigger than average too; while if one sample is smaller than average, then the other one is likely to be smaller than average too.
-
-* If $Y_1$ and $Y_2$ are **negatively correlated**, in that $\rho < 0$, then the variance, and hence the mean-square error, has got smaller. This means the estimator is better. This is because, with negative correlation, errors compensate for each other -- if one sample is bigger than average, then the other one is likely to be smaller than average, which will help "cancel out" the error.
-
-
-## Monte Carlo with antithetic variables
-
-We have seen that negative correlation helps improve estimation from $n=2$ samples. How can we make this work in our favour for Monte Carlo simulation with many more samples?
-
-We will look at the idea of **antithetic pairs**. So instead of taking $n$ samples
-$$ X_1, X_2, \dots, X_n $$
-that are all independent of each other, we will take $n/2$ pairs of samples
-$$ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X'_{n/2}) . $$
-(Here, $n/2$ pairs means $n$ samples over all.)
-*Within* each pair, $X_i$ and $X_i'$ will *not* be independent, but *between* different pairs $i \neq j$, $(X_i, X_i')$ and $(X_j, X'_j)$ *will* be independent.
-
-::: {#def-AV}
-Let $X$ be a random variable, $\phi$ a function, and write $\theta = \Exg\phi(X)$. Let $X'$ have the same distribution as $X$ (but not necessarily be independent of it). Suppose that $(X_1, X_1')$, $(X_2, X_2')$, $\dots$, $(X_{n/2}, X'_{n/2})$ are pairs of random samples from $(X, X')$. Then the **antithetic variables Monte Carlo estimator** $\widehat\theta_n^{\mathrm{AV}}$ of $\theta$ is
-$$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) .$$
-:::
-
-The expression above for $\widehat{\theta}_n^{\mathrm{AV}}$ makes it clear that that this is a mean of the sum from each pair. Alternatively, we can rewrite the estimator as
-$$ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{2} \left( \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i) + \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i') \right) , $$
-which highlights that it is the mean of the estimator from the $X_i$s and the the estimator from the $X'_i$s.
-
-## Examples
-
-
-::: {#exm-MCprob4}
-
-Recall @exm-MCprob (continued in @exm-MCprob2 and @exm-MCprob3). Here, we were estimating $\mathbb P(Z > 2)$ for $Z$ a standard normal.
-
-The basic Monte Carlo estimate was
-
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-n <- 1e6
-samples <- rnorm(n)
-MCest   <- mean(samples > 2)
-MCest
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 0.022713
-```
-
-
-:::
-:::
-
-
-
-
-
-
-
-Can we improve this estimate with an antithetic variable? Well, if $Z$ is a standard normal, then $Z' = -Z$ is also standard normal and is not independent of $Z$. So maybe that could work as an antithetic variable. Let's try
-
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-n <- 1e6
-samples1 <- rnorm(n / 2)
-samples2 <- -samples1
-AVest <- (1 / n) * sum((samples1 > 2) + (samples2 > 2))
-AVest
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 0.022743
-```
-
-
-:::
-:::
-
-
-
-
-
-
-
-
-:::
-
-::: {#exm-AVunif}
-
-Let's consider estimating $\mathbb E \sin U$, where $U$ is continuous uniform on $[0,1]$.
-
-The basic Monte Carlo estimate is
-
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-n <- 1e6
-samples <- runif(n)
-MCest <- mean(sin(samples))
-MCest
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 0.4596232
-```
-
-
-:::
-:::
-
-
-
-
-
-
-
-We used `runif(n, min, max)` to generate $n$ samples on the interval $[\mathtt{min}, \mathtt{max}]$. However, if you omit the `min` and `max` arguments, then R assumes the default values `min = 0`, `max = 1`, which is what we want here.
-
-If $U$ is uniform on $[0,1]$, then $1 - U$ is also uniform on $[0,1]$. We could try using that as an antithetic variable.
-
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-n <- 1e6
-samples1 <- runif(n / 2)
-samples2 <- 1 - samples1
-AVest <- (1 / n) * sum(sin(samples1) + sin(samples2))
-AVest
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 0.4597191
-```
-
-
-:::
-:::
-
-
-
-
-
-
-
-
-:::
-
-We have taken $n/2$ pairs of samples, because that means we have $n/2 \times 2 = n$ samples all together, which seems like a fair comparison. This is certainly the case if generating the sample and generating its antithetic pair cost roughly the same in terms of time (or energy, or money). This is how we will compare methods in this module. However, if generating the first variate of each pair is slow, but then generating the second antithetic variate is much quicker, it might be a fairer comparison to take a full $n$ pairs. You could even consider more complicated ways of assessing the "cost" of Monte Carlo estimation, although we won't get into that here.
-
-Are these antithetic variables estimates an improvement on the basic Monte Carlo estimate? We'll find out next time.
-
-**Next time:** *We continue our study of the antithetic variables method with more examples and analysis of the error.*
-
--->
+<section id="estimation-with-correlation" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="estimation-with-correlation"><span class="header-section-number">6.1</span> Estimation with correlation</h2>
+<p>This lecture and the next, we will be looking at our second variance reduction method for Monte Carlo estimation: the use of antithetic variables.” The word “antithetic” refers to using negative correlation to reduce the variance an estimator.</p>
+<p>Let’s start with the simple example of estimating an expectation from <span class="math inline">\(n = 2\)</span> samples. Suppose <span class="math inline">\(Y\)</span> has expectation <span class="math inline">\(\mu = \Ex Y\)</span> and variance <span class="math inline">\(\Var(Y) = \sigma^2\)</span>. Suppose <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are independent samples from <span class="math inline">\(Y\)</span>. Then the Monte Carlo estimator is <span class="math display">\[ \overline Y = \tfrac12(Y_1 + Y_2) . \]</span> This estimator is unbiased, since <span class="math display">\[ \Ex \overline Y = \Ex \big(\tfrac12(Y_1 + Y_2)\big) = \tfrac12 ( \Ex Y_1 + \Ex Y_2 ) = \tfrac12 (\mu + \mu) = \mu . \]</span> Thus the mean-square error equals the variance, which is <span class="math display">\[ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) \big)= \tfrac14 (\sigma^2 + \sigma^2) = \tfrac12 \sigma^2 . \]</span></p>
+<p>But what if <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> still have the same distribution as <span class="math inline">\(Y\)</span> but now are <em>not</em> independent? The expectation is still the same, so the estimator is still unbiased. But the variance (and hence mean-square error) is now <span class="math display">\[ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) + 2 \Cov(Y_1, Y_2) \big) . \]</span> Write <span class="math inline">\(\rho\)</span> for the correlation <span class="math display">\[ \rho = \Corr(Y_1, Y_2) = \frac{\Cov(Y_1, Y_2)}{\sqrt{\Var(Y_1) \Var(Y_2)}} = \frac{\Cov(Y_1, Y_2)}{\sqrt{\sigma^2 \times \sigma^2}} = \frac{\Cov(Y_1, Y_2)}{\sigma^2} . \]</span> (Remember that <span class="math inline">\(-1 \leq \rho \leq +1\)</span>.) Then the variance is <span class="math display">\[ \Var \big( \overline Y\big) = \tfrac14 ( \sigma^2 + \sigma^2 + 2 \rho \sigma^2 ) = \frac{1+\rho}{2} \,\sigma^2 . \]</span></p>
+<p>We can compare this with the variance <span class="math inline">\(\frac12 \sigma^2\)</span> from the independent-sample case:</p>
+<ul>
+<li><p>If <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are <strong>positively correlated</strong>, in that <span class="math inline">\(\rho &gt; 0\)</span>, then the variance, and hence the mean-square error, has got bigger. This means the estimator is worse. This is because, with positive correlation, errors compound each other – if one sample is bigger than average, then the other one is likely to be bigger than average too; while if one sample is smaller than average, then the other one is likely to be smaller than average too.</p></li>
+<li><p>If <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are <strong>negatively correlated</strong>, in that <span class="math inline">\(\rho &lt; 0\)</span>, then the variance, and hence the mean-square error, has got smaller. This means the estimator is better. This is because, with negative correlation, errors compensate for each other – if one sample is bigger than average, then the other one is likely to be smaller than average, which will help “cancel out” the error.</p></li>
+</ul>
+</section>
+<section id="monte-carlo-with-antithetic-variables" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="monte-carlo-with-antithetic-variables"><span class="header-section-number">6.2</span> Monte Carlo with antithetic variables</h2>
+<p>We have seen that negative correlation helps improve estimation from <span class="math inline">\(n=2\)</span> samples. How can we make this work in our favour for Monte Carlo simulation with many more samples?</p>
+<p>We will look at the idea of <strong>antithetic pairs</strong>. So instead of taking <span class="math inline">\(n\)</span> samples <span class="math display">\[ X_1, X_2, \dots, X_n \]</span> that are all independent of each other, we will take <span class="math inline">\(n/2\)</span> pairs of samples <span class="math display">\[ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X'_{n/2}) . \]</span> (Here, <span class="math inline">\(n/2\)</span> pairs means <span class="math inline">\(n\)</span> samples over all.) <em>Within</em> each pair, <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_i'\)</span> will <em>not</em> be independent, but <em>between</em> different pairs <span class="math inline">\(i \neq j\)</span>, <span class="math inline">\((X_i, X_i')\)</span> and <span class="math inline">\((X_j, X'_j)\)</span> <em>will</em> be independent.</p>
+<div id="def-AV" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 6.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(X'\)</span> have the same distribution as <span class="math inline">\(X\)</span> (but not necessarily be independent of it). Suppose that <span class="math inline">\((X_1, X_1')\)</span>, <span class="math inline">\((X_2, X_2')\)</span>, <span class="math inline">\(\dots\)</span>, <span class="math inline">\((X_{n/2}, X'_{n/2})\)</span> are pairs of random samples from <span class="math inline">\((X, X')\)</span>. Then the <strong>antithetic variables Monte Carlo estimator</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{AV}}\)</span> of <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) .\]</span></p>
+</div>
+<p>The expression above for <span class="math inline">\(\widehat{\theta}_n^{\mathrm{AV}}\)</span> makes it clear that that this is a mean of the sum from each pair. Alternatively, we can rewrite the estimator as <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{2} \left( \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i) + \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i') \right) , \]</span> which highlights that it is the mean of the estimator from the <span class="math inline">\(X_i\)</span>s and the the estimator from the <span class="math inline">\(X'_i\)</span>s.</p>
+</section>
+<section id="examples" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="examples"><span class="header-section-number">6.3</span> Examples</h2>
+<div id="exm-MCprob4" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.1</strong></span> Recall <a href="L02-mc-uses.html#exm-MCprob" class="quarto-xref">Example&nbsp;<span>2.1</span></a> (continued in <a href="L03-mc-error-1.html#exm-MCprob2" class="quarto-xref">Example&nbsp;<span>3.2</span></a> and <a href="L04-mc-error-2.html#exm-MCprob3" class="quarto-xref">Example&nbsp;<span>4.1</span></a>). Here, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span> for <span class="math inline">\(Z\)</span> a standard normal.</p>
+<p>The basic Monte Carlo estimate was</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest   <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.022713</code></pre>
+</div>
+</div>
+<p>Can we improve this estimate with an antithetic variable? Well, if <span class="math inline">\(Z\)</span> is a standard normal, then <span class="math inline">\(Z' = -Z\)</span> is also standard normal and is not independent of <span class="math inline">\(Z\)</span>. So maybe that could work as an antithetic variable. Let’s try</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>samples1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>samples2 <span class="ot">&lt;-</span> <span class="sc">-</span>samples1</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>AVest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>((samples1 <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">+</span> (samples2 <span class="sc">&gt;</span> <span class="dv">2</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>AVest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.022743</code></pre>
+</div>
+</div>
+</div>
+<div id="exm-AVunif" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.2</strong></span> Let’s consider estimating <span class="math inline">\(\mathbb E \sin U\)</span>, where <span class="math inline">\(U\)</span> is continuous uniform on <span class="math inline">\([0,1]\)</span>.</p>
+<p>The basic Monte Carlo estimate is</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">sin</span>(samples))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4596232</code></pre>
+</div>
+</div>
+<p>We used <code>runif(n, min, max)</code> to generate <span class="math inline">\(n\)</span> samples on the interval <span class="math inline">\([\mathtt{min}, \mathtt{max}]\)</span>. However, if you omit the <code>min</code> and <code>max</code> arguments, then R assumes the default values <code>min = 0</code>, <code>max = 1</code>, which is what we want here.</p>
+<p>If <span class="math inline">\(U\)</span> is uniform on <span class="math inline">\([0,1]\)</span>, then <span class="math inline">\(1 - U\)</span> is also uniform on <span class="math inline">\([0,1]\)</span>. We could try using that as an antithetic variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>samples1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>samples2 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> samples1</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>AVest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>(<span class="fu">sin</span>(samples1) <span class="sc">+</span> <span class="fu">sin</span>(samples2))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>AVest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4597191</code></pre>
+</div>
+</div>
+</div>
+<p>We have taken <span class="math inline">\(n/2\)</span> pairs of samples, because that means we have <span class="math inline">\(n/2 \times 2 = n\)</span> samples all together, which seems like a fair comparison. This is certainly the case if generating the sample and generating its antithetic pair cost roughly the same in terms of time (or energy, or money). This is how we will compare methods in this module. However, if generating the first variate of each pair is slow, but then generating the second antithetic variate is much quicker, it might be a fairer comparison to take a full <span class="math inline">\(n\)</span> pairs. You could even consider more complicated ways of assessing the “cost” of Monte Carlo estimation, although we won’t get into that here.</p>
+<p>Are these antithetic variables estimates an improvement on the basic Monte Carlo estimate? We’ll find out next time.</p>
+<p><strong>Next time:</strong> <em>We continue our study of the antithetic variables method with more examples and analysis of the error.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
@@ -471,6 +379,7 @@ Are these antithetic variables estimates an improvement on the basic Monte Carlo
 
 
 </div>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
