@@ -2,7 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
-<!--
+
 ## Error with antithetic variables
 
 Recall from last time the antithetic variables Monte Carlo estimator. We take sample pairs
@@ -71,27 +71,26 @@ Later, when we study the inverse transform method (in Lecture 13) we will see an
 But to be a *good* antithetic variable, we need $\phi(X)$ and $\phi(X')$ to be negatively correlated too -- preferably strongly so. Often, this is a matter of trial-and-error -- it's difficult to set out hard principles. But there are some results that try to formalise the idea that "nice functions of negatively correlated random variables are themselves negatively correlated", which can be useful. We give one example of such a result here.
 
 ::: {#thm-neg}
-Let $U \sim \operatorname{U}[0, 1]$ and $U' = 1 - U$. Let $\phi$ be a monotonically increasing function. Then $\phi(U)$ and $\phi'(U)$ are negatively correlated, in that $\operatorname{Cov}\big(\phi(U), \phi(U')\big) \leq 0$.
+Let $U \sim \operatorname{U}[0, 1]$ and $V = 1 - U$. Let $\phi$ be a monotonically increasing function. Then $\phi(U)$ and $\phi(V)$ are negatively correlated, in that $\operatorname{Cov}\big(\phi(U), \phi(V)\big) \leq 0$.
 :::
 
-If I were to just write out the proof of this theorem, the proof would be fairly short and easy to understand. But it would be difficult to understand *why* I had taken the steps I had. So I will try to explain why each of the steps in the proof is a natural one -- although doing so may make the proof seem longer and more complicated than it really is.
+I didn't get to this proof in the lecture and it's a bit tricky (although not very technically deep), so let's say it's non-examinable.
 
 ::: {.proof}
-The covariance in question is
-$$ \operatorname{Cov}\big(\phi(U), \phi(U')\big) = \Exg \phi(U)\phi(1-U) - \big(\Exg\phi(U)\big) \big(\Exg\phi(1-U)\big) . $$
+*[Non-examinable]* You probably already know two different expressions for the covariance:
+$$ \operatorname{Cov}(Y, Z) = \Exg (Y - \mu_Y)(Z - \mu_Z) = \Exg YZ - \mu_Y \mu_Z . $$
+But for this proof it will be helpful to use a third, less well-known equation:
+$$ \operatorname{Cov}(Y, Z) = \tfrac12 \Exg (Y - Y')(Z - Z') , $$
+where $(Y', Z')$ is an IID copy of $(Y, Z)$.
 
-We would like to take a single expectation sign all the way outside. But we can't do this yet, because $\big(\Exg\phi(U)\big) \big(\Exg\phi(1-U)\big)$ and $\Exg\phi(U)\phi(1-U)$ are different things. However, we can do this if we introduce a new random variable $V$ that is also $\operatorname{U}[0,1]$ but is independent of $U$. Then we *so* have
-$$\big(\Exg\phi(U)\big) \big(\Exg\phi(1-U)\big) = \big(\Exg\phi(U)\big) \big(\Exg\phi(1-V)\big) = \Exg \phi(U)\phi(1-V).$$
-So now we can write
-$$ \operatorname{Cov}\big(\phi(U), \phi(U')\big) = \Exg \big(\phi(U)\phi(1-U) - \phi(U)\phi(1-V)\big) . $$
+To see that this third expression is true, we can start by expanding out the brackets. We get
+$$ \tfrac12 \Exg (Y - Y')(Z - Z')  = \tfrac12 \big( \Exg YZ - \Exg YZ' - \Exg Y'Z + \Exg Y'Z' \big) . $$
+We have four terms to deal with. The first has no dashed variables, so can stay as it is. The second and third terms have one dashed and one non-dashed variable, so these are independent, and we can write $\Exg YZ' = \Exg Y'Z = \mu_Y \mu_Z$. The fourth term has both terms dashed, but these have the same distribution as if they were non-dashed, so $\Exg Y'Z' = \Exg YZ$. All together, we have
+$$ \tfrac12 \Exg (Y - Y')(Z - Z') = \tfrac12 \big(2\Exg YZ - 2\mu_Y\mu_Z \big) = \Exg YZ - \mu_Y\mu_Z , $$
+which is indeed the second expression for the covariance.
 
-We've got a slightly odd asymmetry between $U$ and $V$ here, though. Why is the first term $\phi(U)\phi(1-U)$ and not $\phi(V)\phi(1-V)$? Why is the second term $\phi(U)\phi(1-V)$ and not $\phi(V)\phi(1-U)$? Well, maybe to even things up, we can write them as half of one and half of the other. That is,
-\begin{align*}
-\operatorname{Cov}\big(\phi(U), \phi(U')\big) &= \tfrac12 \Exg \big(\phi(U)\phi(1-U) +\phi(V)\phi(1-V) \\
-&\qquad\qquad\quad {}- \phi(U)\phi(1-V) - \phi(V)\phi(1-U)\big) . \end{align*}
-
-This expression will factorise nicely. It's
-$$ \operatorname{Cov}\big(\phi(U), \phi(U')\big) = \tfrac12 \Exg \big(\phi(U)-\phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big) . $$
+We can now apply this to the theorem in question. Put $Y = \phi(U)$ and $Z = \phi(1-U)$, and introduce an IID copy $V$ of $U$, so $Y' = \phi(V)$ and $Z' = \phi(1 - V)$. Then we have
+$$  \operatorname{Cov}\big(\phi(U), \phi(V)\big) = \tfrac 12 \Exg \big(\phi(U) - \phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big) .$$
 
 We now claim that this expectation is negative. In fact, we have a stronger result: $$\big(\phi(U) - \phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big)$${#eq-cross}
 is *always* negative, so its expectation certainly is. To see this, think separately of the two cases $U \leq V$ and $V \leq U$.
@@ -105,7 +104,7 @@ This completes the proof.
 
 
 **Next time:** *We come to the third, and most important, variance reduction scheme: importance sampling.*
--->
+
 ::: {.mysummary}
 **Summary:**
 

@@ -6,8 +6,8 @@ The basic Monte Carlo estimate and its root-mean square error is
 n <- 1e6
 samples <- runif(n)
 MCest <- mean(sin(samples))
-MC_RMSE <- sqrt(var(sin(samples)) / n)
-c(MCest, MC_RMSE)
+MC_MSE <- var(sin(samples)) / n
+c(MCest, sqrt(MC_MSE))
 ```
 
 We then used $U' = 1 - U$ as an antithetic variable
@@ -17,11 +17,11 @@ n <- 1e6
 samples1 <- runif(n / 2)
 samples2 <- 1 - samples1
 AVest <- (1 / n) * sum(sin(samples1) + sin(samples2))
-AV_RMSE <- sqrt(var(sin(samples1) + sin(samples2)) / (2 * n))
-c(AVest, AV_RMSE)
+AV_MSE <- var(sin(samples1) + sin(samples2)) / (2 * n)
+c(AVest, sqrt(AV_MSE))
 ```
 
-This time, we see a big improvement: the root-mean-square error has gone down by a whole order of magnitude, from $`{r} signif(MC_RMSE, 1)`$ to $`{r} signif(AV_RMSE, 1)`$. It would normally take 100 times as many samples to reduce the RMSE by a factor of 10, but we've got the extra 99 million samples for free by using antithetic variables!
+This time, we see a big improvement: the root-mean-square error has gone down by a whole order of magnitude, from $`{r} signif(sqrt(MC_MSE), 1)`$ to $`{r} signif(sqrt(AV_MSE), 1)`$. It would normally take 100 times as many samples to reduce the RMSE by a factor of 10, but we've got the extra 99 million samples for free by using antithetic variables!
 
 The benefit here can be confirmed by looking at the sample correlation.
 

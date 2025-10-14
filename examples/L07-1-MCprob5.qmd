@@ -6,8 +6,8 @@ The basic Monte Carlo estimate and its root-mean-square error are
 n <- 1e6
 samples <- rnorm(n)
 MCest   <- mean(samples > 2)
-MC_RMSE <- sqrt(var(samples > 2) / n)
-c(MCest, MC_RMSE)
+MC_MSE <- var(samples > 2) / n
+c(MCest, sqrt(MC_MSE))
 ```
 
 We then used $Z' = -Z$ as an antithetic variable. its root-mean-square error are
@@ -17,8 +17,8 @@ n <- 1e6
 samples1 <- rnorm(n / 2)
 samples2 <- -samples1
 AVest <- (1 / n) * sum((samples1 > 2) + (samples2 > 2))
-AV_RMSE <- sqrt(var((samples1 > 2) + (samples2 > 2)) / (2 * n))
-c(AVest, AV_RMSE)
+AV_MSE <- var((samples1 > 2) + (samples2 > 2)) / (2 * n)
+c(AVest, sqrt(AV_MSE))
 ```
 
 This looked like it made very little difference -- perhaps a small improvement. This can be confirmed by looking at the sample correlation with R's `cor()` function.
