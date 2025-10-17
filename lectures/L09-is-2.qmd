@@ -2,6 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
+<!--
 ## Picking a good distribution
 
 We've now seen that importance sampling can be a very powerful tool, when used well. But how should pick a good distribution $Y$ to sample from?
@@ -142,6 +143,8 @@ This is our last lecture on Monte Carlo estimation -- at least for now, and at l
  
 
 **Next time:** *We begin the second section of the module, on random number generation.*
+
+-->
 
 ::: {.mysummary}
 **Summary:**

@@ -242,8 +242,38 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L09-is-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Importance sampling II</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L10-rng-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generating random numbers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L11-lcg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../problems/P2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Problem Sheet 2</span></a>
+  </div>
+</li>
       </ul>
   </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../problems/solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Solutions</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -255,8 +285,8 @@ window.Quarto = {
    
   <ul>
   <li><a href="#error-with-antithetic-variables" id="toc-error-with-antithetic-variables" class="nav-link active" data-scroll-target="#error-with-antithetic-variables"><span class="header-section-number">7.1</span> Error with antithetic variables</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">7.2</span> Examples</a></li>
-  <li><a href="#finding-antithetic-variables" id="toc-finding-antithetic-variables" class="nav-link" data-scroll-target="#finding-antithetic-variables"><span class="header-section-number">7.3</span> Finding antithetic variables</a></li>
+  <li><a href="#finding-antithetic-variables" id="toc-finding-antithetic-variables" class="nav-link" data-scroll-target="#finding-antithetic-variables"><span class="header-section-number">7.2</span> Finding antithetic variables</a></li>
+  <li><a href="#a-note-on-sample-size-comparisons" id="toc-a-note-on-sample-size-comparisons" class="nav-link" data-scroll-target="#a-note-on-sample-size-comparisons"><span class="header-section-number">7.3</span> A note on sample size comparisons</a></li>
   </ul>
 </nav>
     </div>
@@ -318,9 +348,6 @@ window.Quarto = {
 &amp;= 2(1+\rho)\Var\big(\phi(X)\big) .
 \end{align*}\]</span> The results then follow.</p>
 </div>
-</section>
-<section id="examples" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="examples"><span class="header-section-number">7.2</span> Examples</h2>
 <p>Let’s return to the two examples we tried last time.</p>
 <div id="exm-MCprob5" class="theorem example">
 <p><span class="theorem-title"><strong>Example 7.1</strong></span> In <a href="L06-antithetic-1.html#exm-MCprob4" class="quarto-xref">Example&nbsp;<span>6.1</span></a>, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span> for <span class="math inline">\(Z\)</span> a standard normal.</p>
@@ -392,8 +419,8 @@ window.Quarto = {
 <p>That’s a very large negative correlation, which shows why the antithetic variables made such a huge improvement.</p>
 </div>
 </section>
-<section id="finding-antithetic-variables" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="finding-antithetic-variables"><span class="header-section-number">7.3</span> Finding antithetic variables</h2>
+<section id="finding-antithetic-variables" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="finding-antithetic-variables"><span class="header-section-number">7.2</span> Finding antithetic variables</h2>
 <p>Antithetic variables can provide a huge advantage compared to standard Monte Carlo, as we saw in the second example above. The downside is that it can often be difficult to <em>find</em> an appropriate antithetic variable.</p>
 <p>To even be able to <em>try</em> the antithetic variables method, we need to find a random variable <span class="math inline">\(X'\)</span> with the same distribution as <span class="math inline">\(X\)</span> that isn’t merely an independent copy. Both the examples we have seen of this use a symmetric distribution; that is, a distribution <span class="math inline">\(X\)</span> such that <span class="math inline">\(X' = a - X\)</span> has the same distribution as <span class="math inline">\(X\)</span>, for some <span class="math inline">\(a\)</span>.</p>
 <ul>
@@ -407,7 +434,7 @@ window.Quarto = {
 </div>
 <p>I didn’t get to this proof in the lecture and it’s a bit tricky (although not very technically deep), so let’s say it’s non-examinable.</p>
 <div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span><em>[Non-examinable]</em> You probably already know two different expressions for the covariance: <span class="math display">\[ \operatorname{Cov}(Y, Z) = \Exg (Y - \mu_Y)(Z - \mu_Z) = \Exg YZ - \mu_Y \mu_Z . \]</span> But for this proof it will be helpful to use a third, less well-known equation: <span class="math display">\[ \operatorname{Cov}(Y, Z) = \tfrac12 \Exg (Y - Y')(Z - Z') , \]</span> where <span class="math inline">\((Y', Z')\)</span> is an IID copy of <span class="math inline">\((Y, Z)\)</span>.</p>
+<p><span class="proof-title"><em>Proof</em>. </span><em>[Non-examinable]</em> &nbsp;You probably already know two different expressions for the covariance: <span class="math display">\[ \operatorname{Cov}(Y, Z) = \Exg (Y - \mu_Y)(Z - \mu_Z) = \Exg YZ - \mu_Y \mu_Z . \]</span> But for this proof it will be helpful to use a third, less well-known equation: <span class="math display">\[ \operatorname{Cov}(Y, Z) = \tfrac12 \Exg (Y - Y')(Z - Z') , \]</span> where <span class="math inline">\((Y', Z')\)</span> is an IID copy of <span class="math inline">\((Y, Z)\)</span>.</p>
 <p>To see that this third expression is true, we can start by expanding out the brackets. We get <span class="math display">\[ \tfrac12 \Exg (Y - Y')(Z - Z')  = \tfrac12 \big( \Exg YZ - \Exg YZ' - \Exg Y'Z + \Exg Y'Z' \big) . \]</span> We have four terms to deal with. The first has no dashed variables, so can stay as it is. The second and third terms have one dashed and one non-dashed variable, so these are independent, and we can write <span class="math inline">\(\Exg YZ' = \Exg Y'Z = \mu_Y \mu_Z\)</span>. The fourth term has both terms dashed, but these have the same distribution as if they were non-dashed, so <span class="math inline">\(\Exg Y'Z' = \Exg YZ\)</span>. All together, we have <span class="math display">\[ \tfrac12 \Exg (Y - Y')(Z - Z') = \tfrac12 \big(2\Exg YZ - 2\mu_Y\mu_Z \big) = \Exg YZ - \mu_Y\mu_Z , \]</span> which is indeed the second expression for the covariance.</p>
 <p>We can now apply this to the theorem in question. Put <span class="math inline">\(Y = \phi(U)\)</span> and <span class="math inline">\(Z = \phi(1-U)\)</span>, and introduce an IID copy <span class="math inline">\(V\)</span> of <span class="math inline">\(U\)</span>, so <span class="math inline">\(Y' = \phi(V)\)</span> and <span class="math inline">\(Z' = \phi(1 - V)\)</span>. Then we have <span class="math display">\[  \operatorname{Cov}\big(\phi(U), \phi(V)\big) = \tfrac 12 \Exg \big(\phi(U) - \phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big) .\]</span></p>
 <p>We now claim that this expectation is negative. In fact, we have a stronger result: <span id="eq-cross"><span class="math display">\[\big(\phi(U) - \phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big) \tag{7.1}\]</span></span> is <em>always</em> negative, so its expectation certainly is. To see this, think separately of the two cases <span class="math inline">\(U \leq V\)</span> and <span class="math inline">\(V \leq U\)</span>.</p>
@@ -417,6 +444,11 @@ window.Quarto = {
 </ul>
 <p>This completes the proof.</p>
 </div>
+</section>
+<section id="a-note-on-sample-size-comparisons" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="a-note-on-sample-size-comparisons"><span class="header-section-number">7.3</span> A note on sample size comparisons</h2>
+<p>Throughout these two lectures, when using antithetic pairs, we have taken <span class="math inline">\(n/2\)</span> pairs of samples. This is because that means we have <span class="math inline">\(n/2 \times 2 = n\)</span> samples all together, which seems like a fair comparison to usual Monte Carlo with <span class="math inline">\(n\)</span> samples. This is certainly the case if generating the sample and generating its antithetic pair cost roughly the same in terms of time (or energy, or money). This is always how we will compare methods in this module.</p>
+<p>However, if generating the first variate of each pair is slow, but then generating the second antithetic variate is much quicker, it might be a fairer comparison to take a full <span class="math inline">\(n\)</span> pairs. This could happen if we use a complicated method (like we will discover later in the module) for generating the <span class="math inline">\(X\)</span>, but then the <span class="math inline">\(X'\)</span> is something similar like <span class="math inline">\(X' = -X\)</span>. You could even consider more complicated ways of assessing the “cost” of Monte Carlo estimation, by assigning different costs to generating the original sample and to the antithetic pair, and also a cost to applying the function <span class="math inline">\(\phi\)</span>; but we won’t get into that here.</p>
 <p><strong>Next time:</strong> <em>We come to the third, and most important, variance reduction scheme: importance sampling.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>

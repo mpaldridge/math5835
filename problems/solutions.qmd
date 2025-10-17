@@ -1,9 +1,11 @@
 # Solutions {.unnumbered #solutions}
 
 ## Problem Sheet 1 {.unnumbered #P1-sols}
-
+::: {.content-visible when-format="html"}
 {{< include P1-content.qmd >}}
+:::
 
+<!--
 ## Problem Sheet 2 {.unnumbered #P2-sols}
 
 {{< include P2-content.qmd >}}
@@ -19,3 +21,4 @@
 ## Problem Sheet 5 {.unnumbered #P5-sols}
 
 {{< include P5-content.qmd >}}
+-->

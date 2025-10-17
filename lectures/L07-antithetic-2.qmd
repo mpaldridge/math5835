@@ -43,8 +43,6 @@ For the other three points, each of the first expressions follows straightforwar
 The results then follow.
 :::
 
-## Examples
-
 Let's return to the two examples we tried last time.
 
 ::: {#exm-MCprob5}
@@ -77,7 +75,7 @@ Let $U \sim \operatorname{U}[0, 1]$ and $V = 1 - U$. Let $\phi$ be a monotonical
 I didn't get to this proof in the lecture and it's a bit tricky (although not very technically deep), so let's say it's non-examinable.
 
 ::: {.proof}
-*[Non-examinable]* You probably already know two different expressions for the covariance:
+*[Non-examinable]*  You probably already know two different expressions for the covariance:
 $$ \operatorname{Cov}(Y, Z) = \Exg (Y - \mu_Y)(Z - \mu_Z) = \Exg YZ - \mu_Y \mu_Z . $$
 But for this proof it will be helpful to use a third, less well-known equation:
 $$ \operatorname{Cov}(Y, Z) = \tfrac12 \Exg (Y - Y')(Z - Z') , $$
@@ -101,6 +99,14 @@ is *always* negative, so its expectation certainly is. To see this, think separa
 
 This completes the proof.
 :::
+
+
+## A note on sample size comparisons
+
+Throughout these two lectures, when using antithetic pairs, we have taken $n/2$ pairs of samples. This is because that means we have $n/2 \times 2 = n$ samples all together, which seems like a fair comparison to usual Monte Carlo with $n$ samples.
+This is certainly the case if generating the sample and generating its antithetic pair cost roughly the same in terms of time (or energy, or money). This is always how we will compare methods in this module.
+
+However, if generating the first variate of each pair is slow, but then generating the second antithetic variate is much quicker, it might be a fairer comparison to take a full $n$ pairs. This could happen if we use a complicated method (like we will discover later in the module) for generating the $X$, but then the $X'$ is something similar like $X' = -X$. You could even consider more complicated ways of assessing the "cost" of Monte Carlo estimation, by assigning different costs to generating the original sample and to the antithetic pair, and also a cost to applying the function $\phi$; but  we won't get into that here.
 
 
 **Next time:** *We come to the third, and most important, variance reduction scheme: importance sampling.*

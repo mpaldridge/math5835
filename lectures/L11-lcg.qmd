@@ -1,5 +1,7 @@
 # LCGs
 
+<!--
+
 ## Definition and examples
 
 Last lecture we introduced the idea of pseudorandom number generators (PRNGs), which are deterministic functions that produce a sequence of numbers that look for all practical purposes as if they are random.
@@ -109,20 +111,22 @@ But merely having full period (and a large modulus) isn't enough by itself to gu
 
 ## Statistical testing
 
-Before being used properly, any pseudorandom number generator is subjected to a barrage of statistical tests, to check if its output seems to "look random". Alongside checking it has a very large period, the tester will want to check other statistical properties of randomness. <!--For just a few examples:
+Before being used properly, any pseudorandom number generator is subjected to a barrage of statistical tests, to check if its output seems to "look random". Alongside checking it has a very large period, the tester will want to check other statistical properties of randomness. --><!--For just a few examples:
 
 * For any $0 \leq a < b < m$, is the proportion of samples $a \leq x_{i} < b$ in a medium-length subsequence that lie between $a$ and $b$ should be roughly equal to $(b - a)/m$.
 
 * Are there any patterns in the pairs of consecutive outputs $(x_i, x_{i+1})$ that display behaviour that "doesn't look independent"? What about other "low-dimensional" patterns in $(x_i, x_{i+1}, \dots, x_{i+k-1})$ for small $k$?
 
 * For a number $r$ dividing $m$ (that is, $r = 2^d$ for $d < b$, if $m = 2^b$) are there any patterns in $(x_i \bmod r)$? That is, does the sequence also seem random mod $r$ as well as mod $m$?
--->
+--><!--
 Even the best PRNGs might not pass every single such test. See [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 1.1.2 for more on this.
 
 LCGs were considered state-of-the-art until the late-90s or so. However, it was discovered that $m$ needs be very big and the number of samples used fairly small in order to pass some of the more stringent statistical tests of randomness. For example, it's suggested that $n = 1\,000\,000$ (one million) samples from a full-period LCG with modulus $m = 2^{64}$ might be the limit before it starts "not looking random enough". In particular, an LCG with a large period may not actually see *enough* repeats -- after all, random numbers will have the occasional one-off repeat, just by chance. Compared to other more modern methods (like R's default, the Mersenne Twister mentioned in the last lecture, discovered in 1997), an LCG requires quite a lot of computation for only a modest number of samples. So while LCGs are still admired for their simplicity and elegance, they have fallen out of favour for cutting-edge computational work.
 
 
 **Next time:** *We'll use our pseudorandom uniform $[0,1]$ random numbers to make random numbers with other discrete or uniform distributions.*
+
+-->
 
 ::: {.mysummary}
 **Summary:**

@@ -6,11 +6,12 @@ display: none !important;
 }
 </style>
 
-<!--
+:::: {.content-visible when-format="html"}
 ::: {.mysummary}
 **[Full solutions](#solutions)** are now available.
 :::
--->
+::::
+
 
 ::: {.mysummary}
 This is Problem Sheet 1, which covers material from Lectures 1 to 6. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of **Thursday 16 October**.

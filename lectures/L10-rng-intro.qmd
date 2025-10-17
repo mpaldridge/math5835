@@ -1,5 +1,7 @@
 # Generating random numbers
 
+<!--
+
 ::: {.mysummary}
 Please complete the [**mid-semester survey**](https://forms.office.com/e/vp9uSWUAxi?or)!
 :::
@@ -85,6 +87,8 @@ runif(10)
 Those numbers certainly appear to be random. But if you run those two lines of code on your computer, you should get exactly the same 10 numbers. That's because you will also start with the same seed 123456, and then R will run the same pseudorandom -- that is, completely deterministic -- function to generate the next 10 numbers.
 
 **Next time:** *We'll take a closer look at pseudorandom number generation using linear congruential generators.*
+
+-->
 
 ::: {.mysummary}
 **Summary:**
