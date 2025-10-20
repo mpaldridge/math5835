@@ -623,7 +623,7 @@ $$ $$
 
 
 :::::: {.myq}
-**1.**      *[2018 exam, Question 4]* 
+**1.**      ★ *[2018 exam, Question 4]* 
 
 ::::: {.subq}
 **(a)**   Suppose it is desired to estimate the value of an integral
@@ -896,7 +896,7 @@ Putting these together proves the result.
 :::: {.subq}
 **(d)**  Let $X \sim \operatorname{N}(0,2)$ and $a \in \mathbb R$. We want to estimate $\theta = \Ex \big(\sqrt{2}\exp(-(X-a)^2/4)\big)$, using importance sampling with samples $Y \sim \operatorname{N}(\mu, 1)$ for some $\mu \in \mathbb R$. Using the result from part (c), or otherwise, show that in the case the variance of the importance sampling estimator $\widehat\theta_n^{\mathrm{IS}}$  is given by
 $$ \Var\big(\widehat\theta_n^{\mathrm{IS}}\big) = \frac{\exp(\mu^2 - a\mu) - \theta^2}{n} . $$
-*[Note: This equation has changed since an earlier version of the question.]*
+
 
 ::: {.myanswers}
 *Solution.* It's clear, using part (c), that it will suffice to show that
@@ -1116,8 +1116,6 @@ Even though this has full period, there is a very clear non-random pattern. This
 
 :::: {.subq}
 **(a)** Generate 1000 outputs in $\{0, 1, \dots, 1023\}$ from this LCG, starting with the seed $x_1 = 1$.
-
-*[This question originally said 200 outputs, not 1000. It's fine if you answered that version, but the conclusions to the problem are less interesting that way.]*
 
 ::: {.myanswers}
 *Solution.* Using the same `lcg()` function from Question 5, we have

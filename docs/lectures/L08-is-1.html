@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -245,8 +279,16 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sampling-from-other-distributions" id="toc-sampling-from-other-distributions" class="nav-link active" data-scroll-target="#sampling-from-other-distributions"><span class="header-section-number">8.1</span> Sampling from other distributions</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">8.2</span> Example</a></li>
+  <li><a href="#errors-in-importance-sampling" id="toc-errors-in-importance-sampling" class="nav-link" data-scroll-target="#errors-in-importance-sampling"><span class="header-section-number">8.3</span> Errors in importance sampling</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -282,260 +324,122 @@ window.Quarto = {
 <div class="hidden">
 <p><span class="math display">\[ \]</span></p>
 </div>
-<!--
-## Sampling from other distributions
-
-So far, we have looked at estimating $\Exg \phi(X)$ using samples $X_1, X_2, \dots, X_n$ that are from the same distribution as $X$. **Importance sampling** is based on the idea of taking samples $Y_1, Y_2, \dots, Y_n$ from some *different* distribution $Y$, but then making an appropriate adjustment, so that we're still estimating $\Exg \phi(X)$.
-
-Why might we want to do this? There are two main reasons:
-
-* First, we might not be able to sample from $X$, so we might be forced into sampling from some other distribution $Y$ instead. So far, $X$ has always been a nice pleasant distribution, like a normal, exponential or continuous uniform distribution, for which we can use R's built-in sampling function. But what if $X$ were instead a very unusual or awkward distribution? In that case, we might not be able to sample directly from $X$, so would be forced into sampling from a different distribution.
-
-* Second, we might *prefer* to sample from a distribution other than $Y$. This might be the case if $\phi(x)$ varies a lot over different values of $x$. There might be some areas of $x$ where it's very important to get an accurate estimation, because they contribute a lot to $\Exg\phi(X)$, so we'd like to "oversample" (take lots of samples) there; meanwhile, other areas of $x$ where it is not very important to get an accurate estimation, because they contribute very little to $\Exg\phi(X)$, so we don't mind "undersampling" (taking relatively few samples) there. Then we could sample instead from a distribution $Y$ that concentrates on the most important areas for $\phi$; although we'll need to make sure to adjust our estimator by "down-weighting" the places that we have oversampled.
-
-Consider, for example, trying to estimate $\Exg\phi(X)$ where $X$ is uniform on $[0, 20]$ and $\phi$ is the function shown below.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-fold="true" code-summary="Code for drawing this graph"}
-phi <- function(x) sin(5 * x) / (5 * x)
-curve(
-  phi, n = 10001, from = 0, to = 20,
-  lwd = 3, col = "blue",
-  xlab = "x", ylab = expression(phi(x)), ylim = c(-0.2, 1)
-)
-abline(h = 0)
-```
-
-::: {.cell-output-display}
-![](L08-is-1_files/figure-html/importance-1.svg){width=672}
-:::
-:::
-
-
-
-
-
-
-We can see that what happens for small $x$ -- say, for $x$ between 0 and 2, or so -- will have an important effect on the value of $\Exg \phi(X)$, because that where $\phi$ has the biggest (absolute) values. But what happens for large $x$ -- say for $x \geq 10$ or so -- will be much less important for estimating $\Exg\phi(X)$. So it seems wasteful to have all values in $[0, 20]$ to be sampled equally, and it would seem to make sense to take more samples from small values of $x$.
-
-This is all very well in practice, but how exactly should we down-weight those over-sampled areas?
-
-Think about estimating $\Exg \phi(X)$. Let's assume that $X$ is continuous with probability density function $f$. (Throughout this lecture and the next, we will assume all our random variables are continuous. The arguments for discrete random variables are very similar -- just swap probability density functions with probability mass functions and integrals with sums. You can fill in the details yourself, if you like.) Then we are trying to estimate
-$$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x = \int_{-\infty}^{+\infty} \phi(y)\,f(y)\,\mathrm{d}y . $$
-(In the second equality, we merely changed the "dummy variable" from $x$ to $y$, as we are at liberty to do.)
-
-Now suppose we sample from some other continuous distribution $Y$, with PDF $g$. If we estimate $\Exg \psi(Y)$, say, for some function $\psi$, then we are estimating
-$$\Exg \psi(Y) = \int_{-\infty}^{+\infty} \psi(y)\,g(y) \, \mathrm{d}y = \int_{-\infty}^{+\infty} \psi(x)\,g(x) \, \mathrm{d}x . $$
-
-But we want to be estimating $\Exg\phi(X)$, not $\Exg\psi(Y)$. So we will need to pick $\psi$ such that
-$$ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(y)\,f(y)\,\mathrm{d}y = \int_{-\infty}^{+\infty} \psi(y)\,g(y) \, \mathrm{d}y = \Exg \psi(Y) . $$
-So we need to pick $\psi$ such that
-$\phi(y)\,f(y) = \psi(y)\,g(y)$. That means that we should take
-$$\psi(y) = \frac{\phi(y) f(y)}{g(y)} = \frac{f(y)}{g(y)}\,\phi(y). $$
-
-So we could build a Monte Carlo estimate for $\Exg \phi(X)$ instead as a Monte Carlo estimate for 
-$$ \Exg \psi(Y) = \Exg \left(\frac{f(Y)}{g(Y)}\,\phi(Y) \right) . $$
-
-There is one other thing: we need to be careful of division by $0$ errors. So we should make sure that $g$ is only 0 when $f$ is 0. In other words, if it's possible for $X$ to take some value, then it must be possible for $Y$ to take that value too.
-
-We are finally ready to define our estimator.
-
-::: {#def-IS}
-Let $X$ be a continuous random variable with probability density function $f$, let $\phi$ be a function, and write $\theta = \Exg\phi(X)$. Let $Y$ be a continuous random variable with probability desnity function $g$, where $g(y) > 0$ for all $y$ where $f(y) > 0$. Then the **importance sampling Monte Carlo estimator** $\widehat\theta_n^{\mathrm{IS}}$ of $\theta$ is
-$$ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^{n} \frac{f(Y_i)}{g(Y_i)}\, \phi(Y_i)   ,$$
-where $Y_1, Y_2, \dots, Y_n$ are independent random samples from $Y$.
-:::
-
-We can think of this as taking a weighted mean of the $\phi(Y_i)$s, where the weights are $f(Y_i)/g(Y_i)$. So if a value $y$ is more likely under $Y$ than under $X$, then $g(y)$ is big compared to $f(y)$, so $f(y)/g(y)$ is small, and $y$ gets a low weight. If a value $y$ is less likely under $Y$ than under $X$, then $g(y)$ is small compared to $f(y)$, so $f(y) / g(y)$ is big, and it gets a high weight. Thus we see that the weighting compensates for values that are likely to be over- or under-sampled.
-
-## Example
-
-::: {#exm-IS1}
-
-Let $X \sim \operatorname{N}(0,1)$ be a standard normal. Suppose we want to estimate $\mathbb P(X > 4)$.
-We could do this the standard Monte Carlo way by sampling from $X$ itself.
-$$ \widehat{\theta}_n^{\mathrm{MS}} = \frac{1}{n} \sum_{i=1}^n \mathbb I_{[4,\infty)}(X_i) . $$
-
-However, this will not be a good estimator. To see the problem, lets run this with $n = 100\,000 = 10^5$ samples, but do it 10 times, and see what all the estimates are.
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-n <- 1e5
-MCest <- rep(0, 10)
-for (i in 1:10) MCest[i] <- mean(rnorm(n) > 4)
-MCest
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
- [1] 1e-05 0e+00 1e-05 1e-05 0e+00 2e-05 4e-05 3e-05 1e-05 0e+00
-```
-
-
-:::
-:::
-
-
-
-
-
-We see a big range of values. I get different results each time I run it, but anything between $1 \times 10^{-5}$ and $8 \times 10^{-5}$, and even $0$, comes out fairly regularly as the estimate. The problem is that $X > 4$ is a very rare event -- it only comes out a handful of times (perhaps 0 to 8) out of the 100,000 samples. This means our estimate is (on average) quite inaccurate.
-
-It would be better not to sample from $X$, but rather to sample from a distribution that is greater than 4 a better proportion of the time. We could try anything for this distribution $Y$, but to keep things simple, I'm going to stick with a normal distribution with standard deviation 1. I'll want to increase the mean, though, so that we sample values bigger than 4 more often. Let's try importance sampling with $Y \sim \operatorname{N}(4,1)$.
-
-The PDFs of $X \sim \operatorname{N}(0,1)$ and $Y \sim \operatorname{N}(4,1)$ are
-$$f(x) = \frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 x^2\big) \qquad g(y) = \frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 (y-4)^2\big) , $$
-so the relevant weighting of a sample $y$ is
-$$ \frac{f(y)}{g(y)} = \frac{\exp\big(-\tfrac12 y^2\big)}{\exp\big(-\tfrac12 (y-4)^2\big)} = \exp \big(\tfrac12\big(-y^2 + (y-4)^2\big)\big) = \exp(-4y+8) .  $$
-So our importance sampling estimate will be
-$$ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^n \mathrm{e}^{-4Y_i +8} \, \mathbb I_{[4,\infty)}(Y_i) . $$
-
-Let's try this in R. Although we could use the function $\mathrm{e}^{-4y+8}$ for the weights, I'll do this by using the ratios of the PDFs directly in R (just in case I made a mistake...).
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-n <- 1e5
-pdf_x <- function(y) dnorm(y, 0, 1)
-pdf_y <- function(y) dnorm(y, 4, 1)
-samples_y <- rnorm(n, 4, 1)
-ISest <- mean((pdf_x(samples_y) / pdf_y(samples_y)) * (samples_y > 4))
-ISest
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 3.143342e-05
-```
-
-
-:::
-:::
-
-
-
-
-
-
-:::
-
-## Errors in importance sampling
-
-The following theorem should not by now be a surprise.
-
-::: {#thm-Iserr}
-Let $X$ be a continuous random variable with probability density function $f$, let $\phi$ be a function, and write $\theta = \Exg\phi(X)$. Let $Y$ another continuous random variable with probability density function with probability density function $g$, such that $g(y) = 0$ only when $f(y) = 0$. Let $$ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)}\,\phi(Y_i)  $$ be the importance sampling Monte Carlo estimator of $\theta$. Then:
-
-1.  $\widehat{\theta}_n^{\mathrm{IS}}$ is unbiased, in that $\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = 0$.
-
-2.  The variance of of $\widehat{\theta}_n^{\mathrm{IS}}$ is $$ \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right). $$
-
-3.  The mean-square error of $\widehat{\theta}_n^{\mathrm{IS}}$ is $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . $$
-
-4.  The root-mean-square error of $\widehat{\theta}_n^{\mathrm{IS}}$ is $$ \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{\sqrt{n}} \,\sqrt{\operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right)}. $$
-:::
-
-::: {.proof}
-Part 1 follows essentially the same argument as our discussion at the beginning of this lecture. We have
-$$ \Ex \left( \frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)}\,\phi(Y_i) \right) = \frac{1}{n}\, n\, \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) = \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) . $$
-But
-$$ \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) = \int_{-\infty}^{+\infty} \frac{f(y)}{g(y)}\,\phi(y)\,g(y)\,\mathrm{d}y = \int_{-\infty}^{+\infty} \phi(y) \, f(y) \, \mathrm{d}y = \Exg \phi(X) . $$
-This last step is because $f$ is the PDF of $X$; it doesn't matter whether the dummy variable in the integration is $x$ or $y$. Hence the estimator is unbiased.
-
-Parts 2 to 4 follow in the usual way.
-:::
-
-As we are now used to, we can estimate the variance using the sample variance.
-
-::: {#exm-IS2}
-
-We continue @exm-IS1, where we are estimating $\mathbb P(X > 4)$ for $X \sim \operatorname{N}(0,1)$.
-
-For the standard Monte Carlo method, we estimate the root-mean-square error as
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-n <- 1e5
-MC_MSE <- var(rnorm(n) > 4) / n
-sqrt(MC_MSE)
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 2.236023e-05
-```
-
-
-:::
-:::
-
-
-
-
-
-As before, this still varies a lot, but it seems to usually be about $2 \times 10^{-5}$.
-
-For the importance sampling method, we estimate the mean-square error as
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-n <- 1e5
-pdf_x <- function(x) dnorm(x, 0, 1)
-pdf_y <- function(y) dnorm(y, 4, 1)
-samples_y <- rnorm(n, 4, 1)
-IS_MSE <- var((pdf_x(samples_y) / pdf_y(samples_y)) * (samples_y > 4)) / n
-sqrt(IS_MSE)
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 2.131441e-07
-```
-
-
-:::
-:::
-
-
-
-
-
-This is about $2 \times 10^{-7}$. This is about 100 times smaller than for the standard method: equivalent to taking about 10,000 times as many samples! That's a huge improvement, which demonstrates the power of importance sampling.
-
-
-:::
-
-**Next time:** *We continue our study of importance sampling -- and complete our study of Monte Carlo estimation, for now -- by considering how to pick a good distribution $Y$.*
--->
+<section id="sampling-from-other-distributions" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="sampling-from-other-distributions"><span class="header-section-number">8.1</span> Sampling from other distributions</h2>
+<p>So far, we have looked at estimating <span class="math inline">\(\Exg \phi(X)\)</span> using samples <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> that are from the same distribution as <span class="math inline">\(X\)</span>. <strong>Importance sampling</strong> is based on the idea of taking samples <span class="math inline">\(Y_1, Y_2, \dots, Y_n\)</span> from some <em>different</em> distribution <span class="math inline">\(Y\)</span>, but then making an appropriate adjustment, so that we’re still estimating <span class="math inline">\(\Exg \phi(X)\)</span>.</p>
+<p>Why might we want to do this? There are two main reasons:</p>
+<ul>
+<li><p>First, we might not be able to sample from <span class="math inline">\(X\)</span>, so we might be forced into sampling from some other distribution <span class="math inline">\(Y\)</span> instead. So far, <span class="math inline">\(X\)</span> has always been a nice pleasant distribution, like a normal, exponential or continuous uniform distribution, for which we can use R’s built-in sampling function. But what if <span class="math inline">\(X\)</span> were instead a very unusual or awkward distribution? In that case, we might not be able to sample directly from <span class="math inline">\(X\)</span>, so would be forced into sampling from a different distribution.</p></li>
+<li><p>Second, we might <em>prefer</em> to sample from a distribution other than <span class="math inline">\(Y\)</span>. This might be the case if <span class="math inline">\(\phi(x)\)</span> varies a lot over different values of <span class="math inline">\(x\)</span>. There might be some areas of <span class="math inline">\(x\)</span> where it’s very important to get an accurate estimation, because they contribute a lot to <span class="math inline">\(\Exg\phi(X)\)</span>, so we’d like to “oversample” (take lots of samples) there; meanwhile, other areas of <span class="math inline">\(x\)</span> where it is not very important to get an accurate estimation, because they contribute very little to <span class="math inline">\(\Exg\phi(X)\)</span>, so we don’t mind “undersampling” (taking relatively few samples) there. Then we could sample instead from a distribution <span class="math inline">\(Y\)</span> that concentrates on the most important areas for <span class="math inline">\(\phi\)</span>; although we’ll need to make sure to adjust our estimator by “down-weighting” the places that we have oversampled.</p></li>
+</ul>
+<p>Consider, for example, trying to estimate <span class="math inline">\(\Exg\phi(X)\)</span> where <span class="math inline">\(X\)</span> is uniform on <span class="math inline">\([0, 20]\)</span> and <span class="math inline">\(\phi\)</span> is the function shown below.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sin</span>(<span class="dv">5</span> <span class="sc">*</span> x) <span class="sc">/</span> (<span class="dv">5</span> <span class="sc">*</span> x)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  phi, <span class="at">n =</span> <span class="dv">10001</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">20</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"blue"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="fu">expression</span>(<span class="fu">phi</span>(x)), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.2</span>, <span class="dv">1</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L08-is-1_files/figure-html/importance-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see that what happens for small <span class="math inline">\(x\)</span> – say, for <span class="math inline">\(x\)</span> between 0 and 2, or so – will have an important effect on the value of <span class="math inline">\(\Exg \phi(X)\)</span>, because that where <span class="math inline">\(\phi\)</span> has the biggest (absolute) values. But what happens for large <span class="math inline">\(x\)</span> – say for <span class="math inline">\(x \geq 10\)</span> or so – will be much less important for estimating <span class="math inline">\(\Exg\phi(X)\)</span>. So it seems wasteful to have all values in <span class="math inline">\([0, 20]\)</span> to be sampled equally, and it would seem to make sense to take more samples from small values of <span class="math inline">\(x\)</span>.</p>
+<p>This is all very well in practice, but how exactly should we down-weight those over-sampled areas?</p>
+<p>Think about estimating <span class="math inline">\(\Exg \phi(X)\)</span>. Let’s assume that <span class="math inline">\(X\)</span> is continuous with probability density function <span class="math inline">\(f\)</span>. (Throughout this lecture and the next, we will assume all our random variables are continuous. The arguments for discrete random variables are very similar – just swap probability density functions with probability mass functions and integrals with sums. You can fill in the details yourself, if you like.) Then we are trying to estimate <span class="math display">\[ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x = \int_{-\infty}^{+\infty} \phi(y)\,f(y)\,\mathrm{d}y . \]</span> (In the second equality, we merely changed the “dummy variable” from <span class="math inline">\(x\)</span> to <span class="math inline">\(y\)</span>, as we are at liberty to do.)</p>
+<p>Now suppose we sample from some other continuous distribution <span class="math inline">\(Y\)</span>, with PDF <span class="math inline">\(g\)</span>. If we estimate <span class="math inline">\(\Exg \psi(Y)\)</span>, say, for some function <span class="math inline">\(\psi\)</span>, then we are estimating <span class="math display">\[\Exg \psi(Y) = \int_{-\infty}^{+\infty} \psi(y)\,g(y) \, \mathrm{d}y = \int_{-\infty}^{+\infty} \psi(x)\,g(x) \, \mathrm{d}x . \]</span></p>
+<p>But we want to be estimating <span class="math inline">\(\Exg\phi(X)\)</span>, not <span class="math inline">\(\Exg\psi(Y)\)</span>. So we will need to pick <span class="math inline">\(\psi\)</span> such that <span class="math display">\[ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(y)\,f(y)\,\mathrm{d}y = \int_{-\infty}^{+\infty} \psi(y)\,g(y) \, \mathrm{d}y = \Exg \psi(Y) . \]</span> So we need to pick <span class="math inline">\(\psi\)</span> such that <span class="math inline">\(\phi(y)\,f(y) = \psi(y)\,g(y)\)</span>. That means that we should take <span class="math display">\[\psi(y) = \frac{\phi(y) f(y)}{g(y)} = \frac{f(y)}{g(y)}\,\phi(y). \]</span></p>
+<p>So we could build a Monte Carlo estimate for <span class="math inline">\(\Exg \phi(X)\)</span> instead as a Monte Carlo estimate for <span class="math display">\[ \Exg \psi(Y) = \Exg \left(\frac{f(Y)}{g(Y)}\,\phi(Y) \right) . \]</span></p>
+<p>There is one other thing: we need to be careful of division by <span class="math inline">\(0\)</span> errors. So we should make sure that <span class="math inline">\(g\)</span> is only 0 when <span class="math inline">\(f\)</span> is 0. In other words, if it’s possible for <span class="math inline">\(X\)</span> to take some value, then it must be possible for <span class="math inline">\(Y\)</span> to take that value too.</p>
+<p>We are finally ready to define our estimator.</p>
+<div id="def-IS" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 8.1</strong></span> Let <span class="math inline">\(X\)</span> be a continuous random variable with probability density function <span class="math inline">\(f\)</span>, let <span class="math inline">\(\phi\)</span> be a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(Y\)</span> be a continuous random variable with probability desnity function <span class="math inline">\(g\)</span>, where <span class="math inline">\(g(y) &gt; 0\)</span> for all <span class="math inline">\(y\)</span> where <span class="math inline">\(f(y) &gt; 0\)</span>. Then the <strong>importance sampling Monte Carlo estimator</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{IS}}\)</span> of <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^{n} \frac{f(Y_i)}{g(Y_i)}\, \phi(Y_i)   ,\]</span> where <span class="math inline">\(Y_1, Y_2, \dots, Y_n\)</span> are independent random samples from <span class="math inline">\(Y\)</span>.</p>
+</div>
+<p>We can think of this as taking a weighted mean of the <span class="math inline">\(\phi(Y_i)\)</span>s, where the weights are <span class="math inline">\(f(Y_i)/g(Y_i)\)</span>. So if a value <span class="math inline">\(y\)</span> is more likely under <span class="math inline">\(Y\)</span> than under <span class="math inline">\(X\)</span>, then <span class="math inline">\(g(y)\)</span> is big compared to <span class="math inline">\(f(y)\)</span>, so <span class="math inline">\(f(y)/g(y)\)</span> is small, and <span class="math inline">\(y\)</span> gets a low weight. If a value <span class="math inline">\(y\)</span> is less likely under <span class="math inline">\(Y\)</span> than under <span class="math inline">\(X\)</span>, then <span class="math inline">\(g(y)\)</span> is small compared to <span class="math inline">\(f(y)\)</span>, so <span class="math inline">\(f(y) / g(y)\)</span> is big, and it gets a high weight. Thus we see that the weighting compensates for values that are likely to be over- or under-sampled.</p>
+</section>
+<section id="example" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="example"><span class="header-section-number">8.2</span> Example</h2>
+<div id="exm-IS1" class="theorem example">
+<p><span class="theorem-title"><strong>Example 8.1</strong></span> Let <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span> be a standard normal. Suppose we want to estimate <span class="math inline">\(\mathbb P(X &gt; 4)\)</span>. We could do this the standard Monte Carlo way by sampling from <span class="math inline">\(X\)</span> itself. <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MS}} = \frac{1}{n} \sum_{i=1}^n \mathbb I_{[4,\infty)}(X_i) . \]</span></p>
+<p>However, this will not be a good estimator. To see the problem, lets run this with <span class="math inline">\(n = 100\,000 = 10^5\)</span> samples, but do it 10 times, and see what all the estimates are.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) MCest[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">rnorm</span>(n) <span class="sc">&gt;</span> <span class="dv">4</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1e-05 0e+00 1e-05 1e-05 0e+00 2e-05 4e-05 3e-05 1e-05 0e+00</code></pre>
+</div>
+</div>
+<p>We see a big range of values. I get different results each time I run it, but anything between <span class="math inline">\(1 \times 10^{-5}\)</span> and <span class="math inline">\(8 \times 10^{-5}\)</span>, and even <span class="math inline">\(0\)</span>, comes out fairly regularly as the estimate. The problem is that <span class="math inline">\(X &gt; 4\)</span> is a very rare event – it only comes out a handful of times (perhaps 0 to 8) out of the 100,000 samples. This means our estimate is (on average) quite inaccurate.</p>
+<p>It would be better not to sample from <span class="math inline">\(X\)</span>, but rather to sample from a distribution that is greater than 4 a better proportion of the time. We could try anything for this distribution <span class="math inline">\(Y\)</span>, but to keep things simple, I’m going to stick with a normal distribution with standard deviation 1. I’ll want to increase the mean, though, so that we sample values bigger than 4 more often. Let’s try importance sampling with <span class="math inline">\(Y \sim \operatorname{N}(4,1)\)</span>.</p>
+<p>The PDFs of <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span> and <span class="math inline">\(Y \sim \operatorname{N}(4,1)\)</span> are <span class="math display">\[f(x) = \frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 x^2\big) \qquad g(y) = \frac{1}{\sqrt{2\pi}} \exp\big(-\tfrac12 (y-4)^2\big) , \]</span> so the relevant weighting of a sample <span class="math inline">\(y\)</span> is <span class="math display">\[ \frac{f(y)}{g(y)} = \frac{\exp\big(-\tfrac12 y^2\big)}{\exp\big(-\tfrac12 (y-4)^2\big)} = \exp \big(\tfrac12\big(-y^2 + (y-4)^2\big)\big) = \exp(-4y+8) .  \]</span> So our importance sampling estimate will be <span class="math display">\[ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^n \mathrm{e}^{-4Y_i +8} \, \mathbb I_{[4,\infty)}(Y_i) . \]</span></p>
+<p>Let’s try this in R. Although we could use the function <span class="math inline">\(\mathrm{e}^{-4y+8}\)</span> for the weights, I’ll do this by using the ratios of the PDFs directly in R (just in case I made a mistake…).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pdf_x <span class="ot">&lt;-</span> <span class="cf">function</span>(y) <span class="fu">dnorm</span>(y, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>pdf_y <span class="ot">&lt;-</span> <span class="cf">function</span>(y) <span class="fu">dnorm</span>(y, <span class="dv">4</span>, <span class="dv">1</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>samples_y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">4</span>, <span class="dv">1</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>ISest <span class="ot">&lt;-</span> <span class="fu">mean</span>((<span class="fu">pdf_x</span>(samples_y) <span class="sc">/</span> <span class="fu">pdf_y</span>(samples_y)) <span class="sc">*</span> (samples_y <span class="sc">&gt;</span> <span class="dv">4</span>))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>ISest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.143342e-05</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="errors-in-importance-sampling" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="errors-in-importance-sampling"><span class="header-section-number">8.3</span> Errors in importance sampling</h2>
+<p>The following theorem should not by now be a surprise.</p>
+<div id="thm-Iserr" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 8.1</strong></span> Let <span class="math inline">\(X\)</span> be a continuous random variable with probability density function <span class="math inline">\(f\)</span>, let <span class="math inline">\(\phi\)</span> be a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(Y\)</span> another continuous random variable with probability density function with probability density function <span class="math inline">\(g\)</span>, such that <span class="math inline">\(g(y) = 0\)</span> only when <span class="math inline">\(f(y) = 0\)</span>. Let <span class="math display">\[ \widehat{\theta}_n^{\mathrm{IS}} = \frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)}\,\phi(Y_i)  \]</span> be the importance sampling Monte Carlo estimator of <span class="math inline">\(\theta\)</span>. Then:</p>
+<ol type="1">
+<li><p><span class="math inline">\(\widehat{\theta}_n^{\mathrm{IS}}\)</span> is unbiased, in that <span class="math inline">\(\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = 0\)</span>.</p></li>
+<li><p>The variance of of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{IS}}\)</span> is <span class="math display">\[ \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right). \]</span></p></li>
+<li><p>The mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{IS}}\)</span> is <span class="math display">\[ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . \]</span></p></li>
+<li><p>The root-mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{IS}}\)</span> is <span class="math display">\[ \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{\sqrt{n}} \,\sqrt{\operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right)}. \]</span></p></li>
+</ol>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Part 1 follows essentially the same argument as our discussion at the beginning of this lecture. We have <span class="math display">\[ \Ex \left( \frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)}\,\phi(Y_i) \right) = \frac{1}{n}\, n\, \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) = \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) . \]</span> But <span class="math display">\[ \Ex \left(\frac{f(Y)}{g(Y)}\,\phi(Y)\right) = \int_{-\infty}^{+\infty} \frac{f(y)}{g(y)}\,\phi(y)\,g(y)\,\mathrm{d}y = \int_{-\infty}^{+\infty} \phi(y) \, f(y) \, \mathrm{d}y = \Exg \phi(X) . \]</span> This last step is because <span class="math inline">\(f\)</span> is the PDF of <span class="math inline">\(X\)</span>; it doesn’t matter whether the dummy variable in the integration is <span class="math inline">\(x\)</span> or <span class="math inline">\(y\)</span>. Hence the estimator is unbiased.</p>
+<p>Parts 2 to 4 follow in the usual way.</p>
+</div>
+<p>As we are now used to, we can estimate the variance using the sample variance.</p>
+<div id="exm-IS2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 8.2</strong></span> We continue <a href="#exm-IS1" class="quarto-xref">Example&nbsp;<span>8.1</span></a>, where we are estimating <span class="math inline">\(\mathbb P(X &gt; 4)\)</span> for <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span>.</p>
+<p>For the standard Monte Carlo method, we estimate the root-mean-square error as</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>MC_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">rnorm</span>(n) <span class="sc">&gt;</span> <span class="dv">4</span>) <span class="sc">/</span> n</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(MC_MSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.236023e-05</code></pre>
+</div>
+</div>
+<p>As before, this still varies a lot, but it seems to usually be about <span class="math inline">\(2 \times 10^{-5}\)</span>.</p>
+<p>For the importance sampling method, we estimate the mean-square error as</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pdf_x <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>pdf_y <span class="ot">&lt;-</span> <span class="cf">function</span>(y) <span class="fu">dnorm</span>(y, <span class="dv">4</span>, <span class="dv">1</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>samples_y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">4</span>, <span class="dv">1</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>IS_MSE <span class="ot">&lt;-</span> <span class="fu">var</span>((<span class="fu">pdf_x</span>(samples_y) <span class="sc">/</span> <span class="fu">pdf_y</span>(samples_y)) <span class="sc">*</span> (samples_y <span class="sc">&gt;</span> <span class="dv">4</span>)) <span class="sc">/</span> n</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(IS_MSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.131441e-07</code></pre>
+</div>
+</div>
+<p>This is about <span class="math inline">\(2 \times 10^{-7}\)</span>. This is about 100 times smaller than for the standard method: equivalent to taking about 10,000 times as many samples! That’s a huge improvement, which demonstrates the power of importance sampling.</p>
+</div>
+<p><strong>Next time:</strong> <em>We continue our study of importance sampling – and complete our study of Monte Carlo estimation, for now – by considering how to pick a good distribution <span class="math inline">\(Y\)</span>.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
@@ -548,6 +452,7 @@ This is about $2 \times 10^{-7}$. This is about 100 times smaller than for the s
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
