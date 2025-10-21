@@ -2,16 +2,24 @@
 
 {{< include ../_header.qmd >}}
 
-<!--
+
 ## Picking a good distribution
 
-We've now seen that importance sampling can be a very powerful tool, when used well. But how should pick a good distribution $Y$ to sample from?
+Let's remind ourselves where we've got to on importance sampling.
 
-Let's examine the mean-square error more carefully: $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . $$ So our goal is to try and pick $Y$ such that $\frac{f(Y)}{g(Y)}\phi(Y)$ has low variance. (We also, of course, want to be able to sample from $Y$.)
+* We want to estimate $\Exg \phi(X)$.
+
+* Rather than sampling from $X$, with PDF $f$, we instead sample from a different distribution $Y$, with PDF $g$.
+
+* The estimator is ${\displaystyle \widehat\theta_n^{\text{IS}} = \frac{1}{n} \sum_{i=1}^n \frac{f(Y_i)}{g(Y_i)} \, \phi(Y_i) .}$
+
+We've seen that importance sampling can be a very powerful tool, when used well. But how should pick a good distribution $Y$ to sample from?
+
+Let's examine the mean-square error more carefully: $$ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{IS}}\big) = \frac{1}{n} \operatorname{Var}\left( \frac{f(Y)}{g(Y)}\,\phi(Y) \right) . $$ So our goal is to try and pick $Y$ such that $\frac{f(Y)}{g(Y)}\phi(Y)$ has low variance. We also, of course, want to be able to sample from $Y$.
 
 The best possible choice, then, would be to pick $Y$ such that $\frac{f(Y)}{g(Y)}\phi(Y)$ is constant -- and therefore has zero variance! If $\phi$ is non-negative, then it seems like we should pick $Y$ such that its probability density function is $g(y) \propto f(y)\phi(y)$. (Here, $\propto$ is the "proportional to" symbol.) That is, to have $$ g(y) = \frac{1}{Z} f(y)\phi(y) , $$ for some constant $Z$. Then $\frac{f(Y)}{g(Y)}\phi(Y) = Z$ is a constant, has zero variance, and we have a perfect estimator!
 
-What is this constant $Z$? Well, $g$ is a PDF, so it has to integrate. So we will need to have $$ 1 = \int_{-\infty}^{+\infty} g(y)\, \mathrm{d}y = \int_{-\infty}^{+\infty} \frac{1}{Z} f(y)\phi(y) \, \mathrm{d}y = \frac{1}{Z} \int_{-\infty}^{+\infty} f(x)\phi(x) \, \mathrm{d}x = \frac{1}{Z} \Exg\phi(X) . $$ (We did the "switching the dummy variable from $y$ to $x$" thing again.) So $Z = \Exg \phi(X)$. But that's no good: $\theta = \Exg \phi(X)$ was the thing we were trying to estimate in the first place. If we knew that, we wouldn't have to do Monte Carlo estimation to start with!
+What is this constant $Z$? Well, $g$ is a PDF, so it has to integrate to 1. So we will need to have $$ 1 = \int_{-\infty}^{+\infty} g(y)\, \mathrm{d}y = \int_{-\infty}^{+\infty} \frac{1}{Z} f(y)\phi(y) \, \mathrm{d}y = \frac{1}{Z} \int_{-\infty}^{+\infty} f(x)\phi(x) \, \mathrm{d}x = \frac{1}{Z} \Exg\phi(X) . $$ (We did the "switching the dummy variable from $y$ to $x$" thing again.) So $Z = \Exg \phi(X)$. But that's no good: $\theta = \Exg \phi(X)$ was the thing we were trying to estimate in the first place. If we knew that, we wouldn't have to do Monte Carlo estimation to start with!
 
 So, as much as we would like to, we can't use this "perfect" ideal distribution $Y$. More generally, if $\phi$ is not always non-negative, it can be shown that $g(y) \propto f(y)\,|\phi(y)| = |f(x)\,\phi(x)|$ would be the best possible distribution, but this has the same problems.
 
@@ -143,8 +151,6 @@ This is our last lecture on Monte Carlo estimation -- at least for now, and at l
  
 
 **Next time:** *We begin the second section of the module, on random number generation.*
-
--->
 
 ::: {.mysummary}
 **Summary:**
