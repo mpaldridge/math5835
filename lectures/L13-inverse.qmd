@@ -2,6 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
+<!--
 ## Inverse CDF
 
 We have started looking at how to transform a standard uniform random variable $U \sim \operatorname{U}[0,1]$ into any other distribution $X$.
@@ -206,6 +207,8 @@ curve(dnorm(x), add = TRUE, col = "blue", lwd = 2)
 This confirms that we get an excellent match to the normal distribution.
 
 **Next time:** *Sampling using rejection.*
+-->
+
 
 ::: mysummary
 **Summary:**

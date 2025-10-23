@@ -26,17 +26,17 @@ It turns out that this will break down into two questions that we can treat larg
 
 We start by considering the question of how to generate a uniform random number between 0 and 1.
 
-The first thing to know is that computers do not perfectly store exact real numbers in decimals of unending length -- that's impossible! Instead, it stores a number to a certain accuracy, in terms of the number of decimal places. To be more precise, computers store numbers in *binary*; that is, written as a sequence of 0s and 1s. (In the presentation here, we will somewhat simplify matters -- computer science experts will be able to spot where I'm lying, or "gently smoothing out the truth".)
+The first thing to know is that computers do not perfectly store exact real numbers in decimals of unending length -- that's impossible! Instead, it stores a number to a certain accuracy, in terms of the number of decimal places. To be more precise, computers store numbers in *binary*; that is, written as a sequence of 0s and 1s. These 0s and 1s are called "binary digits", or **bits**, for short. (In the presentation here, we will somewhat simplify matters -- computer science experts will be able to spot where I'm lying, or "gently smoothing out the truth".)
 
 A number between 0 and 1 could be (approximately) stored as a 32-bit binary number, for example. A 32-bit number is a number like
 ```
 0. 00110100 11110100 10001111 10011001
 ```
-that is "0." followed by a string of 32 binary digits, or "bits" (0s and 1s).
+that is "0." followed by a string of 32 binary digits.
 A string $0.x_1x_2\cdots x_{31}x_{32}$ represents the number
 $$ x = \sum_{i=1}^{32} x_i 2^{-i} . $$
 So the number above represents
-$$ \begin{align} &0\times 2^{-1} + 0 \times 2^{-2} + 1 \times 2^{-3} + \cdots + 0 \times 2^{-31} + 1 \times 2^{-32} \\ &\qquad\qquad {}=2^{-3} + 2^{-4} + 2^{-6} + \dots + 2^{-29} + 2^{-32} \\ &\qquad\qquad {}= 0.20685670361854135990142822265625.\end{align}$$
+\begin{align} &0\times 2^{-1} + 0 \times 2^{-2} + 1 \times 2^{-3} + \cdots + 0 \times 2^{-31} + 1 \times 2^{-32} \\ &\qquad\qquad {}=2^{-3} + 2^{-4} + 2^{-6} + \dots + 2^{-29} + 2^{-32} \\ &\qquad\qquad {}= 0.20685670361854135990142822265625.\end{align}
 
 We could generate such a 32-bit (or, more generally, $b$-bit) number in two different ways:
 
@@ -52,17 +52,19 @@ True physical randomness means randomness from some real-life random process. Fo
 
 For a greater amount of physical randomness more quickly, one could look at times between the decay of radioactive particles, thermal noise in electrical circuits, the behaviour of photons in a laser beam, and so on. But these are quite expensive, and even these may not be quick enough for some applications.
 
+The bad news about true physical randomness is that it is typically slow and expensive. But the good news is that we know it will definitely be perfectly random with no hidden patterns. (For Monte Carlo, we probably are happy simply to avoid any "obvious" patterns; but for uses in cryptography, for example, true perfect randomness ensuring no patterns that an enemy could exploit can be very important.)
+
 Here's a cool video by the YouTuber [Tom Scott](https://www.youtube.com/@TomScottGo) about an internet company that uses a wall of lava lamps for their true physical randomness:
 
 {{< video https://www.youtube.com/embed/1cUUfMeOijg >}}
 
 ## PRNGs
 
-A **pseudorandom number generator** (**PRNG**) is a computer program that outputs a sequence of numbers that appear to be random. Of course, the numbers are not *actually* random -- a computer program always performs exactly what you tell it to, exactly the same every time. But for a PRNG -- or at least for a good PRNG -- there should be no obvious patterns in the sequence of numbers produced, so they should act for all practical purposes *as if* they were random numbers. ("Pseudo" is a prefix that means something like "appears to be, even though it's not".)
+A **pseudorandom number generator** (**PRNG**) is a computer program that outputs a sequence of numbers that appear to be random. Of course, the numbers are not *actually* random -- a computer program always performs exactly what you tell it to, exactly the same every time. But for a PRNG -- or at least for a good PRNG -- there should be no obvious patterns in the sequence of numbers produced, so they should act for all practical purposes *as if* they were random numbers. ("Pseudo" is a prefix that means something like "appears to be, even though it's not".) The best thing about PRNGs is because they are simple computer programs they run very very quickly and cheaply.
 
 Many pseudorandom number generators work by applying a **recurrence**; that is, applying a function again and again. Suppose we want (pseudo)random integers between $0$ and $m-1$. Then we have a **seed** $x_1$, which behaves as a starting point for the sequence, and a function $f$ from $\{0, 1, \dots, m-1\}$ to $\{0, 1, \dots, m-1\}$. Then starting from $x_1$, we apply $f$ to get the next number in the sequence $x_2 = f(x_1)$. Then we apply $f$ to *that*, to get the next point $x_3 = f(x_2)$. Then apply $f$ to *that* to get the next number, and so on. So the sequence would be
-$$ \begin{align} x_1& & x_2 &= f(x_1) & x_3 &= f(x_2) = f(f(x_1)) \\
-x_4 &= f(x_3) = f(f(f(x_1))) & &\cdots & x_{i+1} &= f(x_i) =f(f(\cdots (f(x_1))\cdots))\end{align} $$
+\begin{align} x_1& & x_2 &= f(x_1) & x_3 &= f(x_2) = f(f(x_1)) \\
+x_4 &= f(x_3) = f(f(f(x_1))) & &\cdots & x_{i+1} &= f(x_i) =f(f(\cdots (f(x_1))\cdots))\end{align}
 and so on.
 
 Some functions $f$ would be not produce a very random-looking sequence of numbers: think of a silly example like $f(x) = (x+1) \bmod m$, so $x_{i+1} = (x_i + 1) \bmod m$ just increases by 1 each time, before "wrapping around" back to 0 when it gets to $m$. (The "mod $m$" means to wrap around when you get to $m$, or to take the remainder when you divide by $m$.) But mathematicians have come up with lots of examples of functions $f$ which, for all possible practical purposes, seem to have outputs that appear just as random as an actual random sequence.
@@ -83,6 +85,8 @@ runif(10)
 ```
 
 Those numbers certainly appear to be random. But if you run those two lines of code on your computer, you should get exactly the same 10 numbers that I got. That's because you will also start with the same seed 123456, and then R will run the same pseudorandom -- that is, completely deterministic -- function to generate the next 10 numbers.
+
+So PRNGs are quick and cheap. If they are designed well and started from a truly random seed, then we hope there will be know hidden patterns in the numbers, although it is difficult to be sure.
 
 **Next time:** *We'll take a closer look at pseudorandom number generation using linear congruential generators.*
 

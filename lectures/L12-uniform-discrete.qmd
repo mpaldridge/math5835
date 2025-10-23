@@ -1,5 +1,6 @@
 # Uniform and discrete
 
+<!--
 We've seen how to generate uniform random variates $U \sim \operatorname{U}[0,1]$, either using true physical randomness or the output of a pseudorandom number generator. But in statistics -- whether performing Monte Carlo estimation or anything else -- we typically want to sample from some other distribution $X$.
 
 In the next five lectures, we will look at ways we can transform the uniform random variable $U$ to take on different distributions instead. We start today by looking at some important special cases.
@@ -73,6 +74,8 @@ If we then got the next uniform variate $u_2 = 0.4353$, we would see that $u_2$ 
 
 
 **Next time:** *Sampling from continuous distribution using the CDF.*
+-->
+
 
 ::: mysummary
 **Summary:**

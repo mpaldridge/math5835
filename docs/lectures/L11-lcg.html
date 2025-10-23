@@ -243,6 +243,18 @@ window.Quarto = {
  <span class="menu-text">Problem Sheet 2</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L13-inverse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -291,7 +303,6 @@ window.Quarto = {
 
 
 <!--
-
 ## Definition and examples
 
 Last lecture we introduced the idea of pseudorandom number generators (PRNGs), which are deterministic functions that produce a sequence of numbers that look for all practical purposes as if they are random.
@@ -325,11 +336,11 @@ x_3 &= (5x_2 + 3) \bmod 16 = (5\times 8 + 3) \bmod 16 = 43 \bmod 16 = 11 \\
 x_4 &= (5x_3 + 3) \bmod 16 = (5\times 1 + 3) \bmod 16 = 43 \bmod 58 = 10 , \end{align} $$
 and so on. The sequence continues $(1, 8, 11, 10, 5, 12, 15, 14, 9, 0, \dots)$. This looks pretty much like a random sequence of numbers between 0 and 15 to me -- I certainly don't see any obvious pattern.
 
-Second, let $a = 3$ be the multiplier, $c = 4$ be the increment, and $x_1 = 1$ be the seed.
+Second, let $a = 3$ be the multiplier, $c = 6$ be the increment, and $x_1 = 1$ be the seed.
 Then we have
-$$ \begin{align} x_2 &= (3x_1 + 2) \bmod 16 = (3\times 1 + 4) \bmod 16 = 7 \bmod 16 = 7 \\
-x_3 &= (3x_2 + 4) \bmod 16 = (3\times 7 + 4) \bmod 16 = 25 \bmod 16 = 9 . \end{align} $$
-But if we continue this, we find we get the sequence $(1, 7, 9, 15, 1, 7, 9, 15, 1, 7, \dots)$. This does not seem like a good random sequence -- we're just getting the same pattern of four numbers $(1, 7, 9, 15)$ repeating over and over again.
+$$ \begin{align} x_2 &= (3x_1 + 2) \bmod 16 = (3\times 1 + 6) \bmod 16 = 9 \bmod 16 = 9 \\
+x_3 &= (3x_2 + 4) \bmod 16 = (3\times 9 + 6) \bmod 16 = 33 \bmod 16 = 1 . \end{align} $$
+But now, using $x_3 = 1$ will give $x_4 = 9$ again. And $x_4 = 9$ will give $x_5 = 1$ again. So the sequence will be $(1, 9, 1, 9, 1, 9, 1, \dots)$, with just 1 and 9 repeating for ever. This definitely doesn't looks random!
 
 The example illustrates that, while an LCG *can* provide a good sequence of pseudorandom numbers, we need to be careful with the parameters we choose.
 :::
@@ -458,7 +469,7 @@ Is these examples, we've usually taken $m$ to be a power of 2. There are a few r
 
 In an LCG, each number in the sequence depends only on the one before, since $x_{i+1} = (ax_i + c) \bmod m$. This means if we ever get a single "repeat" in our sequence -- that is, if we see a number we have seen at some point before -- then the whole sequence from that point on will copy what came before.
 
-For example, in the second part of @exm-lcg-easy, the sequence started $(1, 7, 9, 15, 1, \dots)$. As soon as we hit that repeat 1, we know we're going to see that pattern $1, 7, 9, 15$ repeated forever. We say that this LCG has "period" 4. More generally, the **period** of an LCG is the smallest $k \geq 1$ such that $x_{i+k} = x_i$ for some $i$.
+For example, in the second part of @exm-lcg-easy, the sequence started $(1, 9, 1, \dots)$. As soon as we hit that repeat 1, we know we're going to see that pattern $1, 9$ repeated forever. We say that this LCG has "period" 2. More generally, the **period** of an LCG is the smallest $k \geq 1$ such that $x_{i+k} = x_i$ for some $i$.
 
 We would like our LCGs to have a big period. If an LCG has a small period, it will not look random, as we will just repeat the same small number of values over and over again.
 
@@ -478,9 +489,6 @@ Consider the linear congruential generator $x_{i+1} = (ax_i + c) \bmod m$. This 
 1. if $m$ is divisible by 4, then $a - 1$ is divisible by 4.
 :::
 
-(We won't prove this here -- it's some pretty tricky number theory. But see [Knuth, 
-*The Art of Computer Programming*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1kmht9a/alma991012846439705181), *Volume 2: Seminumerical algorithms*, Subsubsection 3.2.1.2 if you really want a proof and have the number theory chops for it.)
-
 If $m = 2^b$ is a power of 2 (with $b \geq 2$), then the three conditions simplify to a particularly pleasant form:
 
 1. $c$ is odd;
@@ -489,21 +497,28 @@ If $m = 2^b$ is a power of 2 (with $b \geq 2$), then the three conditions simpli
 
 1. $a - 1$ is divisible by 4.
 
-Of course, the third point on the list implies the second. So we only need to check two things: that $c$ is odd and that $a$ is $1 \bmod 4$ (that is, $a$ is one more than a multiple of 4).
+Of course, the third point on the list implies the second. So we only actually need to check *two* things:
+
+1. $c$ is odd
+
+1. $a$ is $1 \bmod 4$ (that is, $a$ is one more than a multiple of 4).
+
+(We won't prove the Hull--Dobell theorem here -- it's some pretty tricky number theory. But see [Knuth, 
+*The Art of Computer Programming*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1kmht9a/alma991012846439705181), *Volume 2: Seminumerical algorithms*, Subsubsection 3.2.1.2 if you really want a proof and have sufficient number theory background.)
 
 ::: {#exm-periods}
 Let's go back to the earlier examples, and see if they have full periods or not.
 
 In the first LCG of @exm-lcg-easy, we had $m = 2^4$, $a = 5$ and $c = 3$. Here, $c$ is odd, and $a = 4 + 1$ is $1 \bmod 4$. This LCG fulfils both conditions, so it has the maximum possible period of 16.
 
-In the second LCG of @exm-lcg-easy, we had $m = 2^4$, $a = 3$ and $c = 4$. Here, $c$ is even, and $a$ is $3 \bmod 4$. This LCG does not fulfil both the conditions -- in fact, it fails them both -- so it does not have the maximum possible period of 16. (We already saw that it in fact has period 4.)
+In the second LCG of @exm-lcg-easy, we had $m = 2^4$, $a = 3$ and $c = 6$. Here, $c$ is even, and $a$ is $2 \bmod 4$. This LCG does not fulfil both the conditions -- in fact, it fails them both -- so it does not have the maximum possible period of 16. (We already saw that it in fact has period 2.)
 
 In the first LCG of @exm-lcg-hard, we had $m = 2^8$, $a = 13$ and $c = 17$. Here, $c$ is odd, and $a = 12 + 1$ is $1 \bmod 4$. This LCG fulfils both conditions, so it has the maximum possible period of 256.
 
 In the second LCG of @exm-lcg-hard, we had $m = 2^8$, $a = 13$ and $c = 16$. Here, $c$ is even, and $a = 12 + 1$ is $1 \bmod 4$. So although this LCG does fulfil the second condition, it does not fulfil the first, so it does not have the maximum possible period of 256. (We already saw that it in fact has period 32.)
 :::
 
-It normally a good idea to make sure your LCG has full period -- if it's so easy to ensure, then why not? (That said, a very large but not-quite-maximum period may be good enough. For example, if an LCG with modulus $2^{64}$ has a period of "only" $2^{60}$, that might well be enough: one million samples a second for one thousand years is only $2^{55}$ samples, so you'd never actually see a repeat.)
+It normally a good idea to make sure your LCG has full period -- if it's so easy to ensure, then why not? (That said, a very large but not-quite-maximum period may be good enough. For example, if an LCG with modulus $2^{64}$ has a period of "only" $2^{60}$, that might well be enough: one million samples a second for one thousand years is only $2^{55}$ samples, so you'd never actually *see* a repeat.)
 
 But merely having full period (and a large modulus) isn't enough by itself to guarantee an LCG will make a good pseudorandom number generator. After all, the silly LCG $x_{i+1} = x_i + 1$ has full period, but the sequence $$(0, 1, 2, 3, \dots, m-2, m-1, 0, 1, 2, \dots)$$ will not look random.
 
@@ -521,20 +536,17 @@ Before being used properly, any pseudorandom number generator is subjected to a 
 <!--
 Even the best PRNGs might not pass every single such test. See [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 1.1.2 for more on this.
 
-LCGs were considered state-of-the-art until the late-90s or so. However, it was discovered that $m$ needs be very big and the number of samples used fairly small in order to pass some of the more stringent statistical tests of randomness. For example, it's suggested that $n = 1\,000\,000$ (one million) samples from a full-period LCG with modulus $m = 2^{64}$ might be the limit before it starts "not looking random enough". In particular, an LCG with a large period may not actually see *enough* repeats -- after all, random numbers will have the occasional one-off repeat, just by chance. Compared to other more modern methods (like R's default, the Mersenne Twister mentioned in the last lecture, discovered in 1997), an LCG requires quite a lot of computation for only a modest number of samples. So while LCGs are still admired for their simplicity and elegance, they have fallen out of favour for cutting-edge computational work.
-
-
-**Next time:** *We'll use our pseudorandom uniform $[0,1]$ random numbers to make random numbers with other discrete or uniform distributions.*
-
+LCGs were considered state-of-the-art until the late-90s or so. However, it was discovered that $m$ needs be very big and the number of samples used fairly small in order to pass some of the more stringent statistical tests of randomness. For example, it's suggested that $n = 1\,000\,000$ (one million) samples from a full-period LCG with modulus $m = 2^{64}$ might be the limit before it starts "not looking random enough". In particular, an LCG with a large period may not actually see *enough* repeats -- after all, random numbers will have the occasional one-off repeat, just by chance. Compared to other more modern methods (like R's default, the Mersenne Twister, mentioned in the last lecture, discovered in 1997), an LCG requires quite a lot of computation for only a modest number of samples. So while LCGs are still admired for their simplicity and elegance, they have fallen out of favour for cutting-edge computational work.
 -->
+<p><strong>Next time:</strong> <em>We’ll use our pseudorandom uniform <span class="math inline">\([0,1]\)</span> random numbers to make random numbers with other discrete or uniform distributions.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
 <li><p>Linear congruential generators are pseudorandom number generators based on the recurrence <span class="math inline">\(x_{n+1} = (ax_n + c) \bmod m\)</span>.</p></li>
 <li><p>Any LCG will eventually repeat with periodic behaviour.</p></li>
-<li><p>Suppose <span class="math inline">\(m\)</span> is a power of 2. Then an LCG has period <span class="math inline">\(m\)</span> if and only if <span class="math inline">\(c\)</span> is odd and <span class="math inline">\(a = 1 \bmod 4\)</span>.</p></li>
+<li><p>Suppose <span class="math inline">\(m\)</span> is a power of 2. Then an LCG has full period <span class="math inline">\(m\)</span> if and only if <span class="math inline">\(c\)</span> is odd and <span class="math inline">\(a = 1 \bmod 4\)</span>.</p></li>
 </ul>
-<p>You should now be able to answer all questions on <a href="#P2"><strong>Problem Sheet 2</strong></a>. Your answer will be discussed in the problems class on <strong>Thursday 31 October</strong>.</p>
+<p>You should now be able to answer all questions on <a href="../problems/P2.html"><strong>Problem Sheet 2</strong></a>. Your answers will be discussed in the problems class on <strong>Thursday 31 October</strong>.</p>
 <p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsections 1.1.1 and 1.1.2.</p>
 </div>
 

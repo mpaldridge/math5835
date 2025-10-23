@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Monte Carlo error I: theory – MATH5835M Statistical Computing</title>
+<title>13&nbsp; Inverse transform method – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L04-mc-error-2.html" rel="next">
-<link href="../lectures/L02-mc-uses.html" rel="prev">
+<link href="../problems/solutions.html" rel="next">
+<link href="../lectures/L12-uniform-discrete.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +111,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L03-mc-error-1.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../lectures/L13-inverse.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -202,7 +168,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span></a>
   </div>
 </li>
@@ -285,7 +251,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L13-inverse.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L13-inverse.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></span></a>
   </div>
 </li>
@@ -302,16 +268,8 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#estimation-error" id="toc-estimation-error" class="nav-link active" data-scroll-target="#estimation-error"><span class="header-section-number">3.1</span> Estimation error</a></li>
-  <li><a href="#error-of-monte-carlo-estimator-theory" id="toc-error-of-monte-carlo-estimator-theory" class="nav-link" data-scroll-target="#error-of-monte-carlo-estimator-theory"><span class="header-section-number">3.2</span> Error of Monte Carlo estimator: theory</a></li>
-  <li><a href="#error-of-monte-carlo-estimator-practice" id="toc-error-of-monte-carlo-estimator-practice" class="nav-link" data-scroll-target="#error-of-monte-carlo-estimator-practice"><span class="header-section-number">3.3</span> Error of Monte Carlo estimator: practice</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -325,9 +283,9 @@ window.Quarto = {
 \newcommand{\ee}{\mathrm{e}} \]</span></p>
 </div>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L03-mc-error-1.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../lectures/L13-inverse.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></h1>
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></h1>
 </div>
 
 
@@ -347,134 +305,257 @@ window.Quarto = {
 <div class="hidden">
 <p><span class="math display">\[ \]</span></p>
 </div>
-<section id="estimation-error" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="estimation-error"><span class="header-section-number">3.1</span> Estimation error</h2>
-<p>Today we are going to analysing the accuracy of Monte Carlo estimation. But before talking about Monte Carlo estimation specifically, let’s first remind ourselves of some concepts about error in statistical estimation more generally. We will use the following definitions.</p>
-<div id="def-stats" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 3.1</strong></span> Let <span class="math inline">\(\widehat\theta\)</span> be an estimator of a parameter <span class="math inline">\(\theta\)</span>. Then we have the following definitions of the estimator <span class="math inline">\(\widehat\theta\)</span>:</p>
-<ul>
-<li><p>The <strong>bias</strong> is <span class="math inline">\(\operatorname{bias}\big(\widehat\theta\big) = \mathbb E\big(\widehat\theta - \theta\big)  = \mathbb E\widehat\theta - \theta\)</span>.</p></li>
-<li><p>The <strong>mean-square error</strong> is <span class="math inline">\(\operatorname{MSE}\big(\widehat\theta\big) = \mathbb E \big(\widehat\theta - \theta\big)^2\)</span>.</p></li>
-<li><p>The <strong>root-mean-square error</strong> is the square-root of the mean-square error, <span class="math display">\[\operatorname{RMSE}\big(\widehat\theta\big) = \sqrt{\operatorname{MSE}(\widehat\theta)} = \sqrt{\mathbb E (\widehat\theta - \theta)^2} . \]</span></p></li>
-</ul>
-</div>
-<p>Usually, the main goal of estimation is to get the mean-square error of an estimate as small as possible. This is because the MSE measures by what distance we are missing on average. It can be easier to interpret what the root-mean-square error means, as the RMSE has the same units as the parameter being measured: if <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\widehat{\theta}\)</span> are in metres, say, then the MSE is in metres-squared, whereas the RMSE error is in metres again. If you minimise the MSE you also minimise the RMSE and vice versa.</p>
-<p>It’s nice to have an “unbiased” estimator – that is, one with bias 0. This is because bias measures any systematic error in a particular direction. However, unbiasedness by itself is not enough for an estimate to be good – we need low variance too. (Remember the old joke about the statistician who misses his first shot ten yards to the left, misses his second shot ten yards to the right, then claims to have “hit the target on average.”)</p>
-<p>(Remember also that “bias” is simply the word statisticians use for <span class="math inline">\(\mathbb E(\widehat\theta - \theta)\)</span>; we don’t mean “bias” in the derogatory way it is sometimes used in political arguments, for example.)</p>
-<p>You probably also remember the relationship between the mean-square error, the bias, and the variance:</p>
-<div id="thm-MSE-bias" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 3.1</strong></span> &nbsp; <span class="math inline">\(\operatorname{MSE}\big(\widehat\theta\big) = \operatorname{bias}\big(\widehat\theta\big)^2 + \operatorname{Var}\big(\widehat\theta\big)\)</span>.</p>
-</div>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>The MSE is <span class="math display">\[\begin{align}
-  \operatorname{MSE}\big(\widehat\theta\big) = \Exg\big(\widehat\theta - \theta\big)^2
-    &amp;= \Exg \big(\widehat\theta^2 - 2\theta\widehat\theta + \theta\big)^2 \\
-    &amp;= \Exg \widehat\theta^2 - 2\theta \Exg \widehat\theta + \theta^2 ,
-\end{align}\]</span> where we have expanded the brackets and bought the expectation inside (remembering that <span class="math inline">\(\theta\)</span> is a constant). Since the variance can be written as <span class="math inline">\(\Var(\widehat\theta) = \Exg\widehat\theta^2 - (\Exg \widehat\theta)^2\)</span>, we can use a cunning trick of both subtracting and adding <span class="math inline">\((\Exg \widehat\theta)^2\)</span>. This gives <span class="math display">\[\begin{align}
-\operatorname{MSE}\big(\widehat\theta\big)
-  &amp;= \Exg \widehat\theta^2 - \big(\!\Exg \widehat\theta\big)^2 + \big(\!\Exg \widehat\theta\big)^2 - 2\theta \Exg \widehat\theta + \theta^2 \\
-  &amp;= \Var\big(\widehat\theta\big) + \big( (\Exg \widehat\theta)^2 - 2\theta \Exg \widehat\theta + \theta^2 \big) \\
-  &amp;= \Var\big(\widehat\theta\big) + \big( \! \Exg \widehat\theta - \theta\big)^2 \\
-  &amp;= \Var\big(\widehat\theta\big) + \operatorname{bias}(\widehat\theta)^2 .
-\end{align}\]</span> This proves the result.</p>
-</div>
-<p>Since the bias contributes to the mean-square error, that’s another reason to like estimator with low – or preferably zero – bias. But again, unbiasedness isn’t enough by itself; we want low variance too. (There are some situations where there’s a “bias–variance tradeoff”, where allowing some bias reduces the variance and so can reduce the MSE. It turns out that Monte Carlo is not one of these cases, however.)</p>
-</section>
-<section id="error-of-monte-carlo-estimator-theory" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="error-of-monte-carlo-estimator-theory"><span class="header-section-number">3.2</span> Error of Monte Carlo estimator: theory</h2>
-<p>In this lecture, we’re going to be looking more carefully at the size of the errors made by the Monte Carlo estimator <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) . \]</span></p>
-<p>Our main result is the following.</p>
-<div id="thm-MCerr" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 3.2</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) \]</span> be the Monte Carlo estimator of <span class="math inline">\(\theta\)</span>. Then:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is unbiased, in that <span class="math inline">\(\operatorname{bias}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = 0\)</span>.</p></li>
-<li><p>The variance of of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>The mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math inline">\({\displaystyle \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>The root-mean-square error of <span class="math inline">\(\widehat{\theta}_n^{\mathrm{MC}}\)</span> is <span class="math display">\[{\displaystyle \operatorname{RMSE}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \sqrt{\frac{1}{n} \operatorname{Var}\big(\phi(X)\big)} = \frac{1}{\sqrt{n}} \, \operatorname{sd}\big(\phi(X)\big)}. \]</span></p></li>
-</ol>
-</div>
-<p>Before we get to the proof, let’s recap some relevant probability.</p>
-<p>Let <span class="math inline">\(Y_1, Y_2, \dots\)</span> be IID random variables with common expectation <span class="math inline">\(\mathbb EY_1 = \mu\)</span> and common variance <span class="math inline">\(\operatorname{Var}(Y_1) = \sigma^2\)</span>. Consider the mean of the first <span class="math inline">\(n\)</span> random variables, <span class="math display">\[ \overline{Y}_n = \frac{1}{n} \sum_{i=1}^n Y_i . \]</span> Then the expectation of <span class="math inline">\(\overline{Y}_n\)</span> is <span class="math display">\[ \mathbb E \overline{Y}_n = \mathbb E\left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \frac{1}{n}
-\sum_{i=1}^n \mathbb{E}Y_i = \frac{1}{n}\,n\,\mu = \mu . \]</span> The variance of <span class="math inline">\(\overline{Y}_n\)</span> is <span class="math display">\[ \operatorname{Var}\big(  \overline{Y}_n \big)= \operatorname{Var} \left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \bigg(\frac{1}{n}\bigg)^2
-\sum_{i=1}^n \operatorname{Var}(Y_i) = \frac{1}{n^2}\,n\,\sigma^2 = \frac{\sigma^2}{n} , \]</span> where, for this one, we used the independence of the random variables.</p>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>Apply the probability facts from above with <span class="math inline">\(Y = \phi(X)\)</span>. This gives:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex \overline Y_n = \Ex Y = \Exg \phi(X)\)</span>, so <span class="math inline">\(\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0\)</span>.</p></li>
-<li><p><span class="math inline">\({\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \operatorname{Var}\big(\overline Y_n\big) = \frac{1}{n} \operatorname{Var}(Y) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>Using <a href="#thm-MSE-bias" class="quarto-xref">Theorem&nbsp;<span>3.1</span></a>, <span class="math display">\[\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}})^2 + \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = 0^2 + \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) . \]</span></p></li>
-<li><p>Take the square root of part 3.</p></li>
-</ol>
-</div>
-<p>Let’s think about MSE <span class="math inline">\(\frac{1}{n} \Var(\phi(X))\)</span>. The variance terms is some fixed fact about the random variable <span class="math inline">\(X\)</span> and the function <span class="math inline">\(\phi\)</span>. So as <span class="math inline">\(n\)</span> gets bigger, <span class="math inline">\(\frac{1}{n}\)</span> gets smaller, so the MSE gets smaller, and the estimator gets more accurate. This goes back to what we said when we introduced the Monte Carlo estimator: we get a more accurate estimate by increasing <span class="math inline">\(n\)</span>. More specifically, the MSE scales like <span class="math inline">\(1/n\)</span>, or – perhaps a more useful result – the RMSE scales like <span class="math inline">\(1/\sqrt{n}\)</span>. We’ll come back to this in the next lecture.</p>
-</section>
-<section id="error-of-monte-carlo-estimator-practice" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="error-of-monte-carlo-estimator-practice"><span class="header-section-number">3.3</span> Error of Monte Carlo estimator: practice</h2>
-<p>So when we form a Monte Carlo estimate <span class="math inline">\(\hat\theta_n^{\text{MC}}\)</span>, we now know it will be unbiased. We’d also like to know it’s mean-square and/or root-mean-square error too.</p>
-<p>There’s a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we <em>couldn’t</em> calculate <span class="math inline">\(\Exg \phi(X)\)</span>. So it seems very unlikely we’ll be able to calculate the variance <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span> either. So how will be able to assess the mean-square (or root-mean-square) error of our Monte Carlo estimator?</p>
-<p>Well, we can’t know it exactly. But we <em>can</em> estimate the variance from the samples we are already using: by taking the sample variance of the samples <span class="math inline">\(\phi(x_i)\)</span>. That is, we can estimate the variance of the Monte Carlo estimator by the sample variance <span class="math display">\[ S^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(X_i) - \widehat{\theta}_n^{\mathrm{MC}} \big)^2 . \]</span> Then we can similarly estimate the mean-square and root-mean-square errors by <span class="math display">\[ \text{MSE} \approx \frac{1}{n}S^2 \qquad \text{and} \qquad \text{RMSE} \approx \sqrt{\frac{1}{n} S^2} = \frac{1}{\sqrt{n}}\,S  \]</span> respectively.</p>
-<div id="exm-MCexp2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 3.1</strong></span> Let’s go back to the very first example in the module, <a href="L01-mc-intro.html#exm-MCexp" class="quarto-xref">Example&nbsp;<span>1.1</span></a>, where we were trying to find the expectation of an <span class="math inline">\(\operatorname{Exp}(2)\)</span> random variable. We used this R code:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4997326</code></pre>
-</div>
-</div>
-<p>(Because Monte Carlo estimation is random, this won’t be the <em>exact</em> same estimate we had before, of course.)</p>
-<p>So if we want to investigate the error, we can use the sample variance of these samples. We will use the sample variance function <code>var()</code> to calculate the sample variance. In this simple case, the function is <span class="math inline">\(\phi(x) = x\)</span>, so we need only use the variance of the samples themselves.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>var_est <span class="ot">&lt;-</span> <span class="fu">var</span>(samples)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>MSEest  <span class="ot">&lt;-</span> var_est <span class="sc">/</span> n</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>RMSEest <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(MSEest)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(var_est, MSEest, RMSEest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.497426e-01 2.497426e-07 4.997425e-04</code></pre>
-</div>
-</div>
-<p>The first number is <code>var_est</code> <span class="math inline">\(= 0.2497\)</span>, the sample variance of our <span class="math inline">\(\phi(x_i)\)</span>s:<br>
-<span class="math display">\[ s^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(x_i) - \widehat{\theta}_n^{\mathrm{MC}}\big)^2 . \]</span> This should be a good estimate of the true variance <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span>. (In fact, in this simple case, we know that <span class="math inline">\(\operatorname{Var}(X) = \frac{1}{2^2} = 0.25\)</span>, so we know that the estimate is good.) In calculating this in the code, we used R’s <code>var()</code> function, which calculates the sample variance of some values.</p>
-<p>The second number is <code>MSEest</code> <span class="math inline">\(= 2.497\times 10^{-7}\)</span>, our estimate of the mean-square error. Since <span class="math inline">\(\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \frac{1}{n} \operatorname{Var}(\phi(X))\)</span>, then <span class="math inline">\(\frac{1}{n} S^2\)</span> should be a good estimate of the MSE.</p>
-<p>The third number is <code>RMSEest</code> <span class="math inline">\(= 5\times 10^{-4}\)</span> our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.</p>
-</div>
-<div id="exm-MCprob2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 3.2</strong></span> In <a href="L02-mc-uses.html#exm-MCprob" class="quarto-xref">Example&nbsp;<span>2.1</span></a>, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span>, where <span class="math inline">\(Z\)</span> is a standard normal.</p>
-<p>Our code was</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022299</code></pre>
-</div>
-</div>
-<p>So our root-mean-square error can be approximated as</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>MSEest <span class="ot">&lt;-</span> <span class="fu">var</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">/</span> n</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(MSEest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0001476542</code></pre>
-</div>
-</div>
-<p>since <code>samples &gt; 2</code> is the indicator function of whether <span class="math inline">\(X_i &gt; 2\)</span> or not.</p>
-</div>
-<p><strong>Next time:</strong> <em>We’ll continue analysing Monte Carlo error, looking at confidence intervals and assessing how many samples to take..</em></p>
+<!--
+## Inverse CDF
+
+We have started looking at how to transform a standard uniform random variable $U \sim \operatorname{U}[0,1]$ into any other distribution $X$.
+
+Last lecture, we saw how to do this for other uniform distributions and for discrete random variables. Booth involved the cumulative distribution function $F(x) = \mathbb P(X \leq x)$. For generating a wider class of random variables (including continuous random variables) the CDF will continue to be important. In fact, it is the *inverse* of the CDF that will play a crucial role.
+
+It seems natural to define the inverse $F^{-1}$ of the CDF in just the same way we would define the inverse of any other function: that $F^{-1}(u)$ is the unique value $x$ such that $F(x) = u$. This is illustrated in the figure below.
+
+\[picture\]
+
+This definition works fine for a purely continuous distribution that doesn't have any "gaps" in the set of values it can take. But for a general random variable, there are two problems with this definition.
+
+1. If $X$ has any point masses -- points $x$ with strictly positive probability $\mathbb P(X = x) > 0$ of hitting that point exactly -- then $F$ may "jump past" the value $u$, so there is *no* value $x$ such that $F(u)$. (See the blue line on the graph below.)
+
+2. If there is an interval on the line where $X$ has probability zero, then all the $x$s in that interval have the same value of $F(x) = u$, so there is no *unique* value $x$ such that $F(x) = u$. (See the red line on the graph below.)
+
+\[picture\]
+
+It turns out that the best way to solve this is the following. For the first obstacle, if there are many points $x$ with $F(x) = u$, we take the first one -- that is, the smallest $x$ with $F(x) = u$. For the second obstacle, we take the value of the smallest $x$ where $F(x)$ is above $u$, which comes right at the jump. These two cases are illustrated below.
+
+\[picture\]
+
+These two awkward cases can be encapsulated in the following definition.
+
+::: {#def-cdf-inv}
+Let $X$ be a random variable with cumulative distribution function $F_X(x) = \mathbb P(X \leq x)$. Then the **inverse cumulative distribution function** (inverse CDF) $F_X^{-1}$ is defined for $u \in (0,1)$ by
+$$ F^{-1}_X(u) = \min \big \{x : F_X(x) \geq u \big\} . $$
+:::
+
+You should check that you agree this definition matches the discussion above.
+
+
+## Inverse transform
+
+The inverse transform method works like this: To generate $X$, simply apply the inverse CDF $F^{-1}$ to a standard uniform random variable $U$.
+
+::: {#thm-inv-trans}
+Let $F$ be a cumulative distribution function, and let $F^{-1}$ be its inverse. Let $U \sim \operatorname{U}[0,1]$. Then $X = F^{-1}(U)$ has cumulative distribution function $F$.
+:::
+
+::: {.proof}
+We need to show that $\mathbb P(X \leq x) = F(x)$ when this is in $(0,1)$. The proof is very easy if $F$ has no "gaps" or "jumps" as described above. Then, we simply have
+$$ \mathbb P(X \leq x) = \mathbb P\big(F^{-1}(U) \leq x\big) = \mathbb P\big(U \leq F(x)\big) = F(x), $$
+where we have simply "undone" the function $F^{-1}$ and used that $\mathbb P(U \leq u) = u$ for $u \in (0,1)$.
+
+For the general case, we need to be just a little bit more careful. We have
+$$ \mathbb P(X \leq x) = \mathbb P\big(F^{-1}(U) \leq x\big) = \mathbb P\big(\min\{y : F(y) \geq U \} \leq x \big) .$$
+If $x$ is bigger than the minimum $y$ with $F(y) \geq u$, then certainly $F(x) \geq u$ as well; while if $F(x) \geq u$, then $x$ must be at least as big as the minimum $y$ for which $F(y) \geq u$. Hence $\min\{y : F(y) \geq U \} \leq x$ if and only is $F(x) \geq U$. So
+$$ \mathbb P(X \leq x) = \mathbb P\big(\min\{y : F(y) \geq U \} \leq x \big) = \mathbb P\big(F(x) \geq U\big) = \mathbb P(U \leq F(x)\big) = F(x), $$
+as before.
+:::
+
+The method -- known as the **inverse transform method** gives a simple way to generate any random variable $X$ for which the inverse CDF $F_X^{-1}$ can be computed easily.
+
+This is not all random variables, however. In particular, the inverse CDF of the normal distribution does not have a closed form, so this does not give a way of sampling normal distributions. Later we'll see other methods that allow us to sample from normal random variables.
+
+## Examples
+
+Let's see some examples. The idea for all these problems is "Write $U = F(X)$, then invert, to get $X = F^{-1}(U)$."
+
+::: {#exm-exp}
+Let $X \sim \operatorname{Exp}(\lambda)$ be an exponential distribution with rate $\lambda$. This has PDF $f(x) = \lambda \ee^{-\lambda x}$ for $x \geq 0$ and CDF $F(x) = 1 - \ee^{-\lambda x}$.
+
+We write $U = F(X)$ and invert it to make $X$ the subject. So $U = 1 - \ee^{-\lambda X}$, and therefore
+$$ X = -\frac{1}{\lambda} \log(1 - U) . $$
+
+We should check that this really does have an exponential distribution.
+
+
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+rate <- 0.5
+n <- 1e5
+unif <- runif(n)
+samples <- -(1 / rate) * log(1 - unif)
+
+hist(samples, probability = TRUE)
+curve(dexp(x, rate), add = TRUE, col = "blue", lwd = 2)
+```
+
+::: {.cell-output-display}
+![](L13-inverse_files/figure-html/unnamed-chunk-1-1.svg){width=672}
+:::
+:::
+
+
+
+
+
+
+Looks like an accurate sample!
+
+Since $1 - U$ has the same distribution as $U$, it can be more convenient to simply write
+$$ X' = -\frac{1}{\lambda} \log U $$
+instead.
+
+Alternatively, since $X$ and $X'$ are not independent and both have the same exponential distribution, they are a candidate to use as an antithetic pair in Monte Carlo estimation.
+:::
+
+::: {#exm-rayleigh}
+Consider $X$ with PDF
+$$ f(x) = \frac{x}{\gamma} \,\exp \left(-\frac{x^2}{2\gamma}\right)$$
+for $x \geq 0$, and CDF
+$$ F(x) = 1 - \exp\left(-\frac{x^2}{2\gamma}\right) $$
+This is known as the **Rayleigh distribution** with scale parameter $\gamma$.
+
+Again, we write $U = F(X)$ and invert. so
+$$ U = 1 - \exp\left(-\frac{X^2}{2\gamma}\right)  $$
+so
+$$ X = \sqrt{-2\gamma\log(1-U)} . $$
+
+Again, $X' = \sqrt{-2\gamma\log U}$ is a slightly simpler expression, or could be used in an antithetic variables Monte Carlo approach.
+:::
+
+::: {#exm-unif}
+Suppose $X \sim \operatorname{U}[a,b]$, then
+$$ F(x) = \frac{x-a}{b-a} $$
+(except for when $F(x) = 0$ or $1$).
+
+Write $U = F(X)$ and invert. We get $X = (b-a)U + a$. This is precisely the method for generating general uniform distributions that we saw in the last lecture.
+:::
+
+::: {#exm-discrete}
+Let $X$ be discrete on the values $x_1, x_2, \dots$ with probabilities $p_1, p_2, \dots$. The CDF is
+$$ F(x) = \begin{cases} 0 & x < x_1 \\
+p_1 & x_1 \leq x < x_2 \\
+p_1 + p_2 & x_2 \leq x < x_3 \\
+p_1 + p_2 + p_3 & x_3 \leq x < x_4 \\
+\cdots & \cdots . \end{cases} $$
+
+Remembering the rule for "jumps" in the CDF, we see that the inverse CDF is
+$$ F^{-1}(u) = \begin{cases} x_1 & u < p_1 \\
+x_2 & p_1 \leq x < p_1 + p_2 \\
+x_3 & p_1 + p_2 \leq x < p_1 + p_2 + p_3 \\
+\cdots & \cdots . \end{cases} $$
+Taking $X = F^{-1}(U)$ gives the same method for generating discrete random variables as we discussed in the last lecture.
+:::
+
+::: {#exm-pdf-gen}
+*Consider a distribution with PDF*
+$$ f(x) = \begin{cases} x^2 & 0 \leq x \leq 1 \\
+\frac{2}{3} & 1 < x \leq 2 \\
+0 & \text{otherwise.} \end{cases} $$
+*Show how to sample $X$ using a standard uniform random variable $U$.*
+
+This is a standard sort of question. First we have to find the CDF, then we have to invert it.
+
+We find the CDF from the PDF by integrating. For $0 \leq x \leq 1$, we have
+$$ F(x) = \int_0^x f(y) \, \mathrm{d}y = \int_0^x y^2 \,\mathrm{d}y = \tfrac13 x^3. $$
+Then for $1 < x \leq 2$, we have
+$$ F(x) = F(1) + \int_1^x f(y) \, \mathrm{d}y = \tfrac13 + \int_1^x \tfrac23 \,\mathrm{d}y = \tfrac13 + \tfrac23 x - \tfrac23 = \tfrac23 x - \tfrac13 . $$
+
+For $0 \leq U < \leq F(1) = \tfrac13$, we have $U = \tfrac13 X^3$, so $X = \sqrt[3]{3U}$. For $F(1) = \tfrac13 < U \leq 1$, we have $U = \tfrac23 X - \tfrac13$, so $X = \tfrac32 U + \tfrac12$. So the inverse transform is
+$$ X = \begin{cases} \sqrt[3]{3U} & U \leq \frac13 \\ \tfrac32 U + \tfrac12 & U > \tfrac13 . \end{cases} $$
+:::
+
+
+## Box--Muller transform
+
+While the inverse transform method is very powerful, we have mentioned that it doesn't work easily for the normal distribution. One would need first a very good approximation to the inverse CDF, in order to be able to apply it.
+
+Instead, the **Box--Muller transform** (discovered by the statistician GEP Box and the computer scientist Marvin E Muller in 1958) is a clever way to easily transform a standard uniform into a normal distribution.
+
+Actually, that's not quite true. Rather than transforming one standard uniform $U$ into one normal distribution $X$, it instead transforms *two* independent standard uniforms $U, V$ into *two* normal distributions $X, Y$. (There is some profound mathematical sense in which the two-dimensional bivariate normal is somehow a more "deeply" important mathematical object than the one-dimensional univariate normal we are used to, but we don't have time to get into that here.)
+
+First, let's note it suffices to produce a standard normal $X \sim \operatorname{N}(0,1)$. Any other normal distribution $W \sim \operatorname{N}(\mu, \sigma^2)$ can then be formed as $W = \sigma X + \mu$.
+
+The idea of the Box--Muller transform is based on converting the two standard normal distributions $(X, Y)$ from cartesian coordinates into polar coordinates $(R, \Theta)$. (Those of you who have know [how to calculate the Gaussian integral](https://mpaldridge.github.io/math1710/L16-normal.html#normal-properties) will have seen this idea before.)
+
+[picture]
+
+::: {#thm-box-muller-1}
+Let $X, Y \sim \operatorname{N}(0,1)$ be independent standard normal distributions. Write
+$$ R = \sqrt{X^2 + Y^2} \qquad\qquad \Theta = \tan \frac{Y}{X} $$
+for the radius and the angle of $(X, Y)$ in polar coordinates. Then the radius $R$ has a Rayleigh distribution with scalar parameter $\gamma = 1$, the angle $\Theta$ has a uniform distribution on $[0, 2\pi]$, and $R$ and $\Theta$ are independent.
+:::
+
+::: {.proof}
+The joint PDF of $(X,Y)$ is
+$$ \begin{align}
+f_{X,Y}(x, y) \,\mathrm{d}x\,\mathrm{d}y &= f_X(x) \,f_Y(y) \,\mathrm{d}x\,\mathrm{d}y \\
+&= \frac{1}{\sqrt{2\pi}}\, \exp \big(-\tfrac12 x^2\big) \, \frac{1}{\sqrt{2\pi}} \,\exp \big(-\tfrac12 y^2\big) \,\mathrm{d}x\,\mathrm{d}y \\
+&= \frac{1}{2\pi} \,\exp \big(-\tfrac12 (x^2 + y^2)\big) \,\mathrm{d}x\,\mathrm{d}y .
+\end{align}$$ {#eq-box-1}
+The joint PDF of $(R, \Theta)$ is
+$$ \begin{align}
+f_{R, \Theta}(r, \theta) \,\mathrm{d}r\,\mathrm{d}\theta &= f_R(r) \,f_\Theta(\theta) \,\mathrm{d}r\,\mathrm{d}\theta \\
+&= r\exp \big(-\tfrac12 r^2\big) \, \frac{1}{2\pi}\, \mathrm{d}r\,\mathrm{d}\theta
+\end{align} .$$ {#eq-box-2}
+
+But in @eq-box-1, we can substitute $r = x^2 + y^2$ and $\mathrm{d}x\,\mathrm{d}y = r\,\mathrm{d}r\,\mathrm{d}\theta$, and get @eq-box-2.
+:::
+
+So we've reduced the problem of sample two normal distributions to sampling a Rayleigh (with scale parameter 1) and a uniform (on $[0, 2\pi]$). But we know how to do this. We saw in @exm-rayleigh that we can take $R = \sqrt{-2 \log U}$, and we saw in the last lecture that we can take $\Theta = 2\pi V$. We can then transform back into cartesian coordinates with
+$$ \begin{align}
+X &= R\cos \Theta =  \sqrt{-2 \log U} \cos(2\pi V) \\
+Y &= R\sin \Theta =  \sqrt{-2 \log U} \sin(2\pi V) .
+\end{align} $$
+
+Let's check the just the $X$.
+
+
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+n <- 1e5
+unif1 <- runif(n)
+unif2 <- runif(n)
+rad <- sqrt(-2 * log(unif1))
+ang <- 2 * pi * unif2
+samples <- rad * cos(ang)
+
+hist(samples, probability = TRUE, breaks = 50, xlim = c(-4, 4))
+curve(dnorm(x), add = TRUE, col = "blue", lwd = 2)
+```
+
+::: {.cell-output-display}
+![](L13-inverse_files/figure-html/unnamed-chunk-2-1.svg){width=672}
+:::
+:::
+
+
+
+
+
+
+This confirms that we get an excellent match to the normal distribution.
+
+**Next time:** *Sampling using rejection.*
+-->
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
-<li><p>The Monte Carlo estimator is unbiased.</p></li>
-<li><p>The Monte Carlo estimator has mean-square error <span class="math inline">\(\Var(\phi(X))/n\)</span>, so the root-mean-square error scales like <span class="math inline">\(1/\sqrt{n}\)</span>.</p></li>
-<li><p>The mean-square error can be estimated by <span class="math inline">\(S^2 / n\)</span>, where <span class="math inline">\(S^2\)</span> is the sample variance of the <span class="math inline">\(\phi(X_i)\)</span>.</p></li>
+<li><p>The inverse <span class="math inline">\(F^{-1}\)</span> of a CDF <span class="math inline">\(F\)</span> is defined by <span class="math inline">\(F^{-1}_X(u) = \min \big \{x : F_X(x) \geq u \big\}\)</span>.</p></li>
+<li><p>The inverse transform method converts <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span> to a random variable with CDF by setting <span class="math inline">\(X = F^{-1}(U)\)</span>. That is: Set <span class="math inline">\(U = F(X)\)</span>, and rearrange to make <span class="math inline">\(X\)</span> the subject.</p></li>
+<li><p>The Box–Muller transform is a way to generate two independent standard normal distributions. Set <span class="math inline">\(R\)</span> to Rayleigh with scale parameter 1, set <span class="math inline">\(\Theta \sim \operatorname{U}[0,2\pi]\)</span>, then take <span class="math inline">\(X = R \cos \Theta\)</span> and <span class="math inline">\(Y = R \sin \Theta\)</span>.</p></li>
 </ul>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.2.2.</p>
+<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Section 1.3.</p>
 </div>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -896,13 +977,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L02-mc-uses.html" class="pagination-link" aria-label="Uses of Monte Carlo">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span>
+      <a href="../lectures/L12-uniform-discrete.html" class="pagination-link" aria-label="Uniform and discrete">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L04-mc-error-2.html" class="pagination-link" aria-label="Monte Carlo error II: practice">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
+        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
