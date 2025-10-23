@@ -86,7 +86,7 @@ Maybe we can improve on this using importance sampling. Let's have a look at a g
 ```{r propto2}
 #| code-fold: true
 curve(
-  dunif(x, 0, 10) * exp(-abs(x - 8)), n = 1001, from = 0, to = 10,
+  dunif(x, 0, 10) * exp(-abs(x - 8)), n = 1001, from = -1, to = 11,
   col = "blue", lwd = 3,
   xlim = c(0, 10), xlab = "y", ylab = ""
 )
@@ -101,7 +101,9 @@ legend(
 )
 ```
 
-After some experimentation, I decided that $Y \sim \operatorname{N}(8, 2^2)$ (red line; not to same scale) seemed to work quite well, in $g(y)$ being roughly proportional to $f(y)\,\phi(y)$. I was tempted to take the standard deviation less than 2, the get the red curve a bit tighter. But I discovered that $f(y)/g(y)$ got very large for $y$ near 0, due to the left tail of $g$ decaying too quickly. The following graph shows $\frac{f(y)}{g(y)} \phi(y)$, and shows that the spike at 0 is now under control compared to the "main spike" at $y = 8$.
+After some experimentation, I decided that $Y \sim \operatorname{N}(8, 2^2)$ (red line; not to same scale) seemed to work quite well, in $g(y)$ being roughly proportional to $f(y)\,\phi(y)$. (Maybe reducing the standard deviation a bit more, to around 1.6, to get the red curve a bit tighter, might have done a little bit better still.)
+
+The following graph shows $\frac{f(y)}{g(y)} \phi(y)$, and shows that the graph is not *too* pointy, so should have reasonably small variance.
 
 ```{r propto3}
 #| code-fold: true
