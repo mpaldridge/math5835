@@ -431,7 +431,7 @@ window.Quarto = {
 </ol>
 </div>
 <div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>This is very similar to <a href="L03-mc-error-1.html#thm-MCerr" class="quarto-xref">Theorem&nbsp;<span>3.2</span></a>, so we’ll just sketch the important differences.</p>
+<p><span class="proof-title"><em>Proof</em>. </span>This is very similar to <a href="#thm-MCerr" class="quarto-xref">Theorem&nbsp;<span class="quarto-unresolved-ref">thm-MCerr</span></a>, so we’ll just sketch the important differences.</p>
 <p>In part 1, we have <span class="math display">\[\begin{align*}
 \Exg \widehat{\theta}_n^{\mathrm{CV}}
   &amp;= \Exg \left(\frac{1}{n} \sum_{i=1}^n \big(\phi(X_i) - \psi(X_i)\big)\right) + \eta \\
@@ -452,7 +452,7 @@ window.Quarto = {
 <p>This tells us that a control variate Monte Carlo estimate is good when the variance of <span class="math inline">\(\phi(X) - \psi(X)\)</span>. This variance is likely to be small if <span class="math inline">\(\phi(X) - \psi(X)\)</span> is usually small – although, to be more precise, it’s more important for <span class="math inline">\(\phi(X) - \psi(X)\)</span> to be <em>consistent</em>, rather than small per se.</p>
 <p>As before, we can’t usually calculate the variance <span class="math inline">\(\Var(\phi(X) - \psi(X))\)</span> exactly, but we can estimate it from the samples. Again, we use the sample variance of <span class="math inline">\(\phi(X_i) - \psi(X_i)\)</span>, <span class="math display">\[S^2 = \frac{1}{n-1}\sum_{i=1}^n \Big(\big(\phi(X_i) - \psi(X_i)\big) - \big(\widehat\theta_n^{\mathrm{CV}} - \eta\big)\Big)^2 , \]</span> and estimate the MSE and RMSE by <span class="math inline">\(S^2 / n\)</span> and <span class="math inline">\(S / \sqrt{n}\)</span> respectively.</p>
 <div id="exm-control2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 5.2</strong></span> We return to <a href="#exm-control" class="quarto-xref">Example&nbsp;<span>5.1</span></a>, where we were estimating <span class="math inline">\(\Ex \cos(X)\)</span> for <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span>.</p>
+<p><span class="theorem-title"><strong>Example 5.2</strong></span> We return to <a href="#exm-control" class="quarto-xref">Example&nbsp;<span class="quarto-unresolved-ref">exm-control</span></a>, where we were estimating <span class="math inline">\(\Ex \cos(X)\)</span> for <span class="math inline">\(X \sim \operatorname{N}(0,1)\)</span>.</p>
 <p>The naive Monte Carlo estimate had mean-square and root-mean-square error</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
