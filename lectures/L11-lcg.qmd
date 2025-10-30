@@ -29,15 +29,15 @@ Let us look at two simple LCGs with modulus $m = 2^4 = 16$.
 
 First, let $a = 5$ be the multiplier, $c = 3$ be the increment, and $x_1 = 1$ be the seed.
 Then we have
-$$ \begin{align} x_2 &= (5x_1 + 3) \bmod 16 = (5\times 1 + 3) \bmod 16 = 8 \bmod 16 = 8 \\
+\begin{align} x_2 &= (5x_1 + 3) \bmod 16 = (5\times 1 + 3) \bmod 16 = 8 \bmod 16 = 8 \\
 x_3 &= (5x_2 + 3) \bmod 16 = (5\times 8 + 3) \bmod 16 = 43 \bmod 16 = 11 \\
-x_4 &= (5x_3 + 3) \bmod 16 = (5\times 1 + 3) \bmod 16 = 43 \bmod 58 = 10 , \end{align} $$
+x_4 &= (5x_3 + 3) \bmod 16 = (5\times 1 + 3) \bmod 16 = 43 \bmod 58 = 10 , \end{align}
 and so on. The sequence continues $(1, 8, 11, 10, 5, 12, 15, 14, 9, 0, \dots)$. This looks pretty much like a random sequence of numbers between 0 and 15 to me -- I certainly don't see any obvious pattern.
 
 Second, let $a = 3$ be the multiplier, $c = 6$ be the increment, and $x_1 = 1$ be the seed.
 Then we have
-$$ \begin{align} x_2 &= (3x_1 + 2) \bmod 16 = (3\times 1 + 6) \bmod 16 = 9 \bmod 16 = 9 \\
-x_3 &= (3x_2 + 4) \bmod 16 = (3\times 9 + 6) \bmod 16 = 33 \bmod 16 = 1 . \end{align} $$
+\begin{align} x_2 &= (3x_1 + 2) \bmod 16 = (3\times 1 + 6) \bmod 16 = 9 \bmod 16 = 9 \\
+x_3 &= (3x_2 + 4) \bmod 16 = (3\times 9 + 6) \bmod 16 = 33 \bmod 16 = 1 . \end{align}
 But now, using $x_3 = 1$ will give $x_4 = 9$ again. And $x_4 = 9$ will give $x_5 = 1$ again. So the sequence will be $(1, 9, 1, 9, 1, 9, 1, \dots)$, with just 1 and 9 repeating for ever. This definitely doesn't looks random!
 
 The example illustrates that, while an LCG *can* provide a good sequence of pseudorandom numbers, we need to be careful with the parameters we choose.

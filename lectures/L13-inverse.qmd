@@ -170,25 +170,25 @@ for the radius and the angle of $(X, Y)$ in polar coordinates. Then the radius $
 
 ::: {.proof}
 The joint PDF of $(X,Y)$ is
-$$ \begin{align}
+\begin{align}
 f_{X,Y}(x, y) \,\mathrm{d}x\,\mathrm{d}y &= f_X(x) \,f_Y(y) \,\mathrm{d}x\,\mathrm{d}y \\
 &= \frac{1}{\sqrt{2\pi}}\, \exp \big(-\tfrac12 x^2\big) \, \frac{1}{\sqrt{2\pi}} \,\exp \big(-\tfrac12 y^2\big) \,\mathrm{d}x\,\mathrm{d}y \\
-&= \frac{1}{2\pi} \,\exp \big(-\tfrac12 (x^2 + y^2)\big) \,\mathrm{d}x\,\mathrm{d}y .
-\end{align}$$ {#eq-box-1}
+&= \frac{1}{2\pi} \,\exp \big(-\tfrac12 (x^2 + y^2)\big) \,\mathrm{d}x\,\mathrm{d}y .  {#eq-box-1}
+\end{align}
 The joint PDF of $(R, \Theta)$ is
-$$ \begin{align}
+\begin{align}
 f_{R, \Theta}(r, \theta) \,\mathrm{d}r\,\mathrm{d}\theta &= f_R(r) \,f_\Theta(\theta) \,\mathrm{d}r\,\mathrm{d}\theta \\
-&= r\exp \big(-\tfrac12 r^2\big) \, \frac{1}{2\pi}\, \mathrm{d}r\,\mathrm{d}\theta
-\end{align} .$$ {#eq-box-2}
+&= r\exp \big(-\tfrac12 r^2\big) \, \frac{1}{2\pi}\, \mathrm{d}r\,\mathrm{d}\theta , {#eq-box-2}
+\end{align}  
 
 But in @eq-box-1, we can substitute $r = x^2 + y^2$ and $\mathrm{d}x\,\mathrm{d}y = r\,\mathrm{d}r\,\mathrm{d}\theta$, and get @eq-box-2.
 :::
 
 So we've reduced the problem of sample two normal distributions to sampling a Rayleigh (with scale parameter 1) and a uniform (on $[0, 2\pi]$). But we know how to do this. We saw in @exm-rayleigh that we can take $R = \sqrt{-2 \log U}$, and we saw in the last lecture that we can take $\Theta = 2\pi V$. We can then transform back into cartesian coordinates with
-$$ \begin{align}
+\begin{align}
 X &= R\cos \Theta =  \sqrt{-2 \log U} \cos(2\pi V) \\
 Y &= R\sin \Theta =  \sqrt{-2 \log U} \sin(2\pi V) .
-\end{align} $$
+\end{align}
 
 Let's check the just the $X$.
 
@@ -207,8 +207,8 @@ curve(dnorm(x), add = TRUE, col = "blue", lwd = 2)
 This confirms that we get an excellent match to the normal distribution.
 
 **Next time:** *Sampling using rejection.*
--->
 
+-->
 
 ::: mysummary
 **Summary:**

@@ -1,6 +1,6 @@
 # Uniform and discrete
 
-<!--
+
 We've seen how to generate uniform random variates $U \sim \operatorname{U}[0,1]$, either using true physical randomness or the output of a pseudorandom number generator. But in statistics -- whether performing Monte Carlo estimation or anything else -- we typically want to sample from some other distribution $X$.
 
 In the next five lectures, we will look at ways we can transform the uniform random variable $U$ to take on different distributions instead. We start today by looking at some important special cases.
@@ -47,7 +47,7 @@ Here are two possible ways:
 
 The first method is just the second method with $U$ replaced by $1 - U$. Interestingly, that means we can generate two different Bernoulli trials $X$ and $X'$ from the same $U$, which will therefore be negatively correlated. Although there's unlikely to be any situation where a Bernoulli trial would be used in Monte Carlo estimation, in theory, the two versions $(X, X')$ generated from the same $U$ could potentially be used as antithetic variables.
 
-What about more general discrete random variables? Suppose a random variable takes values $x_1, x_2, \dots$ with probabilities $p_1, p_2, \dots$. We can think of these probabilities as splitting up the interval $[0,1]$ into subintervals of lengths $p_1, p_, \dots$, since these probabilities add up to 1.
+What about more general discrete random variables? Suppose a random variable takes values $x_1, x_2, \dots$ with probabilities $p_1, p_2, \dots$. We can think of these probabilities as splitting up the interval $[0,1]$ into subintervals of lengths $p_1, p_2, \dots$, since these probabilities add up to 1.
 
 ![](L12-numberline-1.svg){width="60%;" fig-align="center"}
 
@@ -74,7 +74,7 @@ If we then got the next uniform variate $u_2 = 0.4353$, we would see that $u_2$ 
 
 
 **Next time:** *Sampling from continuous distribution using the CDF.*
--->
+
 
 
 ::: mysummary
