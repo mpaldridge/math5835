@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L13-inverse.html" rel="prev">
+<link href="../problems/P3.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -286,6 +286,30 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../lectures/L13-inverse.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L14-rejection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Rejection sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L15-envelope-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Envelope rejection sampling I</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L16-envelope-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Envelope rejection sampling II</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../problems/P3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Problem Sheet 3</span></a>
   </div>
 </li>
       </ul>
@@ -1152,7 +1176,7 @@ Looks good again.
 **3.**     Consider a Cauchy random variable $X$ with probability density function $$ f(x) = \frac{1}{\pi(1 + x^2)} .$$
 
 :::: subq
-**(a)**  Show that the cumulative distribution function of $X$ is $$ F(x) = \frac12 + \frac{1}{\pi}\arctan x $$
+**(a)**  ★Show that the cumulative distribution function of $X$ is $$ F(x) = \frac12 + \frac{1}{\pi}\arctan x $$
 
 ::: myanswers
 *Solution.* The CDF is $$ \begin{multline}
@@ -1164,7 +1188,7 @@ F(x) = \int_{-\infty}^x f(y)\,\mathrm{d}y
 ::::
 
 :::: subq
-**(b)**  Write down a function that will transform a standard uniform random variable $U$ into a Cauchy distribution.
+**(b)**  ★Write down a function that will transform a standard uniform random variable $U$ into a Cauchy distribution.
 
 ::: myanswers
 *Solution.* We use the inverse transform method: write $U = F(X)$ and invert. Here, we have $$ U = \frac12 + \frac{1}{\pi}\arctan X .$$ Inverting gives $$X = \tan \bigg(\pi \Big(U - \frac12\Big) \bigg) .$$
@@ -1261,7 +1285,7 @@ Thus, our algorithm is to sample from a standard uniform, and then to accept wit
 ::::
 
 :::: myq
-**6.**     Consider sampling from the half-normal distribution $$ f(x) = \sqrt{\frac{2}{\pi}} \exp\big(-\tfrac12 x^2\big) \qquad x \geq 0 $$ using envelope rejection sampling with an $\operatorname{Exp}(\lambda)$ proposal distribution $$g(x) = \lambda \mathrm{e}^{-\lambda x} \qquad x \geq 0 .$$ You wish to design your envelope rejection sampling algorithm so that the acceptance probability is as high as possible.
+**6.**     ★ Consider sampling from the half-normal distribution $$ f(x) = \sqrt{\frac{2}{\pi}} \exp\big(-\tfrac12 x^2\big) \qquad x \geq 0 $$ using envelope rejection sampling with an $\operatorname{Exp}(\lambda)$ proposal distribution $$g(x) = \lambda \mathrm{e}^{-\lambda x} \qquad x \geq 0 .$$ You wish to design your envelope rejection sampling algorithm so that the acceptance probability is as high as possible.
 
 :::: subq
 **(a)**  For fixed $\lambda$, show that the optimal value of $c$ is $$c = \sqrt{\frac{2}{\pi}}\,\frac{\exp(\frac12\lambda^2)}{\lambda}.$$
@@ -2686,8 +2710,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L13-inverse.html" class="pagination-link" aria-label="Inverse transform method">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></span>
+      <a href="../problems/P3.html" class="pagination-link" aria-label="Problem Sheet 3">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Problem Sheet 3</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

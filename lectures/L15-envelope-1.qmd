@@ -1,5 +1,6 @@
 # Envelope rejection sampling I
 
+<!--
 Last time, we started looking at rejection sampling. We found that if
 you start with a proposal distribution $Y$ with PDF $g$, then accept a
 proposal $Y = x$ with probability $\alpha(x)$, then the PDF $f$ of a
@@ -204,6 +205,8 @@ half-normal distribution.
 
 **Next time.** *We study envelope rejection sampling more closely, and
 complete this part of the module on random number generation*
+
+-->
 
 ::: mysummary
 **Summary:**

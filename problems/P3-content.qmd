@@ -82,7 +82,7 @@ Looks good again.
 **3.**     Consider a Cauchy random variable $X$ with probability density function $$ f(x) = \frac{1}{\pi(1 + x^2)} .$$
 
 :::: subq
-**(a)**  Show that the cumulative distribution function of $X$ is $$ F(x) = \frac12 + \frac{1}{\pi}\arctan x $$
+**(a)**  ★Show that the cumulative distribution function of $X$ is $$ F(x) = \frac12 + \frac{1}{\pi}\arctan x $$
 
 ::: myanswers
 *Solution.* The CDF is $$ \begin{multline}
@@ -94,7 +94,7 @@ F(x) = \int_{-\infty}^x f(y)\,\mathrm{d}y
 ::::
 
 :::: subq
-**(b)**  Write down a function that will transform a standard uniform random variable $U$ into a Cauchy distribution.
+**(b)**  ★Write down a function that will transform a standard uniform random variable $U$ into a Cauchy distribution.
 
 ::: myanswers
 *Solution.* We use the inverse transform method: write $U = F(X)$ and invert. Here, we have $$ U = \frac12 + \frac{1}{\pi}\arctan X .$$ Inverting gives $$X = \tan \bigg(\pi \Big(U - \frac12\Big) \bigg) .$$
@@ -165,7 +165,7 @@ Thus, our algorithm is to sample from a standard uniform, and then to accept wit
 ::::
 
 :::: myq
-**6.**     Consider sampling from the half-normal distribution $$ f(x) = \sqrt{\frac{2}{\pi}} \exp\big(-\tfrac12 x^2\big) \qquad x \geq 0 $$ using envelope rejection sampling with an $\operatorname{Exp}(\lambda)$ proposal distribution $$g(x) = \lambda \mathrm{e}^{-\lambda x} \qquad x \geq 0 .$$ You wish to design your envelope rejection sampling algorithm so that the acceptance probability is as high as possible.
+**6.**     ★ Consider sampling from the half-normal distribution $$ f(x) = \sqrt{\frac{2}{\pi}} \exp\big(-\tfrac12 x^2\big) \qquad x \geq 0 $$ using envelope rejection sampling with an $\operatorname{Exp}(\lambda)$ proposal distribution $$g(x) = \lambda \mathrm{e}^{-\lambda x} \qquad x \geq 0 .$$ You wish to design your envelope rejection sampling algorithm so that the acceptance probability is as high as possible.
 
 :::: subq
 **(a)**  For fixed $\lambda$, show that the optimal value of $c$ is $$c = \sqrt{\frac{2}{\pi}}\,\frac{\exp(\frac12\lambda^2)}{\lambda}.$$

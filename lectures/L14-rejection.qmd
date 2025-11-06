@@ -92,16 +92,25 @@ In this example, we found we accepted about 430,000 samples.
 
 In this example, we managed to sample from the PDF in @eq-distprop, $$ f(x) = \frac{1}{Z}\,\exp\big(-\tfrac12x^2\big)\,(\sin^2 x) ,$$ even though we never found out what the normalising constant $Z$ was. This idea -- that we can sample from a distribution even if we only know it up to a multiplicative constant -- is a very important one that will come up a lot later in this module.
 
-We won't go into that idea deeply now, but we briefly mention that it is very important in Bayesian statistics. In Bayesian statistics, the posterior distribution is often known only up to proportionality. That's because we have $$ \begin{align}
+We won't go into that idea deeply now, but we briefly mention that it is very important in Bayesian statistics. In Bayesian statistics, the posterior distribution is often known only up to proportionality. That's because we have \begin{align}
 \text{posterior} &\propto \text{prior}\times\text{likelihood} \\
 \pi(\theta \mid x) &\propto\, \pi(x) \times p(x \mid \theta)
-\end{align} $$ It's often very difficult to find the normalising constant in this expression -- indeed, it can be impossible in practice. So being able to sample from such a posterior distribution without finding the constant is very important for Bayesian statisticians.
+\end{align} It's often very difficult to find the normalising constant in this expression -- indeed, it can be impossible in practice. So being able to sample from such a posterior distribution without finding the constant is very important for Bayesian statisticians.
 
 ## How many samples?
 
-We have mentioned that the downside of rejection sampling is that we may have to take lots of samples to get enough accepted ones. Or, conversely, we may not get enough accepted samples from a fixed number of "proposed" samples. Remember that the accuracy of Monte Carlo estimation, for example, depends on how many samples we get -- the mean-square error scales like $1/n$ and the root-mean-square error like $1/\sqrt{n}$. So it's important to be able to get a lot of samples $n$.
+We have mentioned that the downside of rejection sampling is that we may have to take lots of proposed samples to get enough accepted ones. Or, conversely, we may not get enough accepted samples from a fixed number of proposed samples. Remember that the accuracy of Monte Carlo estimation, for example, depends on how many (accepted) samples we get -- the mean-square error scales like $1/n$ and the root-mean-square error like $1/\sqrt{n}$. So it's important to be able to get a lot of accepted samples $n$.
 
-Let's examine these questions a bit closer. Write $a = \mathbb P(\text{accept})$ for the probability a sample $Y$ gets accepted (a priori, before we have seen the value $Y = x$ of that sample). In the discrete case, this is $$ a = \mathbb P(\text{accept}) = \sum_x \mathbb P(Y = x)\,\alpha(x) , $$ and in the discrete case this is $$ a  = \mathbb P(\text{accept}) = \int_{-\infty}^{+\infty} g(x)\,\alpha(x)\,\mathrm{d}x . $$ In both cases, this can be written more succinctly as $a = \Exg\alpha(Y)$.
+Let's examine these questions a bit closer. Write $a = \mathbb P(\text{accept})$ for the unconditional probability a proposal gets accepted (that is, the a priori acceptance probability, before we have seen the value $Y = x$ of the proposal). In the discrete case, this is $$ a = \mathbb P(\text{accept}) = \sum_x \mathbb P(Y = x)\,\alpha(x) , $$ and in the continuous case this is $$ a  = \mathbb P(\text{accept}) = \int_{-\infty}^{+\infty} g(x)\,\alpha(x)\,\mathrm{d}x . $$ In both cases, this can be written more succinctly as $a = \Exg\alpha(Y)$.
+
+* If we take $N$ proposals, then the expected number of accepted samples is $n = aN$.
+* If we keep taking proposals until getting $n$ acceptances, then the expected number of proposals is $N = n/a$.
+
+If the number of proposals $N$ is large and the unconditional acceptance probability $a$ is not very close to 0, then the actual number of acceptances will likely be very close to $aN$. This is justified by the law of large numbers (and the central limit theorem). Similarly, if the desired number of acceptances $n$ is large and $a$ is not very close to 0, then the number of required proposals will likely be very close to $n/a$. Thus it is in our interest to make $a$ as large as we can: this gives us the most acceptances, or requires the fewest proposals.
+
+We have to be careful when the unconditional acceptance probability is very close to $0$. In that case, there can be a lot of variability required in either the (very small) number of accepted samples or the (very large) number of required proposals. This unpredictability is another reason to avoid rejection sampling where the unconditional acceptance probability $a$ is very small.
+
+<!--
 
 Let's first look at the **"fixed number of proposed samples"** case.
 
@@ -116,7 +125,7 @@ To get one acceptance requires a geometric $\operatorname{Geom}(a)$ number of sa
 For large $n$, the standard deviation will be very small compared to the expectation (unless $a$ is very close to $0$ or $1$), so the number of proposal $M$ will be very close to $n/a$. If we need a more precise approximation, $M$ can be approximated by a normal distribution $M \approx \operatorname{N}(n/a, (1-a)n/a^2)$. When $a$ is very small, $N$ can be better approximated by a Gamma distribution $M \approx \Gamma(n, a)$.
 
 ::: {#exm-cond2}
-In @exm-cond, we accepted $Y \sim \operatorname{N}(0,1)$ if $Y \geq 1$. In this case, we happen to know the acceptance probability exactly: it's$\mathbb P(Y \geq 1) = 0.158$.
+In @exm-cond, we accepted $Y \sim \operatorname{N}(0,1)$ if $Y \geq 1$. In this case, we happen to know the acceptance probability exactly: it's $\mathbb P(Y \geq 1) = 0.158$.
 
 From 1,000,000 proposals, the number of accepted samples we might get is shown below.
 
@@ -186,6 +195,7 @@ This shows the danger of running rejection sampling when the probability of acce
 :::
 
 (Annoyingly, R defines the geometric distribution to be the number of failures *before* the first success -- 1 less then our definition -- and the negative binomial to be the number of failures *before* the $n$th success -- $n$ less than our definition. This is why `n_acc + dnbinom()` was plotted for the two second graphs.)
+-->
 
 **Next time.** *We look closer at rejection sampling, and in particular how we can target rejection sampling at a given distribution using the "envelope" method.*
 

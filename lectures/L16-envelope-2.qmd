@@ -1,5 +1,6 @@
 # Envelope rejection sampling II
 
+<!--
 Last time we discussed envelope rejection sampling. The process was the following:
 
 -   **Goal:** To sample from a random variable $X$ with PDF $f$.
@@ -111,6 +112,8 @@ Then we discussed manipulating standard uniform samples into other distributions
 -   Rejection sampling works best when the acceptance probability is made as large as possible.
 
 **Next time.** *We begin our study on MCMC: Markov chain Monte Carlo.*
+
+-->
 
 ::: mysummary
 **Summary:**

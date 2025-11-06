@@ -2,7 +2,7 @@
 
 {{< include ../_header.qmd >}}
 
-<!--
+
 ## Inverse CDF
 
 We have started looking at how to transform a standard uniform random variable $U \sim \operatorname{U}[0,1]$ into any other distribution $X$.
@@ -50,7 +50,7 @@ where we have simply "undone" the function $F^{-1}$ and used that $\mathbb P(U \
 
 For the general case, we need to be just a little bit more careful. We have
 $$ \mathbb P(X \leq x) = \mathbb P\big(F^{-1}(U) \leq x\big) = \mathbb P\big(\min\{y : F(y) \geq U \} \leq x \big) .$$
-If $x$ is bigger than the minimum $y$ with $F(y) \geq u$, then certainly $F(x) \geq u$ as well; while if $F(x) \geq u$, then $x$ must be at least as big as the minimum $y$ for which $F(y) \geq u$. Hence $\min\{y : F(y) \geq U \} \leq x$ if and only is $F(x) \geq U$. So
+If $x$ is bigger than the minimum $y$ with $F(y) \geq u$, then certainly $F(x) \geq u$ as well; while if $F(x) \geq u$, then $x$ must be at least as big as the minimum $y$ for which $F(y) \geq u$. Hence $\min\{y : F(y) \geq U \} \leq x$ if and only if $F(x) \geq U$. So
 $$ \mathbb P(X \leq x) = \mathbb P\big(\min\{y : F(y) \geq U \} \leq x \big) = \mathbb P\big(F(x) \geq U\big) = \mathbb P(U \leq F(x)\big) = F(x), $$
 as before.
 :::
@@ -150,7 +150,9 @@ $$ X = \begin{cases} \sqrt[3]{3U} & U \leq \frac13 \\ \tfrac32 U + \tfrac12 & U 
 
 ## Box--Muller transform
 
-While the inverse transform method is very powerful, we have mentioned that it doesn't work easily for the normal distribution. One would need first a very good approximation to the inverse CDF, in order to be able to apply it.
+*\[This was actually lectured at the beginning of Lecture 14, but belongs in this section.\]*
+
+While the inverse transform method is very powerful, we have mentioned that it doesn't work directly for the normal distribution, which does not have an exact closed form for the inverse CDF. (Although R does actually use the inverse transform method in its `rnorm()` function by using an *approximation* to the inverse CDF.)
 
 Instead, the **Box--Muller transform** (discovered by the statistician GEP Box and the computer scientist Marvin E Muller in 1958) is a clever way to easily transform a standard uniform into a normal distribution.
 
@@ -173,24 +175,22 @@ The joint PDF of $(X,Y)$ is
 \begin{align}
 f_{X,Y}(x, y) \,\mathrm{d}x\,\mathrm{d}y &= f_X(x) \,f_Y(y) \,\mathrm{d}x\,\mathrm{d}y \\
 &= \frac{1}{\sqrt{2\pi}}\, \exp \big(-\tfrac12 x^2\big) \, \frac{1}{\sqrt{2\pi}} \,\exp \big(-\tfrac12 y^2\big) \,\mathrm{d}x\,\mathrm{d}y \\
-&= \frac{1}{2\pi} \,\exp \big(-\tfrac12 (x^2 + y^2)\big) \,\mathrm{d}x\,\mathrm{d}y .  {#eq-box-1}
-\end{align}
+&= \frac{1}{2\pi} \,\exp \big(-\tfrac12 (x^2 + y^2)\big) \,\mathrm{d}x\,\mathrm{d}y .  
+\end{align} {#eq-box-1}
 The joint PDF of $(R, \Theta)$ is
 \begin{align}
 f_{R, \Theta}(r, \theta) \,\mathrm{d}r\,\mathrm{d}\theta &= f_R(r) \,f_\Theta(\theta) \,\mathrm{d}r\,\mathrm{d}\theta \\
-&= r\exp \big(-\tfrac12 r^2\big) \, \frac{1}{2\pi}\, \mathrm{d}r\,\mathrm{d}\theta , {#eq-box-2}
-\end{align}  
+&= r\exp \big(-\tfrac12 r^2\big) \, \frac{1}{2\pi}\, \mathrm{d}r\,\mathrm{d}\theta , 
+\end{align}  {#eq-box-2}
 
 But in @eq-box-1, we can substitute $r = x^2 + y^2$ and $\mathrm{d}x\,\mathrm{d}y = r\,\mathrm{d}r\,\mathrm{d}\theta$, and get @eq-box-2.
 :::
 
-So we've reduced the problem of sample two normal distributions to sampling a Rayleigh (with scale parameter 1) and a uniform (on $[0, 2\pi]$). But we know how to do this. We saw in @exm-rayleigh that we can take $R = \sqrt{-2 \log U}$, and we saw in the last lecture that we can take $\Theta = 2\pi V$. We can then transform back into cartesian coordinates with
+So we've reduced the problem of sample two normal distributions to sampling a Rayleigh (with scale parameter 1) and a uniform (on $[0, 2\pi]$). But we know how to do this. We saw in @exm-rayleigh that we can take $R = \sqrt{-2 \log U}$ (or $\sqrt{-2 \log(1-U)}$), and we saw in the last lecture that we can take $\Theta = 2\pi V$. We can then transform back into cartesian coordinates with
 \begin{align}
 X &= R\cos \Theta =  \sqrt{-2 \log U} \cos(2\pi V) \\
 Y &= R\sin \Theta =  \sqrt{-2 \log U} \sin(2\pi V) .
 \end{align}
-
-Let's check the just the $X$.
 
 ```{r}
 n <- 1e5
@@ -198,7 +198,7 @@ unif1 <- runif(n)
 unif2 <- runif(n)
 rad <- sqrt(-2 * log(unif1))
 ang <- 2 * pi * unif2
-samples <- rad * cos(ang)
+samples <- c(rad * cos(ang), rad * sin(ang))
 
 hist(samples, probability = TRUE, breaks = 50, xlim = c(-4, 4))
 curve(dnorm(x), add = TRUE, col = "blue", lwd = 2)
@@ -208,7 +208,7 @@ This confirms that we get an excellent match to the normal distribution.
 
 **Next time:** *Sampling using rejection.*
 
--->
+
 
 ::: mysummary
 **Summary:**
