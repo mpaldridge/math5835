@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -292,8 +326,16 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sampling-under-the-curve" id="toc-sampling-under-the-curve" class="nav-link active" data-scroll-target="#sampling-under-the-curve"><span class="header-section-number">15.1</span> Sampling under the curve</a></li>
+  <li><a href="#the-envelope-rejection-sampling-algorithm" id="toc-the-envelope-rejection-sampling-algorithm" class="nav-link" data-scroll-target="#the-envelope-rejection-sampling-algorithm"><span class="header-section-number">15.2</span> The envelope rejection sampling algorithm</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">15.3</span> Examples</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -326,299 +368,135 @@ window.Quarto = {
 </header>
 
 
-<!--
-Last time, we started looking at rejection sampling. We found that if
-you start with a proposal distribution $Y$ with PDF $g$, then accept a
-proposal $Y = x$ with probability $\alpha(x)$, then the PDF $f$ of a
-sample conditional on acceptance satisfies
-$f(x) \propto \alpha(x) g(x)$.
-
-The problem is that this sort of gets the problem backwards. If we pick
-a proposal distribution $g$ and acceptance function $\alpha$, this tells
-us what the sample distribution $f$ will turn out to be. But we are
-interested in the reverse question: If we want to target a distribution
-$f$, what proposal distribution $g$ and acceptance function $\alpha$ do
-we need to get it?
-
-Today we look at how to do that with the "envelope" method.
-
-## Sampling under the curve
-
-We will start with a slightly different discussion, to try to motivate
-our approach. (If at any point you find this section confuses more than
-it helps, you can skip straight to the definition in the next section.)
-
-Consider a PDF $f$, and draw $f$ as a curve. We know that $f(x)$ is
-always positive, so this curve is always above the x-axis. We also know
-that $\int_{-\infty}^{+\infty} f(x)\,\mathrm{d}x = 1$, so the total area
-under the curve is 1.
-
-Suppose we pick a point under the curve, uniformly at random, and then
-look at its x-coordinate $X$. What is the PDF of $X$?
-
-\[picture\]
-
-Well, the probability that $X$ lies in the interval $[a,b]$ is the
-probability the point we pick lies in the part of the curve between $a$
-and $b$, which is the area of that area divided by the total area under
-the curve 1. So
-$$ \mathbb P(a \leq X \leq b) = \int_a^b f(x) \,\mathrm{d}x .$$ But
-that's just the probability associated with the PDF $f$, so $X$ has PDF
-$f$.
-
-\[picture\]
-
-This gives us a way -- in theory, at least -- to sample from a PDF $f$.
-Simply pick a point at random under the curve, and take its
-x-coordinate. Unfortunately, there is no known way to do this directly
-in general, so it doesn't really help.
-
-However, suppose we could find a function $h$ that (a) is positive
-everywhere, (b) has finite area under the curve, (c is above $f$
-everywhere, (d) and that we *could* sample a point under. We could call
-such a curve an **envelope** for $f$. We could then propose a point
-picked at random under the envelope $h$, reject it if it were above the
-curve $f$, but accept it if it were under the curve $f$. An accepted
-point would be uniform under the curve $f$, so its x-coordinate would
-have PDF $f$, as required.
-
-\[picture\]
-
-But how can we find such an envelope $h$ we can use?
-
-If the area under the envelope $h$ is $c$, with $1 \leq c < \infty$ (the
-area must be at least 1, if the curve is above $f$), then $h$ must be
-over the form $h(x) = cg(x)$ for a PDF $g$. But picking the x-coordinate
-point at random under $g$ is just sampling from the random variable that
-has PDF $g$. And the probability that a point with x-coordinate $x$ from
-under the envelope $cg(x)$ also lies under $f$ is $f(x)/cg(x)$, so that
-would be our acceptance probability.
-
-This tells us how to perform envelope rejection sampling.
-
-## The envelope rejection sampling algorithm
-
-If I lost you during my motivational discussion, now is the time to
-switch back on! We are going to set out the steps of the **envelope
-rejection sampling** algorithm.
-
-::: thpart
--   **Goal:** To sample from a random variable $X$ with PDF $f$.
-
--   **We will need:** A random variable $Y$ with PDF $g$ that we can
-    sample from, and a finite constant $c$ such that $f(x) \leq cg(x)$
-    for all $x$.
-
--   **Step 1:** Sample a proposal $Y$ from the PDF $g$.
-
--   **Step 2:** Accept the proposal $Y$ with probability $f(Y) / cg(Y)$;
-    otherwise reject $Y$. If accepted, *end*. If rejected, *go back to
-    Step 1*.
-:::
-
-Note that for given $f$ and $g$, there's no guarantee a finite constant
-$c$ exists such that $f(x) \leq cg(x)$. Informally, we need $g$ to have
-tails that are "at least as heavy" as the tails of $f$.
-
-We should check this really does sample from $f$. We saw last time that
-the PDF of a sample had PDF $f(x) \propto g(x) \,\alpha(x)$. Here, that
-is $$ f(x) \propto g(x)\,\frac{f(x)}{cg(x)} = \frac1c\,f(x) , $$ as
-required.
-
-In envelope rejection sampling, we reject proposals $x$ with probability
-$f(x)/cg(x)$. But we saw last time that rejecting samples is bad --
-higher rejection probabilities leave us with fewer accepted samples (or
-requiring more proposals to get the same number of accepted samples).
-So, for given $f$ and $g$, it would be good to pick $c$ as small as
-possible. We must have $f(x) \leq cg(x)$ for all $x$, so we must have
-$c \geq f(x) / g(x)$ for all $x$, and therefore
-$c \geq \sup_x f(x)/g(x)$. (Here, "sup"
-means "supremum" -- it's like the maximum, except allows for the fact the
-maximum might only be achieved in a limit, such as $x \to -\infty$ or
-$x \to +\infty$.) The best possible $c$, therefore is to take $c$ to *equal* this maximum, $c = \sup_x f(x) / g(x)$, if it's possible to calculate it.
-
-[**Note:** *I messed this up in the lecture, and accidentally said minimum/infimum, where it should be maximum/supremum.*]
-
-## Examples
-
-::: {#exm-env1}
-Consider the Wigner semi-circle distribution with PDF
-$$ f(x) = \frac{2}{\pi}\sqrt{1 - x^2} \qquad -1 \leq x \leq 1 . $$
-
-We need to choose the envelope that surrounds the PDF $f$. Here's one
-choice. Let $Y \sim \operatorname{U}[-1,1]$, which has PDF
-$$ g(x) = \tfrac12 \qquad -1 \leq x \leq 1 ,$$ which well give a simple "box" around $f$ for the envelope. We can also generate these samples
-easily, for example by using the inverse transform $Y = 2U - 1$ for
-$U \sim \operatorname{U}[0,1]$.
-
-The maximum point of $f$ is at $x = 0$, where $f(0) = \frac{2}{\pi}$ and $g(0) = \tfrac12$. So
-we see that $c \geq \frac{4}{\pi}$ will be sufficient to ensure
-$f(x) \leq cg(x)$ for all $x$, with the box surrounding the semi-circle. We want to take the smallest possible
-$c$, so will take $c = \frac{4}{\pi}$, with the box *just* touching the semi-circle at its top.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-pdf <- function(x) (2 / pi) * sqrt(1 - x^2)
-env <- function(x) (4 / pi) * (1 / 2) * (-1 <= x & x <= 1)
-```
-:::
-
-::: {.cell}
-
-```{.r .cell-code  code-fold="true" code-summary="Code for drawing this graph"}
-curve(
-  pdf, n = 1001, from = -1, to = 1,
-  xlim = c(-1.5, 1.5), ylim = c(0, 0.8), lwd = 3, col = "blue"
-)
-curve(env, n = 1001, add = TRUE, lwd = 2, col = "red")
-```
-
-::: {.cell-output-display}
-![](L15-envelope-1_files/figure-html/semi1-1.svg){width=672}
-:::
-:::
-
-
-
-
-
-
-In my code, I've set it up so that `env()` (the envelope function) is $c$ times $g$.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-n_prop <- 1e6
-props <- 2 * runif(n_prop) - 1
-accepts <- props[runif(n_prop) <= pdf(props) / env(props)]
-
-length(accepts)
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 784986
-```
-
-
-:::
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-hist(accepts, probability = TRUE, breaks = 40)
-curve(pdf, add = TRUE, lwd = 2, col = "blue")
-```
-
-::: {.cell-output-display}
-![](L15-envelope-1_files/figure-html/unnamed-chunk-2-1.svg){width=672}
-:::
-:::
-
-
-
-
-
-
-We see that we accepted about 78% or 79% of proposals, and the histogram
-is an excellent fit to the semicircle distribution.
-:::
-
-::: {#exm-env-norm}
-Suppose we want to sample from the "half-normal" distribution
-$$ f(x) = \sqrt\frac{2}{\pi} \exp\big(\tfrac12 x^2\big) \qquad x \geq 0 . $$
-Let's take $Y \sim \operatorname{Exp}(1)$ with $g(x) = \mathrm{e}^{-x}$.
-We know this can be easily sampled from, using the inverse transform
-$Y = - \log U$. The exponential also has fatter tails than the normal,
-so this should work.
-
-To find an appropriate $c$, we consider
-$$ \frac{f(x)}{g(x)} = \frac{\sqrt\frac{2}{\pi} \exp(\tfrac12 x^2)}{\exp(-x)} = \sqrt\frac{2}{\pi} \exp \big(-\tfrac12 x^2 + x\big) . $$
-This is maximised where $-\tfrac12 x^2 + x$ is maximised which (by
-differentiating and setting equal to 0) is at $x = 1$. So we take the
-best possible $c$, which is
-$$ c = \frac{f(1)}{g(1)} = \sqrt\frac{2}{\pi} \exp\big(-\tfrac12 + 1\big) = \sqrt\frac{2\mathrm{e}}{\pi} . $$
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-pdf <- function(x) sqrt(2 / pi) * exp(-x^2 / 2)
-env <- function(x) sqrt(2 * exp(1) / pi) * exp(-x)
-```
-:::
-
-::: {.cell}
-
-```{.r .cell-code  code-fold="true" code-summary="Code for drawing this graph"}
-curve(
-  pdf, n = 1001, from = 0, to = 4,
-  xlim = c(0, 3), ylim = c(0, 1.32), lwd = 3, col = "blue"
-)
-curve(env, n = 1001, from = 0, to = 4, add = TRUE, lwd = 2, col = "red")
-```
-
-::: {.cell-output-display}
-![](L15-envelope-1_files/figure-html/halfnorm-1.svg){width=672}
-:::
-:::
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-n_prop <- 1e6
-props <- -log(runif(n_prop))
-accepts <- props[runif(n_prop) <= pdf(props) / env(props)]
-
-length(accepts)
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 760139
-```
-
-
-:::
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-hist(accepts, probability = TRUE, breaks = 40)
-curve(pdf, add = TRUE, lwd = 2, col = "blue")
-```
-
-::: {.cell-output-display}
-![](L15-envelope-1_files/figure-html/unnamed-chunk-4-1.svg){width=672}
-:::
-:::
-
-
-
-
-
-
-We accept roughly 760,000 proposals, and get an excellent fit to the
-half-normal distribution.
-:::
-
-**Next time.** *We study envelope rejection sampling more closely, and
-complete this part of the module on random number generation*
-
--->
+<p>Last time, we started looking at rejection sampling. We found that if you start with a proposal distribution <span class="math inline">\(Y\)</span> with PDF <span class="math inline">\(g\)</span>, then accept a proposal <span class="math inline">\(Y = x\)</span> with probability <span class="math inline">\(\alpha(x)\)</span>, then the PDF <span class="math inline">\(f\)</span> of a sample conditional on acceptance satisfies <span class="math inline">\(f(x) \propto \alpha(x) g(x)\)</span>.</p>
+<p>The problem is that this sort of gets the problem backwards. If we pick a proposal distribution <span class="math inline">\(g\)</span> and acceptance function <span class="math inline">\(\alpha\)</span>, this tells us what the sample distribution <span class="math inline">\(f\)</span> will turn out to be. But we are interested in the reverse question: If we want to target a distribution <span class="math inline">\(f\)</span>, what proposal distribution <span class="math inline">\(g\)</span> and acceptance function <span class="math inline">\(\alpha\)</span> do we need to get it?</p>
+<p>Today we look at how to do that with the “envelope” method.</p>
+<section id="sampling-under-the-curve" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="sampling-under-the-curve"><span class="header-section-number">15.1</span> Sampling under the curve</h2>
+<p>We will start with a slightly different discussion, to try to motivate our approach. (If at any point you find this section confuses more than it helps, you can skip straight to the definition in the next section.)</p>
+<p>Consider a PDF <span class="math inline">\(f\)</span>, and draw <span class="math inline">\(f\)</span> as a curve. We know that <span class="math inline">\(f(x)\)</span> is always positive, so this curve is always above the x-axis. We also know that <span class="math inline">\(\int_{-\infty}^{+\infty} f(x)\,\mathrm{d}x = 1\)</span>, so the total area under the curve is 1.</p>
+<p>Suppose we pick a point under the curve, uniformly at random, and then look at its x-coordinate <span class="math inline">\(X\)</span>. What is the PDF of <span class="math inline">\(X\)</span>?</p>
+<p>[picture]</p>
+<p>Well, the probability that <span class="math inline">\(X\)</span> lies in the interval <span class="math inline">\([a,b]\)</span> is the probability the point we pick lies in the part of the curve between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, which is the area of that area divided by the total area under the curve 1. So <span class="math display">\[ \mathbb P(a \leq X \leq b) = \int_a^b f(x) \,\mathrm{d}x .\]</span> But that’s just the probability associated with the PDF <span class="math inline">\(f\)</span>, so <span class="math inline">\(X\)</span> has PDF <span class="math inline">\(f\)</span>.</p>
+<p>[picture]</p>
+<p>This gives us a way – in theory, at least – to sample from a PDF <span class="math inline">\(f\)</span>. Simply pick a point at random under the curve, and take its x-coordinate. Unfortunately, there is no known way to do this directly in general, so it doesn’t really help.</p>
+<p>However, suppose we could find a function <span class="math inline">\(h\)</span> that (a) is positive everywhere, (b) has finite area under the curve, (c is above <span class="math inline">\(f\)</span> everywhere, (d) and that we <em>could</em> sample a point under. We could call such a curve an <strong>envelope</strong> for <span class="math inline">\(f\)</span>. We could then propose a point picked at random under the envelope <span class="math inline">\(h\)</span>, reject it if it were above the curve <span class="math inline">\(f\)</span>, but accept it if it were under the curve <span class="math inline">\(f\)</span>. An accepted point would be uniform under the curve <span class="math inline">\(f\)</span>, so its x-coordinate would have PDF <span class="math inline">\(f\)</span>, as required.</p>
+<p>[picture]</p>
+<p>But how can we find such an envelope <span class="math inline">\(h\)</span> we can use?</p>
+<p>If the area under the envelope <span class="math inline">\(h\)</span> is <span class="math inline">\(c\)</span>, with <span class="math inline">\(1 \leq c &lt; \infty\)</span> (the area must be at least 1, if the curve is above <span class="math inline">\(f\)</span>), then <span class="math inline">\(h\)</span> must be over the form <span class="math inline">\(h(x) = cg(x)\)</span> for a PDF <span class="math inline">\(g\)</span>. But picking the x-coordinate point at random under <span class="math inline">\(g\)</span> is just sampling from the random variable that has PDF <span class="math inline">\(g\)</span>. And the probability that a point with x-coordinate <span class="math inline">\(x\)</span> from under the envelope <span class="math inline">\(cg(x)\)</span> also lies under <span class="math inline">\(f\)</span> is <span class="math inline">\(f(x)/cg(x)\)</span>, so that would be our acceptance probability.</p>
+<p>This tells us how to perform envelope rejection sampling.</p>
+</section>
+<section id="the-envelope-rejection-sampling-algorithm" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="the-envelope-rejection-sampling-algorithm"><span class="header-section-number">15.2</span> The envelope rejection sampling algorithm</h2>
+<p>If I lost you during my motivational discussion, now is the time to switch back on! We are going to set out the steps of the <strong>envelope rejection sampling</strong> algorithm.</p>
+<div class="thpart">
+<ul>
+<li><p><strong>Goal:</strong> To sample from a random variable <span class="math inline">\(X\)</span> with PDF <span class="math inline">\(f\)</span>.</p></li>
+<li><p><strong>We will need:</strong> A random variable <span class="math inline">\(Y\)</span> with PDF <span class="math inline">\(g\)</span> that we can sample from, and a finite constant <span class="math inline">\(c\)</span> such that <span class="math inline">\(f(x) \leq cg(x)\)</span> for all <span class="math inline">\(x\)</span>.</p></li>
+<li><p><strong>Step 1:</strong> Sample a proposal <span class="math inline">\(Y\)</span> from the PDF <span class="math inline">\(g\)</span>.</p></li>
+<li><p><strong>Step 2:</strong> Accept the proposal <span class="math inline">\(Y\)</span> with probability <span class="math inline">\(f(Y) / cg(Y)\)</span>; otherwise reject <span class="math inline">\(Y\)</span>. If accepted, <em>end</em>. If rejected, <em>go back to Step 1</em>.</p></li>
+</ul>
+</div>
+<p>Note that for given <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span>, there’s no guarantee a finite constant <span class="math inline">\(c\)</span> exists such that <span class="math inline">\(f(x) \leq cg(x)\)</span>. Informally, we need <span class="math inline">\(g\)</span> to have tails that are “at least as heavy” as the tails of <span class="math inline">\(f\)</span>.</p>
+<p>We should check this really does sample from <span class="math inline">\(f\)</span>. We saw last time that the PDF of a sample had PDF <span class="math inline">\(f(x) \propto g(x) \,\alpha(x)\)</span>. Here, that is <span class="math display">\[ f(x) \propto g(x)\,\frac{f(x)}{cg(x)} = \frac1c\,f(x) , \]</span> as required.</p>
+<p>In envelope rejection sampling, we reject proposals <span class="math inline">\(x\)</span> with probability <span class="math inline">\(f(x)/cg(x)\)</span>. But we saw last time that rejecting samples is bad – higher rejection probabilities leave us with fewer accepted samples (or requiring more proposals to get the same number of accepted samples). So, for given <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span>, it would be good to pick <span class="math inline">\(c\)</span> as small as possible. We must have <span class="math inline">\(f(x) \leq cg(x)\)</span> for all <span class="math inline">\(x\)</span>, so we must have <span class="math inline">\(c \geq f(x) / g(x)\)</span> for all <span class="math inline">\(x\)</span>, and therefore <span class="math inline">\(c \geq \sup_x f(x)/g(x)\)</span>. (Here, “sup” means “supremum” – it’s like the maximum, except allows for the fact the maximum might only be achieved in a limit, such as <span class="math inline">\(x \to -\infty\)</span> or <span class="math inline">\(x \to +\infty\)</span>.) The best possible <span class="math inline">\(c\)</span>, therefore is to take <span class="math inline">\(c\)</span> to <em>equal</em> this maximum, <span class="math inline">\(c = \sup_x f(x) / g(x)\)</span>, if it’s possible to calculate it.</p>
+<p>[<strong>Note:</strong> <em>I messed this up in the lecture, and accidentally said minimum/infimum, where it should be maximum/supremum.</em>]</p>
+</section>
+<section id="examples" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="examples"><span class="header-section-number">15.3</span> Examples</h2>
+<div id="exm-env1" class="theorem example">
+<p><span class="theorem-title"><strong>Example 15.1</strong></span> Consider the Wigner semi-circle distribution with PDF <span class="math display">\[ f(x) = \frac{2}{\pi}\sqrt{1 - x^2} \qquad -1 \leq x \leq 1 . \]</span></p>
+<p>We need to choose the envelope that surrounds the PDF <span class="math inline">\(f\)</span>. Here’s one choice. Let <span class="math inline">\(Y \sim \operatorname{U}[-1,1]\)</span>, which has PDF <span class="math display">\[ g(x) = \tfrac12 \qquad -1 \leq x \leq 1 ,\]</span> which well give a simple “box” around <span class="math inline">\(f\)</span> for the envelope. We can also generate these samples easily, for example by using the inverse transform <span class="math inline">\(Y = 2U - 1\)</span> for <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>.</p>
+<p>The maximum point of <span class="math inline">\(f\)</span> is at <span class="math inline">\(x = 0\)</span>, where <span class="math inline">\(f(0) = \frac{2}{\pi}\)</span> and <span class="math inline">\(g(0) = \tfrac12\)</span>. So we see that <span class="math inline">\(c \geq \frac{4}{\pi}\)</span> will be sufficient to ensure <span class="math inline">\(f(x) \leq cg(x)\)</span> for all <span class="math inline">\(x\)</span>, with the box surrounding the semi-circle. We want to take the smallest possible <span class="math inline">\(c\)</span>, so will take <span class="math inline">\(c = \frac{4}{\pi}\)</span>, with the box <em>just</em> touching the semi-circle at its top.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pdf <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (<span class="dv">2</span> <span class="sc">/</span> pi) <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> x<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>env <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (<span class="dv">4</span> <span class="sc">/</span> pi) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">*</span> (<span class="sc">-</span><span class="dv">1</span> <span class="sc">&lt;=</span> x <span class="sc">&amp;</span> x <span class="sc">&lt;=</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  pdf, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">to =</span> <span class="dv">1</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.8</span>), <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"blue"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(env, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L15-envelope-1_files/figure-html/semi1-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In my code, I’ve set it up so that <code>env()</code> (the envelope function) is <span class="math inline">\(c\)</span> times <span class="math inline">\(g\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n_prop <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>props <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">runif</span>(n_prop) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>accepts <span class="ot">&lt;-</span> props[<span class="fu">runif</span>(n_prop) <span class="sc">&lt;=</span> <span class="fu">pdf</span>(props) <span class="sc">/</span> <span class="fu">env</span>(props)]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(accepts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 784986</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(accepts, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">breaks =</span> <span class="dv">40</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(pdf, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L15-envelope-1_files/figure-html/unnamed-chunk-2-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We see that we accepted about 78% or 79% of proposals, and the histogram is an excellent fit to the semicircle distribution.</p>
+</div>
+<div id="exm-env-norm" class="theorem example">
+<p><span class="theorem-title"><strong>Example 15.2</strong></span> Suppose we want to sample from the “half-normal” distribution <span class="math display">\[ f(x) = \sqrt\frac{2}{\pi} \exp\big(\tfrac12 x^2\big) \qquad x \geq 0 . \]</span> Let’s take <span class="math inline">\(Y \sim \operatorname{Exp}(1)\)</span> with <span class="math inline">\(g(x) = \mathrm{e}^{-x}\)</span>. We know this can be easily sampled from, using the inverse transform <span class="math inline">\(Y = - \log U\)</span>. The exponential also has fatter tails than the normal, so this should work.</p>
+<p>To find an appropriate <span class="math inline">\(c\)</span>, we consider <span class="math display">\[ \frac{f(x)}{g(x)} = \frac{\sqrt\frac{2}{\pi} \exp(\tfrac12 x^2)}{\exp(-x)} = \sqrt\frac{2}{\pi} \exp \big(-\tfrac12 x^2 + x\big) . \]</span> This is maximised where <span class="math inline">\(-\tfrac12 x^2 + x\)</span> is maximised which (by differentiating and setting equal to 0) is at <span class="math inline">\(x = 1\)</span>. So we take the best possible <span class="math inline">\(c\)</span>, which is <span class="math display">\[ c = \frac{f(1)}{g(1)} = \sqrt\frac{2}{\pi} \exp\big(-\tfrac12 + 1\big) = \sqrt\frac{2\mathrm{e}}{\pi} . \]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pdf <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">/</span> pi) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>env <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> <span class="fu">exp</span>(<span class="dv">1</span>) <span class="sc">/</span> pi) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  pdf, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">4</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">1.32</span>), <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"blue"</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(env, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">4</span>, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L15-envelope-1_files/figure-html/halfnorm-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>n_prop <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>props <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">log</span>(<span class="fu">runif</span>(n_prop))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>accepts <span class="ot">&lt;-</span> props[<span class="fu">runif</span>(n_prop) <span class="sc">&lt;=</span> <span class="fu">pdf</span>(props) <span class="sc">/</span> <span class="fu">env</span>(props)]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(accepts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 760139</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(accepts, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">breaks =</span> <span class="dv">40</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(pdf, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L15-envelope-1_files/figure-html/unnamed-chunk-4-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We accept roughly 760,000 proposals, and get an excellent fit to the half-normal distribution.</p>
+</div>
+<p><strong>Next time.</strong> <em>We study envelope rejection sampling more closely, and complete this part of the module on random number generation</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
@@ -630,6 +508,7 @@ complete this part of the module on random number generation*
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

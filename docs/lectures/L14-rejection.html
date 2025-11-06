@@ -498,8 +498,6 @@ From 1,000,000 proposals, the number of accepted samples we might get is shown b
 
 
 
-
-
 ::: {.cell}
 
 ```{.r .cell-code  code-fold="true" code-summary="Code for drawing this graph"}
@@ -522,13 +520,9 @@ plot(
 
 
 
-
-
 We see that the number of acceptance will be very close to $an = 0.158\times 1\,000\,000 = 158\,000$.
 
 The number of proposals required for 100,000 acceptances is shown below.
-
-
 
 
 
@@ -557,8 +551,6 @@ plot(
 
 
 
-
-
 The number of required proposals will be very close to $n/a = 100\,000 / 0.158 = 630\,000$.
 :::
 
@@ -566,8 +558,6 @@ The number of required proposals will be very close to $n/a = 100\,000 / 0.158 =
 Suppose instead we were trying to sample from a standard normal conditional on $Y > 4$. Again, we take a standard normal proposal and accept if the proposal is greater than 4. This is a different matter, because the acceptance probability is very small: about $0.00003$.
 
 Here, the number of acceptances from 100,000 proposals is
-
-
 
 
 
@@ -596,13 +586,9 @@ plot(
 
 
 
-
-
 There is likely to be a very small number of acceptances -- and around a 4% chance there are no acceptances at all. The distribution of the number of acceptances is roughly Poisson.
 
 The number of proposals required for just 5 acceptances, on the other hand, is:
-
-
 
 
 
@@ -625,8 +611,6 @@ plot(
 ![](L14-rejection_files/figure-html/nbinom2-1.svg){width=672}
 :::
 :::
-
-
 
 
 
