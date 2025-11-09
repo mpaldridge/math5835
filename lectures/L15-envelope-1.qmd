@@ -111,7 +111,6 @@ means "supremum" -- it's like the maximum, except allows for the fact the
 maximum might only be achieved in a limit, such as $x \to -\infty$ or
 $x \to +\infty$.) The best possible $c$, therefore is to take $c$ to *equal* this maximum, $c = \sup_x f(x) / g(x)$, if it's possible to calculate it.
 
-[**Note:** *I messed this up in the lecture, and accidentally said minimum/infimum, where it should be maximum/supremum.*]
 
 ## Examples
 

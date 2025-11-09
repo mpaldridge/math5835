@@ -1,6 +1,6 @@
 # Envelope rejection sampling II
 
-<!--
+
 Last time we discussed envelope rejection sampling. The process was the following:
 
 -   **Goal:** To sample from a random variable $X$ with PDF $f$.
@@ -49,7 +49,7 @@ The answer is yes -- and algorithm is basically exactly the same, just with $f$ 
 
 To check that this still works, we remember that the accepted PDF is proportional to $$ \alpha(x) \,g(x) = \frac{\mu(x)}{cg(x)}\,g(x) = \frac{1}{c} \mu(x) \propto \mu(x) \propto f(x) . $$
 
-(In this case, $1/c$ is only proportional to, not directly equal to, the unconditional accpetance probability.)
+In the unnormalised case, $1/c$ is only proportional to, not directly equal to, the unconditional acceptance probability. So we still want $c$ as small as possible, but can't give it a direct interpretation as an acceptance probability.
 
 ::: {#exm-mises}
 The **von Mises distribution** is a distribution on $[0, 2\pi)$ with PDF $$f(x) \propto \mu(x) = \exp\big(\kappa \cos (x-m)\big), $$for some parameters $m \in [0, 2\pi)$ and $\kappa \geq 0$. The von Mises distribution is used to model data on a circle, with $x$ being the angle around the circle. Circular data might be a compass direction (north/south/east/west), or a time of day (with the circle representing the hours from midnight to midnight). The von Mises distribution is sort of a "circular equivalent" of the normal distribution on the line, with $m$ being the mean value and $\kappa$ playing a similar role $1/\sigma^2$. There is no closed form for the constant of proportionality.
@@ -113,7 +113,7 @@ Then we discussed manipulating standard uniform samples into other distributions
 
 **Next time.** *We begin our study on MCMC: Markov chain Monte Carlo.*
 
--->
+
 
 ::: mysummary
 **Summary:**

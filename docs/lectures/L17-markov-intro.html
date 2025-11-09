@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Problem Sheet 3 – MATH5835M Statistical Computing</title>
+<title>17&nbsp; Markov chains in discrete space – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L17-markov-intro.html" rel="next">
-<link href="../lectures/L16-envelope-2.html" rel="prev">
+<link href="../lectures/L18-markov-longrun.html" rel="next">
+<link href="../problems/P3.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +111,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../problems/P3.html">Problem Sheet 3</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Markov chains in discrete space</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -309,7 +275,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../problems/P3.html" class="sidebar-item-text sidebar-link active">
+  <a href="../problems/P3.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 3</span></a>
   </div>
 </li>
@@ -326,7 +292,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L17-markov-intro.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L17-markov-intro.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Markov chains in discrete space</span></span></a>
   </div>
 </li>
@@ -364,9 +330,9 @@ window.Quarto = {
 \newcommand{\ee}{\mathrm{e}} \]</span></p>
 </div>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../problems/P3.html">Problem Sheet 3</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Markov chains in discrete space</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="P3" class="quarto-section-identifier">Problem Sheet 3</span></h1>
+<h1 class="title"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Markov chains in discrete space</span></h1>
 </div>
 
 
@@ -383,217 +349,289 @@ window.Quarto = {
 </header>
 
 
-<style>
-.myanswers { 
-display: none !important;
-}
-</style>
-<!--
-::: {.mysummary}
-**[Full solutions](#P3-sols)** are now available.
-:::
--->
-<div class="mysummary">
-<p>This is Problem Sheet 3, which covers material from Lectures 12 to 16. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of <strong>Thursday 13 November</strong>.</p>
-<p>This problem sheet is to help you practice material from the module and to help you check your learning. It is <em>not</em> for formal assessment and does not count towards your module mark.</p>
-<p>If you want some brief informal feedback on <strong>Question 3 parts (a) and (b) and Question 6</strong> (marked ★), you should submit your work electronically through Gradescope via the module’s Minerva page by <strong>1400 on Tuesday 11 November</strong>. (If you hand-write solutions on paper, the easiest way to scan-and-submit that work is using the Gradescope app on your phone.) I will return some brief comments on your those two questions by the problems class on Thursday 13 November. Because this informal feedback, and not part of the official assessment, I cannot accept late work for any reason – but I am always happy to discuss any of your work on any question in my office hours.</p>
-<p>Full solutions will be released on Friday 14 November.</p>
-</div>
 <div class="hidden">
 <p><span class="math display">\[ \]</span></p>
 </div>
-<div class="myq">
-<p><strong>1.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider a discrete random variable that takes values <span class="math inline">\(1, 2, 3, 4.5\)</span> with probabilities <span class="math inline">\(0.2, 0.2, 0.5, 0.1\)</span> respectively. Write some R code that will sample from this distribution. (Your code may use the <code>runif()</code> function, but may not use the <code>sample()</code> function.) Check that a large sample from your code really does have the correct distribution.</p>
-<div class="myanswers">
-<p><em>Solution.</em> There are various ways to do this. With only four outcomes, you can just write a lot of this “by hand”, in a way that wouldn’t be practical if the range were very large, but it pretty easy to write – that’s what I did.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rq1 <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="fl">4.5</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  prob <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.1</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  cumprob <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(prob)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  unif <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(unif <span class="sc">&lt;=</span> cumprob[<span class="dv">1</span>], x[<span class="dv">1</span>],</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(unif <span class="sc">&lt;=</span> cumprob[<span class="dv">2</span>], x[<span class="dv">2</span>],</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(unif <span class="sc">&lt;=</span> cumprob[<span class="dv">3</span>], x[<span class="dv">3</span>], x[<span class="dv">4</span>])))</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let’s test its accuracy by drawing a bar plot of a large sample.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rq1</span>(n)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(samples) <span class="sc">/</span> n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="P3_files/figure-html/unnamed-chunk-2-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Looks good to me.</p>
-</div>
-</div>
-<div class="myq">
-<p><strong>2.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The geometric distribution <span class="math inline">\(X \sim \operatorname{Geom}(p)\)</span> represents the number of trials until the first success, where each trial succeeds independently with probability <span class="math inline">\(p\)</span>. The probability mass function of <span class="math inline">\(X\)</span> is <span class="math display">\[ p(x) = (1-p)^{x-1}p \qquad x = 1, 2, \dots. \]</span></p>
-<div class="subq">
-<p><strong>(a)</strong>&nbsp;&nbsp;Show that the cumulative distribution function <span class="math inline">\(F\)</span> of <span class="math inline">\(X\)</span> is given by <span class="math display">\[ F(x) = 1 - (1-p)^x \qquad x = 1, 2, \dots .\]</span></p>
-<div class="myanswers">
-<p><em>Solution.</em> I can think of two ways to do this. The first way is to just sum the probabilities, using the formula <span class="math display">\[ \sum_{z=0}^{x-1} a^z = \frac{1 - a^x}{1-a} \]</span> for the sum of a geometric progression. We have <span class="math display">\[ F(x) = \sum_{y=1}^x (1-p)^{y-1} p = p \sum_{z=0}^{x-1} (1-p)^z = p \frac{1 - (1-p)^{x}}{1 - (1-p)} = 1 - (1-p)^x , \]</span> where in the second equality where shifted the index of the sum with <span class="math inline">\(z = y-1\)</span>.</p>
-<p>Alternatively (and, in my opinion, better) is to think about what the geometric distribution <em>means</em>. The geometric probability <span class="math inline">\(p(x)\)</span> is the probability the first success occurs on the <span class="math inline">\(x\)</span>th trial. So the complement of the CDF, <span class="math inline">\(1 - F(x) = \mathbb P(X &gt; x)\)</span> is the probability the first success happens <em>after</em> the <span class="math inline">\(x\)</span>th trial, which is if and only if the first <span class="math inline">\(x\)</span> trials are all failures. This is <span class="math display">\[ 1 - F(x) = \mathbb P(X &gt; x) = (1-p)^x \]</span> because each of those <span class="math inline">\(x\)</span> trials fails with probability <span class="math inline">\(1 - p\)</span>. This gives the answer.</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(b)</strong>&nbsp;&nbsp;Write down a function – either in mathematical notation or in R code – that will transform a standard uniform random variable <span class="math inline">\(U\)</span> into a geometric distribution. Try to make your function as simple as possible.</p>
-<div class="myanswers">
-<p><em>Solution.</em> The “dividing lines” between the segments come at the values <span class="math inline">\(u\)</span> where <span class="math inline">\(u = 1- (1-p)^x\)</span>. Actually, since we’re trying to make the function simple, we could use <span class="math inline">\(v = 1-u\)</span> (since one minus a standard uniform is still standard uniform), with dividing lines at <span class="math inline">\(v = (1-p)^x\)</span>, which corresponds to <span class="math inline">\(x = \log v / \log(1-p)\)</span>. So the segment corresponding to a uniformly distributed <span class="math inline">\(v\)</span> will correspond to this value rounded up to the next integer.</p>
-<p>So we can take <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>, and put <span class="math display">\[ X = \left\lceil \frac{\log U}{\log(1-p)} \right\rceil . \]</span></p>
-<p>Let’s check this with R code</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rgeom2 <span class="ot">&lt;-</span> <span class="cf">function</span>(n, p) {</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  unif <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ceiling</span>(<span class="fu">log</span>(unif) <span class="sc">/</span> <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> p))</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rgeom2</span>(n, p)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(samples) <span class="sc">/</span> n, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="P3_files/figure-html/unnamed-chunk-3-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>We could alternatively check the probabilities exactly.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>true <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> p)<span class="sc">^</span>{<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span> <span class="sc">-</span> <span class="dv">1</span>} <span class="sc">*</span> p</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>emp <span class="ot">&lt;-</span> <span class="fu">table</span>(samples)[<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>] <span class="sc">/</span> n</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">rbind</span>(true, emp), <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>          1      2      3      4      5      6      7      8
-true 0.3333 0.2222 0.1481 0.0988 0.0658 0.0439 0.0293 0.0195
-emp  0.3326 0.2222 0.1488 0.0989 0.0661 0.0435 0.0295 0.0195</code></pre>
-</div>
-</div>
-<p>Looks good again.</p>
-</div>
-</div>
-</div>
-<div class="myq">
-<p><strong>3.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider a Cauchy random variable <span class="math inline">\(X\)</span> with probability density function <span class="math display">\[ f(x) = \frac{1}{\pi(1 + x^2)} .\]</span></p>
-<div class="subq">
-<p><strong>(a)</strong>&nbsp;&nbsp;★Show that the cumulative distribution function of <span class="math inline">\(X\)</span> is <span class="math display">\[ F(x) = \frac12 + \frac{1}{\pi}\arctan x \]</span></p>
-<div class="myanswers">
-<p><em>Solution.</em> The CDF is <span class="math display">\[ \begin{multline}
-F(x) = \int_{-\infty}^x f(y)\,\mathrm{d}y
-  = \frac{1}{\pi} \int_{-\infty}^x \frac{1}{1+y^2}\,\mathrm{d}y
-  = \frac{1}{\pi} \big[\arctan y\big]_{-\infty}^x \\ = \frac{1}{\pi} \bigg( \arctan x - \Big(-\frac{\pi}{2}\Big)\bigg) = \frac{1}{\pi}\arctan x + \frac12,
-\end{multline}\]</span> since <span class="math inline">\(\lim_{y\to-\infty} \arctan y = -\frac{\pi}{2}\)</span>.</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(b)</strong>&nbsp;&nbsp;★Write down a function that will transform a standard uniform random variable <span class="math inline">\(U\)</span> into a Cauchy distribution.</p>
-<div class="myanswers">
-<p><em>Solution.</em> We use the inverse transform method: write <span class="math inline">\(U = F(X)\)</span> and invert. Here, we have <span class="math display">\[ U = \frac12 + \frac{1}{\pi}\arctan X .\]</span> Inverting gives <span class="math display">\[X = \tan \bigg(\pi \Big(U - \frac12\Big) \bigg) .\]</span></p>
-<p>This can be interpreted as <span class="math inline">\(X = \tan\Theta\)</span> where <span class="math inline">\(\Theta\)</span> is uniform between <span class="math inline">\(-\frac{\pi}{2}\)</span> and <span class="math inline">\(\frac{\pi}{2}\)</span>.</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(c)</strong>&nbsp;&nbsp;Using your answer to part (b), draw a histogram of samples from the Cauchy distribution in R.</p>
-<div class="myanswers">
-<p><em>Solution.</em> My function for generating samples is the following:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>rcauchy2 <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  unif <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tan</span>(pi <span class="sc">*</span> (unif <span class="sc">-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>))</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>The Cauchy distribution is a very heavy-tailed distribution. So to make the histogram look sensible, I’m going to throw away the occasional very large or very small sample. If I didn’t do this, the histogram would probably just look like a single spike at 0. (You of course shouldn’t do this when performing Monte Carlo estimation – those rare very large or very small samples can be extremely important in calculations!)</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rcauchy2</span>(n)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>samples_rest <span class="ot">&lt;-</span> samples[<span class="fu">abs</span>(samples) <span class="sc">&lt;</span> <span class="dv">12</span>]</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(samples_rest, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.33</span>), <span class="at">breaks =</span> <span class="dv">48</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="dv">1</span> <span class="sc">/</span> (pi <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> x<span class="sc">^</span><span class="dv">2</span>)), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="P3_files/figure-html/unnamed-chunk-6-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="myq">
-<p><strong>4.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(F\)</span> be a cumulative distribution function and <span class="math inline">\(F^{-1}\)</span> its inverse.</p>
-<div class="subq">
-<p><strong>(a)</strong>&nbsp;&nbsp;Prove that <span class="math inline">\(F^{-1}\)</span> is a non-decreasing function.</p>
-<div class="myanswers">
-<p><em>Solution.</em> We recall the definition <span class="math inline">\(F^{-1}(u) = \min \{x : F(x) \geq u\}\)</span>. As <span class="math inline">\(u\)</span> increases, the set <span class="math inline">\(A_u = \{x : F(x) \geq u \}\)</span> gets smaller – more specifically, for <span class="math inline">\(u \leq v\)</span>, we have <span class="math inline">\(A_u \subseteq A_v\)</span>. Hence the minimum of the set <span class="math inline">\(A_u\)</span> cannot be larger than the minimum of the set <span class="math inline">\(A_v\)</span>. Hence <span class="math inline">\(F^{-1}(u) = \min A_u \leq \min A_v = F^{-1}(v)\)</span>, as required.</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(b)</strong>&nbsp;&nbsp;Show that <span class="math inline">\(X = F^{-1}(U)\)</span> and <span class="math inline">\(X' = F^{-1}(1-U)\)</span> have negative (or, rather, non-positive) correlation. You may use any results from the module, provided you state them clearly.</p>
-<div class="myanswers">
-<p><em>Solutions.</em> The relevant result here is <a href="../lectures/L07-antithetic-2.html#thm-neg" class="quarto-xref">Theorem&nbsp;<span>7.2</span></a>. This said that if <span class="math inline">\(\phi\)</span> is an non-decreasing function, then <span class="math inline">\(\phi(U)\)</span> and <span class="math inline">\(\phi(1-U)\)</span> have covariance – and therefore correlation – less than or equal to 0. Here, we use <span class="math inline">\(F^{-1}\)</span> as the function <span class="math inline">\(\phi\)</span>.</p>
-</div>
-</div>
-</div>
-<div class="myq">
-<p><strong>5.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(X \sim \operatorname{Beta}(3, 2)\)</span> be a Beta distribution with PDF <span class="math display">\[ f(x) = 12 x^2(1-x) \qquad 0 \leq x \leq 1 . \]</span> [<strong>Note:</strong> <em>An earlier version of this question wrongly had the constant at the front as</em> <span class="math inline">\(\frac{1}{12}\)</span> instead of <span class="math inline">\(12\)</span>.]</p>
-<p>Show how you could sample from <span class="math inline">\(X\)</span> using envelope rejection sampling and an optimised value of the constant <span class="math inline">\(c\)</span>.</p>
-<div class="myanswers">
-<p><em>Solution.</em> The obvious suggestion here is to take <span class="math inline">\(Y\)</span> uniformly distributed on <span class="math inline">\([0, 1]\)</span>, so <span class="math inline">\(g(x) = 1\)</span> (although you don’t have to choose that).</p>
-<p>To find the optimal value of <span class="math inline">\(c\)</span>, we consider the maximum of <span class="math inline">\(f(x)\)</span>. We can find that by differentiating <span class="math display">\[ f'(x) = \frac{\mathrm{d}}{\mathrm{d}x} (12x^2 - 12x^3) = (24x - 36x^2) , \]</span> so the maximum is at <span class="math inline">\(x = \frac23\)</span>, where <span class="math inline">\(f(x) = \frac{16}{9}\)</span>. Therefore, we take <span class="math inline">\(c = \frac{16}{9}\)</span>.</p>
-<p>Thus, our algorithm is to sample from a standard uniform, and then to accept with probability <span class="math display">\[ \alpha(x) = \frac{12x^2(1-x)}{\frac{16}{9}} = \frac{27}{4}\,x^2(1-x) . \]</span></p>
-</div>
-</div>
-<div class="myq">
-<p><strong>6.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;★ Consider sampling from the half-normal distribution <span class="math display">\[ f(x) = \sqrt{\frac{2}{\pi}} \exp\big(-\tfrac12 x^2\big) \qquad x \geq 0 \]</span> using envelope rejection sampling with an <span class="math inline">\(\operatorname{Exp}(\lambda)\)</span> proposal distribution <span class="math display">\[g(x) = \lambda \mathrm{e}^{-\lambda x} \qquad x \geq 0 .\]</span> You wish to design your envelope rejection sampling algorithm so that the acceptance probability is as high as possible.</p>
-<div class="subq">
-<p><strong>(a)</strong>&nbsp;&nbsp;For fixed <span class="math inline">\(\lambda\)</span>, show that the optimal value of <span class="math inline">\(c\)</span> is <span class="math display">\[c = \sqrt{\frac{2}{\pi}}\,\frac{\exp(\frac12\lambda^2)}{\lambda}.\]</span></p>
-<div class="myanswers">
-<p><em>Solution.</em> This is very similar to <a href="../lectures/L15-envelope-1.html#exm-env-norm" class="quarto-xref">Example&nbsp;<span>15.2</span></a> in Lecture 15. We have <span class="math display">\[ \frac{f(x)}{g(x)} = \frac{\sqrt\frac{2}{\pi} \exp(\tfrac12 x^2)}{\lambda \exp(-\lambda x)} = \sqrt\frac{2}{\pi} \,\frac{\exp \big(-\tfrac12 x^2 + \lambda x\big)}{\lambda} . \]</span> We want to pick <span class="math inline">\(c\)</span> to be the maximum value of this. The maximum occurs where <span class="math inline">\(-\frac12x^2 + \lambda x\)</span> is maximised. By differentiating this and setting equal to 0, we get <span class="math inline">\(-x + \lambda = 0\)</span>, so <span class="math inline">\(x = \lambda\)</span> and <span class="math display">\[ c =  \sqrt\frac{2}{\pi} \,\frac{\exp \big(-\tfrac12 \lambda^2 + \lambda^2\big)}{\lambda} =   \sqrt\frac{2}{\pi} \,\frac{\exp \big(\tfrac12 \lambda^2\big)}{\lambda}, \]</span> as required.</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(b)</strong>&nbsp;&nbsp;Show that the optimal value of <span class="math inline">\(\lambda\)</span> is <span class="math inline">\(\lambda = 1\)</span>.</p>
-<div class="myanswers">
-<p><em>Solution.</em> Again, our goal is to choose <span class="math inline">\(\lambda\)</span> get <span class="math inline">\(c\)</span> as small as possible, since <span class="math inline">\(1/c\)</span> is the acceptance probability. Differentiating the expression from part (a) with respect to <span class="math inline">\(\lambda\)</span> gives <span class="math display">\[ \frac{\mathrm d}{\mathrm d\lambda} \,c = \sqrt\frac{2}{\pi} \frac{\exp \big(\tfrac12 \lambda^2\big)(\lambda^2 - 1)}{\lambda^2}.\]</span> This is 0 when <span class="math inline">\(\lambda^2 = 1\)</span>, and since <span class="math inline">\(\lambda \geq 0\)</span>, the only solution is <span class="math inline">\(\lambda = 1\)</span>. (This can be easily checked to be a minimum by looking at a sketch of <span class="math inline">\(c\)</span> against <span class="math inline">\(\lambda\)</span>, or differentiating twice, or just by thinking about the behaviour of <span class="math inline">\(c\)</span> as a function of <span class="math inline">\(\lambda\)</span>.)</p>
-</div>
-</div>
-</div>
-<div class="myq">
-<p><strong>7.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>[2016 exam, Question 1]</em>&nbsp;&nbsp;In this question, we consider generating samples from the distribution with probability density function <span class="math display">\[ f_a(x) = \frac{1}{Z} \,\frac{1}{a(\cos x + 1) + x^2} \qquad x \geq 1,\]</span> where <span class="math inline">\(a\)</span> is a parameter and <span class="math display">\[Z = \int_{1}^{\infty} \frac{1}{a(\cos x + 1) + x^2}\,\mathrm{d}x \]</span> is a normalising constant.</p>
-<div class="subq">
-<p><strong>(a)</strong>&nbsp;&nbsp;Introducing any notation you use, state the inverse transform method for random number generation.</p>
-<div class="myanswers">
-<p><em>Solution.</em> Fix a cumulative distribution function (CDF) <span class="math inline">\(F(x) = \mathbb P(X \leq x)\)</span>. The inverse CDF is defined to be <span class="math inline">\(F^{-1}(u) = \max \{x : F(x) \geq u\}\)</span>. We then have that <span class="math inline">\(X = F^{-1}(U)\)</span> has CDF <span class="math inline">\(F\)</span>. We use this typically by writing <span class="math inline">\(U = F(X)\)</span> and inverting to make <span class="math inline">\(X\)</span> the subject.</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(b)</strong>&nbsp;&nbsp;For <span class="math inline">\(a = 0\)</span>, explain how the inverse transform method can be used to generate samples with PDF <span class="math inline">\(f_0\)</span>.</p>
-<div class="myanswers">
-<p>For <span class="math inline">\(a = 0\)</span>, the PDF is <span class="math display">\[ f_0(x) = \frac{1}{Z} \,\frac{1}{x^2} \qquad x \geq 1 .\]</span></p>
-<p>We should start by finding the normalising constant <span class="math inline">\(Z\)</span>: it’s <span class="math display">\[ Z = \int_1^\infty \frac{1}{x^2}\,\mathrm{d}x = \big[-x^{-1}\big]_1^\infty = 0 -(-1) = 1 , \]</span> so the PDF is simply <span class="math inline">\(f_0(x) = 1/x^2\)</span>.</p>
-<p>Next, we want to find the CDF <span class="math inline">\(F\)</span>: it’s <span class="math display">\[ F(x) = \int_1^x f_0(y)\,\mathrm{d}y = \int_1^x \frac{1}{y^2}\,\mathrm{d}y = \big[-y^{-1}\big]_1^x = 1 - \frac{1}{x} . \]</span></p>
-<p>Finally, to perform the inverse transform method, we write <span class="math inline">\(U = F(X)\)</span> and invert. We have <span class="math inline">\(U = 1 - 1/x\)</span>, and so <span class="math inline">\(X = 1/(1-U)\)</span>.</p>
-</div>
-</div>
-<div class="subq">
-<p><strong>(c)</strong>&nbsp;&nbsp;Introducing any notation you use, state the envelope rejection sampling method for random number generation.</p>
-</div>
-<div class="subq">
-<p><strong>(d)</strong>&nbsp;&nbsp;For <span class="math inline">\(a &gt; 0\)</span>, explain how the envelope rejection sampling method can be used to generate samples with PDF <span class="math inline">\(f_a\)</span>.</p>
-</div>
-<div class="subq">
-<p><strong>(e)</strong>&nbsp;&nbsp;How does the efficiency of your method in part (d) change as the value of <span class="math inline">\(a\)</span> increases? Justify your answer.</p>
-</div>
+<!--
+## Markov chains and MCMC
+
+In the first part of this module, we looked at Monte Carlo methods, where we estimated $\theta = \Exg\phi(X)$ by $$ \widehat{\theta}_n = \frac{1}{n} \sum_{i=1}^n \phi(X_i) $$ where $X_1, X_2, \dots, X_n$ are IID samples from the same distributions as $X$. To do this, we need samples $X_1, X_2, \dots, X_n $ that (a) come from the exactly the same distribution as $X$, and (b) are independent of each other.
+
+We can often manage to generate random samples like these if $X$ has a relatively simple distributions $X$: for example, we can use the inverse transform method or envelope rejection sampling (or a built-in R function). These simple distributions tend to be one-dimensional distributions, sometimes with a simple dependence on one parameter.
+
+However, these random number generation methods are often not available when dealing with very complex distributions $X$. For example, these might not be one-dimensional but rather living in some very high-dimensional space. Or they might depend on many parameters -- and those parameters might themselves be drawn from random distributions (a so-called "hierarchical model").
+
+For more complicated distributions, we can make progress by loosening the assumption that $X_1, X_2, \dots, X_n$ are perfect IID copies of $X$.
+
+-   Rather than the $X_i$ having *exactly* the same distribution as $X$, we might be willing for them to have approximately the same distribution as $X$, or to converge to that distribution as $i$ gets large.
+
+-   Rather than having the $X_i$ be completely independent, we could let them have some dependence, but we will want to set things up so that we limit the dependence so there is only "light" dependence and so that we understand the dependence structure well.
+
+The way will do this is to allow $X_1, X_2, \dots$ to be a random process (or "stochastic" process) that has a particular dependence structure known as the **Markov property**. Such a process is known as a **Markov chain**. Random variables in Markov chains can be shown (under certain conditions) to tend to a certain distribution -- we will want to set things up so that that "limiting distribution" is the distribution $X$ we want to sample from.
+
+Using a Monte Carlo estimator where the samples $X_1, X_2, \dots$ are not IID but rather form a Markov chain is known as **Markov chain Monte Carlo** -- almost always referred to by the abbreviation **MCMC**. And "MCMC" has become to be used more widely for generating samples according to a Markov chain even if those samples aren't necessarily used for Monte Carlo estimation. MCMC is one of the most important ideas in statistics in the second-half of the 20th and in the 21st centuries, and is especially important in Bayesian statistics.
+
+In this part of the of the module, we will study MCMC in depth. We will take a brief tour through the theory of Markov chains, then talk about how to use the output of a Markov chain for Monte Carlo estimation. We will look specifically at the **Metropolis--Hastings algorithm**, which is one way of setting up a Markov chain to have a specific distribution as its limiting distribution, and has some properties in common with rejection sampling ideas we have already seen.
+
+The schedule will be:
+
+-   Today and Lecture 18: Theory of Markov chains in discrete space
+
+-   Lecture 19: Metropolis--Hastings algorithm in discrete space
+
+-   Lecture 20: Theory of Markov chains in continuous space
+
+-   Lecture 21: Metropolis--Hastings algorithm in continuous space
+
+-   Lectures 22 and 23: MCMC in practice (including for Bayesian statistics).
+
+Some of you may have studied Markov chains before -- for example, in the Leeds second-year module [MATH2750 Introduction to Markov Processes](https://mpaldridge.github.io/math2750/). If so, you should find that today and the next lecture are just a brief reminder of things you already know, but the rest of the material is likely to be new. However, I will not assume any pre-existing knowledge of Markov chains, and will teach you everything you need to know for this module.
+
+
+## Introduction to Markov chains
+
+A **Markov chain** in discrete time $i = 1, 2, \dots$ and discrete space $\mathcal S$ is a sequence of random variables $(X_1, X_2, X_3, \dots)$ taking values in $\mathcal S$. The random variables are not independent, but the dependence of any of the random variables is limited to just the random variable before it in the list. That is, the next state $X_{i+1}$ can depend on on the current state $X_i$; but, given the current state $X_i$, it has no further dependence on the past states $X_{i-1}, X_{i-2}, \dots, X_2, X_1$. This is known as the "Markov property".
+
+Think of playing a simple board game where you roll a dice and move that many squares along the board. Let $X_i$ be the current square you are on. The the next square you land on, $X_{i+1}$:
+
+-   is random -- because it depends on the roll of the dice;
+
+-   depends on which square $X_i$ you are on now -- because the value of dice roll will be added to your current square;
+
+-   *given* the square $X_i$ you are on now, it doesn't depend which sequence of squares $X_1, X_2, \dots, X_{i-1}$ you previously landed on to get there.
+
+::: {#def-markov}
+A sequence of random variables $(X_i) = (X_1, X_2, \dots)$ taking values in a countable state space $\mathcal S$ is said to be a **Markov chain** or to have the **Markov property** if $$ \mathbb P(X_{i+1} = x_{i+1} \mid X_i = x_i, X_{i-1} = x_{i=1}, \dots, X_1 = x_1) 
+= \mathbb P(X_{i+1} = x_{i+1} \mid X_i = x_i)$$ for all $i = 1, 2, \dots$ and for all $x_1, \dots, x_{i-1}, x_{i}, x_{i+1} \in \mathcal S$ such that the conditional probability is defined.
+:::
+
+::: {#exm-2state}
+Consider a simple model of an unreliable printer:
+
+-   On day 1, the printer is working.
+
+-   If the printer is working, then the next day there is a 90% chance it is still working, but a 10% chance it has broken.
+
+-   If the printer is broken, then the next day there is a 50% chance it has been mended, but a 50% chance it is still broken.
+
+We can model this as a Markov chain on the state space $\mathcal S = \{1, 2\}$, where state 1 denotes that the printer is working and state 2 denotes that the printer is working. We have $$ \begin{align}
+\mathbb P(X_{i+1} = 1 \mid X_i = 1) &= 0.9 & \mathbb P(X_{i+1} = 2 \mid X_i = 1) &= 0.1 \\
+\mathbb P(X_{i+1} = 1 \mid X_i = 2) &= 0.5 & \mathbb P(X_{i+1} = 2 \mid X_i = 2) &= 0.5.
+\end{align} $$
+:::
+
+::: {#exm-rw}
+Consider the **simple random walk** on $\mathcal S = \mathbb Z$. We start at $X_1 = 0$. At each time step, we move up 1 with probability $p$ and down one with probability $q = 1-p$; so $$ \mathbb P(X_{i+1} = y \mid X_i = x) = \begin{cases} p & \text{ if }y = x+1 \\ q & \text{ if }y = x-1 \\
+0 & \text{ otherwise}. \end{cases} $$
+
+If $p = q = \tfrac12$, this is called the **simple symmetric random walk**.
+
+We can also write this as $$ X_{i+1} = X_i + Z_i , $$ {#eq-rw} where the $Z_i$ are IID with distribution $$ Z_i = \begin{cases} +1 & \text{ with probability } p \\ -1 & \text{ with probability } q. \end{cases} $$ Any Markov chain with the structure @eq-rw for an IID sequence $(Z_i)$ is called a **random walk**. If the $Z_i$ are symmetric, in that $\mathbb P(Z_i = +z) = \mathbb P(Z_i = -z)$ for all $z$, then it is a **symmetric random walk**.
+:::
+
+In both the Markov chains we have looked at -- and, indeed, all the Markov chains we will ever look at -- the **transition probability** $p(x, y) = \mathbb P(X_{i+1} = y \mid X_i = x)$ was the same for all $i$. That is, the probability $p(x, y)$ of moving from $x$ to $y$ does not depend on which timestep $i$ we are at. This is called being **time homogeneous**.
+
+Once we have the notation $p(x, y)$ for the transition probability, it will in fact be useful to write them in a matrix $\mathsf P = (p(x,y))$, called the **transition matrix**.
+
+For the two-state "unreliable printer" Markov chain, the transition matrix is $$ \mathsf P = \begin{pmatrix} 0.9 & 0.1 \\ 0.5 & 0.5 \end{pmatrix} . $$
+
+For the simple random walk, the transition matrix is the "infinite matrix" $$ \mathsf P = \begin{pmatrix}
+ \smash\ddots      & \smash\ddots & \phantom{\smash\ddots}  &  \phantom{\smash\ddots}  & \phantom{\smash\ddots} & \phantom{\smash\ddots} \\
+\smash\ddots &  0     & p &        & \\
+       & q      & 0 & p      & \\
+       &        & q & 0      & p \\
+       &        &   & q & 0 & \smash\ddots \\
+       &        &   &  & \smash\ddots &  \smash\ddots       \end{pmatrix} $$ This has 0s down the diagonal (representing the probability 0 of staying still), $p$ one place to the right of the diagonal (representing the probability of moving up 1), and $q$ one place to the left of the diagonal (representing the probability of moving down 1). Blank spaces in this matrix denotes 0s.
+
+The $x$th row of a transition matrix represents the probabilities of moving from $x$ to each of the other states. Thus each row must consist of non-negative numbers that add up to 1, as is the case in both of our examples.
+
+## Simulation of Markov chains
+
+We can take $n$ samples from a finite-state Markov chain in R with the following function. In the function `rmarkov()`, `n` is the number of samples (or steps) to take, `trans` is the transition matrix $\mathsf P$, and `initial` is the initial state $X_1$.
+
+
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+rmarkov <- function(n, trans, initial) {
+  states <- nrow(trans)
+  MC <- rep(0, n)
+  
+  MC[1] <- initial
+  for (i in 1:(n - 1)) MC[i + 1] <- sample(states, 1, prob = trans[MC[i], ])
+  
+  return(MC)
+}
+```
+:::
+
+
+
+
+
+
+The key line is the `for` loop in the penultimate line. Here, the next state $X_{i+1}$ is chosen by sampling a state with probabilities according to the $x$th row of the transition matrix, where $X_i = x$ is the current state.
+
+::: {#exm-2state2}
+Let's simulate the two-state broken printer Markov chain from @exm-2state.
+
+
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+trans <- matrix(c(0.9, 0.1, 0.5, 0.5), 2, 2, byrow = TRUE)
+initial <- 1
+MC <- rmarkov(80, trans, initial)
+plot(MC, col = "blue", lwd = 2, type = "b")
+```
+
+::: {.cell-output-display}
+![](L17-markov-intro_files/figure-html/r2state-1.svg){width=672}
+:::
+:::
+
+
+
+
+
+
+In the first line, we entered a $2 \times 2$ matrix using the code `matrix(P, 2, 2)`, where `P` was a vector of length $2 \times 2 = 4$. R default is to fill up the matrix column at a time; I personally find it more logical (at least when working with Markov chains) to fill up a matrix row at a time, so I used `byrow = TRUE` to ensure that.
+
+Our sample shows that printer spent most of the time working (state 1), but when it did break (state 2) it usually got mended pretty quickly.
+:::
+
+::: {#exm-rw2}
+We can simulate the simple random walk from @exm-rw2 with the following code.
+
+
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+rrw <- function(n, up) {
+  RW <- rep(0, n)
+  down <- 1 - up
+  
+  RW[1] <- 0
+  for (i in 1:(n - 1)) {
+    RW[i + 1] <- RW[i] + sample(c(1, -1), 1, prob = c(up, down))
+  }
+  
+  return(RW)
+}
+```
+:::
+
+
+
+
+
+
+So with $p = 0.6$, we have
+
+
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+RW <- rrw(100, 0.6)
+plot(RW, col = "blue", type = "l")
+```
+
+::: {.cell-output-display}
+![](L17-markov-intro_files/figure-html/rw1-1.svg){width=672}
+:::
+:::
+
+
+
+
+
+
+which goes up on average. With $p = 0.3$, we have
+
+
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+RW <- rrw(100, 0.3)
+plot(RW, col = "blue", type = "l")
+```
+
+::: {.cell-output-display}
+![](L17-markov-intro_files/figure-html/rw2-1.svg){width=672}
+:::
+:::
+
+
+
+
+
+
+which goes down on average. The simple symmetric random walk, with $p = 0.5$ can be much more unpredictable.
+
+
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code  code-summary="Code for drawing this graph"}
+RW <- rrw(1000, 0.5)
+plot(RW, col = "black", type = "l", ylim = c(-80, 80))
+
+cols <- c("red", "orange", "yellow", "green", "blue", "darkblue", "purple")
+for (i in 1:7) {
+  RW <- rrw(1000, 0.5)
+  points(RW, col = cols[i], type = "l")
+}
+```
+
+::: {.cell-output-display}
+![](L17-markov-intro_files/figure-html/ssrw-1.svg){width=672}
+:::
+:::
+
+
+
+
+
+:::
+
+**Next time.** *We continue our whistle-stop tour of discrete-space Markov chains.*
+
+-->
+<div class="mysummary">
+<p><strong>Summary:</strong></p>
+<ul>
+<li><p>A Markov chain is a stochastic process where the next step <span class="math inline">\(X_{i+1}\)</span> depends on the current step <span class="math inline">\(X_i\)</span>, but, given current step <span class="math inline">\(X_{i}\)</span>, does not depend on the past <span class="math inline">\(X_1, \dots, X_{i-1}\)</span>.</p></li>
+<li><p>A Markov chain is governed by its transition probabilities <span class="math inline">\(p(x, y) = \mathbb P(X_{i+1} = y \mid X_i = x)\)</span>. These are written in the transition matrix <span class="math inline">\(\mathsf P\)</span>, whose rows add up to 1.</p></li>
+<li><p>The simple random walk on the integers at each step goes up 1 with probability <span class="math inline">\(p\)</span> and down 1 with probability <span class="math inline">\(q\)</span>. If <span class="math inline">\(p = q = \tfrac12\)</span>, it is a simple symmetric random walk.</p></li>
+</ul>
+<p><strong>Read more:</strong></p>
+<ul>
+<li><p><a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsections 2.3.1</p></li>
+<li><p>my notes for <a href="https://mpaldridge.github.io/math2750/">MATH2750 Introduction to Markov Processes</a>, Lectures 1, 2 and 5.</p></li>
+</ul>
 </div>
 
 
@@ -1018,13 +1056,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L16-envelope-2.html" class="pagination-link" aria-label="Envelope rejection sampling II">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Envelope rejection sampling II</span></span>
+      <a href="../problems/P3.html" class="pagination-link" aria-label="Problem Sheet 3">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Problem Sheet 3</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L17-markov-intro.html" class="pagination-link" aria-label="Markov chains in discrete space">
-        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Markov chains in discrete space</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L18-markov-longrun.html" class="pagination-link" aria-label="Markov chains in the long run">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Markov chains in the long run</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

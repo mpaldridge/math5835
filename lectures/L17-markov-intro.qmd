@@ -1,22 +1,24 @@
 # Markov chains in discrete space
 
 {{< include ../_header.qmd >}}
-
+<!--
 ## Markov chains and MCMC
 
-In the first part of this module, we looked at Monte Carlo methods, where we estimated $\theta = \Exg\phi(X)$ by $$ \widehat{\theta}_n = \frac{1}{n} \sum_{i=1}^n \phi(X_i) $$ where $X_1, X_2, \dots, X_n$ are IID samples from the same distributions as $X$. This worked well for relatively simple distributions $X$, like those that can be sampled using the inverse transform method or rejection sampling (or a built-in R function). These tended to be one-dimensional distributions, sometimes with a simple dependence on one parameter.
+In the first part of this module, we looked at Monte Carlo methods, where we estimated $\theta = \Exg\phi(X)$ by $$ \widehat{\theta}_n = \frac{1}{n} \sum_{i=1}^n \phi(X_i) $$ where $X_1, X_2, \dots, X_n$ are IID samples from the same distributions as $X$. To do this, we need samples $X_1, X_2, \dots, X_n $ that (a) come from the exactly the same distribution as $X$, and (b) are independent of each other.
 
-However, these methods are often not available when dealing with very complex distributions $X$. For example, these might not be one-dimensional but rather living in some very high-dimensional space. Or they might depend on many parameters -- and those parameters might themselves be drawn from random distributions (a so-called "hierarchical model").
+We can often manage to generate random samples like these if $X$ has a relatively simple distributions $X$: for example, we can use the inverse transform method or envelope rejection sampling (or a built-in R function). These simple distributions tend to be one-dimensional distributions, sometimes with a simple dependence on one parameter.
 
-For more complicated distributions, we can make progress by loosening the assumption that $X_1, X_2, \dots, X_n$ are IID copies of $X$.
+However, these random number generation methods are often not available when dealing with very complex distributions $X$. For example, these might not be one-dimensional but rather living in some very high-dimensional space. Or they might depend on many parameters -- and those parameters might themselves be drawn from random distributions (a so-called "hierarchical model").
 
--   Rather than the $X_i$ having *exactly* the same distribution as $X$, we might be willing for them to have approximately the same distribution as $X$, and reach the same distribution in the limit as $i \to \infty$.
+For more complicated distributions, we can make progress by loosening the assumption that $X_1, X_2, \dots, X_n$ are perfect IID copies of $X$.
 
--   Rather than having the $X_i$ be independent, we could let them have some dependence, but we will want to set things up so that we limit the dependence so there is only "light" dependence and so that we understand the dependence structure well.
+-   Rather than the $X_i$ having *exactly* the same distribution as $X$, we might be willing for them to have approximately the same distribution as $X$, or to converge to that distribution as $i$ gets large.
+
+-   Rather than having the $X_i$ be completely independent, we could let them have some dependence, but we will want to set things up so that we limit the dependence so there is only "light" dependence and so that we understand the dependence structure well.
 
 The way will do this is to allow $X_1, X_2, \dots$ to be a random process (or "stochastic" process) that has a particular dependence structure known as the **Markov property**. Such a process is known as a **Markov chain**. Random variables in Markov chains can be shown (under certain conditions) to tend to a certain distribution -- we will want to set things up so that that "limiting distribution" is the distribution $X$ we want to sample from.
 
-Using a Monte Carlo estimator where the samples $X_1, X_2, \dots$ are not IID but rather form a Markov chain is known as **Markov chain Monte Carlo** -- although it's almost always referred to by the abbreviation **MCMC**. MCMC is one of the most important ideas in statistics in the second-half of the 20th and in the 21st centuries, and is especially important in Bayesian statistics.
+Using a Monte Carlo estimator where the samples $X_1, X_2, \dots$ are not IID but rather form a Markov chain is known as **Markov chain Monte Carlo** -- almost always referred to by the abbreviation **MCMC**. And "MCMC" has become to be used more widely for generating samples according to a Markov chain even if those samples aren't necessarily used for Monte Carlo estimation. MCMC is one of the most important ideas in statistics in the second-half of the 20th and in the 21st centuries, and is especially important in Bayesian statistics.
 
 In this part of the of the module, we will study MCMC in depth. We will take a brief tour through the theory of Markov chains, then talk about how to use the output of a Markov chain for Monte Carlo estimation. We will look specifically at the **Metropolis--Hastings algorithm**, which is one way of setting up a Markov chain to have a specific distribution as its limiting distribution, and has some properties in common with rejection sampling ideas we have already seen.
 
@@ -32,11 +34,12 @@ The schedule will be:
 
 -   Lectures 22 and 23: MCMC in practice (including for Bayesian statistics).
 
-Some of you may have studied Markov chains before -- for example, in the Leeds second-year module [MATH2750 Introduction to Markov Processes](https://mpaldridge.github.io/math2750/). If so, you should find that today and the next lecture are just a brief reminder of things you already know, but the rest of the material is likely to be new.
+Some of you may have studied Markov chains before -- for example, in the Leeds second-year module [MATH2750 Introduction to Markov Processes](https://mpaldridge.github.io/math2750/). If so, you should find that today and the next lecture are just a brief reminder of things you already know, but the rest of the material is likely to be new. However, I will not assume any pre-existing knowledge of Markov chains, and will teach you everything you need to know for this module.
+
 
 ## Introduction to Markov chains
 
-A **Markov chain** in discrete time $i = 1, 2, \dots$ and discrete space $\mathcal S$ is a sequence of random variables $(X_1, X_2, X_3, \dots)$. The random variables are not independent, but their dependence is limited to just the random variable before it in the list. That is, the next state $X_{i+1}$ can depend on on the current state $X_i$; but, given the current state $X_i$, it has no further dependence on the past states $X_{i-1}, X_{i-2}, \dots, X_2, X_1$. This is known as the "Markov property".
+A **Markov chain** in discrete time $i = 1, 2, \dots$ and discrete space $\mathcal S$ is a sequence of random variables $(X_1, X_2, X_3, \dots)$ taking values in $\mathcal S$. The random variables are not independent, but the dependence of any of the random variables is limited to just the random variable before it in the list. That is, the next state $X_{i+1}$ can depend on on the current state $X_i$; but, given the current state $X_i$, it has no further dependence on the past states $X_{i-1}, X_{i-2}, \dots, X_2, X_1$. This is known as the "Markov property".
 
 Think of playing a simple board game where you roll a dice and move that many squares along the board. Let $X_i$ be the current square you are on. The the next square you land on, $X_{i+1}$:
 
@@ -60,10 +63,10 @@ Consider a simple model of an unreliable printer:
 
 -   If the printer is broken, then the next day there is a 50% chance it has been mended, but a 50% chance it is still broken.
 
-We can model this as a Markov chain on the state space $\mathcal S = \{1, 2\}$, where state 1 denotes that the printer is working and state 2 denotes that the printer is working. We have $$ \begin{align}
+We can model this as a Markov chain on the state space $\mathcal S = \{1, 2\}$, where state 1 denotes that the printer is working and state 2 denotes that the printer is working. We have \begin{align}
 \mathbb P(X_{i+1} = 1 \mid X_i = 1) &= 0.9 & \mathbb P(X_{i+1} = 2 \mid X_i = 1) &= 0.1 \\
 \mathbb P(X_{i+1} = 1 \mid X_i = 2) &= 0.5 & \mathbb P(X_{i+1} = 2 \mid X_i = 2) &= 0.5.
-\end{align} $$
+\end{align}
 :::
 
 ::: {#exm-rw}
@@ -171,6 +174,8 @@ for (i in 1:7) {
 
 **Next time.** *We continue our whistle-stop tour of discrete-space Markov chains.*
 
+-->
+
 ::: mysummary
 **Summary:**
 
@@ -180,5 +185,9 @@ for (i in 1:7) {
 
 -   The simple random walk on the integers at each step goes up 1 with probability $p$ and down 1 with probability $q$. If $p = q = \tfrac12$, it is a simple symmetric random walk.
 
-**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsections 2.3.1; my notes for [MATH2750 Introduction to Markov Processes](https://mpaldridge.github.io/math2750/).
+**Read more:**
+
+-  [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsections 2.3.1
+
+-  my notes for [MATH2750 Introduction to Markov Processes](https://mpaldridge.github.io/math2750/), Lectures 1, 2 and 5.
 :::

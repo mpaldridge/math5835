@@ -315,6 +315,29 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">MCMC</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L17-markov-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Markov chains in discrete space</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L18-markov-longrun.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Markov chains in the long run</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../problems/solutions.html" class="sidebar-item-text sidebar-link">
@@ -400,7 +423,6 @@ window.Quarto = {
 <p>Note that for given <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span>, there’s no guarantee a finite constant <span class="math inline">\(c\)</span> exists such that <span class="math inline">\(f(x) \leq cg(x)\)</span>. Informally, we need <span class="math inline">\(g\)</span> to have tails that are “at least as heavy” as the tails of <span class="math inline">\(f\)</span>.</p>
 <p>We should check this really does sample from <span class="math inline">\(f\)</span>. We saw last time that the PDF of a sample had PDF <span class="math inline">\(f(x) \propto g(x) \,\alpha(x)\)</span>. Here, that is <span class="math display">\[ f(x) \propto g(x)\,\frac{f(x)}{cg(x)} = \frac1c\,f(x) , \]</span> as required.</p>
 <p>In envelope rejection sampling, we reject proposals <span class="math inline">\(x\)</span> with probability <span class="math inline">\(f(x)/cg(x)\)</span>. But we saw last time that rejecting samples is bad – higher rejection probabilities leave us with fewer accepted samples (or requiring more proposals to get the same number of accepted samples). So, for given <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span>, it would be good to pick <span class="math inline">\(c\)</span> as small as possible. We must have <span class="math inline">\(f(x) \leq cg(x)\)</span> for all <span class="math inline">\(x\)</span>, so we must have <span class="math inline">\(c \geq f(x) / g(x)\)</span> for all <span class="math inline">\(x\)</span>, and therefore <span class="math inline">\(c \geq \sup_x f(x)/g(x)\)</span>. (Here, “sup” means “supremum” – it’s like the maximum, except allows for the fact the maximum might only be achieved in a limit, such as <span class="math inline">\(x \to -\infty\)</span> or <span class="math inline">\(x \to +\infty\)</span>.) The best possible <span class="math inline">\(c\)</span>, therefore is to take <span class="math inline">\(c\)</span> to <em>equal</em> this maximum, <span class="math inline">\(c = \sup_x f(x) / g(x)\)</span>, if it’s possible to calculate it.</p>
-<p>[<strong>Note:</strong> <em>I messed this up in the lecture, and accidentally said minimum/infimum, where it should be maximum/supremum.</em>]</p>
 </section>
 <section id="examples" class="level2" data-number="15.3">
 <h2 data-number="15.3" class="anchored" data-anchor-id="examples"><span class="header-section-number">15.3</span> Examples</h2>

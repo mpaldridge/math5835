@@ -1,15 +1,16 @@
 # Markov chains in the long run
 
+<!--
 ## *n*-step transition probabilities
 
 Last time we saw that the probability of a "1-step transition" from $x$ to $y$ is $$ p(x, y) = \mathbb P(X_{i+1} = y \mid X_{i} = x)  .$$ But what is the probability of a "2-step transition" $$ p^{(2)}(x, y) = \mathbb P(X_{i+2} = y \mid X_{i} = x) ?$$
 
-Well, the first step will be from $x$ to some other state $z$; then the second step will have to go from that $z$ to $y$. Thus we have $$ \begin{align}
+Well, the first step will be from $x$ to some other state $z$; then the second step will have to go from that $z$ to $y$. Thus we have \begin{align}
 p^{(2)}(x, y) &= \mathbb P(X_{i+2} = y \mid X_{i} = x) \\
 &= \sum_{z \in \mathcal S} \mathbb P(X_{i+1} = z \mid X_{i} = x) \,\mathbb P(X_{i+2} = y \mid X_{i+1} = z , X_{i} = x) \\
 &= \sum_{z \in \mathcal S} \mathbb P(X_{i+1} = z \mid X_{i} = x) \,\mathbb P(X_{i+2} = y \mid X_{i+1} = z) \\
 &= \sum_{z \in \mathcal S} p(x, z)\,p(z, y) .
-\end{align} $$ Here, in the third line we used the Markov property to delete the unnecessary conditioning on $X_i$.
+\end{align} Here, in the third line we used the Markov property to delete the unnecessary conditioning on $X_i$.
 
 What we have here, though, is the $(x, y)$th entry of the matrix square $\mathsf P^2 = \mathsf{P}\,\mathsf{P}$. That is, to get the matrix of 2-step transitions, we simply take the second matrix power of the matrix of 1-step transitions.
 
@@ -125,7 +126,7 @@ A quick word before we end about the <span style="color:red;">technical conditio
 
 * **<span style="color:red;">Irreducible</red>** roughly means that a Markov chain is "connected up", and isn't just two Markov separate Markov chains (for example). Specifically, it must be at least *possible* to get from any state $x$ to any other state $y$ -- maybe not in a single step, but in some finite number of steps, with probability greater than 0.
 
-* **<span style="color:red;">Aperiodic</red>** is another technical condition, but if a Markov chain has a non-zero probability of staying in the same state, then this is fulfilled. The Markov chains we look at for MCMC will all have a strictly postive probability of staying put.
+* **<span style="color:red;">Aperiodic</red>** is another technical condition, but if an irreducible Markov chain ever has a non-zero probability of staying in the same state, then this is fulfilled. The Markov chains we look at for MCMC will all have a strictly positive probability of staying put, so will be aperiodic.
 
 * **<span style="color:red;">Positive recurrence</red>** is a highly technical condition we won't get into here.
 
@@ -134,6 +135,7 @@ If you do want to read more about the theory of Markov chains, and these technic
 
 
 **Next time.** *We we look at Markov chain Monte Carlo; specifically, how to set up a Markov chain that has a given probability mass function as its stationary distribution.*
+-->
 
 ::: mysummary
 **Summary:**
@@ -144,5 +146,9 @@ If you do want to read more about the theory of Markov chains, and these technic
 
 -   The ergodic theorem says that (under certain technical conditions) $\frac{1}{n}\sum_{i=1}^n \phi(X_i)$, where $X_i$ is Markov chain, tends to $\operatorname{\mathbb E}\phi(X)$, where the PMF of $X$ is the unique stationary distribution of the Markov chain.
 
-**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsections 2.3.1 and 4.1.2; my notes for [MATH2750 Introduction to Markov Processes](https://mpaldridge.github.io/math2750/).
+**Read more:**
+
+- [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsections 2.3.1 and 4.1.2
+
+-  my notes for [MATH2750 Introduction to Markov Processes](https://mpaldridge.github.io/math2750/), Lectures 7 and 9--11
 :::
