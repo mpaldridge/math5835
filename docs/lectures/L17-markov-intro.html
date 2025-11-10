@@ -414,10 +414,10 @@ Consider a simple model of an unreliable printer:
 
 -   If the printer is broken, then the next day there is a 50% chance it has been mended, but a 50% chance it is still broken.
 
-We can model this as a Markov chain on the state space $\mathcal S = \{1, 2\}$, where state 1 denotes that the printer is working and state 2 denotes that the printer is working. We have $$ \begin{align}
+We can model this as a Markov chain on the state space $\mathcal S = \{1, 2\}$, where state 1 denotes that the printer is working and state 2 denotes that the printer is working. We have \begin{align}
 \mathbb P(X_{i+1} = 1 \mid X_i = 1) &= 0.9 & \mathbb P(X_{i+1} = 2 \mid X_i = 1) &= 0.1 \\
 \mathbb P(X_{i+1} = 1 \mid X_i = 2) &= 0.5 & \mathbb P(X_{i+1} = 2 \mid X_i = 2) &= 0.5.
-\end{align} $$
+\end{align}
 :::
 
 ::: {#exm-rw}

@@ -354,12 +354,12 @@ window.Quarto = {
 
 Last time we saw that the probability of a "1-step transition" from $x$ to $y$ is $$ p(x, y) = \mathbb P(X_{i+1} = y \mid X_{i} = x)  .$$ But what is the probability of a "2-step transition" $$ p^{(2)}(x, y) = \mathbb P(X_{i+2} = y \mid X_{i} = x) ?$$
 
-Well, the first step will be from $x$ to some other state $z$; then the second step will have to go from that $z$ to $y$. Thus we have $$ \begin{align}
+Well, the first step will be from $x$ to some other state $z$; then the second step will have to go from that $z$ to $y$. Thus we have \begin{align}
 p^{(2)}(x, y) &= \mathbb P(X_{i+2} = y \mid X_{i} = x) \\
 &= \sum_{z \in \mathcal S} \mathbb P(X_{i+1} = z \mid X_{i} = x) \,\mathbb P(X_{i+2} = y \mid X_{i+1} = z , X_{i} = x) \\
 &= \sum_{z \in \mathcal S} \mathbb P(X_{i+1} = z \mid X_{i} = x) \,\mathbb P(X_{i+2} = y \mid X_{i+1} = z) \\
 &= \sum_{z \in \mathcal S} p(x, z)\,p(z, y) .
-\end{align} $$ Here, in the third line we used the Markov property to delete the unnecessary conditioning on $X_i$.
+\end{align} Here, in the third line we used the Markov property to delete the unnecessary conditioning on $X_i$.
 
 What we have here, though, is the $(x, y)$th entry of the matrix square $\mathsf P^2 = \mathsf{P}\,\mathsf{P}$. That is, to get the matrix of 2-step transitions, we simply take the second matrix power of the matrix of 1-step transitions.
 
