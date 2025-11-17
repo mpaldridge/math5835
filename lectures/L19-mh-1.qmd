@@ -96,16 +96,21 @@ plot(
 )
 ```
 
-But if we look at the overall graph of which samples came up overall, we see that their proportions (red) are extremely close to what we would expect from the true geometric distribution (blue).
+But if we look at a graph of which samples came up overall, we see that their proportions (red) are extremely close to what we would expect from the true geometric distribution (blue).
 
 ```{r MCgeom}
 #| code-fold: TRUE
 plot(
   table(MC)/n,
-  xlim = c(0, 10), col = "red", ylim = c(0, 0.35),
+  xlim = c(0, 10), col = "red", ylim = c(0, 0.35), lwd = 2,
   xlab = "value", ylab = "probability"
 )
-points(1:10 + 0.05, (2/3)^(1:10 - 1) * (1/3), col = "blue", type = "h", lwd = 2)
+
+points(1:10 + 0.1, (2/3)^(1:10 - 1) * (1/3), col = "blue", type = "h", lwd = 3)
+
+legend("topright", c("samples", "true geometric"),
+  col = c("red", "blue"), lwd = c(2, 3)
+)
 ```
 
 Suppose we wanted to estimate $\mathbb EX^2$, where $X \sim \operatorname{Geom}(\frac{1}{3})$. We already know how to do this the "basic" Monte Carlo way. But we can now do it the Markov chain Monte Carlo (MCMC) way, by using the output to this Markov chain.
@@ -142,3 +147,4 @@ Suppose first that $$\frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} \geq 1 \qquad\text{an
 If, on the other hand $$\frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} \leq 1 \qquad\text{and} \qquad \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} \geq 1 ,$$ then the same argument works the other way around.
 :::
 -->
+

@@ -481,7 +481,7 @@ plot(
 
 
 
-But if we look at the overall graph of which samples came up overall, we see that their proportions (red) are extremely close to what we would expect from the true geometric distribution (blue).
+But if we look at a graph of which samples came up overall, we see that their proportions (red) are extremely close to what we would expect from the true geometric distribution (blue).
 
 
 
@@ -493,10 +493,15 @@ But if we look at the overall graph of which samples came up overall, we see tha
 ```{.r .cell-code  code-fold="true" code-summary="Code for drawing this graph"}
 plot(
   table(MC)/n,
-  xlim = c(0, 10), col = "red", ylim = c(0, 0.35),
+  xlim = c(0, 10), col = "red", ylim = c(0, 0.35), lwd = 2,
   xlab = "value", ylab = "probability"
 )
-points(1:10 + 0.05, (2/3)^(1:10 - 1) * (1/3), col = "blue", type = "h", lwd = 2)
+
+points(1:10 + 0.1, (2/3)^(1:10 - 1) * (1/3), col = "blue", type = "h", lwd = 3)
+
+legend("topright", c("samples", "true geometric"),
+  col = c("red", "blue"), lwd = c(2, 3)
+)
 ```
 
 ::: {.cell-output-display}
