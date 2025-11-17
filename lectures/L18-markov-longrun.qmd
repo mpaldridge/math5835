@@ -1,6 +1,6 @@
 # Markov chains in the long run
 
-<!--
+
 ## *n*-step transition probabilities
 
 Last time we saw that the probability of a "1-step transition" from $x$ to $y$ is $$ p(x, y) = \mathbb P(X_{i+1} = y \mid X_{i} = x)  .$$ But what is the probability of a "2-step transition" $$ p^{(2)}(x, y) = \mathbb P(X_{i+2} = y \mid X_{i} = x) ?$$
@@ -135,7 +135,7 @@ If you do want to read more about the theory of Markov chains, and these technic
 
 
 **Next time.** *We we look at Markov chain Monte Carlo; specifically, how to set up a Markov chain that has a given probability mass function as its stationary distribution.*
--->
+
 
 ::: mysummary
 **Summary:**

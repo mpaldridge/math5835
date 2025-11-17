@@ -1,10 +1,10 @@
 # Markov chains in discrete space
 
 {{< include ../_header.qmd >}}
-<!--
+
 ## Markov chains and MCMC
 
-In the first part of this module, we looked at Monte Carlo methods, where we estimated $\theta = \Exg\phi(X)$ by $$ \widehat{\theta}_n = \frac{1}{n} \sum_{i=1}^n \phi(X_i) $$ where $X_1, X_2, \dots, X_n$ are IID samples from the same distributions as $X$. To do this, we need samples $X_1, X_2, \dots, X_n $ that (a) come from the exactly the same distribution as $X$, and (b) are independent of each other.
+In the first part of this module, we looked at Monte Carlo methods, where we estimated $\theta = \Exg\phi(X)$ by $$ \widehat{\theta}_n = \frac{1}{n} \sum_{i=1}^n \phi(X_i) $$. To do this, we need samples $X_1, X_2, \dots, X_n$ that (a) come from the exactly the same distribution as $X$, and (b) are independent of each other.
 
 We can often manage to generate random samples like these if $X$ has a relatively simple distributions $X$: for example, we can use the inverse transform method or envelope rejection sampling (or a built-in R function). These simple distributions tend to be one-dimensional distributions, sometimes with a simple dependence on one parameter.
 
@@ -14,7 +14,7 @@ For more complicated distributions, we can make progress by loosening the assump
 
 -   Rather than the $X_i$ having *exactly* the same distribution as $X$, we might be willing for them to have approximately the same distribution as $X$, or to converge to that distribution as $i$ gets large.
 
--   Rather than having the $X_i$ be completely independent, we could let them have some dependence, but we will want to set things up so that we limit the dependence so there is only "light" dependence and so that we understand the dependence structure well.
+-   Rather than having the $X_i$ be completely independent, we could let them have some dependence; but we will want to set things up so that we limit the dependence so there is only "light" dependence and so that we understand the dependence structure well.
 
 The way will do this is to allow $X_1, X_2, \dots$ to be a random process (or "stochastic" process) that has a particular dependence structure known as the **Markov property**. Such a process is known as a **Markov chain**. Random variables in Markov chains can be shown (under certain conditions) to tend to a certain distribution -- we will want to set things up so that that "limiting distribution" is the distribution $X$ we want to sample from.
 
@@ -110,7 +110,7 @@ rmarkov <- function(n, trans, initial) {
 }
 ```
 
-The key line is the `for` loop in the penultimate line. Here, the next state $X_{i+1}$ is chosen by sampling a state with probabilities according to the $x$th row of the transition matrix, where $X_i = x$ is the current state.
+The key line is the `for` loop in the penultimate line. Here, the next state $X_{i+1}$ is chosen by sampling one state from the state space with probabilities according to the current state's row of the transition matrix.
 
 ::: {#exm-2state2}
 Let's simulate the two-state broken printer Markov chain from @exm-2state.
@@ -174,7 +174,6 @@ for (i in 1:7) {
 
 **Next time.** *We continue our whistle-stop tour of discrete-space Markov chains.*
 
--->
 
 ::: mysummary
 **Summary:**

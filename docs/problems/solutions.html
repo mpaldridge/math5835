@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L18-markov-longrun.html" rel="prev">
+<link href="../problems/P4.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -335,6 +335,30 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Markov chains in the long run</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L19-mh-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in discrete space</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L20-markov-cont.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Markov chains in continuous space</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L21-mh-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in continuous space</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../problems/P4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Problem Sheet 4</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -355,6 +379,7 @@ window.Quarto = {
   <ul>
   <li><a href="#P1-sols" id="toc-P1-sols" class="nav-link active" data-scroll-target="#P1-sols">Problem Sheet 1</a></li>
   <li><a href="#P2-sols" id="toc-P2-sols" class="nav-link" data-scroll-target="#P2-sols">Problem Sheet 2</a></li>
+  <li><a href="#P3-sols" id="toc-P3-sols" class="nav-link" data-scroll-target="#P3-sols">Problem Sheet 3</a></li>
   </ul>
 </nav>
     </div>
@@ -1044,334 +1069,206 @@ x_6 &amp;= (2 \times 12 + 4) \bmod 16 = 28 \bmod 16 = 12 .
 </div>
 </div>
 </div>
-<!--
-## Problem Sheet 3 {.unnumbered #P3-sols}
-
-
-::: {.hidden}
-$$ $$
-:::
-
-
-
-:::: myq
-**1.**     Consider a discrete random variable that takes values $1, 2, 3, 4.5$ with probabilities $0.2, 0.2, 0.5, 0.1$ respectively. Write some R code that will sample from this distribution. (Your code may use the `runif()` function, but may not use the `sample()` function.) Check that a large sample from your code really does have the correct distribution.
-
-::: myanswers
-*Solution.* There are various ways to do this. With only four outcomes, you can just write a lot of this "by hand", in a way that wouldn't be practical if the range were very large, but it pretty easy to write -- that's what I did.
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-rq1 <- function(n) {
-  x <- c(1, 2, 3, 4.5)
-  prob <- c(0.2, 0.2, 0.5, 0.1)
-  cumprob <- cumsum(prob)
-  unif <- runif(n)
-  ifelse(unif <= cumprob[1], x[1],
-  ifelse(unif <= cumprob[2], x[2],
-  ifelse(unif <= cumprob[3], x[3], x[4])))
-}
-```
-:::
-
-
-
-
-
-                Let's test its accuracy by drawing a bar plot of a large sample.
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-n <- 1e6
-samples <- rq1(n)
-plot(table(samples) / n)
-```
-
-::: {.cell-output-display}
-![](solutions_files/figure-html/unnamed-chunk-29-1.svg){width=672}
-:::
-:::
-
-
-
-
-
-                Looks good to me.
-:::
-::::
-
-::::::: myq
-**2.**     The geometric distribution $X \sim \operatorname{Geom}(p)$ represents the number of trials until the first success, where each trial succeeds independently with probability $p$. The probability mass function of $X$ is $$ p(x) = (1-p)^{x-1}p \qquad x = 1, 2, \dots. $$
-
-:::: subq
-**(a)**  Show that the cumulative distribution function $F$ of $X$ is given by $$ F(x) = 1 - (1-p)^x \qquad x = 1, 2, \dots .$$
-
-::: myanswers
-*Solution.* I can think of two ways to do this. The first way is to just sum the probabilities, using the formula $$ \sum_{z=0}^{x-1} a^z = \frac{1 - a^x}{1-a} $$ for the sum of a geometric progression. We have $$ F(x) = \sum_{y=1}^x (1-p)^{y-1} p = p \sum_{z=0}^{x-1} (1-p)^z = p \frac{1 - (1-p)^{x}}{1 - (1-p)} = 1 - (1-p)^x , $$ where in the second equality where shifted the index of the sum with $z = y-1$.
-
-Alternatively (and, in my opinion, better) is to think about what the geometric distribution *means*. The geometric probability $p(x)$ is the probability the first success occurs on the $x$th trial. So the complement of the CDF, $1 - F(x) = \mathbb P(X > x)$ is the probability the first success happens *after* the $x$th trial, which is if and only if the first $x$ trials are all failures. This is $$ 1 - F(x) = \mathbb P(X > x) = (1-p)^x $$ because each of those $x$ trials fails with probability $1 - p$. This gives the answer.
-:::
-::::
-
-:::: subq
-**(b)**  Write down a function -- either in mathematical notation or in R code -- that will transform a standard uniform random variable $U$ into a geometric distribution. Try to make your function as simple as possible.
-
-::: myanswers
-*Solution.* The "dividing lines" between the segments come at the values $u$ where $u = 1- (1-p)^x$. Actually, since we're trying to make the function simple, we could use $v = 1-u$ (since one minus a standard uniform is still standard uniform), with dividing lines at $v = (1-p)^x$, which corresponds to $x = \log v / \log(1-p)$. So the segment corresponding to a uniformly distributed $v$ will correspond to this value rounded up to the next integer.
-
-So we can take $U \sim \operatorname{U}[0,1]$, and put $$ X = \left\lceil \frac{\log U}{\log(1-p)} \right\rceil . $$
-
-Let's check this with R code
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-rgeom2 <- function(n, p) {
-  unif <- runif(n)
-  ceiling(log(unif) / log(1 - p))
-}
-
-n <- 1e6
-p <- 1/3
-samples <- rgeom2(n, p)
-plot(table(samples) / n, xlim = c(0, 10))
-```
-
-::: {.cell-output-display}
-![](solutions_files/figure-html/unnamed-chunk-30-1.svg){width=672}
-:::
-:::
-
-
-
-
-
-We could alternatively check the probabilities exactly.
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-true <- (1 - p)^{1:8 - 1} * p
-emp <- table(samples)[1:8] / n
-round(rbind(true, emp), 4)
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-          1      2      3      4      5      6      7      8
+</section>
+<section id="P3-sols" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="P3-sols">Problem Sheet 3</h2>
+<div class="hidden">
+<p><span class="math display">\[ \]</span></p>
+</div>
+<div class="myq">
+<p><strong>1.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider a discrete random variable that takes values <span class="math inline">\(1, 2, 3, 4.5\)</span> with probabilities <span class="math inline">\(0.2, 0.2, 0.5, 0.1\)</span> respectively. Write some R code that will sample from this distribution. (Your code may use the <code>runif()</code> function, but may not use the <code>sample()</code> function.) Check that a large sample from your code really does have the correct distribution.</p>
+<div class="myanswers">
+<p><em>Solution.</em> There are various ways to do this. With only four outcomes, you can just write a lot of this “by hand”, in a way that wouldn’t be practical if the range were very large, but it pretty easy to write – that’s what I did.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>rq1 <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="fl">4.5</span>)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  prob <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.1</span>)</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  cumprob <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(prob)</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  unif <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(unif <span class="sc">&lt;=</span> cumprob[<span class="dv">1</span>], x[<span class="dv">1</span>],</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(unif <span class="sc">&lt;=</span> cumprob[<span class="dv">2</span>], x[<span class="dv">2</span>],</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(unif <span class="sc">&lt;=</span> cumprob[<span class="dv">3</span>], x[<span class="dv">3</span>], x[<span class="dv">4</span>])))</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let’s test its accuracy by drawing a bar plot of a large sample.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rq1</span>(n)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(samples) <span class="sc">/</span> n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="solutions_files/figure-html/unnamed-chunk-29-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Looks good to me.</p>
+</div>
+</div>
+<div class="myq">
+<p><strong>2.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The geometric distribution <span class="math inline">\(X \sim \operatorname{Geom}(p)\)</span> represents the number of trials until the first success, where each trial succeeds independently with probability <span class="math inline">\(p\)</span>. The probability mass function of <span class="math inline">\(X\)</span> is <span class="math display">\[ p(x) = (1-p)^{x-1}p \qquad x = 1, 2, \dots. \]</span></p>
+<div class="subq">
+<p><strong>(a)</strong>&nbsp;&nbsp;Show that the cumulative distribution function <span class="math inline">\(F\)</span> of <span class="math inline">\(X\)</span> is given by <span class="math display">\[ F(x) = 1 - (1-p)^x \qquad x = 1, 2, \dots .\]</span></p>
+<div class="myanswers">
+<p><em>Solution.</em> I can think of two ways to do this. The first way is to just sum the probabilities, using the formula <span class="math display">\[ \sum_{z=0}^{x-1} a^z = \frac{1 - a^x}{1-a} \]</span> for the sum of a geometric progression. We have <span class="math display">\[ F(x) = \sum_{y=1}^x (1-p)^{y-1} p = p \sum_{z=0}^{x-1} (1-p)^z = p \frac{1 - (1-p)^{x}}{1 - (1-p)} = 1 - (1-p)^x , \]</span> where in the second equality where shifted the index of the sum with <span class="math inline">\(z = y-1\)</span>.</p>
+<p>Alternatively (and, in my opinion, better) is to think about what the geometric distribution <em>means</em>. The geometric probability <span class="math inline">\(p(x)\)</span> is the probability the first success occurs on the <span class="math inline">\(x\)</span>th trial. So the complement of the CDF, <span class="math inline">\(1 - F(x) = \mathbb P(X &gt; x)\)</span> is the probability the first success happens <em>after</em> the <span class="math inline">\(x\)</span>th trial, which is if and only if the first <span class="math inline">\(x\)</span> trials are all failures. This is <span class="math display">\[ 1 - F(x) = \mathbb P(X &gt; x) = (1-p)^x \]</span> because each of those <span class="math inline">\(x\)</span> trials fails with probability <span class="math inline">\(1 - p\)</span>. This gives the answer.</p>
+</div>
+</div>
+<div class="subq">
+<p><strong>(b)</strong>&nbsp;&nbsp;Write down a function – either in mathematical notation or in R code – that will transform a standard uniform random variable <span class="math inline">\(U\)</span> into a geometric distribution. Try to make your function as simple as possible.</p>
+<div class="myanswers">
+<p><em>Solution.</em> The “dividing lines” between the segments come at the values <span class="math inline">\(u\)</span> where <span class="math inline">\(u = 1- (1-p)^x\)</span>. Actually, since we’re trying to make the function simple, we could use <span class="math inline">\(v = 1-u\)</span> (since one minus a standard uniform is still standard uniform), with dividing lines at <span class="math inline">\(v = (1-p)^x\)</span>, which corresponds to <span class="math inline">\(x = \log v / \log(1-p)\)</span>. So the segment corresponding to a uniformly distributed <span class="math inline">\(v\)</span> will correspond to this value rounded up to the next integer.</p>
+<p>So we can take <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>, and put <span class="math display">\[ X = \left\lceil \frac{\log U}{\log(1-p)} \right\rceil . \]</span></p>
+<p>Let’s check this with R code</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>rgeom2 <span class="ot">&lt;-</span> <span class="cf">function</span>(n, p) {</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  unif <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ceiling</span>(<span class="fu">log</span>(unif) <span class="sc">/</span> <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> p))</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rgeom2</span>(n, p)</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(samples) <span class="sc">/</span> n, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="solutions_files/figure-html/unnamed-chunk-30-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We could alternatively check the probabilities exactly.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>true <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> p)<span class="sc">^</span>{<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span> <span class="sc">-</span> <span class="dv">1</span>} <span class="sc">*</span> p</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>emp <span class="ot">&lt;-</span> <span class="fu">table</span>(samples)[<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>] <span class="sc">/</span> n</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">rbind</span>(true, emp), <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          1      2      3      4      5      6      7      8
 true 0.3333 0.2222 0.1481 0.0988 0.0658 0.0439 0.0293 0.0195
-emp  0.3334 0.2225 0.1476 0.0985 0.0659 0.0442 0.0292 0.0195
-```
-
-
-:::
-:::
-
-
-
-
-
-Looks good again.
-:::
-::::
-:::::::
-
-::::::::: myq
-**3.**     Consider a Cauchy random variable $X$ with probability density function $$ f(x) = \frac{1}{\pi(1 + x^2)} .$$
-
-:::: subq
-**(a)**  ★Show that the cumulative distribution function of $X$ is $$ F(x) = \frac12 + \frac{1}{\pi}\arctan x $$
-
-::: myanswers
-*Solution.* The CDF is $$ \begin{multline}
-F(x) = \int_{-\infty}^x f(y)\,\mathrm{d}y 
-  = \frac{1}{\pi} \int_{-\infty}^x \frac{1}{1+y^2}\,\mathrm{d}y 
+emp  0.3334 0.2225 0.1476 0.0985 0.0659 0.0442 0.0292 0.0195</code></pre>
+</div>
+</div>
+<p>Looks good again.</p>
+</div>
+</div>
+</div>
+<div class="myq">
+<p><strong>3.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider a Cauchy random variable <span class="math inline">\(X\)</span> with probability density function <span class="math display">\[ f(x) = \frac{1}{\pi(1 + x^2)} .\]</span></p>
+<div class="subq">
+<p><strong>(a)</strong>&nbsp;&nbsp;★Show that the cumulative distribution function of <span class="math inline">\(X\)</span> is <span class="math display">\[ F(x) = \frac12 + \frac{1}{\pi}\arctan x \]</span></p>
+<div class="myanswers">
+<p><em>Solution.</em> The CDF is <span class="math display">\[ \begin{multline}
+F(x) = \int_{-\infty}^x f(y)\,\mathrm{d}y
+  = \frac{1}{\pi} \int_{-\infty}^x \frac{1}{1+y^2}\,\mathrm{d}y
   = \frac{1}{\pi} \big[\arctan y\big]_{-\infty}^x \\ = \frac{1}{\pi} \bigg( \arctan x - \Big(-\frac{\pi}{2}\Big)\bigg) = \frac{1}{\pi}\arctan x + \frac12,
-\end{multline}$$ since $\lim_{y\to-\infty} \arctan y = -\frac{\pi}{2}$.
-:::
-::::
-
-:::: subq
-**(b)**  ★Write down a function that will transform a standard uniform random variable $U$ into a Cauchy distribution.
-
-::: myanswers
-*Solution.* We use the inverse transform method: write $U = F(X)$ and invert. Here, we have $$ U = \frac12 + \frac{1}{\pi}\arctan X .$$ Inverting gives $$X = \tan \bigg(\pi \Big(U - \frac12\Big) \bigg) .$$
-
-This can be interpreted as $X = \tan\Theta$ where $\Theta$ is uniform between $-\frac{\pi}{2}$ and $\frac{\pi}{2}$.
-:::
-::::
-
-:::: subq
-**(c)**  Using your answer to part (b), draw a histogram of samples from the Cauchy distribution in R.
-
-::: myanswers
-*Solution.* My function for generating samples is the following:
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-rcauchy2 <- function(n) {
-  unif <- runif(n)
-  tan(pi * (unif - 1/2))
-}
-```
-:::
-
-
-
-
-
-The Cauchy distribution is a very heavy-tailed distribution. So to make the histogram look sensible, I'm going to throw away the occasional very large or very small sample. If I didn't do this, the histogram would probably just look like a single spike at 0. (You of course shouldn't do this when performing Monte Carlo estimation -- those rare very large or very small samples can be extremely important in calculations!)
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-n <- 1e6
-samples <- rcauchy2(n)
-
-samples_rest <- samples[abs(samples) < 12]
-hist(samples_rest, probability = TRUE, ylim = c(0, 0.33), breaks = 48)
-curve(1 / (pi * (1 + x^2)), add = TRUE, n = 1001, lwd = 2, col = "blue")
-```
-
-::: {.cell-output-display}
-![](solutions_files/figure-html/unnamed-chunk-33-1.svg){width=672}
-:::
-:::
-
-
-
-
-:::
-::::
-:::::::::
-
-::::::: myq
-**4.**     Let $F$ be a cumulative distribution function and $F^{-1}$ its inverse.
-
-:::: subq
-**(a)**  Prove that $F^{-1}$ is a non-decreasing function.
-
-::: myanswers
-*Solution.* We recall the definition $F^{-1}(u) = \min \{x : F(x) \geq u\}$. As $u$ increases, the set $A_u = \{x : F(x) \geq u \}$ gets smaller -- more specifically, for $u \leq v$, we have $A_u \subseteq A_v$. Hence the minimum of the set $A_u$ cannot be larger than the minimum of the set $A_v$. Hence $F^{-1}(u) = \min A_u \leq \min A_v = F^{-1}(v)$, as required.
-:::
-::::
-
-:::: subq
-**(b)**  Show that $X = F^{-1}(U)$ and $X' = F^{-1}(1-U)$ have negative (or, rather, non-positive) correlation. You may use any results from the module, provided you state them clearly.
-
-::: myanswers
-*Solutions.* The relevant result here is @thm-neg. This said that if $\phi$ is an non-decreasing function, then $\phi(U)$ and $\phi(1-U)$ have covariance -- and therefore correlation -- less than or equal to 0. Here, we use $F^{-1}$ as the function $\phi$.
-:::
-::::
-:::::::
-
-:::: myq
-**5.**     Let $X \sim \operatorname{Beta}(3, 2)$ be a Beta distribution with PDF $$ f(x) = 12 x^2(1-x) \qquad 0 \leq x \leq 1 . $$ 
-
-Show how you could sample from $X$ using envelope rejection sampling and an optimised value of the constant $c$.
-
-::: myanswers
-*Solution.* The obvious suggestion here is to take $Y$ uniformly distributed on $[0, 1]$, so $g(x) = 1$ (although you don't have to choose that).
-
-To find the optimal value of $c$, we consider the maximum of $f(x)$. We can find that by differentiating $$ f'(x) = \frac{\mathrm{d}}{\mathrm{d}x} (12x^2 - 12x^3) = (24x - 36x^2) , $$ so the maximum is at $x = \frac23$, where $f(x) = \frac{16}{9}$. Therefore, we take $c = \frac{16}{9}$.
-
-Thus, our algorithm is to sample from a standard uniform, and then to accept with probability $$ \alpha(x) = \frac{12x^2(1-x)}{\frac{16}{9}} = \frac{27}{4}\,x^2(1-x) . $$
-:::
-::::
-
-:::: myq
-**6.**     ★ Consider sampling from the half-normal distribution $$ f(x) = \sqrt{\frac{2}{\pi}} \exp\big(-\tfrac12 x^2\big) \qquad x \geq 0 $$ using envelope rejection sampling with an $\operatorname{Exp}(\lambda)$ proposal distribution $$g(x) = \lambda \mathrm{e}^{-\lambda x} \qquad x \geq 0 .$$ You wish to design your envelope rejection sampling algorithm so that the acceptance probability is as high as possible.
-
-:::: subq
-**(a)**  For fixed $\lambda$, show that the optimal value of $c$ is $$c = \sqrt{\frac{2}{\pi}}\,\frac{\exp(\frac12\lambda^2)}{\lambda}.$$
-
-::: {.myanswers}
-*Solution.* This is very similar to @exm-env-norm in Lecture 15. We have $$ \frac{f(x)}{g(x)} = \frac{\sqrt\frac{2}{\pi} \exp(\tfrac12 x^2)}{\lambda \exp(-\lambda x)} = \sqrt\frac{2}{\pi} \,\frac{\exp \big(-\tfrac12 x^2 + \lambda x\big)}{\lambda} . $$ We want to pick $c$ to be the maximum value of this. The maximum occurs where $-\frac12x^2 + \lambda x$ is maximised. By differentiating this and setting equal to 0, we get $-x + \lambda = 0$, so $x = \lambda$ and $$ c =  \sqrt\frac{2}{\pi} \,\frac{\exp \big(-\tfrac12 \lambda^2 + \lambda^2\big)}{\lambda} =   \sqrt\frac{2}{\pi} \,\frac{\exp \big(\tfrac12 \lambda^2\big)}{\lambda}, $$ as required.
-:::
-::::
-
-:::: subq
-**(b)**  Show that the optimal value of $\lambda$ is $\lambda = 1$.
-
-::: myanswers
-*Solution.* Again, our goal is to choose $\lambda$ get $c$ as small as possible, since $1/c$ is the acceptance probability. Differentiating the expression from part (a) with respect to $\lambda$ gives $$ \frac{\mathrm d}{\mathrm d\lambda} \,c = \sqrt\frac{2}{\pi} \frac{\exp \big(\tfrac12 \lambda^2\big)(\lambda^2 - 1)}{\lambda^2}.$$ This is 0 when $\lambda^2 = 1$, and since $\lambda \geq 0$, the only solution is $\lambda = 1$. (This can be easily checked to be a minimum by looking at a sketch of $c$ against $\lambda$, or differentiating twice, or just by thinking about the behaviour of $c$ as a function of $\lambda$.)
-:::
-::::
-
-:::::
-
-:::::: myq
-**7.**      *\[2016 exam, Question 1\]*  In this question, we consider generating samples from the distribution with probability density function $$ f_a(x) = \frac{1}{Z} \,\frac{1}{a(\cos x + 1) + x^2} \qquad x \geq 1,$$ where $a$ is a parameter and $$Z = \int_{1}^{\infty} \frac{1}{a(\cos x + 1) + x^2}\,\mathrm{d}x $$ is a normalising constant.
-
-:::: subq
-**(a)**  Introducing any notation you use, state the inverse transform method for random number generation.
-
-::: myanswers
-*Solution.* Fix a cumulative distribution function (CDF) $F(x) = \mathbb P(X \leq x)$. The inverse CDF is defined to be $F^{-1}(u) = \max \{x : F(x) \geq u\}$. We then have that $X = F^{-1}(U)$ has CDF $F$. We use this typically by writing $U = F(X)$ and inverting to make $X$ the subject.
-:::
-::::
-
-:::: subq
-**(b)**  For $a = 0$, explain how the inverse transform method can be used to generate samples with PDF $f_0$.
-
-::: myanswers
-For $a = 0$, the PDF is
-$$ f_0(x) = \frac{1}{Z} \,\frac{1}{x^2} \qquad x \geq 1 .$$
-
-We should start by finding the normalising constant $Z$: it's
-$$ Z = \int_1^\infty \frac{1}{x^2}\,\mathrm{d}x = \big[-x^{-1}\big]_1^\infty = 0 -(-1) = 1 , $$
-so the PDF is simply $f_0(x) = 1/x^2$.
-
-Next, we want to find the CDF $F$: it's
-$$ F(x) = \int_1^x f_0(y)\,\mathrm{d}y = \int_1^x \frac{1}{y^2}\,\mathrm{d}y = \big[-y^{-1}\big]_1^x = 1 - \frac{1}{x} . $$
-
-Finally, to perform the inverse transform method, we write $U = F(X)$ and invert. We have $U = 1 - 1/x$, and so $X = 1/(1-U)$.
-:::
-::::
-
-:::: subq
-**(c)**  Introducing any notation you use, state the envelope rejection sampling method for random number generation.
-::::
-
-:::: subq
-**(d)**  For $a > 0$, explain how the envelope rejection sampling method can be used to generate samples with PDF $f_a$.
-::::
-
-:::: subq
-**(e)**  How does the efficiency of your method in part (d) change as the value of $a$ increases? Justify your answer.
-::::
-::::::
-
-
-
+\end{multline}\]</span> since <span class="math inline">\(\lim_{y\to-\infty} \arctan y = -\frac{\pi}{2}\)</span>.</p>
+</div>
+</div>
+<div class="subq">
+<p><strong>(b)</strong>&nbsp;&nbsp;★Write down a function that will transform a standard uniform random variable <span class="math inline">\(U\)</span> into a Cauchy distribution.</p>
+<div class="myanswers">
+<p><em>Solution.</em> We use the inverse transform method: write <span class="math inline">\(U = F(X)\)</span> and invert. Here, we have <span class="math display">\[ U = \frac12 + \frac{1}{\pi}\arctan X .\]</span> Inverting gives <span class="math display">\[X = \tan \bigg(\pi \Big(U - \frac12\Big) \bigg) .\]</span></p>
+<p>This can be interpreted as <span class="math inline">\(X = \tan\Theta\)</span> where <span class="math inline">\(\Theta\)</span> is uniform between <span class="math inline">\(-\frac{\pi}{2}\)</span> and <span class="math inline">\(\frac{\pi}{2}\)</span>.</p>
+</div>
+</div>
+<div class="subq">
+<p><strong>(c)</strong>&nbsp;&nbsp;Using your answer to part (b), draw a histogram of samples from the Cauchy distribution in R.</p>
+<div class="myanswers">
+<p><em>Solution.</em> My function for generating samples is the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>rcauchy2 <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  unif <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tan</span>(pi <span class="sc">*</span> (unif <span class="sc">-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>))</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The Cauchy distribution is a very heavy-tailed distribution. So to make the histogram look sensible, I’m going to throw away the occasional very large or very small sample. If I didn’t do this, the histogram would probably just look like a single spike at 0. (You of course shouldn’t do this when performing Monte Carlo estimation – those rare very large or very small samples can be extremely important in calculations!)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rcauchy2</span>(n)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>samples_rest <span class="ot">&lt;-</span> samples[<span class="fu">abs</span>(samples) <span class="sc">&lt;</span> <span class="dv">12</span>]</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(samples_rest, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.33</span>), <span class="at">breaks =</span> <span class="dv">48</span>)</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="dv">1</span> <span class="sc">/</span> (pi <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> x<span class="sc">^</span><span class="dv">2</span>)), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="solutions_files/figure-html/unnamed-chunk-33-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="myq">
+<p><strong>4.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(F\)</span> be a cumulative distribution function and <span class="math inline">\(F^{-1}\)</span> its inverse.</p>
+<div class="subq">
+<p><strong>(a)</strong>&nbsp;&nbsp;Prove that <span class="math inline">\(F^{-1}\)</span> is a non-decreasing function.</p>
+<div class="myanswers">
+<p><em>Solution.</em> We recall the definition <span class="math inline">\(F^{-1}(u) = \min \{x : F(x) \geq u\}\)</span>. As <span class="math inline">\(u\)</span> increases, the set <span class="math inline">\(A_u = \{x : F(x) \geq u \}\)</span> gets smaller – more specifically, for <span class="math inline">\(u \leq v\)</span>, we have <span class="math inline">\(A_u \subseteq A_v\)</span>. Hence the minimum of the set <span class="math inline">\(A_u\)</span> cannot be larger than the minimum of the set <span class="math inline">\(A_v\)</span>. Hence <span class="math inline">\(F^{-1}(u) = \min A_u \leq \min A_v = F^{-1}(v)\)</span>, as required.</p>
+</div>
+</div>
+<div class="subq">
+<p><strong>(b)</strong>&nbsp;&nbsp;Show that <span class="math inline">\(X = F^{-1}(U)\)</span> and <span class="math inline">\(X' = F^{-1}(1-U)\)</span> have negative (or, rather, non-positive) correlation. You may use any results from the module, provided you state them clearly.</p>
+<div class="myanswers">
+<p><em>Solutions.</em> The relevant result here is <a href="../lectures/L07-antithetic-2.html#thm-neg" class="quarto-xref">Theorem&nbsp;<span>7.2</span></a>. This said that if <span class="math inline">\(\phi\)</span> is an non-decreasing function, then <span class="math inline">\(\phi(U)\)</span> and <span class="math inline">\(\phi(1-U)\)</span> have covariance – and therefore correlation – less than or equal to 0. Here, we use <span class="math inline">\(F^{-1}\)</span> as the function <span class="math inline">\(\phi\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="myq">
+<p><strong>5.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let <span class="math inline">\(X \sim \operatorname{Beta}(3, 2)\)</span> be a Beta distribution with PDF <span class="math display">\[ f(x) = 12 x^2(1-x) \qquad 0 \leq x \leq 1 . \]</span></p>
+<p>Show how you could sample from <span class="math inline">\(X\)</span> using envelope rejection sampling and an optimised value of the constant <span class="math inline">\(c\)</span>.</p>
+<div class="myanswers">
+<p><em>Solution.</em> The obvious suggestion here is to take <span class="math inline">\(Y\)</span> uniformly distributed on <span class="math inline">\([0, 1]\)</span>, so <span class="math inline">\(g(x) = 1\)</span> (although you don’t have to choose that).</p>
+<p>To find the optimal value of <span class="math inline">\(c\)</span>, we consider the maximum of <span class="math inline">\(f(x)\)</span>. We can find that by differentiating <span class="math display">\[ f'(x) = \frac{\mathrm{d}}{\mathrm{d}x} (12x^2 - 12x^3) = (24x - 36x^2) , \]</span> so the maximum is at <span class="math inline">\(x = \frac23\)</span>, where <span class="math inline">\(f(x) = \frac{16}{9}\)</span>. Therefore, we take <span class="math inline">\(c = \frac{16}{9}\)</span>.</p>
+<p>Thus, our algorithm is to sample from a standard uniform, and then to accept with probability <span class="math display">\[ \alpha(x) = \frac{12x^2(1-x)}{\frac{16}{9}} = \frac{27}{4}\,x^2(1-x) . \]</span></p>
+</div>
+</div>
+<div class="myq">
+<p><strong>6.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;★ Consider sampling from the half-normal distribution <span class="math display">\[ f(x) = \sqrt{\frac{2}{\pi}} \exp\big(-\tfrac12 x^2\big) \qquad x \geq 0 \]</span> using envelope rejection sampling with an <span class="math inline">\(\operatorname{Exp}(\lambda)\)</span> proposal distribution <span class="math display">\[g(x) = \lambda \mathrm{e}^{-\lambda x} \qquad x \geq 0 .\]</span> You wish to design your envelope rejection sampling algorithm so that the acceptance probability is as high as possible.</p>
+<div class="subq">
+<p><strong>(a)</strong>&nbsp;&nbsp;For fixed <span class="math inline">\(\lambda\)</span>, show that the optimal value of <span class="math inline">\(c\)</span> is <span class="math display">\[c = \sqrt{\frac{2}{\pi}}\,\frac{\exp(\frac12\lambda^2)}{\lambda}.\]</span></p>
+<div class="myanswers">
+<p><em>Solution.</em> This is very similar to <a href="../lectures/L15-envelope-1.html#exm-env-norm" class="quarto-xref">Example&nbsp;<span>15.2</span></a> in Lecture 15. We have <span class="math display">\[ \frac{f(x)}{g(x)} = \frac{\sqrt\frac{2}{\pi} \exp(\tfrac12 x^2)}{\lambda \exp(-\lambda x)} = \sqrt\frac{2}{\pi} \,\frac{\exp \big(-\tfrac12 x^2 + \lambda x\big)}{\lambda} . \]</span> We want to pick <span class="math inline">\(c\)</span> to be the maximum value of this. The maximum occurs where <span class="math inline">\(-\frac12x^2 + \lambda x\)</span> is maximised. By differentiating this and setting equal to 0, we get <span class="math inline">\(-x + \lambda = 0\)</span>, so <span class="math inline">\(x = \lambda\)</span> and <span class="math display">\[ c =  \sqrt\frac{2}{\pi} \,\frac{\exp \big(-\tfrac12 \lambda^2 + \lambda^2\big)}{\lambda} =   \sqrt\frac{2}{\pi} \,\frac{\exp \big(\tfrac12 \lambda^2\big)}{\lambda}, \]</span> as required.</p>
+</div>
+</div>
+<div class="subq">
+<p><strong>(b)</strong>&nbsp;&nbsp;Show that the optimal value of <span class="math inline">\(\lambda\)</span> is <span class="math inline">\(\lambda = 1\)</span>.</p>
+<div class="myanswers">
+<p><em>Solution.</em> Again, our goal is to choose <span class="math inline">\(\lambda\)</span> get <span class="math inline">\(c\)</span> as small as possible, since <span class="math inline">\(1/c\)</span> is the acceptance probability. Differentiating the expression from part (a) with respect to <span class="math inline">\(\lambda\)</span> gives <span class="math display">\[ \frac{\mathrm d}{\mathrm d\lambda} \,c = \sqrt\frac{2}{\pi} \frac{\exp \big(\tfrac12 \lambda^2\big)(\lambda^2 - 1)}{\lambda^2}.\]</span> This is 0 when <span class="math inline">\(\lambda^2 = 1\)</span>, and since <span class="math inline">\(\lambda \geq 0\)</span>, the only solution is <span class="math inline">\(\lambda = 1\)</span>. (This can be easily checked to be a minimum by looking at a sketch of <span class="math inline">\(c\)</span> against <span class="math inline">\(\lambda\)</span>, or differentiating twice, or just by thinking about the behaviour of <span class="math inline">\(c\)</span> as a function of <span class="math inline">\(\lambda\)</span>.)</p>
+</div>
+</div>
+</div>
+<div class="myq">
+<p><strong>7.</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>[2016 exam, Question 1]</em>&nbsp;&nbsp;In this question, we consider generating samples from the distribution with probability density function <span class="math display">\[ f_a(x) = \frac{1}{Z} \,\frac{1}{a(\cos x + 1) + x^2} \qquad x \geq 1,\]</span> where <span class="math inline">\(a\)</span> is a parameter and <span class="math display">\[Z = \int_{1}^{\infty} \frac{1}{a(\cos x + 1) + x^2}\,\mathrm{d}x \]</span> is a normalising constant.</p>
+<div class="subq">
+<p><strong>(a)</strong>&nbsp;&nbsp;Introducing any notation you use, state the inverse transform method for random number generation.</p>
+<div class="myanswers">
+<p><em>Solution.</em> Fix a cumulative distribution function (CDF) <span class="math inline">\(F(x) = \mathbb P(X \leq x)\)</span>. The inverse CDF is defined to be <span class="math inline">\(F^{-1}(u) = \max \{x : F(x) \geq u\}\)</span>. We then have that <span class="math inline">\(X = F^{-1}(U)\)</span> has CDF <span class="math inline">\(F\)</span>. We use this typically by writing <span class="math inline">\(U = F(X)\)</span> and inverting to make <span class="math inline">\(X\)</span> the subject.</p>
+</div>
+</div>
+<div class="subq">
+<p><strong>(b)</strong>&nbsp;&nbsp;For <span class="math inline">\(a = 0\)</span>, explain how the inverse transform method can be used to generate samples with PDF <span class="math inline">\(f_0\)</span>.</p>
+<div class="myanswers">
+<p>For <span class="math inline">\(a = 0\)</span>, the PDF is <span class="math display">\[ f_0(x) = \frac{1}{Z} \,\frac{1}{x^2} \qquad x \geq 1 .\]</span></p>
+<p>We should start by finding the normalising constant <span class="math inline">\(Z\)</span>: it’s <span class="math display">\[ Z = \int_1^\infty \frac{1}{x^2}\,\mathrm{d}x = \big[-x^{-1}\big]_1^\infty = 0 -(-1) = 1 , \]</span> so the PDF is simply <span class="math inline">\(f_0(x) = 1/x^2\)</span>.</p>
+<p>Next, we want to find the CDF <span class="math inline">\(F\)</span>: it’s <span class="math display">\[ F(x) = \int_1^x f_0(y)\,\mathrm{d}y = \int_1^x \frac{1}{y^2}\,\mathrm{d}y = \big[-y^{-1}\big]_1^x = 1 - \frac{1}{x} . \]</span></p>
+<p>Finally, to perform the inverse transform method, we write <span class="math inline">\(U = F(X)\)</span> and invert. We have <span class="math inline">\(U = 1 - 1/x\)</span>, and so <span class="math inline">\(X = 1/(1-U)\)</span>.</p>
+</div>
+</div>
+<div class="subq">
+<p><strong>(c)</strong>&nbsp;&nbsp;Introducing any notation you use, state the envelope rejection sampling method for random number generation.</p>
+</div>
+<div class="subq">
+<p><strong>(d)</strong>&nbsp;&nbsp;For <span class="math inline">\(a &gt; 0\)</span>, explain how the envelope rejection sampling method can be used to generate samples with PDF <span class="math inline">\(f_a\)</span>.</p>
+</div>
+<div class="subq">
+<p><strong>(e)</strong>&nbsp;&nbsp;How does the efficiency of your method in part (d) change as the value of <span class="math inline">\(a\)</span> increases? Justify your answer.</p>
+</div>
+</div>
+<!--
 ## Problem Sheet 4 {.unnumbered #P4-sols}
 
 
@@ -2733,8 +2630,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L18-markov-longrun.html" class="pagination-link" aria-label="Markov chains in the long run">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Markov chains in the long run</span></span>
+      <a href="../problems/P4.html" class="pagination-link" aria-label="Problem Sheet 4">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Problem Sheet 4</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

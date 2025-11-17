@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,7 +64,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../problems/solutions.html" rel="next">
+<link href="../lectures/L19-mh-1.html" rel="next">
 <link href="../lectures/L17-markov-intro.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -302,6 +336,30 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Markov chains in the long run</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L19-mh-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in discrete space</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L20-markov-cont.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Markov chains in continuous space</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L21-mh-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in continuous space</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../problems/P4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Problem Sheet 4</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -315,8 +373,16 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#n-step-transition-probabilities" id="toc-n-step-transition-probabilities" class="nav-link active" data-scroll-target="#n-step-transition-probabilities"><span class="header-section-number">18.1</span> <em>n</em>-step transition probabilities</a></li>
+  <li><a href="#stationary-distributions" id="toc-stationary-distributions" class="nav-link" data-scroll-target="#stationary-distributions"><span class="header-section-number">18.2</span> Stationary distributions</a></li>
+  <li><a href="#limit-theorems" id="toc-limit-theorems" class="nav-link" data-scroll-target="#limit-theorems"><span class="header-section-number">18.3</span> Limit theorems</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -349,155 +415,80 @@ window.Quarto = {
 </header>
 
 
-<!--
-## *n*-step transition probabilities
-
-Last time we saw that the probability of a "1-step transition" from $x$ to $y$ is $$ p(x, y) = \mathbb P(X_{i+1} = y \mid X_{i} = x)  .$$ But what is the probability of a "2-step transition" $$ p^{(2)}(x, y) = \mathbb P(X_{i+2} = y \mid X_{i} = x) ?$$
-
-Well, the first step will be from $x$ to some other state $z$; then the second step will have to go from that $z$ to $y$. Thus we have \begin{align}
-p^{(2)}(x, y) &= \mathbb P(X_{i+2} = y \mid X_{i} = x) \\
-&= \sum_{z \in \mathcal S} \mathbb P(X_{i+1} = z \mid X_{i} = x) \,\mathbb P(X_{i+2} = y \mid X_{i+1} = z , X_{i} = x) \\
-&= \sum_{z \in \mathcal S} \mathbb P(X_{i+1} = z \mid X_{i} = x) \,\mathbb P(X_{i+2} = y \mid X_{i+1} = z) \\
-&= \sum_{z \in \mathcal S} p(x, z)\,p(z, y) .
-\end{align} Here, in the third line we used the Markov property to delete the unnecessary conditioning on $X_i$.
-
-What we have here, though, is the $(x, y)$th entry of the matrix square $\mathsf P^2 = \mathsf{P}\,\mathsf{P}$. That is, to get the matrix of 2-step transitions, we simply take the second matrix power of the matrix of 1-step transitions.
-
-In the same way we can calculate an $n$-step transition probability $p^{(n)}(x, y) = \mathbb P(X_{i+n} = y \mid X_i = x)$ by summing over all the potential paths $x \to z_1 \to \cdots \to z_{n-1} \to y$ of length $n$ from $x$ to $y$. This gives
-$$ p^{(n)}(x, y) = \sum_{z_1, \dots, z_{n-1} \in \mathcal S} p(x, z_1)\,p(z_1, z_2)\cdots p(z_{n-2},z_{n-1})\,p(z_{n-1}, y).$$
-This is the expression for the $(x,y)$th entry of the $n$th matrix power $\mathsf{P}^{n} = \mathsf{P}\,\mathsf{P}^{n-1}= \mathsf{P}^{n-1}\,\mathsf{P}$, so we can find all the $n$-step transition probabilities from $\mathsf P^n$.
-
-(Remember that the matrix power $\mathsf P^n$ is what we get by multiplying the whole matrix $\mathsf P$ by itself $n$ times, using the rules for multiplying matrices. It's not just what we get from taking the $n$th power of the number in each entry. In R, proper matrix multiplication is `P %*% P`, while `P * P` is simply entry-wise multiplication.)
-
-::: {#exm-2state-nstep}
-Let's go back to our two-state "unreliable printer" Markov chain. Here, we had
-$$ \mathsf P = \begin{pmatrix} 0.9 & 0.1 \\ 0.5 & 0.5 \end{pmatrix} . $$
-The 2-step transition probabilities are given by
-$$ \mathsf P^2 = \begin{pmatrix} 0.9 & 0.1 \\ 0.5 & 0.5 \end{pmatrix}\begin{pmatrix} 0.9 & 0.1 \\ 0.5 & 0.5 \end{pmatrix} = \begin{pmatrix} 0.86 & 0.14 \\ 0.7 & 0.3 \end{pmatrix} . $$
-So if the printer is working today, there's an 86% probability it's working in two days' time, for example.
-
-For bigger matrix powers, it's best to use a computer. In R, the following "quick and dirty" function works well for small powers. (For larger powers, I recommend finding a package with an appropriate built-in matrix power function.)
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-matrixpow <- function(M, n) {
-  if (n == 1) return(M)
-  else return(M %*% matrixpow(M, n - 1))
-}
-```
-:::
-
-
-
-
-
-
-From this we find the 10-step transition probability
-$$ \mathsf P^{10} = \begin{pmatrix} 0.8334 & 0.1667 \\ 0.8332 & 0.1668 \end{pmatrix}. $$
-The first row of this matrix denotes the probabilities of where we end up after 10 steps if we start in state 1, and the second row for if we start in state 2. These are very nearly the same -- we have a probability $\approx 0.883$ if being in state 1 and $\approx 0.167$ of being in state 2, *regardless of which state we started in*. It's as if the Markov chain has forgotten where we started.
-
-Similarly, if we look at the 11-step transition probability, that comes out as
-$$ \mathsf P^{11} = \begin{pmatrix} 0.8333 & 0.1667 \\ 0.8333 & 0.1667 \end{pmatrix}, $$
-which is virtually the same distribution as after 10 steps. It seems that, after a large number of steps $i$, that we are "settling down" to a "long run distribution" where $\mathbb P(X_i = 1) = 0.8333$ and $\mathbb P(X_i = 2) = 0.1667$, not only regardless of which state we started in but also for all large $i$.
-:::
-
-We will investigate these phenomena in the next section.
-
-## Stationary distributions
-
-Suppose our Markov chain is currently in the distribution $\pi$ at step $i$. That is, for each $x \in \mathcal S$, we have $\mathbb P(X_i = x) = \pi(x)$. What is the probability we are in state $y$ at the next step $i+1$? Well, conditioning on the current step, we have
-$$ \mathbb P(X_{i+1} = y) = \sum_{x \in \mathcal S} \mathbb P(X_i = x) \,\mathbb P(X_{i+1} = y \mid X_i = x) = \sum_{x \in \mathcal S} \pi(x) \,p(x, y) . $$
-
-Now if, $X_{i+1}$ *also* has the distribution $\pi$ -- that is, if $\mathbb P(X_{i+1} = y) = \pi(y)$ -- then we would remain in the distribution $\pi$ a time step $i+1$. And, by the same logic, time steps $i+2, i+3, \dots$ and forever. That seems a bit like what we saw happening in @exm-2state-nstep. We call this a **stationary distribution**.
-
-A stationary distribution means that *the probability of being in state $x$* is staying the same, as $\pi(x)$. Any particular realisation of the Markov chain will, of course, continue moving between states.
-
-::: {#def-statdist}
-Let $(X_i)$ be a Markov chain on a discrete state space $\mathcal S$ with transition matrix $\mathsf P = (p(x,y))$. Let $\pi$ be a distribution on $\mathcal S$, in that $\pi(x) \geq 0$ for all $x$ and $\sum_{x \in \mathcal S} \pi(x) = 1$. If, for all $y \in \mathcal S$ we have
-$$ \pi(y) = \sum_{x \in \mathcal S} \pi(x) \,p(x, y) , $$ {#eq-statdist}
-then we say that $\pi$ is a **stationary distribution**.
-:::
-
-In matrix form, we can write @eq-statdist as $\boldsymbol\pi = \boldsymbol\pi\mathsf P$, where $\boldsymbol\pi$ is a *row* vector (not the more common column vector holding the values of $\pi(x)$.
-
-Solving @eq-statdist or $\boldsymbol\pi = \boldsymbol\pi\mathsf P$ can be a bit fiddly. It's often easier to check something called the **detailed balance equations**.
-
-::: {#thm-detbal}
-Let $(X_i)$ be a Markov chain on a discrete state space $\mathcal S$ with transition matrix $\mathsf P = (p(x,y))$. Let $\pi$ be a distribution on $\mathcal S$ that solved the **detailed balance equations**
-$$ \pi(y) \,p(y, x) = \pi(x)\,p(x,y) \qquad \text{for all $x, y \in \mathcal S$.} $$
-Then $\pi$ is a stationary distribution.
-:::
-
-::: {.proof}
-Sum both sides over $x$. The left-hand side becomes
-$$ \sum_{x \in \mathcal S} \pi(y)\,p(y,x) = \pi(y) \sum_{x \in \mathcal S} p(y,x) = \pi(y) , $$
-since rows of a transition matrix sum up to 1. The right hand side becomes
-$$ \sum_{x \in \mathcal S}\pi(x)\,p(x,y) .$$
-Hence, we have
-$$ \pi(y) = \sum_{x \in \mathcal S} \pi(x) \,p(x, y) , $$
-which is the definition of a stationary distribution.
-:::
-
-::: {#exm-2state-stat}
-We return to @exm-2state and @exm-2state-nstep. There's no need to check the detailed balance equations when $x = y$, so we just need
-$$ \pi(2)\,p(2, 1) = \pi(1)\,p(1, 2) \qquad \Longrightarrow \qquad 0.5\pi(2) = 0.1\pi(1) .$$
-Remembering that $\pi$ must sum to 1, we get $\pi(1) = \tfrac16 = 0.1667$ and $\pi(2) = \tfrac56 = 0.8333$.
-
-Look how that compares with our results for $\mathsf P^{10}$ and $\mathsf P^{11}$ -- this $\pi$ was precisely the values we saw in every row of $\mathsf P^n$ for large $n$.
-:::
-
-## Limit theorems
-
-The big central theorem of Markov chains in discrete space is the following. We will highlight some technical conditions in <span style="color:red;">red</span> that we will return to later.
-
-::: {#thm-ergodic}
-Let $(X_i)$ be a Markov chain on a discrete state space $\mathcal S$ with transition matrix $\mathsf P$. Suppose that $(X_i)$ is <span style="color:red;">irreducible</span> and <span style="color:red;">positive recurrent</span>.
-
-1. There exists a stationary distribution $\pi$, which is unique.
-
-2. **(Limit theorem)** If $(X_i)$ is also <span style="color:red;">aperiodic</span>, then $\mathbb P(X_n = y \mid X_1 = x) \to \pi(y)$ as $n \to \infty$ for all $y \in \mathcal S$ , regardless of the starting state $X_1 = x$, where $\pi$ is the unique stationary distribution.
-
-3. **(Ergodic theorem, 1)** Write $$V_n(x) = \frac{1}{n} \big|\{i = 1, 2, \dots, n : X_i = x\}\big|$$ for the proportion of the first $n$ steps spent in state $x$. Then $V_n(x) \to \pi(x)$ as $n \to \infty$ for all $x \in \mathcal S$, regardless of the starting state $X_1$, where $\pi$ is the unique stationary distribution.
-
-4. **(Ergodic theorem, 2)** Let $\phi$ be a function on the state space $\mathcal S$. Let $X$ have probability mass function $\pi$, where $\pi$ is the unique stationary distribution. Then $$ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X), $$ as $n \to \infty$, regardless of the starting state $X_1$.
-:::
-
-("Ergodic" is a word mathematicians use when talking about long-run average behaviour.)
-
-The precise mathematical statements of this theorem are not important for this module. However, it is important to have a rough idea what the statements mean -- especially part 4, which is central to the idea of Markov chain Monte Carlo we will discuss over the next lectures.
-
-The first part tells us that (provided the technical conditions are fulfilled) we always have a stationary distribution and there's always exactly one of them. This allows us to use phrases like "where $\pi$ is the unique stationary distribution" in the other parts of the theorem.
-
-The second part tells us that any $n$-step transition probability $p^{(n)}(x,y)$ tends to $\pi(y)$, no matter what the value of $x$. In terms of the $n$-step transition matrix $\mathsf P^n$, this means that every row of $\mathsf P^n$ should end up looking like an identical copy of the row vector $\boldsymbol\pi$. That is exactly what we found in @exm-2state-nstep.
-
-The third part tells us that, in the long run, $\pi$ describes the proportion of time we spend in each state. In the "unreliable printer" example of @exm-2state-stat, this means that the printer spends 83% of the time working and 17% of the time broken in the long run, regardless of whether it was working or broken on day 1.
-
-The fourth part is by far the most important result for us, as it relates Markov chains back to the idea of Monte Carlo estimation. Let's look at the equation in the fourth part,
-$$ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X). $$
-If the $X_i$ were independent and identically distributed, this would just be the ordinary law of large numbers, which tells us that the Monte Carlo estimator (the left-hand side) is an accurate estimator of $\operatorname{\mathbb E}\phi(X)$, when the number of samples is large. This result tells us that we still get a good estimator when the $X_i$ are not IID, but rather come from a Markov chain whose stationary distribution is the PMF of $X$.
-
-This fourth part is what allows us to do **Markov chain Monte Carlo** (**MCMC**): Monte Carlo estimation when the $X_i$ are the outputs from a Markov chain. If we want to estimate $\operatorname{\mathbb E}\phi(X)$, we just need to find a Markov chain who stationary distribution is the PMF of $X$, and then form the Monte Carlo estimate in the usual way. In the next lecture, the **Metropolis--Hastings algorithm** will show us a way to do find a Markov chain with a given stationary distribution.
-
-A quick word before we end about the <span style="color:red;">technical conditions</span> in @thm-ergodic. The precise definitions are not important here, but let us say the following:
-
-* **<span style="color:red;">Irreducible</red>** roughly means that a Markov chain is "connected up", and isn't just two Markov separate Markov chains (for example). Specifically, it must be at least *possible* to get from any state $x$ to any other state $y$ -- maybe not in a single step, but in some finite number of steps, with probability greater than 0.
-
-* **<span style="color:red;">Aperiodic</red>** is another technical condition, but if an irreducible Markov chain ever has a non-zero probability of staying in the same state, then this is fulfilled. The Markov chains we look at for MCMC will all have a strictly positive probability of staying put, so will be aperiodic.
-
-* **<span style="color:red;">Positive recurrence</red>** is a highly technical condition we won't get into here.
-
-If you do want to read more about the theory of Markov chains, and these technical conditions in particular, I recommend my lecture notes for my notes for [MATH2750 Introduction to Markov Processes](https://mpaldridge.github.io/math2750/). This is entirely optional, though, and this knowledge is *not* required for this module and its exam.
-
-
-
-**Next time.** *We we look at Markov chain Monte Carlo; specifically, how to set up a Markov chain that has a given probability mass function as its stationary distribution.*
--->
+<section id="n-step-transition-probabilities" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="n-step-transition-probabilities"><span class="header-section-number">18.1</span> <em>n</em>-step transition probabilities</h2>
+<p>Last time we saw that the probability of a “1-step transition” from <span class="math inline">\(x\)</span> to <span class="math inline">\(y\)</span> is <span class="math display">\[ p(x, y) = \mathbb P(X_{i+1} = y \mid X_{i} = x)  .\]</span> But what is the probability of a “2-step transition” <span class="math display">\[ p^{(2)}(x, y) = \mathbb P(X_{i+2} = y \mid X_{i} = x) ?\]</span></p>
+<p>Well, the first step will be from <span class="math inline">\(x\)</span> to some other state <span class="math inline">\(z\)</span>; then the second step will have to go from that <span class="math inline">\(z\)</span> to <span class="math inline">\(y\)</span>. Thus we have <span class="math display">\[\begin{align}
+p^{(2)}(x, y) &amp;= \mathbb P(X_{i+2} = y \mid X_{i} = x) \\
+&amp;= \sum_{z \in \mathcal S} \mathbb P(X_{i+1} = z \mid X_{i} = x) \,\mathbb P(X_{i+2} = y \mid X_{i+1} = z , X_{i} = x) \\
+&amp;= \sum_{z \in \mathcal S} \mathbb P(X_{i+1} = z \mid X_{i} = x) \,\mathbb P(X_{i+2} = y \mid X_{i+1} = z) \\
+&amp;= \sum_{z \in \mathcal S} p(x, z)\,p(z, y) .
+\end{align}\]</span> Here, in the third line we used the Markov property to delete the unnecessary conditioning on <span class="math inline">\(X_i\)</span>.</p>
+<p>What we have here, though, is the <span class="math inline">\((x, y)\)</span>th entry of the matrix square <span class="math inline">\(\mathsf P^2 = \mathsf{P}\,\mathsf{P}\)</span>. That is, to get the matrix of 2-step transitions, we simply take the second matrix power of the matrix of 1-step transitions.</p>
+<p>In the same way we can calculate an <span class="math inline">\(n\)</span>-step transition probability <span class="math inline">\(p^{(n)}(x, y) = \mathbb P(X_{i+n} = y \mid X_i = x)\)</span> by summing over all the potential paths <span class="math inline">\(x \to z_1 \to \cdots \to z_{n-1} \to y\)</span> of length <span class="math inline">\(n\)</span> from <span class="math inline">\(x\)</span> to <span class="math inline">\(y\)</span>. This gives <span class="math display">\[ p^{(n)}(x, y) = \sum_{z_1, \dots, z_{n-1} \in \mathcal S} p(x, z_1)\,p(z_1, z_2)\cdots p(z_{n-2},z_{n-1})\,p(z_{n-1}, y).\]</span> This is the expression for the <span class="math inline">\((x,y)\)</span>th entry of the <span class="math inline">\(n\)</span>th matrix power <span class="math inline">\(\mathsf{P}^{n} = \mathsf{P}\,\mathsf{P}^{n-1}= \mathsf{P}^{n-1}\,\mathsf{P}\)</span>, so we can find all the <span class="math inline">\(n\)</span>-step transition probabilities from <span class="math inline">\(\mathsf P^n\)</span>.</p>
+<p>(Remember that the matrix power <span class="math inline">\(\mathsf P^n\)</span> is what we get by multiplying the whole matrix <span class="math inline">\(\mathsf P\)</span> by itself <span class="math inline">\(n\)</span> times, using the rules for multiplying matrices. It’s not just what we get from taking the <span class="math inline">\(n\)</span>th power of the number in each entry. In R, proper matrix multiplication is <code>P %*% P</code>, while <code>P * P</code> is simply entry-wise multiplication.)</p>
+<div id="exm-2state-nstep" class="theorem example">
+<p><span class="theorem-title"><strong>Example 18.1</strong></span> Let’s go back to our two-state “unreliable printer” Markov chain. Here, we had <span class="math display">\[ \mathsf P = \begin{pmatrix} 0.9 &amp; 0.1 \\ 0.5 &amp; 0.5 \end{pmatrix} . \]</span> The 2-step transition probabilities are given by <span class="math display">\[ \mathsf P^2 = \begin{pmatrix} 0.9 &amp; 0.1 \\ 0.5 &amp; 0.5 \end{pmatrix}\begin{pmatrix} 0.9 &amp; 0.1 \\ 0.5 &amp; 0.5 \end{pmatrix} = \begin{pmatrix} 0.86 &amp; 0.14 \\ 0.7 &amp; 0.3 \end{pmatrix} . \]</span> So if the printer is working today, there’s an 86% probability it’s working in two days’ time, for example.</p>
+<p>For bigger matrix powers, it’s best to use a computer. In R, the following “quick and dirty” function works well for small powers. (For larger powers, I recommend finding a package with an appropriate built-in matrix power function.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>matrixpow <span class="ot">&lt;-</span> <span class="cf">function</span>(M, n) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="sc">==</span> <span class="dv">1</span>) <span class="fu">return</span>(M)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="fu">return</span>(M <span class="sc">%*%</span> <span class="fu">matrixpow</span>(M, n <span class="sc">-</span> <span class="dv">1</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>From this we find the 10-step transition probability <span class="math display">\[ \mathsf P^{10} = \begin{pmatrix} 0.8334 &amp; 0.1667 \\ 0.8332 &amp; 0.1668 \end{pmatrix}. \]</span> The first row of this matrix denotes the probabilities of where we end up after 10 steps if we start in state 1, and the second row for if we start in state 2. These are very nearly the same – we have a probability <span class="math inline">\(\approx 0.883\)</span> if being in state 1 and <span class="math inline">\(\approx 0.167\)</span> of being in state 2, <em>regardless of which state we started in</em>. It’s as if the Markov chain has forgotten where we started.</p>
+<p>Similarly, if we look at the 11-step transition probability, that comes out as <span class="math display">\[ \mathsf P^{11} = \begin{pmatrix} 0.8333 &amp; 0.1667 \\ 0.8333 &amp; 0.1667 \end{pmatrix}, \]</span> which is virtually the same distribution as after 10 steps. It seems that, after a large number of steps <span class="math inline">\(i\)</span>, that we are “settling down” to a “long run distribution” where <span class="math inline">\(\mathbb P(X_i = 1) = 0.8333\)</span> and <span class="math inline">\(\mathbb P(X_i = 2) = 0.1667\)</span>, not only regardless of which state we started in but also for all large <span class="math inline">\(i\)</span>.</p>
+</div>
+<p>We will investigate these phenomena in the next section.</p>
+</section>
+<section id="stationary-distributions" class="level2" data-number="18.2">
+<h2 data-number="18.2" class="anchored" data-anchor-id="stationary-distributions"><span class="header-section-number">18.2</span> Stationary distributions</h2>
+<p>Suppose our Markov chain is currently in the distribution <span class="math inline">\(\pi\)</span> at step <span class="math inline">\(i\)</span>. That is, for each <span class="math inline">\(x \in \mathcal S\)</span>, we have <span class="math inline">\(\mathbb P(X_i = x) = \pi(x)\)</span>. What is the probability we are in state <span class="math inline">\(y\)</span> at the next step <span class="math inline">\(i+1\)</span>? Well, conditioning on the current step, we have <span class="math display">\[ \mathbb P(X_{i+1} = y) = \sum_{x \in \mathcal S} \mathbb P(X_i = x) \,\mathbb P(X_{i+1} = y \mid X_i = x) = \sum_{x \in \mathcal S} \pi(x) \,p(x, y) . \]</span></p>
+<p>Now if, <span class="math inline">\(X_{i+1}\)</span> <em>also</em> has the distribution <span class="math inline">\(\pi\)</span> – that is, if <span class="math inline">\(\mathbb P(X_{i+1} = y) = \pi(y)\)</span> – then we would remain in the distribution <span class="math inline">\(\pi\)</span> a time step <span class="math inline">\(i+1\)</span>. And, by the same logic, time steps <span class="math inline">\(i+2, i+3, \dots\)</span> and forever. That seems a bit like what we saw happening in <a href="#exm-2state-nstep" class="quarto-xref">Example&nbsp;<span>18.1</span></a>. We call this a <strong>stationary distribution</strong>.</p>
+<p>A stationary distribution means that <em>the probability of being in state <span class="math inline">\(x\)</span></em> is staying the same, as <span class="math inline">\(\pi(x)\)</span>. Any particular realisation of the Markov chain will, of course, continue moving between states.</p>
+<div id="def-statdist" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 18.1</strong></span> Let <span class="math inline">\((X_i)\)</span> be a Markov chain on a discrete state space <span class="math inline">\(\mathcal S\)</span> with transition matrix <span class="math inline">\(\mathsf P = (p(x,y))\)</span>. Let <span class="math inline">\(\pi\)</span> be a distribution on <span class="math inline">\(\mathcal S\)</span>, in that <span class="math inline">\(\pi(x) \geq 0\)</span> for all <span class="math inline">\(x\)</span> and <span class="math inline">\(\sum_{x \in \mathcal S} \pi(x) = 1\)</span>. If, for all <span class="math inline">\(y \in \mathcal S\)</span> we have <span id="eq-statdist"><span class="math display">\[ \pi(y) = \sum_{x \in \mathcal S} \pi(x) \,p(x, y) ,  \tag{18.1}\]</span></span> then we say that <span class="math inline">\(\pi\)</span> is a <strong>stationary distribution</strong>.</p>
+</div>
+<p>In matrix form, we can write <a href="#eq-statdist" class="quarto-xref">Equation&nbsp;<span>18.1</span></a> as <span class="math inline">\(\boldsymbol\pi = \boldsymbol\pi\mathsf P\)</span>, where <span class="math inline">\(\boldsymbol\pi\)</span> is a <em>row</em> vector (not the more common column vector holding the values of <span class="math inline">\(\pi(x)\)</span>.</p>
+<p>Solving <a href="#eq-statdist" class="quarto-xref">Equation&nbsp;<span>18.1</span></a> or <span class="math inline">\(\boldsymbol\pi = \boldsymbol\pi\mathsf P\)</span> can be a bit fiddly. It’s often easier to check something called the <strong>detailed balance equations</strong>.</p>
+<div id="thm-detbal" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 18.1</strong></span> Let <span class="math inline">\((X_i)\)</span> be a Markov chain on a discrete state space <span class="math inline">\(\mathcal S\)</span> with transition matrix <span class="math inline">\(\mathsf P = (p(x,y))\)</span>. Let <span class="math inline">\(\pi\)</span> be a distribution on <span class="math inline">\(\mathcal S\)</span> that solved the <strong>detailed balance equations</strong> <span class="math display">\[ \pi(y) \,p(y, x) = \pi(x)\,p(x,y) \qquad \text{for all $x, y \in \mathcal S$.} \]</span> Then <span class="math inline">\(\pi\)</span> is a stationary distribution.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Sum both sides over <span class="math inline">\(x\)</span>. The left-hand side becomes <span class="math display">\[ \sum_{x \in \mathcal S} \pi(y)\,p(y,x) = \pi(y) \sum_{x \in \mathcal S} p(y,x) = \pi(y) , \]</span> since rows of a transition matrix sum up to 1. The right hand side becomes <span class="math display">\[ \sum_{x \in \mathcal S}\pi(x)\,p(x,y) .\]</span> Hence, we have <span class="math display">\[ \pi(y) = \sum_{x \in \mathcal S} \pi(x) \,p(x, y) , \]</span> which is the definition of a stationary distribution.</p>
+</div>
+<div id="exm-2state-stat" class="theorem example">
+<p><span class="theorem-title"><strong>Example 18.2</strong></span> We return to <a href="L17-markov-intro.html#exm-2state" class="quarto-xref">Example&nbsp;<span>17.1</span></a> and <a href="#exm-2state-nstep" class="quarto-xref">Example&nbsp;<span>18.1</span></a>. There’s no need to check the detailed balance equations when <span class="math inline">\(x = y\)</span>, so we just need <span class="math display">\[ \pi(2)\,p(2, 1) = \pi(1)\,p(1, 2) \qquad \Longrightarrow \qquad 0.5\pi(2) = 0.1\pi(1) .\]</span> Remembering that <span class="math inline">\(\pi\)</span> must sum to 1, we get <span class="math inline">\(\pi(1) = \tfrac16 = 0.1667\)</span> and <span class="math inline">\(\pi(2) = \tfrac56 = 0.8333\)</span>.</p>
+<p>Look how that compares with our results for <span class="math inline">\(\mathsf P^{10}\)</span> and <span class="math inline">\(\mathsf P^{11}\)</span> – this <span class="math inline">\(\pi\)</span> was precisely the values we saw in every row of <span class="math inline">\(\mathsf P^n\)</span> for large <span class="math inline">\(n\)</span>.</p>
+</div>
+</section>
+<section id="limit-theorems" class="level2" data-number="18.3">
+<h2 data-number="18.3" class="anchored" data-anchor-id="limit-theorems"><span class="header-section-number">18.3</span> Limit theorems</h2>
+<p>The big central theorem of Markov chains in discrete space is the following. We will highlight some technical conditions in <span style="color:red;">red</span> that we will return to later.</p>
+<div id="thm-ergodic" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 18.2</strong></span> Let <span class="math inline">\((X_i)\)</span> be a Markov chain on a discrete state space <span class="math inline">\(\mathcal S\)</span> with transition matrix <span class="math inline">\(\mathsf P\)</span>. Suppose that <span class="math inline">\((X_i)\)</span> is <span style="color:red;">irreducible</span> and <span style="color:red;">positive recurrent</span>.</p>
+<ol type="1">
+<li><p>There exists a stationary distribution <span class="math inline">\(\pi\)</span>, which is unique.</p></li>
+<li><p><strong>(Limit theorem)</strong> If <span class="math inline">\((X_i)\)</span> is also <span style="color:red;">aperiodic</span>, then <span class="math inline">\(\mathbb P(X_n = y \mid X_1 = x) \to \pi(y)\)</span> as <span class="math inline">\(n \to \infty\)</span> for all <span class="math inline">\(y \in \mathcal S\)</span> , regardless of the starting state <span class="math inline">\(X_1 = x\)</span>, where <span class="math inline">\(\pi\)</span> is the unique stationary distribution.</p></li>
+<li><p><strong>(Ergodic theorem, 1)</strong> Write <span class="math display">\[V_n(x) = \frac{1}{n} \big|\{i = 1, 2, \dots, n : X_i = x\}\big|\]</span> for the proportion of the first <span class="math inline">\(n\)</span> steps spent in state <span class="math inline">\(x\)</span>. Then <span class="math inline">\(V_n(x) \to \pi(x)\)</span> as <span class="math inline">\(n \to \infty\)</span> for all <span class="math inline">\(x \in \mathcal S\)</span>, regardless of the starting state <span class="math inline">\(X_1\)</span>, where <span class="math inline">\(\pi\)</span> is the unique stationary distribution.</p></li>
+<li><p><strong>(Ergodic theorem, 2)</strong> Let <span class="math inline">\(\phi\)</span> be a function on the state space <span class="math inline">\(\mathcal S\)</span>. Let <span class="math inline">\(X\)</span> have probability mass function <span class="math inline">\(\pi\)</span>, where <span class="math inline">\(\pi\)</span> is the unique stationary distribution. Then <span class="math display">\[ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X), \]</span> as <span class="math inline">\(n \to \infty\)</span>, regardless of the starting state <span class="math inline">\(X_1\)</span>.</p></li>
+</ol>
+</div>
+<p>(“Ergodic” is a word mathematicians use when talking about long-run average behaviour.)</p>
+<p>The precise mathematical statements of this theorem are not important for this module. However, it is important to have a rough idea what the statements mean – especially part 4, which is central to the idea of Markov chain Monte Carlo we will discuss over the next lectures.</p>
+<p>The first part tells us that (provided the technical conditions are fulfilled) we always have a stationary distribution and there’s always exactly one of them. This allows us to use phrases like “where <span class="math inline">\(\pi\)</span> is the unique stationary distribution” in the other parts of the theorem.</p>
+<p>The second part tells us that any <span class="math inline">\(n\)</span>-step transition probability <span class="math inline">\(p^{(n)}(x,y)\)</span> tends to <span class="math inline">\(\pi(y)\)</span>, no matter what the value of <span class="math inline">\(x\)</span>. In terms of the <span class="math inline">\(n\)</span>-step transition matrix <span class="math inline">\(\mathsf P^n\)</span>, this means that every row of <span class="math inline">\(\mathsf P^n\)</span> should end up looking like an identical copy of the row vector <span class="math inline">\(\boldsymbol\pi\)</span>. That is exactly what we found in <a href="#exm-2state-nstep" class="quarto-xref">Example&nbsp;<span>18.1</span></a>.</p>
+<p>The third part tells us that, in the long run, <span class="math inline">\(\pi\)</span> describes the proportion of time we spend in each state. In the “unreliable printer” example of <a href="#exm-2state-stat" class="quarto-xref">Example&nbsp;<span>18.2</span></a>, this means that the printer spends 83% of the time working and 17% of the time broken in the long run, regardless of whether it was working or broken on day 1.</p>
+<p>The fourth part is by far the most important result for us, as it relates Markov chains back to the idea of Monte Carlo estimation. Let’s look at the equation in the fourth part, <span class="math display">\[ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X). \]</span> If the <span class="math inline">\(X_i\)</span> were independent and identically distributed, this would just be the ordinary law of large numbers, which tells us that the Monte Carlo estimator (the left-hand side) is an accurate estimator of <span class="math inline">\(\operatorname{\mathbb E}\phi(X)\)</span>, when the number of samples is large. This result tells us that we still get a good estimator when the <span class="math inline">\(X_i\)</span> are not IID, but rather come from a Markov chain whose stationary distribution is the PMF of <span class="math inline">\(X\)</span>.</p>
+<p>This fourth part is what allows us to do <strong>Markov chain Monte Carlo</strong> (<strong>MCMC</strong>): Monte Carlo estimation when the <span class="math inline">\(X_i\)</span> are the outputs from a Markov chain. If we want to estimate <span class="math inline">\(\operatorname{\mathbb E}\phi(X)\)</span>, we just need to find a Markov chain who stationary distribution is the PMF of <span class="math inline">\(X\)</span>, and then form the Monte Carlo estimate in the usual way. In the next lecture, the <strong>Metropolis–Hastings algorithm</strong> will show us a way to do find a Markov chain with a given stationary distribution.</p>
+<p>A quick word before we end about the <span style="color:red;">technical conditions</span> in <a href="#thm-ergodic" class="quarto-xref">Theorem&nbsp;<span>18.2</span></a>. The precise definitions are not important here, but let us say the following:</p>
+<ul>
+<li><p><strong><span style="color:red;">Irreducible</span></strong> roughly means that a Markov chain is “connected up”, and isn’t just two Markov separate Markov chains (for example). Specifically, it must be at least <em>possible</em> to get from any state <span class="math inline">\(x\)</span> to any other state <span class="math inline">\(y\)</span> – maybe not in a single step, but in some finite number of steps, with probability greater than 0.</p></li>
+<li><p><strong><span style="color:red;">Aperiodic</span></strong> is another technical condition, but if an irreducible Markov chain ever has a non-zero probability of staying in the same state, then this is fulfilled. The Markov chains we look at for MCMC will all have a strictly positive probability of staying put, so will be aperiodic.</p></li>
+<li><p><strong><span style="color:red;">Positive recurrence</span></strong> is a highly technical condition we won’t get into here.</p></li>
+</ul>
+<p>If you do want to read more about the theory of Markov chains, and these technical conditions in particular, I recommend my lecture notes for my notes for <a href="https://mpaldridge.github.io/math2750/">MATH2750 Introduction to Markov Processes</a>. This is entirely optional, though, and this knowledge is <em>not</em> required for this module and its exam.</p>
+<p><strong>Next time.</strong> <em>We we look at Markov chain Monte Carlo; specifically, how to set up a Markov chain that has a given probability mass function as its stationary distribution.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
@@ -513,6 +504,7 @@ If you do want to read more about the theory of Markov chains, and these technic
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -939,8 +931,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
-        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L19-mh-1.html" class="pagination-link" aria-label="Metropolis--Hastings in discrete space">
+        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in discrete space</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

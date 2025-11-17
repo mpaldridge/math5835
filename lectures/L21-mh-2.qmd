@@ -1,5 +1,6 @@
 # Metropolis--Hastings in continuous space
 
+<!--
 ## The Metropolis--Hastings algorithm again
 
 Last time, we looked at Markov chains $(X_i)$ in continuous space, as defined by a transition density $p(x, y)$. We saw (under certain technical conditions we didn't get into) that we have convergence to a unique stationary probability density $\pi$. We further saw that we have an ergodic theorem $$ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X) , $$ where $X$ has PDF $\pi$.
@@ -119,3 +120,4 @@ You can see that, at the start, it takes us a while to move away from the "bad" 
 The ergodic theorem tells us this, eventually, for large enough $n$, these early unrepresentative samples will be drowned out of our large-$n$ collection. But for modest finite values of $n$, these are likely to corrupt our Monte Carlo estimation procedure.
 
 For that reason, it can often be useful to use a **burn-in period**. A burn-in period is when you run the Markov chain for a while without using the samples in estimation, and only start using samples once you have "reached the stationary distribution" -- the phrase "reached equilibrium" is also sometimes used. Again, how long a burn-in period should be is art more than science -- thinking about your specific problem and conducting experiments can help you decide if a burn-in period is necessary and how long it should be. If the state space and stationary distribution are easy to understand – say, $\mathcal S$ is one-dimensional and $\pi$ has a single mode – you can even run the MCMC algorithm first, then afterwards decide which unrepresentative early samples to throw away.
+-->

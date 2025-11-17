@@ -1,5 +1,6 @@
 # Metropolis--Hastings in discrete space
 
+<!--
 ## The Metropolis--Hastings algorithm
 
 Last time, we looked at the long-run behaviour of a Markov chain $(X_i)$. We saw that (under certain technical conditions) the Markov chain has a unique stationary distribution $\pi$, which we can find by solving the detailed balance equations $\pi(y)\,p(y,x) = \pi(x)\,p(x,y)$.
@@ -140,3 +141,4 @@ Suppose first that $$\frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} \geq 1 \qquad\text{an
 
 If, on the other hand $$\frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} \leq 1 \qquad\text{and} \qquad \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} \geq 1 ,$$ then the same argument works the other way around.
 :::
+-->
