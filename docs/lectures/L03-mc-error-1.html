@@ -473,7 +473,7 @@ window.Quarto = {
 <ol type="1">
 <li><p><span class="math inline">\(\Ex \widehat{\theta}_n^{\mathrm{MC}} = \Ex \overline Y_n = \Ex Y = \Exg \phi(X)\)</span>, so <span class="math inline">\(\operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}}) = \Exg \phi(X) - \Exg \phi(X) = 0\)</span>.</p></li>
 <li><p><span class="math inline">\({\displaystyle \operatorname{Var}\big(\widehat{\theta}_n^{\mathrm{MC}}\big) = \operatorname{Var}\big(\overline Y_n\big) = \frac{1}{n} \operatorname{Var}(Y) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big)}\)</span>.</p></li>
-<li><p>Using <a href="#thm-MSE-bias" class="quarto-xref">Theorem&nbsp;<span>3.1</span></a>, <span class="math display">\[\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}})^2 + \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = 0^2 + \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) . \]</span></p></li>
+<li><p>Using <a href="#thm-MSE-bias" class="quarto-xref">Theorem&nbsp;<span class="quarto-unresolved-ref">thm-MSE-bias</span></a>, <span class="math display">\[\operatorname{MSE}(\widehat{\theta}_n^{\mathrm{MC}}) = \operatorname{bias}(\widehat{\theta}_n^{\mathrm{MC}})^2 + \operatorname{Var}(\widehat{\theta}_n^{\mathrm{MC}}) = 0^2 + \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) = \frac{1}{n} \operatorname{Var}\big(\phi(X)\big) . \]</span></p></li>
 <li><p>Take the square root of part 3.</p></li>
 </ol>
 </div>
@@ -485,7 +485,7 @@ window.Quarto = {
 <p>There’s a problem here, though. The reason we are doing Monte Carlo estimation in the first place is that we <em>couldn’t</em> calculate <span class="math inline">\(\Exg \phi(X)\)</span>. So it seems very unlikely we’ll be able to calculate the variance <span class="math inline">\(\operatorname{Var}(\phi(X))\)</span> either. So how will be able to assess the mean-square (or root-mean-square) error of our Monte Carlo estimator?</p>
 <p>Well, we can’t know it exactly. But we <em>can</em> estimate the variance from the samples we are already using: by taking the sample variance of the samples <span class="math inline">\(\phi(x_i)\)</span>. That is, we can estimate the variance of the Monte Carlo estimator by the sample variance <span class="math display">\[ S^2 = \frac{1}{n-1} \sum_{i=1}^n \big(\phi(X_i) - \widehat{\theta}_n^{\mathrm{MC}} \big)^2 . \]</span> Then we can similarly estimate the mean-square and root-mean-square errors by <span class="math display">\[ \text{MSE} \approx \frac{1}{n}S^2 \qquad \text{and} \qquad \text{RMSE} \approx \sqrt{\frac{1}{n} S^2} = \frac{1}{\sqrt{n}}\,S  \]</span> respectively.</p>
 <div id="exm-MCexp2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 3.1</strong></span> Let’s go back to the very first example in the module, <a href="L01-mc-intro.html#exm-MCexp" class="quarto-xref">Example&nbsp;<span>1.1</span></a>, where we were trying to find the expectation of an <span class="math inline">\(\operatorname{Exp}(2)\)</span> random variable. We used this R code:</p>
+<p><span class="theorem-title"><strong>Example 3.1</strong></span> Let’s go back to the very first example in the module, <a href="#exm-MCexp" class="quarto-xref">Example&nbsp;<span class="quarto-unresolved-ref">exm-MCexp</span></a>, where we were trying to find the expectation of an <span class="math inline">\(\operatorname{Exp}(2)\)</span> random variable. We used this R code:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
@@ -512,7 +512,7 @@ window.Quarto = {
 <p>The third number is <code>RMSEest</code> <span class="math inline">\(= 5\times 10^{-4}\)</span> our estimate of the root-mean square error, which is simply the square-root of our estimate of the mean-square error.</p>
 </div>
 <div id="exm-MCprob2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 3.2</strong></span> In <a href="L02-mc-uses.html#exm-MCprob" class="quarto-xref">Example&nbsp;<span>2.1</span></a>, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span>, where <span class="math inline">\(Z\)</span> is a standard normal.</p>
+<p><span class="theorem-title"><strong>Example 3.2</strong></span> In <a href="#exm-MCprob" class="quarto-xref">Example&nbsp;<span class="quarto-unresolved-ref">exm-MCprob</span></a>, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span>, where <span class="math inline">\(Z\)</span> is a standard normal.</p>
 <p>Our code was</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>

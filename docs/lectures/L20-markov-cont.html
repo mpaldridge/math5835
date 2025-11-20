@@ -351,9 +351,11 @@ In the last three lectures, we have looked at Markov chains and the Metropolis--
 
 The general theory of Markov chains on continuous state spaces can get very complicated -- there are lots of technical conditions, and you have to deal with a "measure theoretic" approach that looks at least as much like analysis from pure mathematics as it does probability and statistics. However, this technical material is not necessary to me able to understand and use the basic ideas of MCMC in continuous space. For this reason, we will often make broad simplifying assumptions, not get into the precise definitions of technical terms, and occasionally just outright lie. (If you want to get into more of the theoretical details, I recommend [Subsection 2.3.2 and Sections 4.1 and 4.2 of Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031) as a good place to begin your studies.)
 
-The concept of a Markov chain and the Markov property remain the same: the next step $X_{i+1}$ may depende on the current step $X_i$, but, given the current step $X_i$, may not depend any further on on the past steps $X_{i-1}, X_{i-2}, \dots, X_2, X_1$.
+The concept of a Markov chain and the Markov property remain the same: the next step $X_{i+1}$ may depend on the current step $X_i$, but, given the current step $X_i$, may not depend any further on on the past steps $X_{i-1}, X_{i-2}, \dots, X_2, X_1$. That is,
+$$ \mathbb P(X_{i+1} \in A \mid X_i = x_i, X_{i-1} = x_{i=1}, \dots, X_1 = x_1) 
+= \mathbb P(X_{i+1} \in A \mid X_i = x_i)$$ for all $i = 1, 2, \dots$ and for all $x_1, \dots, x_{i-1}, x_{i} \in \mathcal S$ and $A \subset \mathcal S$ such that the conditional probability is defined.
 
-Therefore, the steps of such a Markov chain will depend only on the initial state and the transition rule from moving from $X_i = x$ to $X_{i+1} = y$. We will make the simplification that this transition rule always has a density; that is, that there exists a conditional probability density function $p$ where $p(x, y)$ is the probability density of $X_{i+1}$ around $y$ given $X_i = x$. Formally, we have $$ \mathbb P(X_{i+1} \in A \mid X_i = x) = \int_A p(x, y)\,\mathrm{d} y . $$ This transition density $p = p(x, y)$ behaves a lot like the transition probabilities $\mathsf P = (p(x,y))$ in discrete space.
+Therefore, the steps of such a Markov chain will depend only on the initial state and the transition rule from moving from $X_i = x$ to $X_{i+1} \in A$. In general, we will need what is called a "transition kernel" $p(x, A)$. However, we will make the simplification that the transition rule always has a density; that is, that there exists a conditional probability density function $p$ where $p(x, y)$ is the probability density of $X_{i+1}$ around $y$ given $X_i = x$. Formally, we have $$ \mathbb P(X_{i+1} \in A \mid X_i = x) = \int_A p(x, y)\,\mathrm{d} y . $$ This transition density $p = p(x, y)$ behaves a lot like the transition probabilities $\mathsf P = (p(x,y))$ in discrete space.
 
 In the discrete case, we had $$\sum_{y \in \mathcal S} p(x, y) = 1 \qquad \text{for all } x\in \mathcal S $$ ("rows of the transition matrix sum to 1"). Similarly, in the discrete case we have $$ \int_{\mathcal S} p(x, y) \,\mathrm{d}y = 1 \qquad \text{for all } x\in \mathcal S ,$$ by the same argument that we have to go *somewhere* from $x$.
 
@@ -423,12 +425,20 @@ for (i in 1:7) {
 
 ## Long-run behaviour
 
-Most of the properties about long-run behaviour of Markov chains in discrete space continue to hold in continuous space: we just replace the transition probabiltiy by the transition density and sums by integrals.
+Most of the properties about long-run behaviour of Markov chains in discrete space continue to hold in continuous space: we just replace the transition probability by the transition density and sums by integrals.
 
 We can find the two-step transition density $p^{(2)}(x, y)$ be integrating over all possible intermediate steps $z$ $$ p^{(2)}(x, y) = \int_{\mathcal S} p(x, z)\,p(z, y)\,\mathrm{d} z .$$ Similarly, we get an $n$-step transition density from $$ p^{(n)}(x, y) = \int_{\mathcal S^{n-1}} p(x, z_1)\,p(z_1,z_2)\cdots p(z_{n-2},z_{n-1})\,p(z_{n-1}, y)\, \mathrm{d}z_1 \, \mathrm{d}z_2 \cdots \mathrm{d}z_{n-1} . $$
 
 A stationary density $\pi$ is a PDF on $\mathcal S$ (so $\pi(x) \geq 0$ and $\int_{\mathcal S}\pi(x)\,\mathrm{d}x = 0$) such that $$ \pi(y) = \int_{\mathcal S} \pi(x) \,p(x,y) \,\mathrm{d}x \qquad \text{for all } y \in \mathcal S . $$ This is often easier to find by solving the detailed balance equations $$ \pi(y)\,p(y, x) = \pi(x)\,p(x, y) \qquad \text{for all } x,y \in \mathcal S . $$
 -->
+<p><strong>Next time.</strong> <em>We will study the Metropolis–Hastings algorithm in continuous space.</em></p>
+<div class="mysummary">
+<p><strong>Summary:</strong></p>
+<ul>
+<li>m</li>
+</ul>
+<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 2.3.1.</p>
+</div>
 
 
 

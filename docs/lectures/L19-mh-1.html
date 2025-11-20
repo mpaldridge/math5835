@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -69,6 +103,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../mystyle.css">
 </head>
@@ -310,8 +373,16 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-metropolishastings-algorithm" id="toc-the-metropolishastings-algorithm" class="nav-link active" data-scroll-target="#the-metropolishastings-algorithm"><span class="header-section-number">19.1</span> The Metropolis–Hastings algorithm</a></li>
+  <li><a href="#random-walk-metropolis" id="toc-random-walk-metropolis" class="nav-link" data-scroll-target="#random-walk-metropolis"><span class="header-section-number">19.2</span> Random walk Metropolis</a></li>
+  <li><a href="#proof-of-stationary-distribution" id="toc-proof-of-stationary-distribution" class="nav-link" data-scroll-target="#proof-of-stationary-distribution"><span class="header-section-number">19.3</span> Proof of stationary distribution</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -344,233 +415,153 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!--
-## The Metropolis--Hastings algorithm
-
-Last time, we looked at the long-run behaviour of a Markov chain $(X_i)$. We saw that (under certain technical conditions) the Markov chain has a unique stationary distribution $\pi$, which we can find by solving the detailed balance equations $\pi(y)\,p(y,x) = \pi(x)\,p(x,y)$.
-
-We then saw the ergodic theorem: If $\phi$ be a function on the state space $\mathcal S$ and $X$ has probability mass function $\pi$, then $$ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X), $$ as $n \to \infty$. This means we can do Monte Carlo estimation where the samples $X_1, \dots, X_n$ are not IID, but are rather the output to a Markov chain with stationary distribution $\pi$.
-
-So, suppose we want to estimate $\operatorname{\mathbb E} \phi(X)$, where $X$ has PDF $\pi$. Then all we need to find a Markov chain that has $\pi$ as its stationary distribution. We could try to do that be being clever -- just by thinking hard and trying to come up with one. However, that's rather difficult. Instead, the **Metropolis--Hastings algorithm** is a method to create such a Markov chain.
-
-The Metropolis--Hastings algorithm is based on a similar idea to rejection sampling. From state $X_i = x$, we *propose* moving to some other state $y$, and then we accept the proposal with some acceptance probability. If we accept the proposal, we move to $X_{i+1} = y$; if we reject the proposal, we stay where we are $X_{i+1} = x$.
-
-[Nicholas Metropolis](https://en.wikipedia.org/wiki/Nicholas_Metropolis) first came up with this idea when he worked with Ulam and von Neumann (of Monte Carlo fame) at the Los Alamos National Laboratories. His original idea was generalised by the Canadian statistician WK Hastings.
-
-The Metropolis--Hastings algorithm works like this:
-
-::: thpart
-* We want to define a Markov chain on a state space $\mathcal S$, which contains the range of the probability mass function $\pi$ we want to sample from.
-
-* We have an initial state $X_1 = x_1$ and we choose a transition matrix $\mathsf R = (r(x,y))$ representing the proposal moves.
-
-1.  From a current state $X_i = x$ we propose moving to a new state $y$, where $y$ is chosen with probability $r(x, y)$.
-
-2.  With probability $$\alpha(x,y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} , $$ we accept the proposal, and set $X_i = y$; otherwise we stay put, and set $X_{i+1} = x$.
-
-3.  We repeat steps 1. and 2. $n$ times to get $n$ samples.
-:::
-
-So a generic Metropolis--Hastings algorithm on a finite state space in "sort-of-R-code" would look something like this:
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-# INPUTS:
-# trans:   proposal transition matrix
-# target:  target stationary distribution
-# initial: initial state
-# n:       number of samples
-
-states <- nrow(trans)
-MC <- rep(0, n)
-accept <- function(x, y) {
-  ratio <- (target[y] * trans[y, x]) / (target[x] * trans[x, y])
-  min(ratio, 1)
-}
-
-MC[1] <- initial
-for (i in 1:(n - 1)) {
-  prop <- sample(1:states, 1, prob = trans[MC[i], ])
-  if (runif(1) <= accept(MC[i], prop)) MC[i + 1] <- prop
-  else                                 MC[i + 1] <- MC[i]
-}
-```
-:::
-
-
-
-
-
-
-It's the last three lines that are important here. In this code `MC` records the states of our Markov chain. First we propose a move to state `prop`, according to the row of the transition matrix corresponding to the current state. Second, we accept that proposal move with probability `accept()`, where the arguments of `accept()` are the current state and the proposed state; we do this by checking whether a standard uniform `runif(1)` is less than this acceptance probability or not. If it is, we move to `prop` (last-but-one line); and if not, we stay where we are (last line).
-
-We will show later that this algorithm really does have $\pi$ as its stationary distribution.
-
-## Random walk Metropolis
-
-There are quite a lot of cases where the proposals are **symmetric**, meaning that $r(x, y) = r(y, x)$. This is the case if, for example, the proposal probabilities are those of the simple symmetric random walk: $r(x, x+1) = \frac12$ and $r(x, x-1) = \frac12$. In the symmetric case, the acceptance probability simplifies to $$ \alpha(x, y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1\right\} . $$
-
-The symmetric case was the version originally considered by Metropolis, before Hastings generalised it to non-symmetric proposals. For this reasons, when $\mathsf R$ has this symmetry property, we often refer to the resulting algorithm just as the **Metropolis algorithm**. When the proposal probabilities are those of the simple symmetric random walk, we call it the **random walk Metropolis algorithm**.
-
-::: {#exm-MCMC-geom}
-Let's do an example of the random walk Metropolis algorithm where we aim to sample from the geometric distribution with parameter $\frac13$, $$ \pi(x) = \Big(\frac23\Big)^{x-1}\times \frac13 \qquad x = 1, 2, \dots. $$ We will start from $X_1 = 1$.
-
-So at each step we propose moving up one with probability $\tfrac12$ and moving down one with probability $\tfrac12$. Since the proposals are symmetric, the acceptance probabilities are $$ \begin{align}
+<section id="the-metropolishastings-algorithm" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="the-metropolishastings-algorithm"><span class="header-section-number">19.1</span> The Metropolis–Hastings algorithm</h2>
+<p>Last time, we looked at the long-run behaviour of a Markov chain <span class="math inline">\((X_i)\)</span>. We saw that (under certain technical conditions) the Markov chain has a unique stationary distribution <span class="math inline">\(\pi\)</span>, which we can find by solving the detailed balance equations <span class="math inline">\(\pi(y)\,p(y,x) = \pi(x)\,p(x,y)\)</span>.</p>
+<p>We then saw the ergodic theorem: If <span class="math inline">\(\phi\)</span> be a function on the state space <span class="math inline">\(\mathcal S\)</span> and <span class="math inline">\(X\)</span> has probability mass function <span class="math inline">\(\pi\)</span>, then <span class="math display">\[ \frac{1}{n} \sum_{i=1}^n \phi(X_i) \to \operatorname{\mathbb E}\phi(X), \]</span> as <span class="math inline">\(n \to \infty\)</span>. This means we can do Monte Carlo estimation where the samples <span class="math inline">\(X_1, \dots, X_n\)</span> are not IID, but are rather the output to a Markov chain with stationary distribution <span class="math inline">\(\pi\)</span>.</p>
+<p>So, suppose we want to estimate <span class="math inline">\(\operatorname{\mathbb E} \phi(X)\)</span>, where <span class="math inline">\(X\)</span> has PDF <span class="math inline">\(\pi\)</span>. Then all we need to find a Markov chain that has <span class="math inline">\(\pi\)</span> as its stationary distribution. We could try to do that be being clever – just by thinking hard and trying to come up with one. However, that’s rather difficult. Instead, the <strong>Metropolis–Hastings algorithm</strong> is a method to create such a Markov chain.</p>
+<p>The Metropolis–Hastings algorithm is based on a similar idea to rejection sampling. From state <span class="math inline">\(X_i = x\)</span>, we <em>propose</em> moving to some other state <span class="math inline">\(y\)</span>, and then we accept the proposal with some acceptance probability. If we accept the proposal, we move to <span class="math inline">\(X_{i+1} = y\)</span>; if we reject the proposal, we stay where we are <span class="math inline">\(X_{i+1} = x\)</span>.</p>
+<p><a href="https://en.wikipedia.org/wiki/Nicholas_Metropolis">Nicholas Metropolis</a> first came up with this idea when he worked with Ulam and von Neumann (of Monte Carlo fame) at the Los Alamos National Laboratories. His original idea was generalised by the Canadian statistician WK Hastings.</p>
+<p>The Metropolis–Hastings algorithm works like this:</p>
+<div class="thpart">
+<ul>
+<li><p>We want to define a Markov chain on a state space <span class="math inline">\(\mathcal S\)</span>, which contains the range of the probability mass function <span class="math inline">\(\pi\)</span> we want to sample from.</p></li>
+<li><p>We have an initial state <span class="math inline">\(X_1 = x_1\)</span> and we choose a transition matrix <span class="math inline">\(\mathsf R = (r(x,y))\)</span> representing the proposal moves.</p></li>
+</ul>
+<ol type="1">
+<li><p>From a current state <span class="math inline">\(X_i = x\)</span> we propose moving to a new state <span class="math inline">\(y\)</span>, where <span class="math inline">\(y\)</span> is chosen with probability <span class="math inline">\(r(x, y)\)</span>.</p></li>
+<li><p>With probability <span class="math display">\[\alpha(x,y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} , \]</span> we accept the proposal, and set <span class="math inline">\(X_i = y\)</span>; otherwise we stay put, and set <span class="math inline">\(X_{i+1} = x\)</span>.</p></li>
+<li><p>We repeat steps 1. and 2. <span class="math inline">\(n\)</span> times to get <span class="math inline">\(n\)</span> samples.</p></li>
+</ol>
+</div>
+<p>So a generic Metropolis–Hastings algorithm on a finite state space in “sort-of-R-code” would look something like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INPUTS:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># trans:   proposal transition matrix</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># target:  target stationary distribution</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># initial: initial state</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># n:       number of samples</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>states <span class="ot">&lt;-</span> <span class="fu">nrow</span>(trans)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>MC <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>accept <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  ratio <span class="ot">&lt;-</span> (target[y] <span class="sc">*</span> trans[y, x]) <span class="sc">/</span> (target[x] <span class="sc">*</span> trans[x, y])</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">min</span>(ratio, <span class="dv">1</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>MC[<span class="dv">1</span>] <span class="ot">&lt;-</span> initial</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  prop <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>states, <span class="dv">1</span>, <span class="at">prob =</span> trans[MC[i], ])</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;=</span> <span class="fu">accept</span>(MC[i], prop)) MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> prop</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span>                                 MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i]</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It’s the last three lines that are important here. In this code <code>MC</code> records the states of our Markov chain. First we propose a move to state <code>prop</code>, according to the row of the transition matrix corresponding to the current state. Second, we accept that proposal move with probability <code>accept()</code>, where the arguments of <code>accept()</code> are the current state and the proposed state; we do this by checking whether a standard uniform <code>runif(1)</code> is less than this acceptance probability or not. If it is, we move to <code>prop</code> (last-but-one line); and if not, we stay where we are (last line).</p>
+<p>We will show later that this algorithm really does have <span class="math inline">\(\pi\)</span> as its stationary distribution.</p>
+</section>
+<section id="random-walk-metropolis" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="random-walk-metropolis"><span class="header-section-number">19.2</span> Random walk Metropolis</h2>
+<p>There are quite a lot of cases where the proposals are <strong>symmetric</strong>, meaning that <span class="math inline">\(r(x, y) = r(y, x)\)</span>. This is the case if, for example, the proposal probabilities are those of the simple symmetric random walk: <span class="math inline">\(r(x, x+1) = \frac12\)</span> and <span class="math inline">\(r(x, x-1) = \frac12\)</span>. In the symmetric case, the acceptance probability simplifies to <span class="math display">\[ \alpha(x, y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1\right\} . \]</span></p>
+<p>The symmetric case was the version originally considered by Metropolis, before Hastings generalised it to non-symmetric proposals. For this reasons, when <span class="math inline">\(\mathsf R\)</span> has this symmetry property, we often refer to the resulting algorithm just as the <strong>Metropolis algorithm</strong>. When the proposal probabilities are those of the simple symmetric random walk, we call it the <strong>random walk Metropolis algorithm</strong>.</p>
+<div id="exm-MCMC-geom" class="theorem example">
+<p><span class="theorem-title"><strong>Example 19.1</strong></span> Let’s do an example of the random walk Metropolis algorithm where we aim to sample from the geometric distribution with parameter <span class="math inline">\(\frac13\)</span>, <span class="math display">\[ \pi(x) = \Big(\frac23\Big)^{x-1}\times \frac13 \qquad x = 1, 2, \dots. \]</span> We will start from <span class="math inline">\(X_1 = 1\)</span>.</p>
+<p>So at each step we propose moving up one with probability <span class="math inline">\(\tfrac12\)</span> and moving down one with probability <span class="math inline">\(\tfrac12\)</span>. Since the proposals are symmetric, the acceptance probabilities are <span class="math display">\[ \begin{align}
 \alpha(x, x+1) = \min \left\{ \frac{\pi(x+1)}{\pi(x)} , \, 1\right\} = \min \left\{\frac{\big(\frac23\big)^{x}\times \frac13}{\big(\frac23\big)^{x-1}\times \frac13},\, 1\right\} = \min \Big\{\frac23, 1\Big\} = \frac23 \\
-\alpha(x, x-1) = \min \left\{ \frac{\pi(x-1)}{\pi(x)} , \, 1\right\} = \min \left\{\frac{\big(\frac23\big)^{x-1}\times \frac13}{\big(\frac23\big)^{x}\times \frac13},\, 1\right\} = \min \Big\{\frac32, 1\Big\} = 1 , 
-\end{align} $$ except for $$\alpha(1, 0) = \min \left\{ \frac{\pi(0)}{\pi(1)} , \, 1\right\} = \min \left\{ \frac{0}{\frac13} , \, 1\right\} = \min \{0,1\} = 0 .$$ So if the proposal is up one, we accept it with probability $\frac23$ and otherwise stay where we are. If the proposal is down one, we always accept -- except going down from 1 to 0, which we always reject.
-
-Let's try it.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-n <- 1e6
-MC <- rep(0, n)
-
-MC[1] <- 1
-for (i in 1:(n - 1)) {
-  prop <- MC[i] + sample(c(+1, -1), 1, prob = c(1/2, 1/2))
-  if      (prop == 0)         MC[i + 1] <- MC[i]
-  else if (prop == MC[i] - 1) MC[i + 1] <- MC[i] - 1
-  else if (prop == MC[i] + 1) MC[i + 1] <- MC[i] + (runif(1) <= 2/3)
-}
-```
-:::
-
-
-
-
-
-
-If we look at a graph of the first 250 steps of this Markov chain, we see that these aren't at all random samples from the geometric distribution -- each step is either the same as the one before, one bigger, or one smaller.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-fold="true" code-summary="Code for drawing this graph"}
-plot(
-  MC[1:250],
-  type = "l", col = "red", lwd = 2,
-  xlab = "time step", ylab = "value"
-)
-```
-
-::: {.cell-output-display}
-![](L19-mh-1_files/figure-html/MCgeom1-1.svg){width=672}
-:::
-:::
-
-
-
-
-
-
-But if we look at a graph of which samples came up overall, we see that their proportions (red) are extremely close to what we would expect from the true geometric distribution (blue).
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-fold="true" code-summary="Code for drawing this graph"}
-plot(
-  table(MC)/n,
-  xlim = c(0, 10), col = "red", ylim = c(0, 0.35), lwd = 2,
-  xlab = "value", ylab = "probability"
-)
-
-points(1:10 + 0.1, (2/3)^(1:10 - 1) * (1/3), col = "blue", type = "h", lwd = 3)
-
-legend("topright", c("samples", "true geometric"),
-  col = c("red", "blue"), lwd = c(2, 3)
-)
-```
-
-::: {.cell-output-display}
-![](L19-mh-1_files/figure-html/MCgeom-1.svg){width=672}
-:::
-:::
-
-
-
-
-
-
-Suppose we wanted to estimate $\mathbb EX^2$, where $X \sim \operatorname{Geom}(\frac{1}{3})$. We already know how to do this the "basic" Monte Carlo way. But we can now do it the Markov chain Monte Carlo (MCMC) way, by using the output to this Markov chain.
-
-Our estimate is the following.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-mean(MC^2) 
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 15.13141
-```
-
-
-:::
-:::
-
-
-
-
-
-
-The true answer is 15, so we are in the right area, but probably not as accurate as the basic Monte Carlo estimator with the same sample size would have been. This suggests that the dependence structure in a Markov chain might be a slight disadvantage, and may make the variance of our estimator bigger. The real strength of MCMC is when a basic Monte Carlo estimate is impossible to get -- when basic MCMC is possible (such as for simple distributions like this geometric) we should probably stick with it.
-:::
-
-## Proof of stationary distribution
-
-We have defined the Metropolis--Hastings Markov chain in terms of the proposal transition probabilities $r(x, y)$ and the acceptance probability $\alpha(x, y)$. But what are the actual transition probability $p(x, y)$ of this Markov chain?
-
-Well, to move from $x$ to $y \neq x$, we first have to propose that move, then we have to accept it. So we have $$ p(x, y) = r(x, y) \,\alpha(x, y) = r(x, y) \,\min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} .$$ {#eq-MHp} (We can find $p(x,x)$, if we need it, by using the fact that $\sum_y p(x,y) = 0$.)
-
-We should check that the Metropolis--Hastings algorithm really does give a Markov chain with stationary distribution $\pi$.
-
-::: {#thm-MHpi}
-Let $\pi$ be a probability mass function on a discrete state space $\mathcal S$, and let $\mathsf R = (r(x,y))$ be a transition matrix on $\mathcal S$. Let $(X_i)$ be the Metropolis--Hastings Markov chain with proposal transition matrix $\mathsf R$ and acceptance probability $$ \alpha(x, y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)},\,1\right\} . $$ Then $\pi$ is a stationary distribution for $(X_i)$.
-:::
-
-We say "a" stationary distribution. But provided the Markov chain fulfils the technical conditions in @thm-ergodic, we know that this will be the unique stationary distribution, and that the ergodic theorem will hold.
-
-::: proof
-We need to check the detailed balance equations $$ \pi(y) \,p(y, x) = \pi(x) \,p(x, y) $$ for $y \neq x$. By @eq-MHp, the detailed balance equations are $$ \pi(y)\,r(y, x) \,\min \left\{ \frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} , \, 1\right\} = \pi(x)\,r(x, y) \,\min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} . $$ {#eq-MHDB} Note that the two fractions in the first terms on the minimums are reciprocals of each other. So one of these will be greater than equal to 1, and the minimum will be 1; and one of the will be less than or equal to 1, and the minimum will be that fraction.
-
-Suppose first that $$\frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} \geq 1 \qquad\text{and} \qquad \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} \leq 1 .$$ Then @eq-MHDB becomes $$ \pi(y)\,r(y, x) \times 1 = \pi(x)\,r(x, y) \times \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)}  . $$ On the right-hand side, the two $\pi(x)\,r(x,y)$ terms cancel, so we have equality, and the detailed balance equations hold.
-
-If, on the other hand $$\frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} \leq 1 \qquad\text{and} \qquad \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} \geq 1 ,$$ then the same argument works the other way around.
-:::
--->
-
-
+\alpha(x, x-1) = \min \left\{ \frac{\pi(x-1)}{\pi(x)} , \, 1\right\} = \min \left\{\frac{\big(\frac23\big)^{x-1}\times \frac13}{\big(\frac23\big)^{x}\times \frac13},\, 1\right\} = \min \Big\{\frac32, 1\Big\} = 1 ,
+\end{align} \]</span> except for <span class="math display">\[\alpha(1, 0) = \min \left\{ \frac{\pi(0)}{\pi(1)} , \, 1\right\} = \min \left\{ \frac{0}{\frac13} , \, 1\right\} = \min \{0,1\} = 0 .\]</span> So if the proposal is up one, we accept it with probability <span class="math inline">\(\frac23\)</span> and otherwise stay where we are. If the proposal is down one, we always accept – except going down from 1 to 0, which we always reject.</p>
+<p>Let’s try it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>MC <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>MC[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  prop <span class="ot">&lt;-</span> MC[i] <span class="sc">+</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="sc">+</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="dv">1</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>      (prop <span class="sc">==</span> <span class="dv">0</span>)         MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i]</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span> (prop <span class="sc">==</span> MC[i] <span class="sc">-</span> <span class="dv">1</span>) MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span> (prop <span class="sc">==</span> MC[i] <span class="sc">+</span> <span class="dv">1</span>) MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i] <span class="sc">+</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;=</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If we look at a graph of the first 250 steps of this Markov chain, we see that these aren’t at all random samples from the geometric distribution – each step is either the same as the one before, one bigger, or one smaller.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  MC[<span class="dv">1</span><span class="sc">:</span><span class="dv">250</span>],</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"time step"</span>, <span class="at">ylab =</span> <span class="st">"value"</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L19-mh-1_files/figure-html/MCgeom1-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>But if we look at a graph of which samples came up overall, we see that their proportions (red) are extremely close to what we would expect from the true geometric distribution (blue).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code for drawing this graph</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>(MC)<span class="sc">/</span>n,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.35</span>), <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"value"</span>, <span class="at">ylab =</span> <span class="st">"probability"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">+</span> <span class="fl">0.1</span>, (<span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>), <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">type =</span> <span class="st">"h"</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"samples"</span>, <span class="st">"true geometric"</span>),</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L19-mh-1_files/figure-html/MCgeom-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Suppose we wanted to estimate <span class="math inline">\(\mathbb EX^2\)</span>, where <span class="math inline">\(X \sim \operatorname{Geom}(\frac{1}{3})\)</span>. We already know how to do this the “basic” Monte Carlo way. But we can now do it the Markov chain Monte Carlo (MCMC) way, by using the output to this Markov chain.</p>
+<p>Our estimate is the following.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(MC<span class="sc">^</span><span class="dv">2</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 15.13141</code></pre>
+</div>
+</div>
+<p>The true answer is 15, so we are in the right area, but probably not as accurate as the basic Monte Carlo estimator with the same sample size would have been. This suggests that the dependence structure in a Markov chain might be a slight disadvantage, and may make the variance of our estimator bigger. The real strength of MCMC is when a basic Monte Carlo estimate is impossible to get – when basic MCMC is possible (such as for simple distributions like this geometric) we should probably stick with it.</p>
+</div>
+</section>
+<section id="proof-of-stationary-distribution" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="proof-of-stationary-distribution"><span class="header-section-number">19.3</span> Proof of stationary distribution</h2>
+<p>We have defined the Metropolis–Hastings Markov chain in terms of the proposal transition probabilities <span class="math inline">\(r(x, y)\)</span> and the acceptance probability <span class="math inline">\(\alpha(x, y)\)</span>. But what are the actual transition probability <span class="math inline">\(p(x, y)\)</span> of this Markov chain?</p>
+<p>Well, to move from <span class="math inline">\(x\)</span> to <span class="math inline">\(y \neq x\)</span>, we first have to propose that move, then we have to accept it. So we have <span id="eq-MHp"><span class="math display">\[ p(x, y) = r(x, y) \,\alpha(x, y) = r(x, y) \,\min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} . \tag{19.1}\]</span></span> (We can find <span class="math inline">\(p(x,x)\)</span>, if we need it, by using the fact that <span class="math inline">\(\sum_y p(x,y) = 0\)</span>.)</p>
+<p>We should check that the Metropolis–Hastings algorithm really does give a Markov chain with stationary distribution <span class="math inline">\(\pi\)</span>.</p>
+<div id="thm-MHpi" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 19.1</strong></span> Let <span class="math inline">\(\pi\)</span> be a probability mass function on a discrete state space <span class="math inline">\(\mathcal S\)</span>, and let <span class="math inline">\(\mathsf R = (r(x,y))\)</span> be a transition matrix on <span class="math inline">\(\mathcal S\)</span>. Let <span class="math inline">\((X_i)\)</span> be the Metropolis–Hastings Markov chain with proposal transition matrix <span class="math inline">\(\mathsf R\)</span> and acceptance probability <span class="math display">\[ \alpha(x, y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)},\,1\right\} . \]</span> Then <span class="math inline">\(\pi\)</span> is a stationary distribution for <span class="math inline">\((X_i)\)</span>.</p>
+</div>
+<p>We say “a” stationary distribution. But provided the Markov chain fulfils the technical conditions in <a href="#thm-ergodic" class="quarto-xref">Theorem&nbsp;<span class="quarto-unresolved-ref">thm-ergodic</span></a>, we know that this will be the unique stationary distribution, and that the ergodic theorem will hold.</p>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We need to check the detailed balance equations <span class="math display">\[ \pi(y) \,p(y, x) = \pi(x) \,p(x, y) \]</span> for <span class="math inline">\(y \neq x\)</span>. By <a href="#eq-MHp" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-MHp</span></a>, the detailed balance equations are <span id="eq-MHDB"><span class="math display">\[ \pi(y)\,r(y, x) \,\min \left\{ \frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} , \, 1\right\} = \pi(x)\,r(x, y) \,\min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} .  \tag{19.2}\]</span></span> Note that the two fractions in the first terms on the minimums are reciprocals of each other. So one of these will be greater than equal to 1, and the minimum will be 1; and one of the will be less than or equal to 1, and the minimum will be that fraction.</p>
+<p>Suppose first that <span class="math display">\[\frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} \geq 1 \qquad\text{and} \qquad \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} \leq 1 .\]</span> Then <a href="#eq-MHDB" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-MHDB</span></a> becomes <span class="math display">\[ \pi(y)\,r(y, x) \times 1 = \pi(x)\,r(x, y) \times \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)}  . \]</span> On the right-hand side, the two <span class="math inline">\(\pi(x)\,r(x,y)\)</span> terms cancel, so we have equality, and the detailed balance equations hold.</p>
+<p>If, on the other hand <span class="math display">\[\frac{\pi(x)\,r(x,y)}{\pi(y)\,r(y,x)} \leq 1 \qquad\text{and} \qquad \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} \geq 1 ,\]</span> then the same argument works the other way around.</p>
+</div>
+<p><strong>Next time.</strong> <em>We will start our study of MCMC in continuous space by giving an overview of the theory of Markov chains in continuous space.</em></p>
+<div class="mysummary">
+<p><strong>Summary:</strong></p>
+<ul>
+<li><p>The Metropolis–Hastings algorithm gives a way of designing a Markov chain whose stationary distribution is a given PMF <span class="math inline">\(\pi\)</span>.</p></li>
+<li><p>We make proposal moves according to a transition matrix <span class="math inline">\(\mathsf R = (r(x,y))\)</span>. A proposal move from <span class="math inline">\(x\)</span> to <span class="math inline">\(y\)</span> is accepted with probability <span class="math display">\[\alpha(x,y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} . \]</span></p></li>
+<li><p>The most important example is the random walk Metropolis algorithm, where <span class="math inline">\(`mathsf R\)</span> is the transition matrix of the simple symmetric random walk and <span class="math display">\[\alpha(x,y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1\right\} . \]</span></p></li>
+</ul>
+<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 4.1.2.</p>
+</div>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

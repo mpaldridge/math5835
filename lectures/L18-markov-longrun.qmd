@@ -134,7 +134,7 @@ If you do want to read more about the theory of Markov chains, and these technic
 
 
 
-**Next time.** *We we look at Markov chain Monte Carlo; specifically, how to set up a Markov chain that has a given probability mass function as its stationary distribution.*
+**Next time.** *We will look at Markov chain Monte Carlo; specifically, how to set up a Markov chain that has a given probability mass function as its stationary distribution.*
 
 
 ::: mysummary
