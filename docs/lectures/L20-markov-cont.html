@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -69,6 +103,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../mystyle.css">
 </head>
@@ -310,8 +373,16 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#markov-chains-with-densities" id="toc-markov-chains-with-densities" class="nav-link active" data-scroll-target="#markov-chains-with-densities"><span class="header-section-number">20.1</span> Markov chains with densities</a></li>
+  <li><a href="#gaussian-random-walk" id="toc-gaussian-random-walk" class="nav-link" data-scroll-target="#gaussian-random-walk"><span class="header-section-number">20.2</span> Gaussian random walk</a></li>
+  <li><a href="#long-run-behaviour" id="toc-long-run-behaviour" class="nav-link" data-scroll-target="#long-run-behaviour"><span class="header-section-number">20.3</span> Long-run behaviour</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -344,103 +415,68 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!--
-## Markov chains with densities
-
-In the last three lectures, we have looked at Markov chains and the Metropolis--Hastings algorithm on a discrete state space $\mathcal S$. This allowed us to form Markov chain Monte Carlo (MCMC) estimators for discrete random variables. But very often we want to sample from continuous random variables. So in the next two lectures we will look at Markov chains and Metropolis--Hastings in continuous space. (We are still in discrete time, though.)
-
-The general theory of Markov chains on continuous state spaces can get very complicated -- there are lots of technical conditions, and you have to deal with a "measure theoretic" approach that looks at least as much like analysis from pure mathematics as it does probability and statistics. However, this technical material is not necessary to me able to understand and use the basic ideas of MCMC in continuous space. For this reason, we will often make broad simplifying assumptions, not get into the precise definitions of technical terms, and occasionally just outright lie. (If you want to get into more of the theoretical details, I recommend [Subsection 2.3.2 and Sections 4.1 and 4.2 of Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031) as a good place to begin your studies.)
-
-The concept of a Markov chain and the Markov property remain the same: the next step $X_{i+1}$ may depend on the current step $X_i$, but, given the current step $X_i$, may not depend any further on on the past steps $X_{i-1}, X_{i-2}, \dots, X_2, X_1$. That is,
-$$ \mathbb P(X_{i+1} \in A \mid X_i = x_i, X_{i-1} = x_{i=1}, \dots, X_1 = x_1) 
-= \mathbb P(X_{i+1} \in A \mid X_i = x_i)$$ for all $i = 1, 2, \dots$ and for all $x_1, \dots, x_{i-1}, x_{i} \in \mathcal S$ and $A \subset \mathcal S$ such that the conditional probability is defined.
-
-Therefore, the steps of such a Markov chain will depend only on the initial state and the transition rule from moving from $X_i = x$ to $X_{i+1} \in A$. In general, we will need what is called a "transition kernel" $p(x, A)$. However, we will make the simplification that the transition rule always has a density; that is, that there exists a conditional probability density function $p$ where $p(x, y)$ is the probability density of $X_{i+1}$ around $y$ given $X_i = x$. Formally, we have $$ \mathbb P(X_{i+1} \in A \mid X_i = x) = \int_A p(x, y)\,\mathrm{d} y . $$ This transition density $p = p(x, y)$ behaves a lot like the transition probabilities $\mathsf P = (p(x,y))$ in discrete space.
-
-In the discrete case, we had $$\sum_{y \in \mathcal S} p(x, y) = 1 \qquad \text{for all } x\in \mathcal S $$ ("rows of the transition matrix sum to 1"). Similarly, in the discrete case we have $$ \int_{\mathcal S} p(x, y) \,\mathrm{d}y = 1 \qquad \text{for all } x\in \mathcal S ,$$ by the same argument that we have to go *somewhere* from $x$.
-
-## Gaussian random walk
-
-The most important Markov chain in continuous space is the following.
-
-::: {#exm-gaussian1}
-Consider the **Gaussian random walk** with drift $\mu$ and volatility $\sigma$. This is a random walk with transitions given by the rule $X_{i+1} = X_i + Z_i$, where the $Z_i \sim \operatorname{N}(\mu, \sigma^2)$ are IID. So at each time step, the position of the random walk is shifted by a normally distributed amount. When $\mu = 0$, we call this the **symmetric Gaussian walk**, since it moves up and down symmetrically. (The name "Gaussian random walk" is because the "Gaussian distribution" is alternative name for the normal distribution.) This can be used as the model of the price of a stock each day or (in higher dimensions) the position of a gas particle in a room.
-
-Another way to write this is that $X_{i+1} \sim \operatorname{N}(X_i + \mu, \sigma^2)$. So the transition density is $$ p(x, y) = \frac{1}{\sqrt{2\pi\sigma^2}}\, \exp \Bigg(- \frac{\big(y - (x + \mu)\big)^2}{2\sigma^2} \Bigg) . $$
-
-We can simulate this in R in a similar way to the simple random walk on the integers.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-rgrw <- function(n, mean, sd) {
-  GRW <- rep(0, n)
-  GRW[1] <- 0
-  for (i in 1:(n - 1)) GRW[i + 1] <- GRW[i] + rnorm(1, mean, sd)
-  return(GRW)
-}
-```
-:::
-
-
-
-
-
-
-You can play around with this function yourself, but generally we see similar behaviour to the simple random walk: for $\mu > 0$ (as with $p > \frac12$) it trends fairly predictably upwards; for $\mu < 0$ (as with $p < \frac12$) it trends fairly predictably downwards; and for $\mu = 0$ (as with with $p = \frac12$) it is more unpredictable.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-GRW <- rgrw(1000, 0, 1)
-plot(GRW, col = "black", type = "l", ylim = c(-70, 70))
-
-cols <- c("red", "orange", "yellow", "green", "blue", "darkblue", "purple")
-for (i in 1:7) {
-  GRW <- rgrw(1000, 0, 1)
-  points(GRW, col = cols[i], type = "l")
-}
-```
-
-::: {.cell-output-display}
-![](L20-markov-cont_files/figure-html/ssrw-1.svg){width=672}
-:::
-:::
-
-
-
-
-
-:::
-
-## Long-run behaviour
-
-Most of the properties about long-run behaviour of Markov chains in discrete space continue to hold in continuous space: we just replace the transition probability by the transition density and sums by integrals.
-
-We can find the two-step transition density $p^{(2)}(x, y)$ be integrating over all possible intermediate steps $z$ $$ p^{(2)}(x, y) = \int_{\mathcal S} p(x, z)\,p(z, y)\,\mathrm{d} z .$$ Similarly, we get an $n$-step transition density from $$ p^{(n)}(x, y) = \int_{\mathcal S^{n-1}} p(x, z_1)\,p(z_1,z_2)\cdots p(z_{n-2},z_{n-1})\,p(z_{n-1}, y)\, \mathrm{d}z_1 \, \mathrm{d}z_2 \cdots \mathrm{d}z_{n-1} . $$
-
-A stationary density $\pi$ is a PDF on $\mathcal S$ (so $\pi(x) \geq 0$ and $\int_{\mathcal S}\pi(x)\,\mathrm{d}x = 0$) such that $$ \pi(y) = \int_{\mathcal S} \pi(x) \,p(x,y) \,\mathrm{d}x \qquad \text{for all } y \in \mathcal S . $$ This is often easier to find by solving the detailed balance equations $$ \pi(y)\,p(y, x) = \pi(x)\,p(x, y) \qquad \text{for all } x,y \in \mathcal S . $$
--->
+<section id="markov-chains-with-densities" class="level2" data-number="20.1">
+<h2 data-number="20.1" class="anchored" data-anchor-id="markov-chains-with-densities"><span class="header-section-number">20.1</span> Markov chains with densities</h2>
+<p>In the last three lectures, we have looked at Markov chains and the Metropolis–Hastings algorithm on a discrete state space <span class="math inline">\(\mathcal S\)</span>. This allowed us to form Markov chain Monte Carlo (MCMC) estimators for discrete random variables. But very often we want to sample from continuous random variables. So in the next two lectures we will look at Markov chains and Metropolis–Hastings in continuous space. (We are still in discrete time, though.)</p>
+<p>The general theory of Markov chains on continuous state spaces can get very complicated – there are lots of technical conditions, and you have to deal with a “measure theoretic” approach that looks at least as much like analysis from pure mathematics as it does probability and statistics. However, this technical material is not necessary to me able to understand and use the basic ideas of MCMC in continuous space. For this reason, we will often make broad simplifying assumptions, not get into the precise definitions of technical terms, and occasionally just outright lie. (If you want to get into more of the theoretical details, I recommend <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Subsection 2.3.2 and Sections 4.1 and 4.2 of Voss, <em>An Introduction to Statistical Computing</em></a> as a good place to begin your studies.)</p>
+<p>The concept of a Markov chain and the Markov property remain the same: the next step <span class="math inline">\(X_{i+1}\)</span> may depend on the current step <span class="math inline">\(X_i\)</span>, but, given the current step <span class="math inline">\(X_i\)</span>, may not depend any further on on the past steps <span class="math inline">\(X_{i-1}, X_{i-2}, \dots, X_2, X_1\)</span>. That is, <span class="math display">\[ \mathbb P(X_{i+1} \in A \mid X_i = x_i, X_{i-1} = x_{i=1}, \dots, X_1 = x_1)
+= \mathbb P(X_{i+1} \in A \mid X_i = x_i)\]</span> for all <span class="math inline">\(i = 1, 2, \dots\)</span> and for all <span class="math inline">\(x_1, \dots, x_{i-1}, x_{i} \in \mathcal S\)</span> and <span class="math inline">\(A \subset \mathcal S\)</span> such that the conditional probability is defined.</p>
+<p>Therefore, the steps of such a Markov chain will depend only on the initial state and the transition rule from moving from <span class="math inline">\(X_i = x\)</span> to <span class="math inline">\(X_{i+1} \in A\)</span>. In general, we will need what is called a “transition kernel” <span class="math inline">\(p(x, A)\)</span>. However, we will make the simplification that the transition rule always has a density; that is, that there exists a conditional probability density function <span class="math inline">\(p\)</span> where <span class="math inline">\(p(x, y)\)</span> is the probability density of <span class="math inline">\(X_{i+1}\)</span> around <span class="math inline">\(y\)</span> given <span class="math inline">\(X_i = x\)</span>. Formally, we have <span class="math display">\[ \mathbb P(X_{i+1} \in A \mid X_i = x) = \int_A p(x, y)\,\mathrm{d} y . \]</span> This transition density <span class="math inline">\(p = p(x, y)\)</span> behaves a lot like the transition probabilities <span class="math inline">\(\mathsf P = (p(x,y))\)</span> in discrete space.</p>
+<p>In the discrete case, we had <span class="math display">\[\sum_{y \in \mathcal S} p(x, y) = 1 \qquad \text{for all } x\in \mathcal S \]</span> (“rows of the transition matrix sum to 1”). Similarly, in the discrete case we have <span class="math display">\[ \int_{\mathcal S} p(x, y) \,\mathrm{d}y = 1 \qquad \text{for all } x\in \mathcal S ,\]</span> by the same argument that we have to go <em>somewhere</em> from <span class="math inline">\(x\)</span>.</p>
+</section>
+<section id="gaussian-random-walk" class="level2" data-number="20.2">
+<h2 data-number="20.2" class="anchored" data-anchor-id="gaussian-random-walk"><span class="header-section-number">20.2</span> Gaussian random walk</h2>
+<p>The most important Markov chain in continuous space is the following.</p>
+<div id="exm-gaussian1" class="theorem example">
+<p><span class="theorem-title"><strong>Example 20.1</strong></span> Consider the <strong>Gaussian random walk</strong> with drift <span class="math inline">\(\mu\)</span> and volatility <span class="math inline">\(\sigma\)</span>. This is a random walk with transitions given by the rule <span class="math inline">\(X_{i+1} = X_i + Z_i\)</span>, where the <span class="math inline">\(Z_i \sim \operatorname{N}(\mu, \sigma^2)\)</span> are IID. So at each time step, the position of the random walk is shifted by a normally distributed amount. When <span class="math inline">\(\mu = 0\)</span>, we call this the <strong>symmetric Gaussian walk</strong>, since it moves up and down symmetrically. (The name “Gaussian random walk” is because the “Gaussian distribution” is alternative name for the normal distribution.) This can be used as the model of the price of a stock each day or (in higher dimensions) the position of a gas particle in a room.</p>
+<p>Another way to write this is that <span class="math inline">\(X_{i+1} \sim \operatorname{N}(X_i + \mu, \sigma^2)\)</span>. So the transition density is <span class="math display">\[ p(x, y) = \frac{1}{\sqrt{2\pi\sigma^2}}\, \exp \Bigg(- \frac{\big(y - (x + \mu)\big)^2}{2\sigma^2} \Bigg) . \]</span></p>
+<p>We can simulate this in R in a similar way to the simple random walk on the integers.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rgrw <span class="ot">&lt;-</span> <span class="cf">function</span>(n, mean, sd) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  GRW <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  GRW[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) GRW[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> GRW[i] <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, mean, sd)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(GRW)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can play around with this function yourself, but generally we see similar behaviour to the simple random walk: for <span class="math inline">\(\mu &gt; 0\)</span> (as with <span class="math inline">\(p &gt; \frac12\)</span>) it trends fairly predictably upwards; for <span class="math inline">\(\mu &lt; 0\)</span> (as with <span class="math inline">\(p &lt; \frac12\)</span>) it trends fairly predictably downwards; and for <span class="math inline">\(\mu = 0\)</span> (as with with <span class="math inline">\(p = \frac12\)</span>) it is more unpredictable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>GRW <span class="ot">&lt;-</span> <span class="fu">rgrw</span>(<span class="dv">1000</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(GRW, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">70</span>, <span class="dv">70</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"orange"</span>, <span class="st">"yellow"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span>, <span class="st">"darkblue"</span>, <span class="st">"purple"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>) {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  GRW <span class="ot">&lt;-</span> <span class="fu">rgrw</span>(<span class="dv">1000</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(GRW, <span class="at">col =</span> cols[i], <span class="at">type =</span> <span class="st">"l"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L20-markov-cont_files/figure-html/ssrw-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="long-run-behaviour" class="level2" data-number="20.3">
+<h2 data-number="20.3" class="anchored" data-anchor-id="long-run-behaviour"><span class="header-section-number">20.3</span> Long-run behaviour</h2>
+<p>Most of the properties about long-run behaviour of Markov chains in discrete space continue to hold in continuous space: we just replace the transition probability by the transition density and sums by integrals.</p>
+<p>We can find the two-step transition density <span class="math inline">\(p^{(2)}(x, y)\)</span> be integrating over all possible intermediate steps <span class="math inline">\(z\)</span> <span class="math display">\[ p^{(2)}(x, y) = \int_{\mathcal S} p(x, z)\,p(z, y)\,\mathrm{d} z .\]</span> Similarly, we get an <span class="math inline">\(n\)</span>-step transition density from <span class="math display">\[ p^{(n)}(x, y) = \int_{\mathcal S^{n-1}} p(x, z_1)\,p(z_1,z_2)\cdots p(z_{n-2},z_{n-1})\,p(z_{n-1}, y)\, \mathrm{d}z_1 \, \mathrm{d}z_2 \cdots \mathrm{d}z_{n-1} . \]</span></p>
+<p>A stationary density <span class="math inline">\(\pi\)</span> is a PDF on <span class="math inline">\(\mathcal S\)</span> (so <span class="math inline">\(\pi(x) \geq 0\)</span> and <span class="math inline">\(\int_{\mathcal S}\pi(x)\,\mathrm{d}x = 0\)</span>) such that <span class="math display">\[ \pi(y) = \int_{\mathcal S} \pi(x) \,p(x,y) \,\mathrm{d}x \qquad \text{for all } y \in \mathcal S . \]</span> This is often easier to find by solving the detailed balance equations <span class="math display">\[ \pi(y)\,p(y, x) = \pi(x)\,p(x, y) \qquad \text{for all } x,y \in \mathcal S . \]</span></p>
+<p>[Limit theorem]</p>
 <p><strong>Next time.</strong> <em>We will study the Metropolis–Hastings algorithm in continuous space.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
-<li>m</li>
+<li>Markov chains also exist for continuous state space, where they are defined by the transition density <span class="math inline">\(p(x, y)\)</span>.</li>
+<li>Properties are similar to Markov chains in discrete space: a stationary distribution can be found by solving the discrete balance equations <span class="math inline">\(\pi(x) p(x,y) = \pi(y) p(y,x)\)</span>; and the ergodic theorem says that <span class="math inline">\(\sum{1}{n} \sum_{i=1}^n \phi(X_i) = \operatorname{\mathbb E} \phi(X)\)</span> where <span class="math inline">\(X\)</span> has PDF <span class="math inline">\(\pi\)</span>.</li>
 </ul>
 <p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 2.3.1.</p>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

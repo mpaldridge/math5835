@@ -431,7 +431,7 @@ window.Quarto = {
 </ol>
 </div>
 <p>In points 2, 3 and 4, generally the first expression, involving the variance <span class="math inline">\(\operatorname{Var}(\phi(X) + \phi(X'))\)</span>, is the most convenient for computation. We can estimate this easily from data using the sample variance in the usual way (as we will in the examples below).</p>
-<p>The second expression, involving the correlation <span class="math inline">\(\rho\)</span>, is usually clearer for understanding. Comparing these to the same results for the standard Monte Carlo estimator (<a href="#thm-MCerr" class="quarto-xref">Theorem&nbsp;<span class="quarto-unresolved-ref">thm-MCerr</span></a>), we see that the antithetic variables method is an improvement (that is, has a smaller mean-square error) when <span class="math inline">\(\rho &lt; 0\)</span>, but is worse when <span class="math inline">\(\rho &gt; 0\)</span>. This proves that negative correlation improves our estimator.</p>
+<p>The second expression, involving the correlation <span class="math inline">\(\rho\)</span>, is usually clearer for understanding. Comparing these to the same results for the standard Monte Carlo estimator (<a href="L03-mc-error-1.html#thm-MCerr" class="quarto-xref">Theorem&nbsp;<span>3.2</span></a>), we see that the antithetic variables method is an improvement (that is, has a smaller mean-square error) when <span class="math inline">\(\rho &lt; 0\)</span>, but is worse when <span class="math inline">\(\rho &gt; 0\)</span>. This proves that negative correlation improves our estimator.</p>
 <div class="proof">
 <p><span class="proof-title"><em>Proof</em>. </span>For unbiasedness, we have <span class="math display">\[ \Ex \widehat{\theta}_n^{\mathrm{AV}} = \Ex \left(\frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X_i')\big)\right) = \frac{1}{n} \,\frac{n}{2} \big(\Exg\phi(X) + \Exg \phi(X')) = \frac{1}{2}(\theta+ \theta) = \theta ,\]</span> since <span class="math inline">\(X'\)</span> has the same distribution as <span class="math inline">\(X\)</span>.</p>
 <p>For the other three points, each of the first expressions follows straightforwardly in essentially the same way. (You can fill in the details yourself, if you need to.) For the second expressions, we have <span class="math display">\[\begin{align*}
@@ -444,7 +444,7 @@ window.Quarto = {
 </div>
 <p>Let’s return to the two examples we tried last time.</p>
 <div id="exm-MCprob5" class="theorem example">
-<p><span class="theorem-title"><strong>Example 7.1</strong></span> In <a href="#exm-MCprob4" class="quarto-xref">Example&nbsp;<span class="quarto-unresolved-ref">exm-MCprob4</span></a>, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span> for <span class="math inline">\(Z\)</span> a standard normal.</p>
+<p><span class="theorem-title"><strong>Example 7.1</strong></span> In <a href="L06-antithetic-1.html#exm-MCprob4" class="quarto-xref">Example&nbsp;<span>6.1</span></a>, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span> for <span class="math inline">\(Z\)</span> a standard normal.</p>
 <p>The basic Monte Carlo estimate and its root-mean-square error are</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
@@ -478,7 +478,7 @@ window.Quarto = {
 <p>We see there was a very small but negative correlation: the variance, and hence the mean-square error, was reduced by about 2%.</p>
 </div>
 <div id="exm-AV" class="theorem example">
-<p><span class="theorem-title"><strong>Example 7.2</strong></span> In <a href="#exm-AVunif" class="quarto-xref">Example&nbsp;<span class="quarto-unresolved-ref">exm-AVunif</span></a>, we were estimating <span class="math inline">\(\mathbb E \sin U\)</span>, where <span class="math inline">\(U\)</span> is continuous uniform on <span class="math inline">\([0,1]\)</span>.</p>
+<p><span class="theorem-title"><strong>Example 7.2</strong></span> In <a href="L06-antithetic-1.html#exm-AVunif" class="quarto-xref">Example&nbsp;<span>6.2</span></a>, we were estimating <span class="math inline">\(\mathbb E \sin U\)</span>, where <span class="math inline">\(U\)</span> is continuous uniform on <span class="math inline">\([0,1]\)</span>.</p>
 <p>The basic Monte Carlo estimate and its root-mean square error is</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
@@ -533,8 +533,8 @@ window.Quarto = {
 <p>We can now apply this to the theorem in question. Put <span class="math inline">\(Y = \phi(U)\)</span> and <span class="math inline">\(Z = \phi(1-U)\)</span>, and introduce an IID copy <span class="math inline">\(V\)</span> of <span class="math inline">\(U\)</span>, so <span class="math inline">\(Y' = \phi(V)\)</span> and <span class="math inline">\(Z' = \phi(1 - V)\)</span>. Then we have <span class="math display">\[  \operatorname{Cov}\big(\phi(U), \phi(V)\big) = \tfrac 12 \Exg \big(\phi(U) - \phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big) .\]</span></p>
 <p>We now claim that this expectation is negative. In fact, we have a stronger result: <span id="eq-cross"><span class="math display">\[\big(\phi(U) - \phi(V)\big)\big(\phi(1-U) - \phi(1-V)\big) \tag{7.1}\]</span></span> is <em>always</em> negative, so its expectation certainly is. To see this, think separately of the two cases <span class="math inline">\(U \leq V\)</span> and <span class="math inline">\(V \leq U\)</span>.</p>
 <ul>
-<li><p>If <span class="math inline">\(U \leq V\)</span>, then <span class="math inline">\(\phi(U) \leq \phi(V)\)</span> too, since <span class="math inline">\(\phi\)</span> is increasing. But, also this means that <span class="math inline">\(1-U \geq 1-V\)</span>, so <span class="math inline">\(\phi(1 - U) \geq \phi(1-V)\)</span>. This means that, in <a href="#eq-cross" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-cross</span></a>, the first term is negative and the second term is positive, so the product is negative.</p></li>
-<li><p>If <span class="math inline">\(V \leq U\)</span>, then <span class="math inline">\(\phi(V) \leq \phi(U)\)</span> too, since <span class="math inline">\(\phi\)</span> is increasing. But, also this means that <span class="math inline">\(1-V \geq 1-U\)</span>, so <span class="math inline">\(\phi(1 - V) \geq \phi(1-U)\)</span>. This means that, in <a href="#eq-cross" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-cross</span></a>, the first term is positive and the second term is negative, so the product is negative.</p></li>
+<li><p>If <span class="math inline">\(U \leq V\)</span>, then <span class="math inline">\(\phi(U) \leq \phi(V)\)</span> too, since <span class="math inline">\(\phi\)</span> is increasing. But, also this means that <span class="math inline">\(1-U \geq 1-V\)</span>, so <span class="math inline">\(\phi(1 - U) \geq \phi(1-V)\)</span>. This means that, in <a href="#eq-cross" class="quarto-xref">Equation&nbsp;<span>7.1</span></a>, the first term is negative and the second term is positive, so the product is negative.</p></li>
+<li><p>If <span class="math inline">\(V \leq U\)</span>, then <span class="math inline">\(\phi(V) \leq \phi(U)\)</span> too, since <span class="math inline">\(\phi\)</span> is increasing. But, also this means that <span class="math inline">\(1-V \geq 1-U\)</span>, so <span class="math inline">\(\phi(1 - V) \geq \phi(1-U)\)</span>. This means that, in <a href="#eq-cross" class="quarto-xref">Equation&nbsp;<span>7.1</span></a>, the first term is positive and the second term is negative, so the product is negative.</p></li>
 </ul>
 <p>This completes the proof.</p>
 </div>
@@ -550,7 +550,7 @@ window.Quarto = {
 <li><p>The antithetic variables estimator is unbiased and has mean-square error <span class="math display">\[ \operatorname{MSE}\big(\widehat{\theta}_n^{\mathrm{AV}}\big) = \frac{1}{2n} \operatorname{Var}\big(\phi(X) + \phi(X')\big) = \frac{1+\rho}{n}\Var\big(\phi(X)\big). \]</span></p></li>
 <li><p>If <span class="math inline">\(U \sim \operatorname{U}[0, 1]\)</span> and <span class="math inline">\(\phi\)</span> is monotonically increasing, then <span class="math inline">\(\phi(U)\)</span> and <span class="math inline">\(\phi(1-U)\)</span> are negatively correlated.</p></li>
 </ul>
-<p>On Thursday’s lecture, we will be discussing your answers to <a href="#P1"><strong>Problem Sheet 1</strong></a>.</p>
+<p>On Thursday’s lecture, we will be discussing your answers to <a href="../problems/P1.html"><strong>Problem Sheet 1</strong></a>.</p>
 <p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.3.2.</p>
 </div>
 

@@ -1,7 +1,7 @@
 {{< include ../_header.qmd >}}
 
 ::::::: myq
-**1.**     Consider a Markov chain on the discrete state space $\mathcal S = \{1, 2, \dots\}$ with transition probabilities $p(x, x+1) = p$ for all $x$, $p(x, 1) = 1 - p$ for all $x$, and $p(x, y) = 0$ otherwise.
+**1.**     ★ Consider a Markov chain on the discrete state space $\mathcal S = \{1, 2, \dots\}$ with transition probabilities $p(x, x+1) = p$ for all $x$, $p(x, 1) = 1 - p$ for all $x$, and $p(x, y) = 0$ otherwise.
 
 :::: subq
 **(a)**  Calculate the two-step transition probabilities $p^{(2)}(x, y)$. (You might start by working out what two-step transitions are even *possible*.)
@@ -88,7 +88,7 @@ P50[1, 1] + P50[1, 2]
 **3.**     Consider sampling from Poisson distribution with rate $\lambda$ using the random walk Metropolis algorithm on the integers.
 
 :::::::::::: subq
-**(a)**  Calculate the acceptance probabilities for this Markov chain. What proposals are always accepted with probability 1?
+**(a)**  ★ Calculate the acceptance probabilities for this Markov chain. What proposals are always accepted with probability 1?
 
 ::: myanswers
 *Solution.* The Poisson distribution has PMF $$ \pi(x) = \mathrm{e}^{-\lambda} \,\frac{\lambda^x}{x!} . $$
@@ -103,7 +103,7 @@ The acceptance probability for "down one" is $$ \alpha(x, x-1) = \min \left\{ \f
 :::
 
 :::: subq
-**(b)**  Suggest a good initial starting point $X_1$ for your Markov chain. Why did you choose this?
+**(b)**  ★ Suggest a good initial starting point $X_1$ for your Markov chain. Why did you choose this?
 
 ::: myanswers
 *Solution.* Somewhere in the middle of the distribution would be good. I would suggest the nearest integer to $\lambda$ as a pretty good place to start, but that's not the only sensible choice.

@@ -65,10 +65,11 @@ The symmetric case was the version originally considered by Metropolis, before H
 ::: {#exm-MCMC-geom}
 Let's do an example of the random walk Metropolis algorithm where we aim to sample from the geometric distribution with parameter $\frac13$, $$ \pi(x) = \Big(\frac23\Big)^{x-1}\times \frac13 \qquad x = 1, 2, \dots. $$ We will start from $X_1 = 1$.
 
-So at each step we propose moving up one with probability $\tfrac12$ and moving down one with probability $\tfrac12$. Since the proposals are symmetric, the acceptance probabilities are $$ \begin{align}
+So at each step we propose moving up one with probability $\tfrac12$ and moving down one with probability $\tfrac12$. Since the proposals are symmetric, the acceptance probabilities are  \begin{align}
 \alpha(x, x+1) = \min \left\{ \frac{\pi(x+1)}{\pi(x)} , \, 1\right\} = \min \left\{\frac{\big(\frac23\big)^{x}\times \frac13}{\big(\frac23\big)^{x-1}\times \frac13},\, 1\right\} = \min \Big\{\frac23, 1\Big\} = \frac23 \\
 \alpha(x, x-1) = \min \left\{ \frac{\pi(x-1)}{\pi(x)} , \, 1\right\} = \min \left\{\frac{\big(\frac23\big)^{x-1}\times \frac13}{\big(\frac23\big)^{x}\times \frac13},\, 1\right\} = \min \Big\{\frac32, 1\Big\} = 1 , 
-\end{align} $$ except for $$\alpha(1, 0) = \min \left\{ \frac{\pi(0)}{\pi(1)} , \, 1\right\} = \min \left\{ \frac{0}{\frac13} , \, 1\right\} = \min \{0,1\} = 0 .$$ So if the proposal is up one, we accept it with probability $\frac23$ and otherwise stay where we are. If the proposal is down one, we always accept -- except going down from 1 to 0, which we always reject.
+\end{align}
+except for $$\alpha(1, 0) = \min \left\{ \frac{\pi(0)}{\pi(1)} , \, 1\right\} = \min \left\{ \frac{0}{\frac13} , \, 1\right\} = \min \{0,1\} = 0 .$$ So if the proposal is up one, we accept it with probability $\frac23$ and otherwise stay where we are. If the proposal is down one, we always accept -- except going down from 1 to 0, which we always reject.
 
 Let's try it.
 

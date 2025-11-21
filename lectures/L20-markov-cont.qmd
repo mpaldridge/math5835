@@ -1,7 +1,6 @@
-
 # Markov chains in continuous space
 
-<!--
+
 ## Markov chains with densities
 
 In the last three lectures, we have looked at Markov chains and the Metropolis--Hastings algorithm on a discrete state space $\mathcal S$. This allowed us to form Markov chain Monte Carlo (MCMC) estimators for discrete random variables. But very often we want to sample from continuous random variables. So in the next two lectures we will look at Markov chains and Metropolis--Hastings in continuous space. (We are still in discrete time, though.)
@@ -57,14 +56,17 @@ Most of the properties about long-run behaviour of Markov chains in discrete spa
 We can find the two-step transition density $p^{(2)}(x, y)$ be integrating over all possible intermediate steps $z$ $$ p^{(2)}(x, y) = \int_{\mathcal S} p(x, z)\,p(z, y)\,\mathrm{d} z .$$ Similarly, we get an $n$-step transition density from $$ p^{(n)}(x, y) = \int_{\mathcal S^{n-1}} p(x, z_1)\,p(z_1,z_2)\cdots p(z_{n-2},z_{n-1})\,p(z_{n-1}, y)\, \mathrm{d}z_1 \, \mathrm{d}z_2 \cdots \mathrm{d}z_{n-1} . $$
 
 A stationary density $\pi$ is a PDF on $\mathcal S$ (so $\pi(x) \geq 0$ and $\int_{\mathcal S}\pi(x)\,\mathrm{d}x = 0$) such that $$ \pi(y) = \int_{\mathcal S} \pi(x) \,p(x,y) \,\mathrm{d}x \qquad \text{for all } y \in \mathcal S . $$ This is often easier to find by solving the detailed balance equations $$ \pi(y)\,p(y, x) = \pi(x)\,p(x, y) \qquad \text{for all } x,y \in \mathcal S . $$
--->
+
+[Limit theorem]
+
 
 **Next time.** *We will study the Metropolis--Hastings algorithm in continuous space.*
 
 ::: mysummary
 **Summary:**
 
--   m
+-   Markov chains also exist for continuous state space, where they are defined by the transition density $p(x, y)$.
+-   Properties are similar to Markov chains in discrete space: a stationary distribution can be found by solving the discrete balance equations $\pi(x) p(x,y) = \pi(y) p(y,x)$; and the ergodic theorem says that $\sum{1}{n} \sum_{i=1}^n \phi(X_i) = \operatorname{\mathbb E} \phi(X)$ where $X$ has PDF $\pi$.
 
 **Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection 2.3.1.
 :::

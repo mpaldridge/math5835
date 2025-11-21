@@ -97,7 +97,12 @@ We saw here a general pattern when choosing the step size in a Gaussian random w
 
 -   If the step size is too small, then proposals are very close to the current state. This means you often stay in the same approximate area for a long time, and you crawl through the state space very slowly.
 
-You want to try and pick the "Goldilocks" step size -- not too small, and not too big! There is no perfect recipe you can follow to pick the ideal step size -- MCMC is an art as well as a science. If you are able to, it can be helpful to think about what typical values you hope to be sampling. In our example, ranges of between 0 and 30 or so are typical for $\operatorname{Exp}(0.1)$, so you want a step size that will explore such a range well without too regularly stepping outside of it. Our choice of $\sigma = 15$, being half of that $[0, 30]$ range seemed to do quite well. It's also worth doing short "pilot" runs, where you try different values of $\sigma$ and examine what seems to work best.
+You want to try and pick the "Goldilocks" step size -- not too small, and not too big! There is no perfect recipe you can follow to pick the ideal step size -- MCMC is an art as well as a science. If you are able to, it can be helpful to think about what typical values you hope to be sampling. In our example, ranges of between 0 and 30 or so are typical for $\operatorname{Exp}(0.1)$, so you want a step size that will explore such a range well without too regularly stepping outside of it. Our choice of $\sigma = 15$, being half of that $[0, 30]$ range seemed to do quite well.
+
+Some people consider a rule of thumb where the acceptance rate should be around 40--50% for one-dimensional (or low-dimensional) problems to be a good rule of thumb, decreasing towards 20--25% for higher dimensional problems; but this is only a guide, not a strict rule.  
+If one changes the code in the example above to keep track of the acceptance rate, one would see that with $\sigma = 1$, the acceptance rate is usually greater than 90%; with $\sigma = 400$. the acceptance rate is usually less than 5%; and with $\sigma = 1$, the acceptance rate is usually around 40 to 45%. This matches the rule of thumb.
+
+It's also worth doing short "pilot" runs, where you try different values of $\sigma$ and examine what seems to work best.
 
 ## Burn-in period
 
@@ -120,4 +125,15 @@ You can see that, at the start, it takes us a while to move away from the "bad" 
 The ergodic theorem tells us this, eventually, for large enough $n$, these early unrepresentative samples will be drowned out of our large-$n$ collection. But for modest finite values of $n$, these are likely to corrupt our Monte Carlo estimation procedure.
 
 For that reason, it can often be useful to use a **burn-in period**. A burn-in period is when you run the Markov chain for a while without using the samples in estimation, and only start using samples once you have "reached the stationary distribution" -- the phrase "reached equilibrium" is also sometimes used. Again, how long a burn-in period should be is art more than science -- thinking about your specific problem and conducting experiments can help you decide if a burn-in period is necessary and how long it should be. If the state space and stationary distribution are easy to understand – say, $\mathcal S$ is one-dimensional and $\pi$ has a single mode – you can even run the MCMC algorithm first, then afterwards decide which unrepresentative early samples to throw away.
+
+**Next time.** *We analyses the error of Monte Carlo estimation with the output of a Markov chain.*
 -->
+
+
+::: mysummary
+**Summary:**
+
+-   
+
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection ?.?.?.
+

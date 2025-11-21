@@ -420,14 +420,14 @@ display: none !important;
 <div class="mysummary">
 <p>This is Problem Sheet 3, which covers material from Lectures 17 to 21. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of <strong>Thursday 27 November</strong>.</p>
 <p>This problem sheet is to help you practice material from the module and to help you check your learning. It is <em>not</em> for formal assessment and does not count towards your module mark.</p>
-<p>If you want some brief informal feedback on <strong>[questions TBC]</strong> (marked ★), you should submit your work electronically through Gradescope via the module’s Minerva page by <strong>1400 on Tuesday 25 November</strong>. (If you hand-write solutions on paper, the easiest way to scan-and-submit that work is using the Gradescope app on your phone.) I will return some brief comments on your those two questions by the problems class on Thursday 27 November. Because this informal feedback, and not part of the official assessment, I cannot accept late work for any reason – but I am always happy to discuss any of your work on any question in my office hours.</p>
+<p>If you want some brief informal feedback on <strong>Questions 1 and 3(a) and (b)</strong> (marked ★), you should submit your work electronically through Gradescope via the module’s Minerva page by <strong>1400 on Tuesday 25 November</strong>. (If you hand-write solutions on paper, the easiest way to scan-and-submit that work is using the Gradescope app on your phone.) I will return some brief comments on your those two questions by the problems class on Thursday 27 November. Because this informal feedback, and not part of the official assessment, I cannot accept late work for any reason – but I am always happy to discuss any of your work on any question in my office hours.</p>
 <p>Full solutions will be released on Friday 28 November.</p>
 </div>
 <div class="hidden">
 <p><span class="math display">\[ \]</span></p>
 </div>
 <div class="myq">
-<p><strong>1.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider a Markov chain on the discrete state space <span class="math inline">\(\mathcal S = \{1, 2, \dots\}\)</span> with transition probabilities <span class="math inline">\(p(x, x+1) = p\)</span> for all <span class="math inline">\(x\)</span>, <span class="math inline">\(p(x, 1) = 1 - p\)</span> for all <span class="math inline">\(x\)</span>, and <span class="math inline">\(p(x, y) = 0\)</span> otherwise.</p>
+<p><strong>1.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;★ Consider a Markov chain on the discrete state space <span class="math inline">\(\mathcal S = \{1, 2, \dots\}\)</span> with transition probabilities <span class="math inline">\(p(x, x+1) = p\)</span> for all <span class="math inline">\(x\)</span>, <span class="math inline">\(p(x, 1) = 1 - p\)</span> for all <span class="math inline">\(x\)</span>, and <span class="math inline">\(p(x, y) = 0\)</span> otherwise.</p>
 <div class="subq">
 <p><strong>(a)</strong>&nbsp;&nbsp;Calculate the two-step transition probabilities <span class="math inline">\(p^{(2)}(x, y)\)</span>. (You might start by working out what two-step transitions are even <em>possible</em>.)</p>
 <div class="myanswers">
@@ -496,7 +496,7 @@ p_{\mathrm{DH}} &amp;= ? &amp; p_{\mathrm{DS}} &amp;= ? &amp; p_{\mathrm{DD}} &a
 <div class="myq">
 <p><strong>3.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider sampling from Poisson distribution with rate <span class="math inline">\(\lambda\)</span> using the random walk Metropolis algorithm on the integers.</p>
 <div class="subq">
-<p><strong>(a)</strong>&nbsp;&nbsp;Calculate the acceptance probabilities for this Markov chain. What proposals are always accepted with probability 1?</p>
+<p><strong>(a)</strong>&nbsp;&nbsp;★ Calculate the acceptance probabilities for this Markov chain. What proposals are always accepted with probability 1?</p>
 <div class="myanswers">
 <p><em>Solution.</em> The Poisson distribution has PMF <span class="math display">\[ \pi(x) = \mathrm{e}^{-\lambda} \,\frac{\lambda^x}{x!} . \]</span></p>
 <p>The acceptance probability for “up one” is <span class="math display">\[ \alpha(x, x+1) = \min \left\{ \frac{\pi(x+1)}{\pi(x)} , \, 1 \right\}
@@ -507,7 +507,7 @@ p_{\mathrm{DH}} &amp;= ? &amp; p_{\mathrm{DS}} &amp;= ? &amp; p_{\mathrm{DD}} &a
 = \min \left\{ \frac{x}{\lambda}, \, 1 \right\} . \]</span> This is 1 if the step down is from greater than or equal to <span class="math inline">\(\lambda\)</span>.</p>
 </div>
 <div class="subq">
-<p><strong>(b)</strong>&nbsp;&nbsp;Suggest a good initial starting point <span class="math inline">\(X_1\)</span> for your Markov chain. Why did you choose this?</p>
+<p><strong>(b)</strong>&nbsp;&nbsp;★ Suggest a good initial starting point <span class="math inline">\(X_1\)</span> for your Markov chain. Why did you choose this?</p>
 <div class="myanswers">
 <p><em>Solution.</em> Somewhere in the middle of the distribution would be good. I would suggest the nearest integer to <span class="math inline">\(\lambda\)</span> as a pretty good place to start, but that’s not the only sensible choice.</p>
 </div>
