@@ -360,8 +360,26 @@ window.Quarto = {
  <span class="menu-text">Problem Sheet 4</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L22-mcmc-error.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L23-bayes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">MCMC and Bayesian statistics</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../coursework/coursework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Computational coursework</span></a>
+  </div>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../problems/solutions.html" class="sidebar-item-text sidebar-link">
@@ -546,7 +564,10 @@ If one changes the code in the example above to keep track of the acceptance rat
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
-<li></li>
+<li><p>The Metropolis–Hastings algorithm in continuous space works essentially the same as in discrete space: propose a move according to the transition density <span class="math inline">\(r(x,y)\)</span>, and accept it with probability <span class="math display">\[\alpha(x,y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} . \]</span></p></li>
+<li><p>When the proposal distribution is that of the symmetric Gaussian random walk, this is the random walk Metropolis algorithm.</p></li>
+<li><p>Choosing the step size <span class="math inline">\(\sigma\)</span> in the Metropolis random walk is important: too small and the Markov chain takes only very small steps; too large and most proposals are rejected.</p></li>
+<li><p>A burn-in period can be used to find a good initial point for MCMC.</p></li>
 </ul>
 <p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection ?.?.?.</p>
 

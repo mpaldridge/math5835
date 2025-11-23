@@ -925,7 +925,7 @@
     "href": "lectures/L21-mh-2.html#burn-in-period",
     "title": "21  Metropolis–Hastings in continuous space",
     "section": "21.3 Burn-in period",
-    "text": "21.3 Burn-in period\nRecall that the goal of MCMC is to sample from the stationary distribution \\(\\pi\\). It’s therefore a good idea, if it’s possible, to start from an initial value that’s “typical” of \\(\\pi\\); that is, has a large value of \\(\\pi\\) and is near other states with large values of \\(\\pi\\). That was definitely true for \\(X_1 = 0\\) in our previous example.\nBut what happens if we don’t pick such an initial state – either because we don’t know what these typical states look like, or by mistake.\n\nExample 21.2 We continue with the previous example, with step size \\(\\sigma = 2\\). What if we had started at \\(X_1 = 200\\) instead – what then would the Markov chain look like.\n\nset.seed(4)\nRWMbig &lt;- metroexp(2000, 0.1, 2, 200)\nplot(RWMbig, lwd = 2, col = \"red\", type = \"l\")\n\n\n\n\n\n\n\n\nYou can see that, at the start, it takes us a while to move away from the “bad” initial state \\(X_1 = 200\\) and to get to the “typical values” of \\([0, 35]\\) or so. In this example, it took around 1000 steps.\n\nThe ergodic theorem tells us this, eventually, for large enough \\(n\\), these early unrepresentative samples will be drowned out of our large-\\(n\\) collection. But for modest finite values of \\(n\\), these are likely to corrupt our Monte Carlo estimation procedure.\nFor that reason, it can often be useful to use a burn-in period. A burn-in period is when you run the Markov chain for a while without using the samples in estimation, and only start using samples once you have “reached the stationary distribution” – the phrase “reached equilibrium” is also sometimes used. Again, how long a burn-in period should be is art more than science – thinking about your specific problem and conducting experiments can help you decide if a burn-in period is necessary and how long it should be. If the state space and stationary distribution are easy to understand – say, \\(\\mathcal S\\) is one-dimensional and \\(\\pi\\) has a single mode – you can even run the MCMC algorithm first, then afterwards decide which unrepresentative early samples to throw away.\nNext time. We analyses the error of Monte Carlo estimation with the output of a Markov chain.\n\nSummary:\n\n\n\nRead more: Voss, An Introduction to Statistical Computing, Subsection ?.?.?.",
+    "text": "21.3 Burn-in period\nRecall that the goal of MCMC is to sample from the stationary distribution \\(\\pi\\). It’s therefore a good idea, if it’s possible, to start from an initial value that’s “typical” of \\(\\pi\\); that is, has a large value of \\(\\pi\\) and is near other states with large values of \\(\\pi\\). That was definitely true for \\(X_1 = 0\\) in our previous example.\nBut what happens if we don’t pick such an initial state – either because we don’t know what these typical states look like, or by mistake.\n\nExample 21.2 We continue with the previous example, with step size \\(\\sigma = 2\\). What if we had started at \\(X_1 = 200\\) instead – what then would the Markov chain look like.\n\nset.seed(4)\nRWMbig &lt;- metroexp(2000, 0.1, 2, 200)\nplot(RWMbig, lwd = 2, col = \"red\", type = \"l\")\n\n\n\n\n\n\n\n\nYou can see that, at the start, it takes us a while to move away from the “bad” initial state \\(X_1 = 200\\) and to get to the “typical values” of \\([0, 35]\\) or so. In this example, it took around 1000 steps.\n\nThe ergodic theorem tells us this, eventually, for large enough \\(n\\), these early unrepresentative samples will be drowned out of our large-\\(n\\) collection. But for modest finite values of \\(n\\), these are likely to corrupt our Monte Carlo estimation procedure.\nFor that reason, it can often be useful to use a burn-in period. A burn-in period is when you run the Markov chain for a while without using the samples in estimation, and only start using samples once you have “reached the stationary distribution” – the phrase “reached equilibrium” is also sometimes used. Again, how long a burn-in period should be is art more than science – thinking about your specific problem and conducting experiments can help you decide if a burn-in period is necessary and how long it should be. If the state space and stationary distribution are easy to understand – say, \\(\\mathcal S\\) is one-dimensional and \\(\\pi\\) has a single mode – you can even run the MCMC algorithm first, then afterwards decide which unrepresentative early samples to throw away.\nNext time. We analyses the error of Monte Carlo estimation with the output of a Markov chain.\n\nSummary:\n\nThe Metropolis–Hastings algorithm in continuous space works essentially the same as in discrete space: propose a move according to the transition density \\(r(x,y)\\), and accept it with probability \\[\\alpha(x,y) = \\min \\left\\{ \\frac{\\pi(y)\\,r(y,x)}{\\pi(x)\\,r(x,y)} , \\, 1\\right\\} . \\]\nWhen the proposal distribution is that of the symmetric Gaussian random walk, this is the random walk Metropolis algorithm.\nChoosing the step size \\(\\sigma\\) in the Metropolis random walk is important: too small and the Markov chain takes only very small steps; too large and most proposals are rejected.\nA burn-in period can be used to find a good initial point for MCMC.\n\nRead more: Voss, An Introduction to Statistical Computing, Subsection ?.?.?.",
     "crumbs": [
       "MCMC",
       "<span class='chapter-number'>21</span>  <span class='chapter-title'>Metropolis--Hastings in continuous space</span>"
@@ -940,6 +940,88 @@
     "crumbs": [
       "MCMC",
       "Problem Sheet 4"
+    ]
+  },
+  {
+    "objectID": "lectures/L22-mcmc-error.html",
+    "href": "lectures/L22-mcmc-error.html",
+    "title": "22  MCMC error",
+    "section": "",
+    "text": "\\[ \\newcommand{\\Exg}{\\operatorname{\\mathbb{E}}} \n\\newcommand{\\Ex}{\\mathbb{E}} \n\\newcommand{\\Ind}{\\mathbb{I}}\n\\newcommand{\\Var}{\\operatorname{Var}}\n\\newcommand{\\Cov}{\\operatorname{Cov}}\n\\newcommand{\\Corr}{\\operatorname{Corr}}\n\\newcommand{\\ee}{\\mathrm{e}} \\]\n\n\n\n\n\n\n\\[ \\]\n\n\n\nSummary:\n\nWe can analyse the error in Monte Carlo estimation with the output of a Markov chain by assuming it begins “in equilibrium”.\nMCMC is approximately unbiased and with MSE \\({\\displaystyle \\approx \\frac{\\sigma^2}{n} \\left(1 + 2 \\sum_{k = 1}^{\\infty} \\rho(k) \\right)}\\).\nWe want the autocorrelation \\(\\rho(k)\\) to decay as quickly as possible.\n\nRead more: Voss, An Introduction to Statistical Computing, Subsection ?.?.?.",
+    "crumbs": [
+      "MCMC",
+      "<span class='chapter-number'>22</span>  <span class='chapter-title'>MCMC error</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L23-bayes.html",
+    "href": "lectures/L23-bayes.html",
+    "title": "23  MCMC and Bayesian statistics",
+    "section": "",
+    "text": "\\[ \\newcommand{\\Exg}{\\operatorname{\\mathbb{E}}} \n\\newcommand{\\Ex}{\\mathbb{E}} \n\\newcommand{\\Ind}{\\mathbb{I}}\n\\newcommand{\\Var}{\\operatorname{Var}}\n\\newcommand{\\Cov}{\\operatorname{Cov}}\n\\newcommand{\\Corr}{\\operatorname{Corr}}\n\\newcommand{\\ee}{\\mathrm{e}} \\]\n\n\n\n\n\n\n\nSummary:\n\n\n\nRead more: Voss, An Introduction to Statistical Computing, Subsection ?.?.?.",
+    "crumbs": [
+      "MCMC",
+      "<span class='chapter-number'>23</span>  <span class='chapter-title'>MCMC and Bayesian statistics</span>"
+    ]
+  },
+  {
+    "objectID": "coursework/coursework.html",
+    "href": "coursework/coursework.html",
+    "title": "Computational coursework",
+    "section": "",
+    "text": "About the coursework\nThere is one piece of computational coursework for MATH5835M Statistical Computing. This coursework is worth 20% of the module mark.\nThis page contains all the administrative and organisational information about the coursework.\nA coursework sheet contains the tasks you must carry out. The coursework sheet is available in here in HTML format or here in R Markdown format. The HTML page can be opened in a standard web browser. The R Markdown version (which I personally prefer) should be downloaded then opened in RStudio; I recommend using the “Visual” editor – see the button in the top left of the editing window.\nThe are two deadlines for this work.\nThe Gradescope submission for the final report will open after 1400 on Friday 6 December (to avoid drafts for optional feedback getting mixed up with final reports). The Gradescope submission for optional feedback on draft work will be open from the computer practical sessions in week 9.\nYou must comply with the University’s rules on academic integrity. See below for comments on use of AI.\nIf you encounter extraordinary unforeseeable personal circumstances that make it impossible for you to submit your coursework on time, you can apply for an deadline extension through the usual mitigating circumstances procedure. (Do not contact me about this – I cannot unilaterally offer deadline extensions.)",
+    "crumbs": [
+      "Computational coursework"
+    ]
+  },
+  {
+    "objectID": "coursework/coursework.html#about-the-coursework",
+    "href": "coursework/coursework.html#about-the-coursework",
+    "title": "Computational coursework",
+    "section": "",
+    "text": "There is the main submission deadline which is the penultimate day of term, Thursday 11 December at 1400. You must submit your work by this time. Work that is submitted after this deadline will receive a penalty of 5% for every day or part-day late. Work that is more than 14 days late will not be marked and will receive 0. Work will be submitted electronically through Gradescope via the Minerva page for the module.\nOptionally, you may also wish to get some brief informal feedback on your draft work before the main deadline. If you wish to get feedback on your draft work, you should submit that draft by Friday 6 December at 1400. I will return a small amount of general feedback about your work by Monday 9 December. I will not give a mark to your draft, and the feedback will be a brief sentence or too that may be of a little help when completing the final version of your work. The quality of your draft submission will have no effect (either positive or negative) on the mark for your main submission, and there is no penalty if you choose not to take advantage of this offer. You still must submit your final work by the main submission deadline, even if you submit a draft for feedback. No extensions can be offered on the deadline for this informal feedback.",
+    "crumbs": [
+      "Computational coursework"
+    ]
+  },
+  {
+    "objectID": "coursework/coursework.html#about-your-report",
+    "href": "coursework/coursework.html#about-your-report",
+    "title": "Computational coursework",
+    "section": "About your report",
+    "text": "About your report\nYour task is to write a short report in response to the tasks on the coursework sheet. Your report should include all the important R code you use and any important plots you draw. If I can’t work out what R code you ran to get your results, I cannot award you marks for those results. Only include the code and figures relevant to your final and best solution – I don’t need or want to see earlier attempts or errors along the way, unless they genuinely help explain your final choices.\nAll computational work must be done in R – no marks will be given for code written in Python or any other language. It is strongly recommended that you draw figures in R (with the possible exception of rough illustrative sketches, if you find them useful), but I do not insist on this.\nYou report must end with a declaration of AI use. See below for more on this.\nI call your output a “report” because your work should be explained in detail, in full English-language sentences, with your solutions discussed and justified. The code and figures you include should be an integral part of your report, not just copy-pasted in at random, and should be fully explained within the text. However, other parts of a more formal “report”, such as an introduction, literature review, conclusion, references, etc, are not required here.\nThere is no page limit for the report, although I expect that good reports will typically be around 5–8 pages. If your report is 4 pages or less, make sure you have completed all the tasks and fully explained your work. If your report has 10 pages or more, make sure you are not wandering from the point or including too many unnecessary figures.\nYour report should be prepared electronically, but can be submitted in any sensible format – I recommend PDF (whether produced by LaTeX, R Markdown, Microsoft Word, or any other way), but HTML or Word document are fine too.",
+    "crumbs": [
+      "Computational coursework"
+    ]
+  },
+  {
+    "objectID": "coursework/coursework.html#computer-practical-and-other-help",
+    "href": "coursework/coursework.html#computer-practical-and-other-help",
+    "title": "Computational coursework",
+    "section": "Computer practical and other help",
+    "text": "Computer practical and other help\nThere will be a computer practical in Week 9 where I will introduce the practical coursework in more detail. This is a good place to ask any questions you have about the coursework. You may wish to bring your own laptop to the computer practical, if you prefer working on that to on University computers.\nPlaces where you can get help with the coursework include:\n\nIn the computer practical session.\nIn my office hours: Thursdays 1300–1400 in my office, 9.10n in the “Maths Research Deck” area on the 9th floor of the EC Stoner building at staircase 1. (It is unlikely I will have time to discuss computational work at the beginning or end of a lecture, although if your question is extremely short you can try.)\nBy submitting your draft work for optional feedback, as discussed above.",
+    "crumbs": [
+      "Computational coursework"
+    ]
+  },
+  {
+    "objectID": "coursework/coursework.html#ai-use",
+    "href": "coursework/coursework.html#ai-use",
+    "title": "Computational coursework",
+    "section": "AI use",
+    "text": "AI use\nThis coursework is rated AMBER for use of AI. This means that generative AI may be used in an “assistive role” only, provided you disclose (that is, tell me about) this use.\nThe following uses of generative AI go beyond merely “assistive” and are not permitted. Work that I suspect has used generative AI this way will be reported as an academic integrity case.\n\nAsking an LLM chatbot how to answer the questions on the problem sheet.\nWriting R code for you.\nWriting the text of your report for you.\n\nThe following uses of generative AI are only “assistive”, and are permitted provided you tell me that you used generative AI this way. Work that uses AI this way, where the AI use is disclosed, will not be penalised in any way. Work that uses AI this way where the AI use is not disclosed will be treated as an academic integrity case.\n\nGeneral revision of topics from the module, not particularly tailored to the coursework problems.\nDebugging almost-complete R code that you wrote yourself.\nSpell-checking and grammar-checking a report that you wrote yourself.\nHelp with LaTeX code, if you choose to write your report in LaTeX.\n\nAll reports must end with a declaration of generative AI use.\n\nIf you did not use generative AI at all, this can simply say: “I did not use generative AI for the coursework project.”\nIf you did use generative AI, this should say what system you used, what tasks it performed, and how you prompted it. Declarations like these should be one paragraph long, typically around 40–100 words.\n\nFor example, here are two hypothetical declarations:\n\nDeclaration of generative AI use (1). The only place I used AI in this coursework was to spell- and grammar-check my report. I uploaded my Word document to Copilot, and prompted it: “Please check this report for spelling and grammar mistakes.” It found 5 small errors, which I corrected.\n\n\nDeclaration of generative AI use (2). I used AI to help when I had a bug in my R code that I couldn’t fix myself. I copy-and-pasted my R script into ChatGPT, along with the text of the error from RStudio, and asked ChatGPT what the error was. It pointed out that, in drawing a graph, I had written col = blue without quotation-marks around \"blue\". This was the only time I used AI for the coursework.",
+    "crumbs": [
+      "Computational coursework"
+    ]
+  },
+  {
+    "objectID": "coursework/coursework.html#r-and-rstudio-on-university-computers",
+    "href": "coursework/coursework.html#r-and-rstudio-on-university-computers",
+    "title": "Computational coursework",
+    "section": "R and RStudio on University computers",
+    "text": "R and RStudio on University computers\nA quick reminder, if you need it, on how to access R and RStudio on University computers.\n\nOpen the AppsAnywhere portal This should be a link on the desktop. If invited to run any software, accept.\nLoad the language R Search on AppsAnywhere for “R for Windows” (or similar) and launch it. This will (silently) load the language R. It will also open an inferior RStudio-like program called “RGui” – you can close it.\n\n3.Launch RStudio Search on AppsAnywhere for “RStudio” (or similar) and launch it.\nYou can alternatively use the Posit Cloud to access R and RStudio online.",
+    "crumbs": [
+      "Computational coursework"
     ]
   },
   {

@@ -133,7 +133,13 @@ For that reason, it can often be useful to use a **burn-in period**. A burn-in p
 ::: mysummary
 **Summary:**
 
--   
+- The Metropolis--Hastings algorithm in continuous space works essentially the same as in discrete space: propose a move according to the transition density $r(x,y)$, and accept it with probability $$\alpha(x,y) = \min \left\{ \frac{\pi(y)\,r(y,x)}{\pi(x)\,r(x,y)} , \, 1\right\} . $$
+
+- When the proposal distribution is that of the symmetric Gaussian random walk, this is the random walk Metropolis algorithm.
+
+- Choosing the step size $\sigma$ in the Metropolis random walk is important: too small and the Markov chain takes only very small steps; too large and most proposals are rejected.
+
+- A burn-in period can be used to find a good initial point for MCMC.
 
 **Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection ?.?.?.
 

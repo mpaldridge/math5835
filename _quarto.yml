@@ -46,8 +46,8 @@ book:
         - lectures/L20-markov-cont.qmd
         - lectures/L21-mh-2.qmd
         - problems/P4.qmd
-#        - lectures/L22-mcmc-error.qmd
-#        - lectures/L23-bayes.qmd
+        - lectures/L22-mcmc-error.qmd
+        - lectures/L23-bayes.qmd
 #    - part: "Resampling methods"
 #      chapters:
 #        - lectures/L24-empirical.qmd
@@ -56,7 +56,7 @@ book:
 #        - lectures/L27-bootstrap-ci.qmd
 #        - problems/P5.qmd
 #    - lectures/L28-faq.qmd
-#    - coursework/coursework.qmd
+    - coursework/coursework.qmd
     - problems/solutions.qmd
 
 format:

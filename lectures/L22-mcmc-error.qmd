@@ -1,7 +1,7 @@
 # MCMC error
 
 {{< include ../_header.qmd >}}
-
+<!--
 ## Bias for MCMC
 
 Back in Lectures 3 and 4 we looked at the bias, variance, mean-square error and root-mean-square error for the Monte Carlo estimator
@@ -34,17 +34,17 @@ Again, we grind to a halt as far as exact results are concerned. But we can agai
 
 So here we can write
 $$ \Cov\big(\phi(X_i), \phi(X_j)\big) = \gamma(j - i) = \gamma(k) $$
-where $k = j - i$ is the number of steps between $i$ and $j$. Students who have studied time series will know that $\gamma(k)$ is called the **autocovariance** at **lag** $k$. (The prefix "auto-" mean "self-", and "lag" means something like a waiting time.)
+where $k = j - i$ is the number of steps between $i$ and $j$. Students who have studied time series will know that $\gamma(k)$ is called the **autocovariance** at **lag** $k$. (The prefix "auto-" mean "self-", and "lag" means something like a delay.)
 
 (The tempting hope that we might have $\gamma(k) = 0$ for $k \geq 2$ is not true. [EXPLAIN])
 
 So now, in equilibrium, we have 
-$$  \begin{align}
+\begin{align}
 \Var \big( \widehat\theta_n^{\mathrm{MC}}\big)
 &=  \frac{1}{n^2} \left(\sum_{i=1}^n \Var\big(\phi(X_i)\big) + 2 \sum_{i < j} \Cov\big(\phi(X_i), \phi(X_j)\big) \right) \\
 &= \frac{1}{n^2} \left(\sum_{i=1}^n \sigma^2 + 2 \sum_{i < j} \gamma(j - i) \right) \\
 &=  \frac{1}{n^2} \left(n\sigma^2 + 2 \sum_{i < j} \gamma(j - i) \right)
-\end{align} $$
+\end{align}
 
 When we studied antithetic variables, we found it more convenient to work with the correlation
 $$ \operatorname{Corr}\big(\phi(X_i),\phi(X_j)\big) = \frac{\operatorname{Cov}\big(\phi(X_i),\phi(X_j)\big)}{\sqrt{\operatorname{Var}\big(\phi(X_i)\big)\operatorname{Var}\big(\phi(X_i)\big)}} . $$
@@ -53,24 +53,24 @@ $$ \rho(j - i) = \operatorname{Corr}\big(\phi(X_i),\phi(X_j)\big) = \frac{\gamma
 where $\rho(k)$ is called the **autocorrelation** at lag $k$.
 
 So now we have
-$$  \begin{align}
+\begin{align}
 \Var \big( \widehat\theta_n^{\mathrm{MC}}\big)
 &=  \frac{1}{n^2} \left(n\sigma^2 + 2 \sum_{i < j} \gamma(j - i) \right) \\
 &= \frac{1}{n}\,\sigma^2 + \frac{2}{n^2} \sum_{i < j} \rho(j - i) \,\sigma^2 \\
 &= \frac{\sigma^2}{n} \left(1 + \frac{2}{n} \sum_{i=1}^n \sum_{j = i+1}^n \rho(j - i) \right) \\
 &= \frac{\sigma^2}{n} \left(1 + \frac{2}{n} \sum_{i=1}^n \sum_{k = 1}^{n-i} \rho(k) \right) .
-\end{align} $$
+\end{align}
 
 We know from the limit theorem that, as $n \to \infty$, a Markov chain tends to its stationary distribution regardless of what state it started from -- it's as if the Markov chain forgets where it starts from. Therefore we know that the autocorrelation $\rho(k)$ tends to 0 as $k \to \infty$. So, provided that the number of samples $n$ is large, there usually very little loss from approximating $\sum_{k = 1}^{n-i} \rho(k)$ by $\sum_{k = 1}^{\infty} \rho(k)$, because the extra autocorrelations we've added in will all be very small.
 
 Finally, we get the result
-$$  \begin{align}
+\begin{align}
 \Var \big( \widehat\theta_n^{\mathrm{MC}}\big)
 &= \frac{\sigma^2}{n} \left(1 +  \frac{2}{n} \sum_{i=1}^n \sum_{k = 1}^{n-i} \rho(k) \right) \\
 &\approx \frac{\sigma^2}{n} \left(1 + \frac{2}{n} \sum_{i=1}^n \sum_{k = 1}^{\infty} \rho(k) \right) \\
 &= \frac{\sigma^2}{n} \left(1 + \frac{2}{n}\,n \sum_{k = 1}^{\infty} \rho(k) \right) \\
 &= \frac{\sigma^2}{n} \left(1 + 2 \sum_{k = 1}^{\infty} \rho(k) \right) .
-\end{align} $$
+\end{align}
 
 In conclusion, we have the following.
 
@@ -140,3 +140,17 @@ round(c(sum_small, sum_medium, sum_big), 1)
 ```
 
 With the small and big step sizes, we need to take over 100 samples from the Markov chain to get the equivalent of one independent sample. But with the medium step size, we are getting the equivalent of one independent sample from roughly every 15 samples of the Markov chain.
+
+-->
+
+::: mysummary
+**Summary:**
+
+- We can analyse the error in Monte Carlo estimation with the output of a Markov chain by assuming it begins "in equilibrium".
+
+- MCMC is approximately unbiased and with MSE
+${\displaystyle \approx \frac{\sigma^2}{n} \left(1 + 2 \sum_{k = 1}^{\infty} \rho(k) \right)}$.
+
+- We want the autocorrelation $\rho(k)$ to decay as quickly as possible.
+
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection ?.?.?.

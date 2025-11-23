@@ -12,7 +12,7 @@
 <meta name="author" content="University of Leeds, 2024–25" />
 
 
-<title>MATH5835 Statistical Computing: Coursework sheet</title>
+<title>MATH5835M Statistical Computing: Coursework sheet</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -349,7 +349,7 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">MATH5835 Statistical Computing: Coursework
+<h1 class="title toc-ignore">MATH5835M Statistical Computing: Coursework
 sheet</h1>
 <h4 class="author">University of Leeds, 2024–25</h4>
 
@@ -357,17 +357,19 @@ sheet</h1>
 
 
 <p>This sheet sets out the tasks for the computational coursework for
-MATH5835. You should write a short report on your solutions to these
-tasks. For administrative and other information about this coursework,
-see <a href="https://mpaldridge.github.io/math5835/coursework/coursework.html">the
+MATH5835M Statistical Computing. You should write a short report on your
+solutions to these tasks. For administrative and other information about
+this coursework, see <a href="https://mpaldridge.github.io/math5835/coursework/coursework.html">the
 information in the lecture notes</a>.</p>
 <p>This coursework sheet is available in <a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html">HTML
 format</a> or in <a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.Rmd">R
 Markdown format</a>. The R Markdown file should be opened in RStudio; I
 recommend the “Visual” editor – see the top-left of the editing
 window.</p>
-<div id="part-i-mixture-model-monte-carlo-estimation" class="section level2">
-<h2>Part I: Mixture model, Monte Carlo estimation</h2>
+<div id="part-i-windspeeds" class="section level2">
+<h2>Part I: Windspeeds</h2>
+<div id="ia-mixture-model-monte-carlo-estimation" class="section level3">
+<h3>I(a): Mixture model, Monte Carlo estimation</h3>
 <p>The distribution of wind speeds in a city follows a mixture of
 log-normal distributions. If we denote the wind speed (in miles per
 hour) by <span class="math inline">\(X\)</span>, this means that <span class="math display">\[ \log X \sim \operatorname{N}(m_K, s_K^2) ,
@@ -410,12 +412,14 @@ following function:</p>
 
 # Example
 rwind(5, weights, meanlog, sdlog)</code></pre>
-<pre><code>## [1] 5.4708217 3.5207015 6.4939263 0.6224686 0.7901488</code></pre>
+<pre><code>## [1]  0.4847512 12.2774589 11.2158309  0.6179777  1.7083039</code></pre>
 <p>We are interested in the probability that the wind speed exceeds 40
 miles per hour.</p>
 <blockquote>
 <p>Use basic Monte Carlo estimation to estimate the probability that the
 wind speed exceeds 40 miles per hour.</p>
+</blockquote>
+<blockquote>
 <p>Determine the root mean squared error of your estimator.</p>
 </blockquote>
 <p>We now aim to find a more efficient estimator for the
@@ -424,12 +428,15 @@ probability.</p>
 <p>Use importance sampling to estimate the probability that the wind
 speed is larger than 40 miles per hour. Explain the choices you make in
 designing your estimator.</p>
+</blockquote>
+<blockquote>
 <p>Compare the root-mean-square error of your estimator with the
 previous one.</p>
 </blockquote>
 </div>
-<div id="part-ii-simpler-model-bayesian-inference" class="section level2">
-<h2>Part II: Simpler model, Bayesian inference</h2>
+</div>
+<div id="ib-simpler-model-bayesian-inference" class="section level2">
+<h2>I(b): Simpler model, Bayesian inference</h2>
 <p>For simplicity, we now adopt a less complex model, where we assume
 that the wind speed follows a single log-normal distribution with
 parameters <span class="math inline">\(m\)</span> and <span class="math inline">\(s\)</span>, so <span class="math inline">\(\log X
@@ -453,38 +460,78 @@ rejection sampling.</p>
 <blockquote>
 <p>Produce a plot of <span class="math inline">\(\pi(s \mid
 \mathbf{x})\)</span> (up to the unknown constant) as a function of <span class="math inline">\(s\)</span> for the observations <span class="math inline">\(\mathbf{x}\)</span> listed above.</p>
+</blockquote>
+<blockquote>
 <p>Choose an appropriate proposal density <span class="math inline">\(g
 = g(s)\)</span> for the rejection sampling method. Choose a value for
 the constant <span class="math inline">\(c\)</span> in the envelope
 rejection sampling algorithm. Explain why you made these choices, using
 plots where this helps justify your choices.</p>
+</blockquote>
+<blockquote>
 <p>Implement the envelope rejection sampling algorithm. Generate at
 least <span class="math inline">\(n = 10\,000\)</span> samples from the
 posterior density <span class="math inline">\(\pi(\cdot \mid
 \mathbf{x})\)</span>. Plot a histogram of these samples.</p>
+</blockquote>
+<blockquote>
 <p>Compare the posterior distribution to the prior distribution, and
 comment on any similarities or differences.</p>
 </blockquote>
-<p>An alternative way to sample from the posterior distribution would be
-using the random walk Metropolis algorithm, where the proposal
-distribution is the Gaussian random walk with typical step size <span class="math inline">\(\sigma\)</span>.</p>
+</div>
+<div id="part-ii-particle-physics" class="section level2">
+<h2>Part II: Particle physics</h2>
+<p>We will work in this task with a model inspired by particle physics.
+However, no understanding of the underlying physics is required – only
+the mathematical and statistical details.</p>
+<p>There are <span class="math inline">\(n\)</span> particles in a line
+each of which has a positive or negative <strong>spin</strong>, denoted
+by <span class="math inline">\(x_i = +1\)</span> or <span class="math inline">\(x_i = -1\)</span> for <span class="math inline">\(i = 1, 2, \dots, n\)</span>. We write <span class="math inline">\(\mathbf x = (x_1, x_2, \dots, x_n) \in \{+1,
+-1\}^n\)</span> for the vector of these spins, which is called a
+<strong>state</strong>.</p>
+<p>All possible states <span class="math inline">\(\mathbf{x}\)</span>
+have an associated <strong>score</strong> <span class="math display">\[S(\mathbf x) = \sum_{i=1}^{n-1} x_i x_{i+1}
+\qquad \mathbf{x} \in \{+1,-1\}^n.\]</span>Note that <span class="math inline">\(x_i x_{i+1}\)</span> is <span class="math inline">\(+1\)</span> if particles <span class="math inline">\(i\)</span> and <span class="math inline">\(i+1\)</span> have the same spin as each other, and
+is <span class="math inline">\(-1\)</span> if those two particles have
+different spins. So we get a high score when neighbouring particles tend
+to have like spins.</p>
+<p>The system is most likely to be found in a state with a high score.
+We model this by the probability mass function <span class="math display">\[ \pi(\mathbf x) \propto
+\mathrm{e}^{kS(\mathbf{x})} \]</span>for some constant <span class="math inline">\(k\)</span> called the <strong>inverse
+temperature</strong>.</p>
 <blockquote>
-<p>Sample from the posterior distribution <span class="math inline">\(\pi(\cdot \mid \mathbf{x})\)</span> using the
-random walk Metropolis algorithm. Explain how you chose the value <span class="math inline">\(\sigma\)</span>, and explain any other design
-choices you make.</p>
-<p>Compare your results to those found with envelope rejection sampling.
-Which method do think was better?</p>
+<p>Explain why, for large <span class="math inline">\(n\)</span>, it
+will be difficult to work with this probability mass function
+analytically.</p>
 </blockquote>
-<hr />
-<p><em>You can get help on this coursework (a) in the computational
-practical session, (b) during office hours, on Mondays at 1500 in EC
-Stoner 9.10n, or (c) by submitting your draft work for feedback by
-Friday 6 December.</em></p>
-<p><em>Check <a href="https://mpaldridge.github.io/math5835/coursework/coursework.html">the
-information in the lecture notes</a> if you have queries about this
-coursework.</em></p>
-<p><em>If you think there may be an error on this problem sheet, please
-contact <a href="mailto:m.aldridge@leeds.ac.uk" class="email">m.aldridge@leeds.ac.uk</a>.</em></p>
+<p>We wish to sample from this distribution using the
+Metropolis–Hastings algorithm in discrete space.</p>
+<blockquote>
+<p>Suggest an appropriate proposal transition function on <span class="math inline">\(\mathcal S = \{+1, -1\}^n\)</span> for this
+Metropolis–Hastings algorithm. Remember that proposals should be random
+and should typically make only a small change to the state while keeping
+it in the state space.</p>
+</blockquote>
+<blockquote>
+<p>Calculate the acceptance probability for the Metropolis–Hastings
+algorithm with your proposal. Simplify this expression by using the
+structure of the probability mass function and of the score, if it is
+possible to do so.</p>
+</blockquote>
+<blockquote>
+<p>Use your Metropolis–Hastings algorithm to sample from the
+distribution for <span class="math inline">\(n = 20\)</span> particles
+and inverse temperature <span class="math inline">\(k =
+0.5\)</span>.</p>
+</blockquote>
+<blockquote>
+<p>Let <span class="math inline">\(\phi(\mathbf{x})\)</span> be the
+number of particles with the majority spin – that is, the number of
+<span class="math inline">\(i\)</span> such that <span class="math inline">\(x_i = +1\)</span>, if that is at least <span class="math inline">\(n/2\)</span>, or the number of <span class="math inline">\(i\)</span> such that <span class="math inline">\(x_i = -1\)</span> otherwise. Estimate the expected
+value <span class="math inline">\(\operatorname{\mathbb{E}}\phi(\mathbf
+X)\)</span> when <span class="math inline">\(\mathbf{X}\)</span> is
+sampled from this model.</p>
+</blockquote>
 </div>
 
 

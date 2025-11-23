@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>12&nbsp; Uniform and discrete – MATH5835M Statistical Computing</title>
+<title>Computational coursework – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L13-inverse.html" rel="next">
-<link href="../problems/P2.html" rel="prev">
+<link href="../problems/solutions.html" rel="next">
+<link href="../lectures/L23-bayes.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -103,35 +69,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../mystyle.css">
 </head>
@@ -145,7 +82,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../lectures/L12-uniform-discrete.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../coursework/coursework.html">Computational coursework</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -279,7 +216,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></span></a>
   </div>
 </li>
@@ -376,7 +313,7 @@ window.Quarto = {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../coursework/coursework.html" class="sidebar-item-text sidebar-link">
+  <a href="../coursework/coursework.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Computational coursework</span></a>
   </div>
 </li>
@@ -396,8 +333,11 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#uniform-random-variables" id="toc-uniform-random-variables" class="nav-link active" data-scroll-target="#uniform-random-variables"><span class="header-section-number">12.1</span> Uniform random variables</a></li>
-  <li><a href="#discrete-random-variables" id="toc-discrete-random-variables" class="nav-link" data-scroll-target="#discrete-random-variables"><span class="header-section-number">12.2</span> Discrete random variables</a></li>
+  <li><a href="#about-the-coursework" id="toc-about-the-coursework" class="nav-link active" data-scroll-target="#about-the-coursework">About the coursework</a></li>
+  <li><a href="#about-your-report" id="toc-about-your-report" class="nav-link" data-scroll-target="#about-your-report">About your report</a></li>
+  <li><a href="#computer-practical-and-other-help" id="toc-computer-practical-and-other-help" class="nav-link" data-scroll-target="#computer-practical-and-other-help">Computer practical and other help</a></li>
+  <li><a href="#ai-use" id="toc-ai-use" class="nav-link" data-scroll-target="#ai-use">AI use</a></li>
+  <li><a href="#r-and-rstudio-on-university-computers" id="toc-r-and-rstudio-on-university-computers" class="nav-link" data-scroll-target="#r-and-rstudio-on-university-computers">R and RStudio on University computers</a></li>
   </ul>
 </nav>
     </div>
@@ -413,9 +353,9 @@ window.Quarto = {
 \newcommand{\ee}{\mathrm{e}} \]</span></p>
 </div>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L10-rng-intro.html">Random number generation</a></li><li class="breadcrumb-item"><a href="../lectures/L12-uniform-discrete.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></h1>
+<h1 class="title"><span id="coursework" class="quarto-section-identifier">Computational coursework</span></h1>
 </div>
 
 
@@ -432,115 +372,83 @@ window.Quarto = {
 </header>
 
 
-<p>We’ve seen how to generate uniform random variates <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>, either using true physical randomness or the output of a pseudorandom number generator. But in statistics – whether performing Monte Carlo estimation or anything else – we typically want to sample from some other distribution <span class="math inline">\(X\)</span>.</p>
-<p>In the next five lectures, we will look at ways we can transform the uniform random variable <span class="math inline">\(U\)</span> to take on different distributions instead. We start today by looking at some important special cases.</p>
-<section id="uniform-random-variables" class="level2" data-number="12.1">
-<h2 data-number="12.1" class="anchored" data-anchor-id="uniform-random-variables"><span class="header-section-number">12.1</span> Uniform random variables</h2>
-<p>We know how to generate <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>. But suppose we want to generate <span class="math inline">\(X \sim \operatorname{U}[a,b]\)</span> instead, for some <span class="math inline">\(a &lt; b\)</span>; how can we do that.</p>
-<p>Well, the original <span class="math inline">\(U\)</span> has “width” 1, and we want <span class="math inline">\(X\)</span> to have width <span class="math inline">\(b - a\)</span>, so the first thing we should do is multiply by <span class="math inline">\((b-a)\)</span>. This gives us <span class="math inline">\((b-a)U\)</span>, which we expect should be uniform on <span class="math inline">\([0,b-a]\)</span>. Then we need to shift it, so it starts not a <span class="math inline">\(0\)</span> but at <span class="math inline">\(a\)</span>; we can do this by adding <span class="math inline">\(a\)</span>. This gives us <span class="math inline">\((b-a)U + a\)</span>, which should be uniform on <span class="math inline">\([0 + a, (b-a) + a] = [a, b]\)</span>. So <span class="math inline">\(X = (b-a)U + a\)</span> would seem to give us the desired <span class="math inline">\(X \sim \operatorname{U}[a,b]\)</span> random variable.</p>
-<p>We can check this seems to have worked by using a histogram, for example.</p>
-<div id="exm-unif" class="theorem example">
-<p><span class="theorem-title"><strong>Example 12.1</strong></span> Let <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>. We can generate <span class="math inline">\(X \sim \operatorname{U}[3,5]\)</span> by <span class="math inline">\(X = 2U + 3\)</span>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Usamples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Xsamples <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> Usamples <span class="sc">+</span> <span class="dv">3</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(Xsamples, <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">6</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.6</span>))</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dunif</span>(x, <span class="dv">3</span>, <span class="dv">5</span>), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="L12-uniform-discrete_files/figure-html/unnamed-chunk-1-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Here, we used the <code>probability = TRUE</code> argument to the histogram function <code>hist()</code> to plot the density on the <span class="math inline">\(y\)</span>-axis, rather than the raw number of samples. The density should match the probability density function of the random variable <span class="math inline">\(X\)</span>. We drew the PDF of <span class="math inline">\(X\)</span> over the histogram in blue, and can see it is a superb match.</p>
-</div>
-<p>But what if we very formally wanted to <em>prove</em> that <span class="math inline">\(X = (b-a)U + a\)</span> definitely has the distribution <span class="math inline">\(X \sim \operatorname{U}[a,b]\)</span>; how could we do that?</p>
-<p>The best way to give a formal proof of something like this is to use the <strong>cumulative distribution function</strong> (CDF). Recall that the CDF <span class="math inline">\(F_Y\)</span> of a distribution <span class="math inline">\(Y\)</span> is the function <span class="math inline">\(F_Y(y) = \mathbb P(Y \leq y)\)</span>. One benefit of the CDF is it works equally well for both discrete and continuous random variables, so we don’t need to give separate arguments for discrete and continuous cases.</p>
-<p>The CDF of the standard uniform distribution <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span> is <span id="eq-cdf-u"><span class="math display">\[ F_U(u) = \begin{cases} 0 &amp; u &lt; 0 \\ u &amp; 0 \leq u \leq 1 \\ 1 &amp; u &gt; 1 , \end{cases}  \tag{12.1}\]</span></span> and the CDF of any uniform distribution <span class="math inline">\(X \sim \operatorname{U}[a,b]\)</span> is <span id="eq-cdf-x"><span class="math display">\[ F_X(x) = \begin{cases} 0 &amp; x &lt; a \\ \displaystyle\frac{x - a}{b-a} &amp; a \leq x \leq b \\ 1 &amp; x &gt; b . \end{cases}  \tag{12.2}\]</span></span> So to show that <span class="math inline">\(X = (b-a)U + a \sim \operatorname{U}[a,b]\)</span>, we take the fact that <span class="math inline">\(U\)</span> has the CDF in <a href="#eq-cdf-u" class="quarto-xref">Equation&nbsp;<span>12.1</span></a> and try to use it to show that <span class="math inline">\(X\)</span> has the CDF in <a href="#eq-cdf-x" class="quarto-xref">Equation&nbsp;<span>12.2</span></a>.</p>
-<p>Indeed, we have <span class="math display">\[ F_X(x) = \mathbb P(X \leq x) = \mathbb P\big((b-a)U + a \leq x\big) = \mathbb P \left( U \leq \frac{x - a}{b-a}\right) . \]</span> But putting <span class="math inline">\(u = (x - a)/(b - a)\)</span> in <a href="#eq-cdf-u" class="quarto-xref">Equation&nbsp;<span>12.1</span></a>, does indeed give the CDF in <a href="#eq-cdf-x" class="quarto-xref">Equation&nbsp;<span>12.2</span></a>. The lower boundary <span class="math inline">\(u &lt; 0\)</span> becomes <span class="math inline">\(x &lt; 0 \times (b-a) + a = a\)</span>; the upper boundary <span class="math inline">\(u &gt; b\)</span> becomes <span class="math inline">\(x &gt; 1 \times(b-a) + a = b\)</span>; and, in between, the CDF <span class="math inline">\(u\)</span> becomes <span class="math inline">\((x - a)/(b - a)\)</span>. Thus we have proven that <span class="math inline">\(X\)</span> has the CDF of the <span class="math inline">\(\operatorname{U}[a,b]\)</span> distribution, as required.</p>
-</section>
-<section id="discrete-random-variables" class="level2" data-number="12.2">
-<h2 data-number="12.2" class="anchored" data-anchor-id="discrete-random-variables"><span class="header-section-number">12.2</span> Discrete random variables</h2>
-<p>Suppose we want to simulate a Bernoulli trial; that is, a random variable <span class="math inline">\(X\)</span> that is 1 with probability <span class="math inline">\(p\)</span> and 0 with probability <span class="math inline">\(1 - p\)</span>, for some <span class="math inline">\(p\)</span> with <span class="math inline">\(0 &lt; p &lt; 1\)</span>. As ever, we only have a standard uniform <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span> to work with. How can we form our Bernoulli trial?</p>
-<p>Here are two possible ways:</p>
-<ul>
-<li><p>If <span class="math inline">\(U &lt; p\)</span>, then take <span class="math inline">\(X = 1\)</span>; while if <span class="math inline">\(U \geq p\)</span>, take <span class="math inline">\(X = 0\)</span>. Note that <span class="math inline">\(\mathbb P(X = 1) = \mathbb P(U &lt; p) = p\)</span> and <span class="math inline">\(\mathbb P(X = 0) = \mathbb P(U \geq p) = 1 - \mathbb P(U &lt; p) = 1 - p\)</span>, as required.</p></li>
-<li><p>Alternatively: if <span class="math inline">\(U \leq 1 -p\)</span>, take <span class="math inline">\(X' = 0\)</span>; while if <span class="math inline">\(U &gt; p\)</span>, take <span class="math inline">\(X' = 1\)</span>.</p></li>
-</ul>
-<p>The first method is just the second method with <span class="math inline">\(U\)</span> replaced by <span class="math inline">\(1 - U\)</span>. Interestingly, that means we can generate two different Bernoulli trials <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> from the same <span class="math inline">\(U\)</span>, which will therefore be negatively correlated. Although there’s unlikely to be any situation where a Bernoulli trial would be used in Monte Carlo estimation, in theory, the two versions <span class="math inline">\((X, X')\)</span> generated from the same <span class="math inline">\(U\)</span> could potentially be used as antithetic variables.</p>
-<p>What about more general discrete random variables? Suppose a random variable takes values <span class="math inline">\(x_1, x_2, \dots\)</span> with probabilities <span class="math inline">\(p_1, p_2, \dots\)</span>. We can think of these probabilities as splitting up the interval <span class="math inline">\([0,1]\)</span> into subintervals of lengths <span class="math inline">\(p_1, p_2, \dots\)</span>, since these probabilities add up to 1.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="L12-numberline-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<p>So the first interval is <span class="math inline">\(I_1 = (0, p_1]\)</span>; the second interval is <span class="math inline">\((p_1, p_1 + p_2]\)</span>; the third intervals is <span class="math inline">\((p_1 + p_2, p_1 + p_2 + p_3]\)</span>, and so on. We then pick a point <span class="math inline">\(U\)</span> from <span class="math inline">\([0,1]\)</span> uniformly at random, and whichever interval <span class="math inline">\(I_i\)</span> it is in, take the corresponding value <span class="math inline">\(x_i\)</span>.</p>
-<p>In terms of the CDF, we have <span class="math inline">\(F_X(x_i) = p_1 + p_2 + \cdots + p_i\)</span>, so the intervals are of the form <span class="math inline">\((F_X(x_{i-1}), F_X(x_i)]\)</span>. So we can think of this as rounding <span class="math inline">\(F_X(U)\)</span> up to the next <span class="math inline">\(F_X(x_i)\)</span>, then taking that value <span class="math inline">\(x_i\)</span>.</p>
-<div id="exm-binom" class="theorem example">
-<p><span class="theorem-title"><strong>Example 12.2</strong></span> Consider generating a binomial distribution <span class="math inline">\(X \sim \operatorname{Bin}(5, \frac12)\)</span>. The PMF and CDF are as shown below</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 13%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;"><strong>value</strong> <span class="math inline">\(x\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(0\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(1\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(2\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(3\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(4\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><strong>PMF</strong> <span class="math inline">\(p(x)\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\frac{1}{32}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\frac{5}{32}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\frac{10}{32}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\frac{10}{32}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\frac{5}{32}\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;"><strong>CDF</strong> <span class="math inline">\(F_X(x)\)</span> (fraction)</td>
-<td style="text-align: center;"><span class="math inline">\(\frac{1}{32}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\frac{6}{32}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\frac{16}{32}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\frac{26}{32}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\frac{31}{32}\)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;"><strong>CDF</strong> <span class="math inline">\(F_X(x)\)</span> (decimal)</td>
-<td style="text-align: center;">0.03125</td>
-<td style="text-align: center;">0.1875</td>
-<td style="text-align: center;">0.5</td>
-<td style="text-align: center;">0.8125</td>
-<td style="text-align: center;">0.96875</td>
-</tr>
-</tbody>
-</table>
-<p>&nbsp;</p>
-<p>Suppose I want a sample from this, based on the uniform variate <span class="math inline">\(u_1 = 0.7980\)</span>. We see that <span class="math inline">\(u_1\)</span> is bigger that <span class="math inline">\(F_X(2) = 0.5\)</span> (the upper end of the “2” interval) but less than <span class="math inline">\(F_X(3) = 0.8125\)</span> (the upper end of the “3” interval), so falls into the “3” interval. So our first binomial variate is <span class="math inline">\(x_1 = 3\)</span>.</p>
-<p>If we then got the next uniform variate <span class="math inline">\(u_2 = 0.4353\)</span>, we would see that <span class="math inline">\(u_2\)</span> is between <span class="math inline">\(F_X(1) = 0.1875\)</span> and <span class="math inline">\(F_X(2) = 0.5\)</span>, so would take <span class="math inline">\(x_2 = 2\)</span> for our next binomial variate.</p>
-</div>
-<p><strong>Next time:</strong> <em>Sampling from continuous distribution using the CDF.</em></p>
 <div class="mysummary">
-<p><strong>Summary:</strong></p>
-<ul>
-<li><p>If <span class="math inline">\(U \sim \operatorname{U}[0,1]\)</span>, then <span class="math inline">\(X = (b-a)U + a \sim \operatorname{U}[a,b]\)</span>.</p></li>
-<li><p>A discrete random variable can be generated by splitting <span class="math inline">\([0,1]\)</span> into subintervals with lengths according to the probabilities, then picking a point from the interval at random.</p></li>
-</ul>
-<p>Remember that your answers to <a href="../problems/P2.html"><strong>Problem Sheet 2</strong></a> will be discussed in the problems class on <strong>Thursday 31 October</strong>.</p>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Sections 1.2 and 1.3.</p>
+<p>There is one piece of computational coursework for MATH5835M Statistical Computing. This coursework is worth 20% of the module mark.</p>
+<p>The coursework sheet is available in <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html">here in HTML format</a></strong> or <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.Rmd">here in R Markdown format</a></strong>.</p>
+<p>The deadline for the coursework will be the penultimate day of the Autumn term, <strong>Thursday 11 December </strong> at <strong>1400</strong>. (There is also an optional deadline if you wish to get feedback on a draft of your work: Friday 5 December at 1400.)</p>
+<p>Feedback on the final report and marks will be returned on Monday 12 January, the first day of the Spring term.</p>
 </div>
+<section id="about-the-coursework" class="level2">
+<h2 class="anchored" data-anchor-id="about-the-coursework">About the coursework</h2>
+<p>There is one piece of computational coursework for MATH5835M Statistical Computing. This coursework is worth 20% of the module mark.</p>
+<p>This page contains all the administrative and organisational information about the coursework.</p>
+<p>A coursework sheet contains the tasks you must carry out. The coursework sheet is available in <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html">here in HTML format</a></strong> or <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.Rmd">here in R Markdown format</a></strong>. The HTML page can be opened in a standard web browser. The R Markdown version (which I personally prefer) should be downloaded then opened in RStudio; I recommend using the “Visual” editor – see the button in the top left of the editing window.</p>
+<p>The are two deadlines for this work.</p>
+<ol type="1">
+<li><p>There is the <strong>main submission deadline</strong> which is the penultimate day of term, <strong>Thursday 11 December</strong> at <strong>1400</strong>. You must submit your work by this time. Work that is submitted after this deadline will receive a penalty of 5% for every day or part-day late. Work that is more than 14 days late will not be marked and will receive 0. Work will be submitted electronically through Gradescope via the Minerva page for the module.</p></li>
+<li><p><em>Optionally</em>, you <em>may</em> also wish to get some brief informal feedback on your draft work before the main deadline. <em>If</em> you wish to get feedback on your draft work, you should submit that draft by Friday 6 December at 1400. I will return a small amount of general feedback about your work by Monday 9 December. I will not give a mark to your draft, and the feedback will be a brief sentence or too that may be of a little help when completing the final version of your work. The quality of your draft submission will have no effect (either positive or negative) on the mark for your main submission, and there is no penalty if you choose not to take advantage of this offer. You still must submit your final work by the main submission deadline, even if you submit a draft for feedback. No extensions can be offered on the deadline for this informal feedback.</p></li>
+</ol>
+<p>The Gradescope submission for the final report will open after 1400 on Friday 6 December (to avoid drafts for optional feedback getting mixed up with final reports). The Gradescope submission for optional feedback on draft work will be open from the computer practical sessions in week 9.</p>
+<p>You must comply with <a href="https://students.leeds.ac.uk/info/10110/academic-integrity">the University’s rules on academic integrity</a>. <a href="#AI">See below</a> for comments on use of AI.</p>
+<p>If you encounter extraordinary unforeseeable personal circumstances that make it impossible for you to submit your coursework on time, you can apply for an deadline extension through <a href="https://students.leeds.ac.uk/info/10111/assessment/860/mitigating_circumstances">the usual mitigating circumstances procedure</a>. (Do not contact me about this – I cannot unilaterally offer deadline extensions.)</p>
+</section>
+<section id="about-your-report" class="level2">
+<h2 class="anchored" data-anchor-id="about-your-report">About your report</h2>
+<p>Your task is to write a short report in response to the tasks on the coursework sheet. Your report should include all the important R code you use and any important plots you draw. If I can’t work out what R code you ran to get your results, I cannot award you marks for those results. Only include the code and figures relevant to your final and best solution – I don’t need or want to see earlier attempts or errors along the way, unless they genuinely help explain your final choices.</p>
+<p><em>All computational work must be done in R</em> – no marks will be given for code written in Python or any other language. It is strongly recommended that you draw figures in R (with the possible exception of rough illustrative sketches, if you find them useful), but I do not insist on this.</p>
+<p>You report must end with a declaration of AI use. <a href="#AI">See below</a> for more on this.</p>
+<p>I call your output a “report” because your work should be explained in detail, in full English-language sentences, with your solutions discussed and justified. The code and figures you include should be an integral part of your report, not just copy-pasted in at random, and should be fully explained within the text. However, other parts of a more formal “report”, such as an introduction, literature review, conclusion, references, etc, are not required here.</p>
+<p>There is <em>no page limit</em> for the report, although I expect that good reports will typically be around 5–8 pages. If your report is 4 pages or less, make sure you have completed all the tasks and fully explained your work. If your report has 10 pages or more, make sure you are not wandering from the point or including too many unnecessary figures.</p>
+<p>Your report should be prepared electronically, but can be submitted in any sensible format – I recommend PDF (whether produced by LaTeX, R Markdown, Microsoft Word, or any other way), but HTML or Word document are fine too.</p>
+</section>
+<section id="computer-practical-and-other-help" class="level2">
+<h2 class="anchored" data-anchor-id="computer-practical-and-other-help">Computer practical and other help</h2>
+<p>There will be a computer practical in Week 9 where I will introduce the practical coursework in more detail. This is a good place to ask any questions you have about the coursework. You may wish to bring your own laptop to the computer practical, if you prefer working on that to on University computers.</p>
+<p>Places where you can get help with the coursework include:</p>
+<ul>
+<li><p>In the computer practical session.</p></li>
+<li><p>In my office hours: Thursdays 1300–1400 in my office, 9.10n in the “Maths Research Deck” area on the 9th floor of the EC Stoner building at staircase 1. (It is unlikely I will have time to discuss computational work at the beginning or end of a lecture, although if your question is <em>extremely</em> short you can try.)</p></li>
+<li><p>By submitting your draft work for optional feedback, as discussed above.</p></li>
+</ul>
+</section>
+<section id="ai-use" class="level2">
+<h2 class="anchored" data-anchor-id="ai-use">AI use</h2>
+<p>This coursework is rated AMBER for use of AI. This means that generative AI may be used in an “assistive role” only, provided you disclose (that is, tell me about) this use.</p>
+<p>The following uses of generative AI go beyond merely “assistive” and are <strong>not permitted</strong>. Work that I suspect has used generative AI this way will be reported as an academic integrity case.</p>
+<ul>
+<li><p>Asking an LLM chatbot how to answer the questions on the problem sheet.</p></li>
+<li><p>Writing R code for you.</p></li>
+<li><p>Writing the text of your report for you.</p></li>
+</ul>
+<p>The following uses of generative AI are only “assistive”, and are permitted <em>provided you tell me that you used generative AI this way</em>. Work that uses AI this way, where the AI use <em>is</em> disclosed, will not be penalised in any way. Work that uses AI this way where the AI use is <em>not</em> disclosed will be treated as an academic integrity case.</p>
+<ul>
+<li><p>General revision of topics from the module, not particularly tailored to the coursework problems.</p></li>
+<li><p>Debugging almost-complete R code that you wrote yourself.</p></li>
+<li><p>Spell-checking and grammar-checking a report that you wrote yourself.</p></li>
+<li><p>Help with LaTeX code, if you choose to write your report in LaTeX.</p></li>
+</ul>
+<p>All reports must end with a <strong>declaration of generative AI use</strong>.</p>
+<ul>
+<li><p>If you did not use generative AI at all, this can simply say: <em>“I did not use generative AI for the coursework project.”</em></p></li>
+<li><p>If you did use generative AI, this should say what system you used, what tasks it performed, and how you prompted it. Declarations like these should be one paragraph long, typically around 40–100 words.</p></li>
+</ul>
+<p>For example, here are two hypothetical declarations:</p>
+<blockquote class="blockquote">
+<p><strong>Declaration of generative AI use (1).</strong> The only place I used AI in this coursework was to spell- and grammar-check my report. I uploaded my Word document to Copilot, and prompted it: “Please check this report for spelling and grammar mistakes.” It found 5 small errors, which I corrected.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>Declaration of generative AI use (2).</strong> I used AI to help when I had a bug in my R code that I couldn’t fix myself. I copy-and-pasted my R script into ChatGPT, along with the text of the error from RStudio, and asked ChatGPT what the error was. It pointed out that, in drawing a graph, I had written <code>col = blue</code> without quotation-marks around <code>"blue"</code>. This was the only time I used AI for the coursework.</p>
+</blockquote>
+</section>
+<section id="r-and-rstudio-on-university-computers" class="level2">
+<h2 class="anchored" data-anchor-id="r-and-rstudio-on-university-computers">R and RStudio on University computers</h2>
+<p>A quick reminder, if you need it, on how to access R and RStudio on University computers.</p>
+<ol type="1">
+<li><p><strong>Open the AppsAnywhere portal</strong> This should be a link on the desktop. If invited to run any software, accept.</p></li>
+<li><p><strong>Load the language R</strong> Search on AppsAnywhere for “R for Windows” (or similar) and launch it. This will (silently) load the language R. It will also open an inferior RStudio-like program called “RGui” – you can close it.</p></li>
+</ol>
+<p>3.<strong>Launch RStudio</strong> Search on AppsAnywhere for “RStudio” (or similar) and launch it.</p>
+<p>You can alternatively use the <a href="https://posit.cloud">Posit Cloud</a> to access R and RStudio online.</p>
 
 
 </section>
@@ -965,13 +873,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../problems/P2.html" class="pagination-link" aria-label="Problem Sheet 2">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Problem Sheet 2</span>
+      <a href="../lectures/L23-bayes.html" class="pagination-link" aria-label="MCMC and Bayesian statistics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">MCMC and Bayesian statistics</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L13-inverse.html" class="pagination-link" aria-label="Inverse transform method">
-        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
+        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

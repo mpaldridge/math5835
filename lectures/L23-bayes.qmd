@@ -1,8 +1,8 @@
 # MCMC and Bayesian statistics
-
+<!--
 ## Bayesian set-up
 
-Today, we will complete our study of Markov chain Monte Carlo by taking a look at how MCMC can be applied to Bayesian statistic.
+Today, we will complete our study of Markov chain Monte Carlo by taking a look at how MCMC can be applied to Bayesian statistics.
 
 We recall the Bayesian set-up. The data is modelled by the **likelihood** $f(\mathbf x \mid \theta)$, which is the distribution (probability mass or density function) of the data $\mathbf x = (x_1, x_2, \dots, x_n)$ given some unknown parameter $\theta$. Typically, the datapoints $x_i$ are assumed to be IID, so we can write $$ f(\mathbf x \mid \theta) = \prod_{i=1}^n f(x_i \mid \theta) . $$
 
@@ -24,12 +24,14 @@ This is where statistical computing comes in. If we can manage to sample from th
 
 MCMC is that method. If we use the random walk Metropolis algorithm, all we need to do is pick our step size $\sigma$ and set it going.
 
-A crucial point that we haven't mentioned yet, is that Metropolis--Hastings works perfectly fine when we don't know a normalising constant in the distribution we are sampling from. That's because the acceptance probability -- let's just write it for the symmetric Metropolis case -- is $$ \begin{align}
+A crucial point that we haven't mentioned yet, is that Metropolis--Hastings works perfectly fine when we don't know a normalising constant in the distribution we are sampling from. That's because the acceptance probability -- let's just write it for the symmetric Metropolis case --
+\begin{align}
 \alpha(\theta, \theta')
 &= \min \left\{ \frac{\pi(\theta' \mid \mathbf x)}{\pi(\theta \mid \mathbf x)} , \, 1 \right\} \\
 &= \min \left\{ \frac{\frac{1}{Z}\,\pi(\theta')\,f(\mathbf x \mid \theta')}{\frac{1}{Z}\,\pi(\theta')\,f(\mathbf x \mid \theta)} , \, 1 \right\} \\
 &= \min \left\{ \frac{\pi(\theta')}{\pi(\theta)}\,\frac{f(\mathbf x \mid \theta')}{f(\mathbf x \mid \theta)} , \, 1 \right\} , 
-\end{align} $$ where the $Z$s in the fraction have cancelled out.
+\end{align}
+where the $Z$s in the fraction have cancelled out.
 
 ## Example
 
@@ -115,13 +117,22 @@ In our example, we had only 10 data points. But when you have a large number of 
 
 It's usually a good idea to split the fraction into multiple fractions each of which has a more sensible size; that is $$ \frac{\pi(\theta')}{\pi(\theta)} \times \frac{f(\mathbf x \mid \theta')}{f(\mathbf x \mid \theta)} = \frac{\pi(\theta')}{\pi(\theta)} \times \prod_{i=1}^n \frac{f(x_i \mid \theta')}{f(x_i \mid \theta)} . $$
 
-Even more reliable can be to work on a log scale. We know that $a \times b$ can also be written as $\exp(\log a + \log b)$. So it can be even better to write the fraction above as $$ \begin{multline}
+Even more reliable can be to work on a log scale. We know that $a \times b$ can also be written as $\exp(\log a + \log b)$. So it can be even better to write the fraction above as
+\begin{multline}
 \exp \big(\log \pi(\theta') - \log \pi(\theta) + \log f(\mathbf x \mid \theta') - \log f(\mathbf x \mid \theta) \big) \\
 = \exp \bigg(\log \pi(\theta') - \log \pi(\theta) + \sum_{i=1}^n \log f(x_i \mid \theta') - \sum_{i=1}^n \log f(x_i \mid \theta) \bigg) . 
-\end{multline} $$
+\end{multline}
 
 ## MCMC conclusions
 
 In the second part of this module, we saw various ways to get exact IID samples from the exact distribution we want (in-built R functions, inverse transform method, Box--Muller transform, basic rejection sampling, envelope rejection sampling). In this third part of the module, we've only really seen one way in detail -- the random walk Metropolis algorithm -- and it produces non-independent samples from approximately the distribution we want. That description makes MCMC sound much worse!
 
 But MCMC using the random walk Metropolis algorithm has big advantages too. todo
+-->
+
+::: mysummary
+**Summary:**
+
+- 
+
+**Read more:** [Voss, *An Introduction to Statistical Computing*](https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031), Subsection ?.?.?.

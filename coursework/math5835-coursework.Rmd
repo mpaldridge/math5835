@@ -1,14 +1,17 @@
 ---
-title:  "MATH5835 Statistical Computing: Coursework sheet"
+title:  "MATH5835M Statistical Computing: Coursework sheet"
 author: "University of Leeds, 2024--25"
 output: html_document
 ---
 
-This sheet sets out the tasks for the computational coursework for MATH5835. You should write a short report on your solutions to these tasks. For administrative and other information about this coursework, see [the information in the lecture notes](https://mpaldridge.github.io/math5835/coursework/coursework.html).
+This sheet sets out the tasks for the computational coursework for MATH5835M Statistical Computing. You should write a short report on your solutions to these tasks. For administrative and other information about this coursework, see [the information in the lecture notes](https://mpaldridge.github.io/math5835/coursework/coursework.html).
 
 This coursework sheet is available in [HTML format](https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html) or in [R Markdown format](https://mpaldridge.github.io/math5835/coursework/math5835-coursework.Rmd). The R Markdown file should be opened in RStudio; I recommend the "Visual" editor -- see the top-left of the editing window.
 
-## Part I: Mixture model, Monte Carlo estimation
+
+## Part I: Windspeeds
+
+### I(a): Mixture model, Monte Carlo estimation
 
 The distribution of wind speeds in a city follows a mixture of log-normal distributions. If we denote the wind speed (in miles per hour) by $X$, this means that $$ \log X \sim \operatorname{N}(m_K, s_K^2) , $$ where the index $K$ is random with $$ \mathbb{P}(K = 1) = 0.1 \qquad \mathbb{P}(K = 2) = 0.4 \qquad \mathbb{P}(K = 3) = 0.5 , $$ and the means and standard deviations are given by $$ \mathbf{m} = \begin{pmatrix} 2.1 \\ 1.6 \\ -0.5 \end{pmatrix} \qquad \mathbf{s} = \begin{pmatrix} 0.55 \\ 0.7 \\ 0.6 \end{pmatrix} . $$
 
@@ -54,16 +57,16 @@ rwind(5, weights, meanlog, sdlog)
 We are interested in the probability that the wind speed exceeds 40 miles per hour.
 
 > Use basic Monte Carlo estimation to estimate the probability that the wind speed exceeds 40 miles per hour.
->
+
 > Determine the root mean squared error of your estimator.
 
 We now aim to find a more efficient estimator for the probability.
 
 > Use importance sampling to estimate the probability that the wind speed is larger than 40 miles per hour. Explain the choices you make in designing your estimator.
->
+
 > Compare the root-mean-square error of your estimator with the previous one.
 
-## Part II: Simpler model, Bayesian inference
+## I(b): Simpler model, Bayesian inference
 
 For simplicity, we now adopt a less complex model, where we assume that the wind speed follows a single log-normal distribution with parameters $m$ and $s$, so $\log X \sim \operatorname{N}(m, s^2)$. Further, we assume that $m = 0$ is known and $s$ is unknown. We take a prior distribution that $s \sim \operatorname{Exp}(1)$ is exponentially distributed with rate 1.
 
@@ -74,23 +77,32 @@ From Bayes' theorem we know that the posterior distribution of $s$ given the dat
 We want to sample from the posterior density $\pi(\cdot \mid \mathbf{x})$ using envelope rejection sampling.
 
 > Produce a plot of $\pi(s \mid \mathbf{x})$ (up to the unknown constant) as a function of $s$ for the observations $\mathbf{x}$ listed above.
->
+
 > Choose an appropriate proposal density $g = g(s)$ for the rejection sampling method. Choose a value for the constant $c$ in the envelope rejection sampling algorithm. Explain why you made these choices, using plots where this helps justify your choices.
->
+
 > Implement the envelope rejection sampling algorithm. Generate at least $n = 10\,000$ samples from the posterior density $\pi(\cdot \mid \mathbf{x})$. Plot a histogram of these samples.
->
+
 > Compare the posterior distribution to the prior distribution, and comment on any similarities or differences.
 
-An alternative way to sample from the posterior distribution would be using the random walk Metropolis algorithm, where the proposal distribution is the Gaussian random walk with typical step size $\sigma$.
 
-> Sample from the posterior distribution $\pi(\cdot \mid \mathbf{x})$ using the random walk Metropolis algorithm. Explain how you chose the value $\sigma$, and explain any other design choices you make.
->
-> Compare your results to those found with envelope rejection sampling. Which method do think was better?
+## Part II: Particle physics
 
-------------------------------------------------------------------------
+We will work in this task with a model inspired by particle physics. However, no understanding of the underlying physics is required -- only the mathematical and statistical details.
 
-*You can get help on this coursework (a) in the computational practical session, (b) during office hours, on Mondays at 1500 in EC Stoner 9.10n, or (c) by submitting your draft work for feedback by Friday 6 December.*
+There are $n$ particles in a line each of which has a positive or negative **spin**, denoted by $x_i = +1$ or $x_i = -1$ for $i = 1, 2, \dots, n$. We write $\mathbf x = (x_1, x_2, \dots, x_n) \in \{+1, -1\}^n$ for the vector of these spins, which is called a **state**.
 
-*Check [the information in the lecture notes](https://mpaldridge.github.io/math5835/coursework/coursework.html) if you have queries about this coursework.*
+All possible states $\mathbf{x}$ have an associated **score** $$S(\mathbf x) = \sum_{i=1}^{n-1} x_i x_{i+1} \qquad \mathbf{x} \in \{+1,-1\}^n.$$Note that $x_i x_{i+1}$ is $+1$ if particles $i$ and $i+1$ have the same spin as each other, and is $-1$ if those two particles have different spins. So we get a high score when neighbouring particles tend to have like spins.
 
-*If you think there may be an error on this problem sheet, please contact [m.aldridge\@leeds.ac.uk](mailto:m.aldridge@leeds.ac.uk){.email}.*
+The system is most likely to be found in a state with a high score. We model this by the probability mass function $$ \pi(\mathbf x) \propto \mathrm{e}^{kS(\mathbf{x})} $$for some constant $k$ called the **inverse temperature**.
+
+> Explain why, for large $n$, it will be difficult to work with this probability mass function analytically.
+
+We wish to sample from this distribution using the Metropolis--Hastings algorithm in discrete space.
+
+> Suggest an appropriate proposal transition function on $\mathcal S = \{+1, -1\}^n$ for this Metropolis--Hastings algorithm. Remember that proposals should be random and should typically make only a small change to the state while keeping it in the state space.
+
+> Calculate the acceptance probability for the Metropolis--Hastings algorithm with your proposal. Simplify this expression by using the structure of the probability mass function and of the score, if it is possible to do so.
+
+> Use your Metropolis--Hastings algorithm to sample from the distribution for $n = 20$ particles and inverse temperature $k = 0.5$.
+
+> Let $\phi(\mathbf{x})$ be the number of particles with the majority spin -- that is, the number of $i$ such that $x_i = +1$, if that is at least $n/2$, or the number of $i$ such that $x_i = -1$ otherwise. Estimate the expected value $\operatorname{\mathbb{E}}\phi(\mathbf X)$ when $\mathbf{X}$ is sampled from this model.
