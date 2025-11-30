@@ -1,5 +1,6 @@
 # Plug-in estimation & Bootstrap I
 
+<!--
 Last time, we defined the empirical distribution of a dataset $\mathbf x = (x_1, x_2, \dots, x_m)$. We saw that the empirical distribution $X^*$ has probability mass function $$ p^*(x) = \frac{1}{m} \sum_{j=1}^m \mathbb I_{\{x\}}(x_j) , $$ which is simply the proportion of datapoints taking the value $x_j$.
 
 ## The "plug-in" principle
@@ -26,12 +27,12 @@ Suppose we wanted to estimate the expectation $\mathbb EX$ of the true distribut
 
 Suppose we wanted to estimate the variance $\operatorname{Var}(X)$ of the true distribution. Again, we plug in $X^*$, to instead find $\operatorname{Var}_*(X^*)$, which we saw last time is $$ \operatorname{Var}_*(X^*) = \frac{1}{m} \sum_{j = 1}^m \big(X_j - \overline X\big)^2 , $$ which is very similar to the sample variance of $\mathbf X$.
 
-Suppose wanted to estimate $\operatorname{\mathbb E}\phi(X)$ for some function $\phi$. The plug-in estimator for this is $$ \begin{align}
+Suppose wanted to estimate $\operatorname{\mathbb E}\phi(X)$ for some function $\phi$. The plug-in estimator for this is \begin{align}
 \operatorname{\mathbb{E}}_* \phi(X^*) &= \sum_x \phi(x)\,p^*(x) \\
 &=\sum_x \phi(x)\, \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(X_j)  \\
 &= \frac{1}{m} \sum_{j=1}^m \sum_x \phi(x)\, \mathbb{I}_{\{x\}}(X_j) \\
 &= \frac{1}{m} \sum_{j=1}^m \phi(X_j) ,
-\end{align} $$ by the same logic we used for the expectation and variance last time. This is the Monte Carlo estimator from the beginning of this module -- we have a sample $X_1, X_2, \dots, X_m$ and we have form the Monte Carlo estimator $\operatorname{\mathbb E}\phi(X)$. This shows there are deep connections between Monte Carlo estimation and the the empirical distribution and plug-in estimation.
+\end{align} by the same logic we used for the expectation and variance last time. This is the Monte Carlo estimator from the beginning of this module -- we have a sample $X_1, X_2, \dots, X_m$ and we have form the Monte Carlo estimator $\operatorname{\mathbb E}\phi(X)$. This shows there are deep connections between Monte Carlo estimation and the the empirical distribution and plug-in estimation.
 
 ## The bootstrap set-up
 
@@ -114,3 +115,4 @@ c(mean(maxes), var(maxes))
 :::
 
 Next time, we'll look into bootstrap methods in more detail.
+-->

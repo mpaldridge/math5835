@@ -1,5 +1,6 @@
 # Empirical distribution
 
+<!--
 ## Introduction
 
 So far in this module, we have looked at sampling from distributions where we know the precise probability density function $f$ or probability mass function $p$. We have then been able to discover things about that distribution by sampling from $f$ or $p$: either exactly with independent samples (with the inverse transform method or envelope rejection sampling, for example), or approximately with samples of restricted dependence (with the Metropolis--Hastings algorithm).
@@ -109,9 +110,10 @@ plot(Fstar, main = "Empirical CDF of heights", xlab = "height (cm)")
 The object produced by `ecdf()` is a function. So we can find, for example, the empirical CDF at 172, $F^*(172)$, which is the proportion of a dataset with heights less than or equal to 172 cm.
 
 ```{r}
-Fstar(172.333)
+Fstar(172)
 ```
 :::
 
 One more thing on the empirical distribution $X^*$. If we pick an index $J$ uniformly from $\{1, 2, \dots, m\}$, then $x_J = X^*$. That is, we can think of $X^*$ as picking one of the datapoints uniformly at random. (This way of looking at $X^*$ is used a lot in the book of Voss.)
+-->
 

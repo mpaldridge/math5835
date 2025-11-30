@@ -1,5 +1,6 @@
 # MCMC and Bayesian statistics
-<!--
+
+
 ## Bayesian set-up
 
 Today, we will complete our study of Markov chain Monte Carlo by taking a look at how MCMC can be applied to Bayesian statistics.
@@ -12,7 +13,7 @@ In the Bayesian paradigm, we start with a **prior** belief about what we think t
 
 After collecting the data $\mathbf x$, we then seek the **posterior** distribution -- that is, the distribution of $\theta$ *conditional on* the data we have seen. This is represented by a distribution $\pi(\theta \mid \mathbf x)$. It is this posterior distribution that we want to learn about.
 
-We can calculate the posterior from the prior and the likelihood using Bayes' theorem. We have $$ \pi(\theta \mid \mathbf x) \propto \pi(\theta) \,f(\mathbf x \mid \theta) = \pi(\theta) \prod_{i=1}^n f(x_i \mid \theta) . $$ More informally, we can say $$ \text{posterio} \propto \text{prior} \times \text{likelihood} . $$ Let us note for future reference that this only gives the posterior $$ \pi(\theta \mid \mathbf x) = \frac{1}{Z}\, \pi(\theta) \,f(\mathbf x \mid \theta) = \frac{1}{Z}\, \pi(\theta) \prod_{i=1}^n f(x_i \mid \theta)  $$ up to proportionality, where the normalising constant is $$ Z = \int \pi(\theta)\,f(\mathbf x \mid \theta) \, \mathrm{d}\theta . $$
+We can calculate the posterior from the prior and the likelihood using Bayes' theorem. We have $$ \pi(\theta \mid \mathbf x) \propto \pi(\theta) \,f(\mathbf x \mid \theta) = \pi(\theta) \prod_{i=1}^n f(x_i \mid \theta) . $$ More informally, we can say $$ \text{posterior} \propto \text{prior} \times \text{likelihood} . $$ Let us note for future reference that this only gives the posterior $$ \pi(\theta \mid \mathbf x) = \frac{1}{Z}\, \pi(\theta) \,f(\mathbf x \mid \theta) = \frac{1}{Z}\, \pi(\theta) \prod_{i=1}^n f(x_i \mid \theta)  $$ up to proportionality, where the normalising constant is $$ Z = \int \pi(\theta)\,f(\mathbf x \mid \theta) \, \mathrm{d}\theta . $$
 
 If you have seen Bayesian statistics in previous modules, you may well have seen simple cases, where the posterior turns out to have a simple form -- often in the same family as the prior but with a different parameter.
 
@@ -128,7 +129,7 @@ Even more reliable can be to work on a log scale. We know that $a \times b$ can 
 In the second part of this module, we saw various ways to get exact IID samples from the exact distribution we want (in-built R functions, inverse transform method, Box--Muller transform, basic rejection sampling, envelope rejection sampling). In this third part of the module, we've only really seen one way in detail -- the random walk Metropolis algorithm -- and it produces non-independent samples from approximately the distribution we want. That description makes MCMC sound much worse!
 
 But MCMC using the random walk Metropolis algorithm has big advantages too. todo
--->
+
 
 ::: mysummary
 **Summary:**

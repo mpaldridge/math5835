@@ -1,7 +1,7 @@
 # MCMC error
 
 {{< include ../_header.qmd >}}
-<!--
+
 ## Bias for MCMC
 
 Back in Lectures 3 and 4 we looked at the bias, variance, mean-square error and root-mean-square error for the Monte Carlo estimator
@@ -141,7 +141,7 @@ round(c(sum_small, sum_medium, sum_big), 1)
 
 With the small and big step sizes, we need to take over 100 samples from the Markov chain to get the equivalent of one independent sample. But with the medium step size, we are getting the equivalent of one independent sample from roughly every 15 samples of the Markov chain.
 
--->
+
 
 ::: mysummary
 **Summary:**

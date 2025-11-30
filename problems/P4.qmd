@@ -6,14 +6,14 @@ display: none !important;
 }
 </style>
 
-<!--
+
 ::: {.mysummary}
 **[Full solutions](#P4-sols)** are now available.
 :::
--->
+
 
 ::: {.mysummary}
-This is Problem Sheet 3, which covers material from Lectures 17 to 21. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of **Thursday 27 November**.
+This is Problem Sheet 4, which covers material from Lectures 17 to 21. You should work through all the questions on this problem sheet in advance of the problems class, which takes place in the lecture of **Thursday 27 November**.
 
 This problem sheet is to help you practice material from the module and to help you check your learning. It is *not* for formal assessment and does not count towards your module mark.
 

@@ -1,5 +1,6 @@
 # Bootstrap III
 
+<!--
 ## Bootstrap summary
 
 A reminder where we have got to with the bootstrap.
@@ -89,3 +90,4 @@ this can be important with a biased estimator or heavily skewed data.
 
 Researchers have looked into lots of other ways to build bootstrap
 confidence intervals, but we won't go into those here.
+-->

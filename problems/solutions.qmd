@@ -20,11 +20,14 @@
 {{< include P3-content.qmd >}}
 :::
 
-<!--
+
 ## Problem Sheet 4 {.unnumbered #P4-sols}
 
+::: {.content-visible when-format="html"}
 {{< include P4-content.qmd >}}
+:::
 
+<!--
 ## Problem Sheet 5 {.unnumbered #P5-sols}
 
 {{< include P5-content.qmd >}}

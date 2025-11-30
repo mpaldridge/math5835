@@ -69,10 +69,10 @@ After being run for a large number of steps (possibly with a burn-in period), th
 **(b)**   Using the Metropolis--Hastings algorithm, find a Markov chain with state space $\mathbb N = \{1, 2, 3, \dots\}$ that has stationary distribution $\mathbb P(X_n = x) = 2^{-x}$ for $x \in \mathbb N$.
 
 ::: myanswers
-*Solution.* Although this isn't the only way, I will use $\mathsf R$ to be the transition matrix of the simple symmetric random walk on $\mathbf Z$. Because this is symmetric, the acceptance probabilities are $$ \begin{align}
+*Solution.* Although this isn't the only way, I will use $\mathsf R$ to be the transition matrix of the simple symmetric random walk on $\mathbf Z$. Because this is symmetric, the acceptance probabilities are \begin{align}
 \alpha(x, x+1) &= \min \left\{ \frac{\pi(x+1)}{\pi(x)},\, 1 \right\} = \min\big\{\tfrac12,\, 1\big\} = \tfrac 12 \\
 \alpha(x, x-1) &= \min \left\{ \frac{\pi(x-1)}{\pi(x)},\, 1 \right\} = \min\{2,\, 1\} = 1,
-\end{align} $$ except that $\alpha(1, 0) = 1$.
+\end{align} except that $\alpha(1, 0) = 1$.
 
 I'll choose the starting point $X = 1$. From here, the Markov chain repeatedly proposes a move up 1 with probability $\tfrac12$, which is accepted with probability $\tfrac12$, or a move down 1 with probability $\tfrac12$, which is always accepted -- except for a move from 1 down to 0 which is always rejected.
 :::
@@ -82,11 +82,11 @@ I'll choose the starting point $X = 1$. From here, the Markov chain repeatedly p
 **(c)**   In a Bayesian setting, assume we have observations $Z_1, X_2, \dots, Z_n$ from an $\operatorname{N}(0, \sigma^2)$ distribution, where the prior distribution for $\sigma^2$ is $\operatorname{Exp}(1)$. Using the Metropolis--Hastings algorithm, describe in detail a method for sampling from the posterior distribution of $\sigma^2$.
 
 ::: myanswers
-*Solution* The posterior distribution is given by $$ \begin{align}
+*Solution* The posterior distribution is given by \begin{align}
 \pi(\sigma^2 \mid \mathbf Z) &\propto \pi(\sigma^2) \prod_{i=1}^n f(z_i \mid \sigma^2) \\
   &= \mathrm{e}^{-\sigma^2} \prod_{i=1}^n \frac{1}{\sqrt{\sigma^2}} \,\exp\left(- \frac{Z_i^2}{2\sigma^2} \right) \\
   &=  \mathrm{e}^{-\sigma^2} \,\sigma^{-n/2} \,\exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n Z_i^2 \right) .
-\end{align} $$
+\end{align}
 
 I will choose as the Markov chain a symmetric Gaussian random walk on $\mathbb R$, meaning that the Markov chain is $X_{i+1} = X_i + \mathrm{N}(0, s^2)$. (The special case is known as the random walk Metropolis algorithm in continuous space.) Because this is symmetric, the acceptance probability is $$ \alpha(x, y) = \min \left\{ \frac{ \pi(x \mid \mathbf Z)}{\pi(y \mid \mathbf Z)},\,1\right\} , $$ for $y \geq 0$, where the constant of proportionality in the $\pi$s cancel out, of $\alpha(x, y) = 0$ for $y < 0$.
 
@@ -133,11 +133,11 @@ The question is: for what $r$ will it be possible to jump between the different 
 ::: subq
 **(a)**   Give the definition of a Markov chain with state space $\mathcal S$.
 
-Let $(Z_i)$ be a sequence of IID random variables whose distribution is known. Consider the stochastic processes $(U_i)$, $(V_i)$, $(W_i)$ defined by $$ \begin{align}
+Let $(Z_i)$ be a sequence of IID random variables whose distribution is known. Consider the stochastic processes $(U_i)$, $(V_i)$, $(W_i)$ defined by \begin{align}
 U_i &= Z_1 + Z_2 + \cdots + Z_i \\
 V_i &= \frac{1}{i} (Z_1 + Z_2 + \cdots + Z_i) \\
 W_i &= \max \{Z_j : 1 \leq j \leq i-1\} + Z_i
-\end{align} $$ for $i = 1, 2, \dots$. Which of these processes are Markov chains? Justify your answers.
+\end{align} for $i = 1, 2, \dots$. Which of these processes are Markov chains? Justify your answers.
 :::
 
 ::: subq
@@ -189,13 +189,13 @@ $$ \begin{multline}
 
 ::: {.myanswers}
 *Solution.* Using the same notation again,
-$$ \begin{align}
+\begin{align}
 \operatorname{Cov}\big(F(x), F(y)\big)
 &= \operatorname{Cov} \left( \frac1n\sum_{i=1}^n \mathbb{I}_{(-\infty, x]}(X_i) ,  \frac1n\sum_{i=1}^n \mathbb{I}_{(-\infty, y]}(X_i) \right) \\
 &= \frac{1}{n^2} \left( \sum_{i=1}^n \operatorname{Cov} \big( \mathbb{I}_{(-\infty, x]}(X_i), \mathbb{I}_{(-\infty, y]}(X_i)\big) + 2 \sum_{i<j} \operatorname{Cov} \big( \mathbb{I}_{(-\infty, x]}(X_i), \mathbb{I}_{(-\infty, y]}(X_j)\big) \right) \\
 &= \frac{1}{n^2} \left(n \operatorname{Cov} \big( \mathbb{I}_{(-\infty, x]}(X_i), \mathbb{I}_{(-\infty, y]}(X_i)\big) + 0\right) \\
-&= \frac{1}{n} \operatorname{Cov} \big( \mathbb{I}_{(-\infty, x]}(X_i), \mathbb{I}_{(-\infty, y]}(X_i)\big)
-\end{align} .$$
+&= \frac{1}{n} \operatorname{Cov} \big( \mathbb{I}_{(-\infty, x]}(X_i), \mathbb{I}_{(-\infty, y]}(X_i)\big).
+\end{align}
 
 So we need to find that covariance. In particular, we need
 $$\operatorname{\mathbb E} \big( \mathbb{I}_{(-\infty, x]}(X_i) \mathbb{I}_{(-\infty, y]}(X_i)\big) = F(x),$$
