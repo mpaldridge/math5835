@@ -47,13 +47,13 @@ of the $T^*_k$'s and taking $T_\mathrm{U}$ to be the upper
 $\alpha/2$-quantile $T^*_\mathrm{U}$ of the $T^*_k$'s.
 
 However, it can again be more appropriate to anchor these to the plug-in
-estimator. We have $$ \begin{align}
+estimator. We have \begin{align}
 1 - \alpha &= \mathbb P\big(T^*_\mathrm{L} \leq \overline{T^*} \leq T^*_\mathrm{U} \big) \\
 &= \mathbb P\big(T^*_\mathrm{L} - \theta^* \leq \overline{T^*}-\theta^* \leq T^*_\mathrm{U} -\theta^*\big) \\
 &= \mathbb P\big(\theta^* - T^*_\mathrm{L}   \geq \theta^* - \overline{T^*} \geq  \theta^* - T^*_\mathrm{U}\big) \\
 &= \mathbb P\big(\theta^* + \overline{T^*} - T^*_\mathrm{L}   \geq \theta^*  \geq  \theta^* +  \overline{T^*}- T^*_\mathrm{U}\big) \\
 &= \mathbb P\big(\theta^* +  \overline{T^*}- T^*_\mathrm{U}  \leq \theta^*  \leq \theta^* + \overline{T^*} - T^*_\mathrm{L} \big) .
-\end{align} $$ Replacing $\overline T^*$ by the plug-in estimator
+\end{align} Replacing $\overline T^*$ by the plug-in estimator
 $\theta^*$ therefore suggests we should take the lower limit to be
 $\theta^* + \theta^* - T^*_\mathrm{U} = 2\theta^* - T^*_\mathrm{U}$ and
 the upper limit to be

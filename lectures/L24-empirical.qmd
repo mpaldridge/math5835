@@ -1,6 +1,6 @@
 # Empirical distribution
 
-<!--
+
 ## Introduction
 
 So far in this module, we have looked at sampling from distributions where we know the precise probability density function $f$ or probability mass function $p$. We have then been able to discover things about that distribution by sampling from $f$ or $p$: either exactly with independent samples (with the inverse transform method or envelope rejection sampling, for example), or approximately with samples of restricted dependence (with the Metropolis--Hastings algorithm).
@@ -19,10 +19,10 @@ Consider the following dataset $\mathbf x = (x_1, x_2, x_3, x_4, x_5)$ of $m = 5
 
 We could try to fit a distribution to this data. For example, if we knew it was recording the number of absences from a class of 20 students over five lectures, we might think a binomial $\operatorname{Bin}(20, p)$ model was appropriate, and then try to estimate the value of $p$. If it was recording the number of emails received per hour, we might think a Poisson $\operatorname{Po}(\lambda)$ model was appropriate, and try to estimate the value of $\lambda$.
 
-But that involves making assumptions. What if we wanted to make no assumptions about the data -- or, at least, as few assumptions as possible? Well, we can say that in our data set, one fifth of the data was the value 2, two fifths was 3 (because there were two 3s in the dataset), one fifth was 4, and one fifth was 6. So we choose the model that these come from a random variable $X^*$ where $$ \begin{align}
+But that involves making assumptions. What if we wanted to make no assumptions about the data -- or, at least, as few assumptions as possible? Well, we can say that in our data set, one fifth of the data was the value 2, two fifths was 3 (because there were two 3s in the dataset), one fifth was 4, and one fifth was 6. So we choose the model that these come from a random variable $X^*$ where \begin{align}
 \mathbb P(X^* = 2) &= \tfrac15 & \mathbb P(X^* = 3) &= \tfrac25 \\
 \mathbb P(X^* = 4) &= \tfrac15 & \mathbb P(X^* = 6) &= \tfrac15 .
-\end{align} $$ This is called the empirical distribution. (The word "empirical" refers to what you actually observed, rather than assumed.)
+\end{align} This is called the empirical distribution. (The word "empirical" refers to what you actually observed, rather than assumed.)
 
 ::: {#def-empirical}
 Consider a dataset $\mathbf x = (x_1, x_2, \dots, x_m)$. The **empirical distribution** $X^*$ of this data is a discrete random variable with probability mass function $p^*(x) = \mathbb P(X^* = x)$, where $$ p^*(x) = \frac{1}{m} \,\big| \{j : x_j = x \} \big| = \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(x_j) . $$
@@ -42,26 +42,26 @@ Taking multiple IID samples from $X^*$ is the same as sampling from the dataset 
 
 Second, since $X^*$ is a random variable, we can do calculations with it just as we would any other random variable.
 
-For example, we can calculate its expectation. This is $$ \begin{align}
+For example, we can calculate its expectation. This is \begin{align}
 \mathbb E_*X^* &= \sum_x x\,p^*(x) \\
 &=\sum_x x\, \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(x_j)  \\
 &= \frac{1}{m} \sum_{j=1}^m \sum_x x\, \mathbb{I}_{\{x\}}(x_j) .
-\end{align} $$ Now, if we think about the term $x\, \mathbb{I}_{\{x\}}(x_j)$ inside the sum over $x$ here, the indicator will equal 0 for every term in the sum except the term $x = x_j$, when the term will equal $x \times 1 = x_j$. Hence, we have $$ \mathbb E_*X^* = \frac{1}{m} \sum_{j=1}^m x_j . $$ But this is just the sample mean of the data set. The empirical expectation is the sample mean, $\mathbb E_*X^* = \overline x$.
+\end{align} Now, if we think about the term $x\, \mathbb{I}_{\{x\}}(x_j)$ inside the sum over $x$ here, the indicator will equal 0 for every term in the sum except the term $x = x_j$, when the term will equal $x \times 1 = x_j$. Hence, we have $$ \mathbb E_*X^* = \frac{1}{m} \sum_{j=1}^m x_j . $$ But this is just the sample mean of the data set. The empirical expectation is the sample mean, $\mathbb E_*X^* = \overline x$.
 
 You probably noticed the notation $\mathbb E_*$ here. We use this notation when we want to emphasise we are taken the expectation over the empirical distribution, taking the data as fixed. This isn't really needed here -- we know our data is the fixed observations $\mathbf x$. But later on, we will model the data itself as being samples from a random variable. There we will want to distinguish between taking an expectation $\mathbb E$ over the randomness in the samples themselves and taking an expectation $\mathbb E_*$ over the empirical distribution while treating the samples as fixed.
 
-We can also calculate the variance similarly. Since $\mathbb E_*X^* = \overline x$, we have $\operatorname{Var}_*(X^*) = \mathbb E_*(X^* - \overline x)^2$. By the same argument as for the expectation, we have $$ \begin{align}
+We can also calculate the variance similarly. Since $\mathbb E_*X^* = \overline x$, we have $\operatorname{Var}_*(X^*) = \mathbb E_*(X^* - \overline x)^2$. By the same argument as for the expectation, we have \begin{align}
 \operatorname{Var}_*(X^*) &= \sum_x \big(x - \overline x\big)^2 \, p^*(x)  \\
 &= \sum_x \big(x - \overline x\big)^2 \,\frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(x_j) \\
 &= \frac{1}{m} \sum_{j=1}^m \sum_x \big(x - \overline x\big)^2 \,\mathbb{I}_{\{x\}}(x_j) \\
 &= \frac{1}{m} \sum_{j=1}^m \big(x_j - \overline x\big)^2 .
-\end{align} $$ This is almost the sample variance -- it just has $\frac{1}{m}$ in front instead of the usual $\frac{1}{m-1}$. This won't make much difference when $m$ is large.
+\end{align} This is almost the sample variance -- it just has $\frac{1}{m}$ in front instead of the usual $\frac{1}{m-1}$. This won't make much difference when $m$ is large.
 
-Third, its often more mathematically pleasant to work with is the **empirical cumulative distribution function** $F^*$. This is $F^*(x) = \mathbb P(X^* \leq x)$. We can calculate the empirical CDF as $$ \begin{align}
+Third, its often more mathematically pleasant to work with is the **empirical cumulative distribution function** $F^*$. This is $F^*(x) = \mathbb P(X^* \leq x)$. We can calculate the empirical CDF as \begin{align}
 F^*(x) = \sum_{y \leq x} p^*(y) &= \sum_{y \leq x} \frac{1}{m}\, \big| \{j : x_j = y \} \big| \\
 &= \frac{1}{m}\sum_{y \leq x}\big| \{j : x_j = y \} \big| \\
 &= \frac{1}{m}\, \big| \{j : x_j \leq x \} \big| .
-\end{align} $$ So this is just the proportion of the datapoints that are less than or equal to $x_j$. This tends to be more mathematically convenient, because the CDF works equally well for discrete and continuous random variables, so this is flexible to the fact that the empirical distribution is always discrete while the true distribution may be continuous.
+\end{align} So this is just the proportion of the datapoints that are less than or equal to $x_j$. This tends to be more mathematically convenient, because the CDF works equally well for discrete and continuous random variables, so this is flexible to the fact that the empirical distribution is always discrete while the true distribution may be continuous.
 
 ## Empirical distributions in R
 
@@ -115,5 +115,5 @@ Fstar(172)
 :::
 
 One more thing on the empirical distribution $X^*$. If we pick an index $J$ uniformly from $\{1, 2, \dots, m\}$, then $x_J = X^*$. That is, we can think of $X^*$ as picking one of the datapoints uniformly at random. (This way of looking at $X^*$ is used a lot in the book of Voss.)
--->
+
 

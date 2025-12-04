@@ -5,9 +5,7 @@ Last time, we defined the empirical distribution of a dataset $\mathbf x = (x_1,
 
 ## The "plug-in" principle
 
-We have one thing we didn't get to last time, which is "plug-in estimation".
-
-Suppose now that $\mathbf X = (X_1, X_2, \dots, X_m)$ is an IID sample from a distribution $X$ that is either unknown or too difficult to work with directly. How can we find out things about this distribution $X$?
+Suppose now that a sample $\mathbf X = (X_1, X_2, \dots, X_m)$ is an IID sample from a populatoin distribution $X$ that is either unknown or too difficult to work with directly. How can we find out things about this distribution $X$?
 
 Well, we could form the empirical distribution $X^*$ from these samples, and work with that instead.
 
@@ -116,3 +114,4 @@ c(mean(maxes), var(maxes))
 
 Next time, we'll look into bootstrap methods in more detail.
 -->
+

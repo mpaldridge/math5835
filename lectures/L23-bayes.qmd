@@ -110,10 +110,6 @@ It appears there's now a slight negative correlation (if $\mu$ is smaller than w
 
 ## Numerical stability
 
-::: {.mysummary}
-*I didn't get to the subsection in the lecture, so let's say that this subsection is non-examinable.*
-:::
-
 In our example, we had only 10 data points. But when you have a large number of data points $n$ (as is often the case in modern "big data" applications), then $f(\mathbf x \mid \theta) = \prod_{i=1}^n f(\mathbf x \mid \theta)$ can be extremely small. This can prove difficult when calculating the acceptance probability, because both the numerator and denominator in $$ \frac{\pi(\theta')\, f(\mathbf x \mid \theta')}{\pi(\theta)\, f(\mathbf x \mid \theta)} = \frac{\pi(\theta')\prod_{i=1}^n f(x_i \mid \theta')}{\pi(\theta)\prod_{i=1}^n f(x_i \mid \theta)}  $$ can be extremely small. Dividing one very small number by another can be "numerically unstable", where small rounding errors can lead to big errors.
 
 It's usually a good idea to split the fraction into multiple fractions each of which has a more sensible size; that is $$ \frac{\pi(\theta')}{\pi(\theta)} \times \frac{f(\mathbf x \mid \theta')}{f(\mathbf x \mid \theta)} = \frac{\pi(\theta')}{\pi(\theta)} \times \prod_{i=1}^n \frac{f(x_i \mid \theta')}{f(x_i \mid \theta)} . $$
@@ -128,7 +124,7 @@ Even more reliable can be to work on a log scale. We know that $a \times b$ can 
 
 In the second part of this module, we saw various ways to get exact IID samples from the exact distribution we want (in-built R functions, inverse transform method, Box--Muller transform, basic rejection sampling, envelope rejection sampling). In this third part of the module, we've only really seen one way in detail -- the random walk Metropolis algorithm -- and it produces non-independent samples from approximately the distribution we want. That description makes MCMC sound much worse!
 
-But MCMC using the random walk Metropolis algorithm has big advantages too. todo
+But MCMC using the random walk Metropolis algorithm has big advantages too.
 
 
 ::: mysummary
