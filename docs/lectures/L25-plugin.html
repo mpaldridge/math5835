@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -69,6 +103,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../mystyle.css">
 </head>
@@ -363,8 +426,16 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-plug-in-principle" id="toc-the-plug-in-principle" class="nav-link active" data-scroll-target="#the-plug-in-principle"><span class="header-section-number">25.1</span> The “plug-in” principle</a></li>
+  <li><a href="#the-bootstrap-set-up" id="toc-the-bootstrap-set-up" class="nav-link" data-scroll-target="#the-bootstrap-set-up"><span class="header-section-number">25.2</span> The bootstrap set-up</a></li>
+  <li><a href="#bootstrap-for-expectation-and-variance" id="toc-bootstrap-for-expectation-and-variance" class="nav-link" data-scroll-target="#bootstrap-for-expectation-and-variance"><span class="header-section-number">25.3</span> Bootstrap for expectation and variance</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -397,188 +468,143 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!--
-Last time, we defined the empirical distribution of a dataset $\mathbf x = (x_1, x_2, \dots, x_m)$. We saw that the empirical distribution $X^*$ has probability mass function $$ p^*(x) = \frac{1}{m} \sum_{j=1}^m \mathbb I_{\{x\}}(x_j) , $$ which is simply the proportion of datapoints taking the value $x_j$.
-
-## The "plug-in" principle
-
-Suppose now that a sample $\mathbf X = (X_1, X_2, \dots, X_m)$ is an IID sample from a populatoin distribution $X$ that is either unknown or too difficult to work with directly. How can we find out things about this distribution $X$?
-
-Well, we could form the empirical distribution $X^*$ from these samples, and work with that instead.
-
-We have to be a bit careful here, because there two levels of randomness here.
-
-1.  First, there is the fact that the samples $\mathbf X = (X_1, X_2, \dots, X_m)$ are random IID samples from $X$.
-
-2.  Once we have the samples $\mathbf X$, that fixes the empirical PMF $p^*$. Then $X^*$ is itself a random variable, with PMF $p^*$.
-
-We will write $\mathbb E$, $\mathbb P$, $\operatorname{Var}$ and so on for the first type of randomness -- that is, randomness coming from the random variable $X$. We will write $\mathbb E_*$, $\mathbb P_*$, $\operatorname{Var}_*$ and so on for randomness coming from the empirical random variable $X^*$ *treating the samples* $\mathbf X$ as fixed. So, for example, the expectation $\mathbb E_*(\phi(X^*))$ is really shorthand for the *conditional* expectation $\mathbb E_*(\phi(X^*) \mid \mathbf X)$.
-
-One way to estimate something about the random variable $X$ is to take the formula involving $X$, then keep that same formula, but replace the true random variable $X$ with the empirical random variable $X^*$. This is called the **plug-in principle**, and such an estimator is a **plug-in estimator** -- the idea is that we simply "plug $X^*$ in" to the existing formula.
-
-This is easier to see if we take some examples.
-
-Suppose we wanted to estimate the expectation $\mathbb EX$ of the true distribution $X$. To estimate this, we instead plug in the empirical distribution $X^*$ in place of $X$ and the empirical expectation $\mathbb E_*$ in place of the expectation over the random samples $\mathbb E$. So our estimator is instead $\mathbb E_*X^*$. We saw last time that $\mathbb E_*X^*$ is the sample mean $$\overline X = \frac{1}{m} \sum_{j=1}^m X_j .$$ So the plug-in estimator for the expectation $\mathbb EX$ is the sample mean $\overline X$.
-
-Suppose we wanted to estimate the variance $\operatorname{Var}(X)$ of the true distribution. Again, we plug in $X^*$, to instead find $\operatorname{Var}_*(X^*)$, which we saw last time is $$ \operatorname{Var}_*(X^*) = \frac{1}{m} \sum_{j = 1}^m \big(X_j - \overline X\big)^2 , $$ which is very similar to the sample variance of $\mathbf X$.
-
-Suppose wanted to estimate $\operatorname{\mathbb E}\phi(X)$ for some function $\phi$. The plug-in estimator for this is \begin{align}
-\operatorname{\mathbb{E}}_* \phi(X^*) &= \sum_x \phi(x)\,p^*(x) \\
-&=\sum_x \phi(x)\, \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(X_j)  \\
-&= \frac{1}{m} \sum_{j=1}^m \sum_x \phi(x)\, \mathbb{I}_{\{x\}}(X_j) \\
-&= \frac{1}{m} \sum_{j=1}^m \phi(X_j) ,
-\end{align} by the same logic we used for the expectation and variance last time. This is the Monte Carlo estimator from the beginning of this module -- we have a sample $X_1, X_2, \dots, X_m$ and we have form the Monte Carlo estimator $\operatorname{\mathbb E}\phi(X)$. This shows there are deep connections between Monte Carlo estimation and the the empirical distribution and plug-in estimation.
-
-## The bootstrap set-up
-
-OK, we're now moving on from the empirical distribution to a slightly different but related topic: the bootstrap.
-
-Suppose a statistician is interested in a statistic $T = T(X_1, X_2, \dots, X_n)$ of $n$ IID samples from a random variable $X$. For example, this might be:
-
--   Suppose I pick a basketball squad of 12 players at random; what is their average height? Here, $X$ is the distribution of basketball players' heights, $n = 12$, and the statistic is $$ T = T(X_1, X_2, \dots, X_{12}) = \frac{1}{12} \sum_{i=1}^{12} X_i . $$
-
--   Suppose I visit The Edit Room cafe 5 times; what's the longest queue I have to deal with. Here, $X$ is the distribution of queue lengths at The Edit Room, $n = 5$, and the statistic is $$ T = T(X_1, X_2, X_3, X_4, X_5) = \max\{X_1, X_2, X_3, X_4, X_5\} . $$
-
--   Suppose a supermarket distributor buys 1001 beef steaks; what is the median weight of the steaks? Here $X$ is the distribution of weights of steaks, $n = 1001$, and the statistic is $$ T = T(X_1, X_2, \dots, X_{1000}) = \operatorname{median} (X_1, X_2, \dots, X_{1001}) . $$
-
-The statistician is likely to be interested in properties of this statistic. For example, three of the most important things the statistician is likely to want to know are:
-
--   The **expectation** $\mathbb ET = \mathbb ET(X_1, \dots, X_n)$ of the statistic.
-
--   The **variance** $\operatorname{Var}(T) = \operatorname{Var}(T(X_1, \dots, X_n))$ of the statistic -- or related concepts like the standard deviation.
-
--   A **prediction  interval** $[U,V]$ for the statistic, such that $\mathbb P(T \in [U,V]) = 1-\alpha$.
-
-Now, if the statistician knew the true distribution $X$, and if it were simple enough to work with, then she could calculate the true values of these. But suppose the distribution is unknown (or too complicated to work with). Instead, the statistician just has $m$ samples $\mathbf X = (X_1, X_2, \dots, X_m)$. You could think of these as data measurements that are modelled as coming from the distribution $X$, or you could think of them as output from a computer program that can sample from $X$ exactly.
-
-Note that there's two numbers here: $n$ is the number of samples required to calculate the statistic $T = T(X_1, X_2, \dots, X_n)$ once, and $m$ is the total number of samples we have available. The most common situation is "$m$ is somewhat bigger than $n$, although not vastly bigger", but the mathematical definitions are valid for any $n$ and $m$.
-
-The **bootstrap** method is the following idea:
-
-1.  Take $n$ samples from the empirical distribution $X^*$ of $\mathbf X$. This is equivalent to sampling $n$ of the values $X_1, X_2, \dots, X_m$ with replacement. Let's call these samples $X^*_1, X^*_2, \dots, X^*_n$. Evaluate the statistic with these samples $$ T^* = T(X_1^*, X_2^*, \dots, X_n^*) . $$
-
-2.  Repeat step 1 many times; let's say $B$ times. Keep taking $n$ of the samples with replacement and evaluating the statistic. We now have $B$ versions of that statistic $T^*_1, T^*_2, \dots, T^*_B$.
-
-3.  Use these $B$ versions of the statistic to get a **bootstrap estimate** of the expectation, variance, or prediction interval. To estimate the expectation of the statistic $\mathbb ET = \mathbb ET(X_1, \dots, X_n)$, use the sample mean of the evaluated statistics $\overline{T^*} = \frac{1}{B} \sum_{k=1}^B T^*_B$. To estimate the variance $\operatorname{Var}(T)$ use the sample variance
-$$ \sum{1}{B-1} \sum_{k=1}^B \big(T^*_k - \overline{T^*}\big) .$$
-We'll come back to the prediction interval next time.
-
-The bootstrap concept was discovered by the American statistician Bradley Efron in a hugely influential paper ["Bootstrap methods: another look at the jackknife"](https://doi.org/10.1214/aos/1176344552) in 1979. The name "bootstrap" comes from the phrase "to pull yourself up by your bootstraps", which roughly means to make progress without any outside help, in a way that might initially seem impossible -- similarly, the bootstrap manages to estimate properties of a statistic by just reusing the same set of samples over and over again. (The "jackknife" in the title of Efron's paper was and earlier, simpler, less powerful idea along similar lines, named after the multipurpose tool the jackknife.)
-
-## Bootstrap for expectation and variance
-
-::: {#exm-cafe}
-Let's take the cafe example above. The statistic in question is $$ T = T(X_1, X_2, X_3, X_4, X_5) = \min\{X_1, X_2, X_3, X_4, X_5\} . $$ A researcher wants to estimate the expectation of this statistic.
-
-The researcher visits The Edit Room at 30 random occasion and notes the following data.
-
-| **Queue length**        |  0  |  1  |  2  |  3  |  4  |  5  |  7  | 11  | Total |
-|:------------------------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:-----:|
-| **Number of occasions** | 11  |  5  |  7  |  3  |  1  |  1  |  1  |  1  |  30   |
-
- 
-
-We start by taking 5 samples from the empirical distribution -- that is, we choose 5 of the datapoints uniformly at random with replacement. Let's say these are $(0, 1, 4, 4, 5)$. (It turns out we sampled the value 4 twice, even though it only occured once -- that does happen sometimes when we're sampling with replacement.) The value of the statistic for this sample is $$ T_1^* = T(0, 1, 4, 4, 5) = \max \{0, 1, 4, 4, 5\} = 5 .$$
-
-We keep doing this many times -- we pick five samples with replacement, and calculate their maximum.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-queues <- c(rep(0, 11), rep(1, 5), rep(2, 7), rep(3, 3), 4, 5, 7, 11)
-
-boots <- 1000
-maxes <- rep(0, boots)
-for (k in 1:boots) {
-  minisample <- sample(queues, 5, replace = TRUE)
-  maxes[k] <- max(minisample)
-}
-```
-:::
-
-
-
-
-
-
-This gives us 1000 realisations of the test statistic. We can use these to look at the distribution of the test statistic:
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-dist <- table(maxes) / boots
-dist
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-maxes
+<p>Last time, we defined the empirical distribution of a dataset <span class="math inline">\(\mathbf x = (x_1, x_2, \dots, x_m)\)</span>. We saw that the empirical distribution <span class="math inline">\(X^*\)</span> has probability mass function <span class="math display">\[ p^*(x) = \frac{1}{m} \sum_{j=1}^m \mathbb I_{\{x\}}(x_j) , \]</span> which is simply the proportion of datapoints taking the value <span class="math inline">\(x_j\)</span>.</p>
+<section id="the-plug-in-principle" class="level2" data-number="25.1">
+<h2 data-number="25.1" class="anchored" data-anchor-id="the-plug-in-principle"><span class="header-section-number">25.1</span> The “plug-in” principle</h2>
+<p>Suppose now that a sample <span class="math inline">\(\mathbf X = (X_1, X_2, \dots, X_m)\)</span> is an IID sample from a populatoin distribution <span class="math inline">\(X\)</span> that is either unknown or too difficult to work with directly. How can we find out things about this distribution <span class="math inline">\(X\)</span>?</p>
+<p>Well, we could form the empirical distribution <span class="math inline">\(X^*\)</span> from these samples, and work with that instead.</p>
+<p>We have to be a bit careful here, because there two levels of randomness here.</p>
+<ol type="1">
+<li><p>First, there is the fact that the samples <span class="math inline">\(\mathbf X = (X_1, X_2, \dots, X_m)\)</span> are random IID samples from <span class="math inline">\(X\)</span>.</p></li>
+<li><p>Once we have the samples <span class="math inline">\(\mathbf X\)</span>, that fixes the empirical PMF <span class="math inline">\(p^*\)</span>. Then <span class="math inline">\(X^*\)</span> is itself a random variable, with PMF <span class="math inline">\(p^*\)</span>.</p></li>
+</ol>
+<p>We will write <span class="math inline">\(\mathbb E\)</span>, <span class="math inline">\(\mathbb P\)</span>, <span class="math inline">\(\operatorname{Var}\)</span> and so on for the first type of randomness – that is, randomness coming from the random variable <span class="math inline">\(X\)</span>. We will write <span class="math inline">\(\mathbb E_*\)</span>, <span class="math inline">\(\mathbb P_*\)</span>, <span class="math inline">\(\operatorname{Var}_*\)</span> and so on for randomness coming from the empirical random variable <span class="math inline">\(X^*\)</span> <em>treating the samples</em> <span class="math inline">\(\mathbf X\)</span> as fixed. So, for example, the expectation <span class="math inline">\(\mathbb E_*(\phi(X^*))\)</span> is really shorthand for the <em>conditional</em> expectation <span class="math inline">\(\mathbb E_*(\phi(X^*) \mid \mathbf X)\)</span>.</p>
+<p>One way to estimate something about the random variable <span class="math inline">\(X\)</span> is to take the formula involving <span class="math inline">\(X\)</span>, then keep that same formula, but replace the true random variable <span class="math inline">\(X\)</span> with the empirical random variable <span class="math inline">\(X^*\)</span>. This is called the <strong>plug-in principle</strong>, and such an estimator is a <strong>plug-in estimator</strong> – the idea is that we simply “plug <span class="math inline">\(X^*\)</span> in” to the existing formula.</p>
+<p>This is easier to see if we take some examples.</p>
+<p>Suppose we wanted to estimate the expectation <span class="math inline">\(\mathbb EX\)</span> of the true distribution <span class="math inline">\(X\)</span>. To estimate this, we instead plug in the empirical distribution <span class="math inline">\(X^*\)</span> in place of <span class="math inline">\(X\)</span> and the empirical expectation <span class="math inline">\(\mathbb E_*\)</span> in place of the expectation over the random samples <span class="math inline">\(\mathbb E\)</span>. So our estimator is instead <span class="math inline">\(\mathbb E_*X^*\)</span>. We saw last time that <span class="math inline">\(\mathbb E_*X^*\)</span> is the sample mean <span class="math display">\[\overline X = \frac{1}{m} \sum_{j=1}^m X_j .\]</span> So the plug-in estimator for the expectation <span class="math inline">\(\mathbb EX\)</span> is the sample mean <span class="math inline">\(\overline X\)</span>.</p>
+<p>Suppose we wanted to estimate the variance <span class="math inline">\(\operatorname{Var}(X)\)</span> of the true distribution. Again, we plug in <span class="math inline">\(X^*\)</span>, to instead find <span class="math inline">\(\operatorname{Var}_*(X^*)\)</span>, which we saw last time is <span class="math display">\[ \operatorname{Var}_*(X^*) = \frac{1}{m} \sum_{j = 1}^m \big(X_j - \overline X\big)^2 , \]</span> which is very similar to the sample variance of <span class="math inline">\(\mathbf X\)</span>.</p>
+<p>Suppose wanted to estimate <span class="math inline">\(\operatorname{\mathbb E}\phi(X)\)</span> for some function <span class="math inline">\(\phi\)</span>. The plug-in estimator for this is <span class="math display">\[\begin{align}
+\operatorname{\mathbb{E}}_* \phi(X^*) &amp;= \sum_x \phi(x)\,p^*(x) \\
+&amp;=\sum_x \phi(x)\, \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(X_j)  \\
+&amp;= \frac{1}{m} \sum_{j=1}^m \sum_x \phi(x)\, \mathbb{I}_{\{x\}}(X_j) \\
+&amp;= \frac{1}{m} \sum_{j=1}^m \phi(X_j) ,
+\end{align}\]</span> by the same logic we used for the expectation and variance last time. This is the Monte Carlo estimator from the beginning of this module – we have a sample <span class="math inline">\(X_1, X_2, \dots, X_m\)</span> and we have form the Monte Carlo estimator <span class="math inline">\(\operatorname{\mathbb E}\phi(X)\)</span>. This shows there are deep connections between Monte Carlo estimation and the the empirical distribution and plug-in estimation.</p>
+</section>
+<section id="the-bootstrap-set-up" class="level2" data-number="25.2">
+<h2 data-number="25.2" class="anchored" data-anchor-id="the-bootstrap-set-up"><span class="header-section-number">25.2</span> The bootstrap set-up</h2>
+<p>OK, we’re now moving on from the empirical distribution to a slightly different but related topic: the bootstrap.</p>
+<p>Suppose a statistician is interested in a statistic <span class="math inline">\(T = T(X_1, X_2, \dots, X_n)\)</span> of <span class="math inline">\(n\)</span> IID samples from a random variable <span class="math inline">\(X\)</span>. For example, this might be:</p>
+<ul>
+<li><p>Suppose I pick a basketball squad of 12 players at random; what is their average height? Here, <span class="math inline">\(X\)</span> is the distribution of basketball players’ heights, <span class="math inline">\(n = 12\)</span>, and the statistic is <span class="math display">\[ T = T(X_1, X_2, \dots, X_{12}) = \frac{1}{12} \sum_{i=1}^{12} X_i . \]</span></p></li>
+<li><p>Suppose I visit The Edit Room cafe 5 times; what’s the longest queue I have to deal with. Here, <span class="math inline">\(X\)</span> is the distribution of queue lengths at The Edit Room, <span class="math inline">\(n = 5\)</span>, and the statistic is <span class="math display">\[ T = T(X_1, X_2, X_3, X_4, X_5) = \max\{X_1, X_2, X_3, X_4, X_5\} . \]</span></p></li>
+<li><p>Suppose a supermarket distributor buys 1001 beef steaks; what is the median weight of the steaks? Here <span class="math inline">\(X\)</span> is the distribution of weights of steaks, <span class="math inline">\(n = 1001\)</span>, and the statistic is <span class="math display">\[ T = T(X_1, X_2, \dots, X_{1000}) = \operatorname{median} (X_1, X_2, \dots, X_{1001}) . \]</span></p></li>
+</ul>
+<p>The statistician is likely to be interested in properties of this statistic. For example, three of the most important things the statistician is likely to want to know are:</p>
+<ul>
+<li><p>The <strong>expectation</strong> <span class="math inline">\(\mathbb ET = \mathbb ET(X_1, \dots, X_n)\)</span> of the statistic.</p></li>
+<li><p>The <strong>variance</strong> <span class="math inline">\(\operatorname{Var}(T) = \operatorname{Var}(T(X_1, \dots, X_n))\)</span> of the statistic – or related concepts like the standard deviation.</p></li>
+<li><p>A <strong>prediction interval</strong> <span class="math inline">\([U,V]\)</span> for the statistic, such that <span class="math inline">\(\mathbb P(T \in [U,V]) = 1-\alpha\)</span>.</p></li>
+</ul>
+<p>Now, if the statistician knew the true distribution <span class="math inline">\(X\)</span>, and if it were simple enough to work with, then she could calculate the true values of these. But suppose the distribution is unknown (or too complicated to work with). Instead, the statistician just has <span class="math inline">\(m\)</span> samples <span class="math inline">\(\mathbf X = (X_1, X_2, \dots, X_m)\)</span>. You could think of these as data measurements that are modelled as coming from the distribution <span class="math inline">\(X\)</span>, or you could think of them as output from a computer program that can sample from <span class="math inline">\(X\)</span> exactly.</p>
+<p>Note that there’s two numbers here: <span class="math inline">\(n\)</span> is the number of samples required to calculate the statistic <span class="math inline">\(T = T(X_1, X_2, \dots, X_n)\)</span> once, and <span class="math inline">\(m\)</span> is the total number of samples we have available. The most common situation is “<span class="math inline">\(m\)</span> is somewhat bigger than <span class="math inline">\(n\)</span>, although not vastly bigger”, but the mathematical definitions are valid for any <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>.</p>
+<p>The <strong>bootstrap</strong> method is the following idea:</p>
+<ol type="1">
+<li><p>Take <span class="math inline">\(n\)</span> samples from the empirical distribution <span class="math inline">\(X^*\)</span> of <span class="math inline">\(\mathbf X\)</span>. This is equivalent to sampling <span class="math inline">\(n\)</span> of the values <span class="math inline">\(X_1, X_2, \dots, X_m\)</span> with replacement. Let’s call these samples <span class="math inline">\(X^*_1, X^*_2, \dots, X^*_n\)</span>. Evaluate the statistic with these samples <span class="math display">\[ T^* = T(X_1^*, X_2^*, \dots, X_n^*) . \]</span></p></li>
+<li><p>Repeat step 1 many times; let’s say <span class="math inline">\(B\)</span> times. Keep taking <span class="math inline">\(n\)</span> of the samples with replacement and evaluating the statistic. We now have <span class="math inline">\(B\)</span> versions of that statistic <span class="math inline">\(T^*_1, T^*_2, \dots, T^*_B\)</span>.</p></li>
+<li><p>Use these <span class="math inline">\(B\)</span> versions of the statistic to get a <strong>bootstrap estimate</strong> of the expectation, variance, or prediction interval. To estimate the expectation of the statistic <span class="math inline">\(\mathbb ET = \mathbb ET(X_1, \dots, X_n)\)</span>, use the sample mean of the evaluated statistics <span class="math inline">\(\overline{T^*} = \frac{1}{B} \sum_{k=1}^B T^*_B\)</span>. To estimate the variance <span class="math inline">\(\operatorname{Var}(T)\)</span> use the sample variance <span class="math display">\[ \sum{1}{B-1} \sum_{k=1}^B \big(T^*_k - \overline{T^*}\big) .\]</span> We’ll come back to the prediction interval next time.</p></li>
+</ol>
+<p>The bootstrap concept was discovered by the American statistician Bradley Efron in a hugely influential paper <a href="https://doi.org/10.1214/aos/1176344552">“Bootstrap methods: another look at the jackknife”</a> in 1979. The name “bootstrap” comes from the phrase “to pull yourself up by your bootstraps”, which roughly means to make progress without any outside help, in a way that might initially seem impossible – similarly, the bootstrap manages to estimate properties of a statistic by just reusing the same set of samples over and over again. (The “jackknife” in the title of Efron’s paper was and earlier, simpler, less powerful idea along similar lines, named after the multipurpose tool the jackknife.)</p>
+</section>
+<section id="bootstrap-for-expectation-and-variance" class="level2" data-number="25.3">
+<h2 data-number="25.3" class="anchored" data-anchor-id="bootstrap-for-expectation-and-variance"><span class="header-section-number">25.3</span> Bootstrap for expectation and variance</h2>
+<div id="exm-cafe" class="theorem example">
+<p><span class="theorem-title"><strong>Example 25.1</strong></span> Let’s take the cafe example above. The statistic in question is <span class="math display">\[ T = T(X_1, X_2, X_3, X_4, X_5) = \min\{X_1, X_2, X_3, X_4, X_5\} . \]</span> A researcher wants to estimate the expectation of this statistic.</p>
+<p>The researcher visits The Edit Room at 30 random occasion and notes the following data.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Queue length</strong></th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">7</th>
+<th style="text-align: center;">11</th>
+<th style="text-align: center;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Number of occasions</strong></td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">30</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>We start by taking 5 samples from the empirical distribution – that is, we choose 5 of the datapoints uniformly at random with replacement. Let’s say these are <span class="math inline">\((0, 1, 4, 4, 5)\)</span>. (It turns out we sampled the value 4 twice, even though it only occured once – that does happen sometimes when we’re sampling with replacement.) The value of the statistic for this sample is <span class="math display">\[ T_1^* = T(0, 1, 4, 4, 5) = \max \{0, 1, 4, 4, 5\} = 5 .\]</span></p>
+<p>We keep doing this many times – we pick five samples with replacement, and calculate their maximum.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>queues <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">11</span>), <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>), <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">3</span>), <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">11</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>boots <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>maxes <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, boots)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>boots) {</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  minisample <span class="ot">&lt;-</span> <span class="fu">sample</span>(queues, <span class="dv">5</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  maxes[k] <span class="ot">&lt;-</span> <span class="fu">max</span>(minisample)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This gives us 1000 realisations of the test statistic. We can use these to look at the distribution of the test statistic:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">&lt;-</span> <span class="fu">table</span>(maxes) <span class="sc">/</span> boots</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>maxes
     0     1     2     3     4     5     7    11 
-0.009 0.034 0.223 0.227 0.103 0.107 0.124 0.173 
-```
+0.009 0.034 0.223 0.227 0.103 0.107 0.124 0.173 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L25-plugin_files/figure-html/unnamed-chunk-2-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can also look at particular figures of interest. For example, the expectation of <span class="math inline">\(T\)</span> should be close to the sample mean of our <span class="math inline">\(T^*\)</span>s, and the variance of <span class="math inline">\(T\)</span> should be close to the sample variance of our <span class="math inline">\(T^*\)</span>s.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">mean</span>(maxes), <span class="fu">var</span>(maxes))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  4.87900 10.50687</code></pre>
+</div>
+</div>
+</div>
+<p>Next time, we’ll look into bootstrap methods in more detail.</p>
 
 
-:::
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-plot(dist)
-```
-
-::: {.cell-output-display}
-![](L25-plugin_files/figure-html/unnamed-chunk-2-1.svg){width=672}
-:::
-:::
-
-
-
-
-
-
-We can also look at particular figures of interest. For example, the expectation of $T$ should be close to the sample mean of our $T^*$s, and the variance of $T$ should be close to the sample variance of our $T^*$s.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-c(mean(maxes), var(maxes))
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1]  4.87900 10.50687
-```
-
-
-:::
-:::
-
-
-
-
-
-
-:::
-
-Next time, we'll look into bootstrap methods in more detail.
--->
-
-
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

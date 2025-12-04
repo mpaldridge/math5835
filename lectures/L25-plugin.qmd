@@ -1,6 +1,5 @@
 # Plug-in estimation & Bootstrap I
 
-<!--
 Last time, we defined the empirical distribution of a dataset $\mathbf x = (x_1, x_2, \dots, x_m)$. We saw that the empirical distribution $X^*$ has probability mass function $$ p^*(x) = \frac{1}{m} \sum_{j=1}^m \mathbb I_{\{x\}}(x_j) , $$ which is simply the proportion of datapoints taking the value $x_j$.
 
 ## The "plug-in" principle
@@ -113,5 +112,4 @@ c(mean(maxes), var(maxes))
 :::
 
 Next time, we'll look into bootstrap methods in more detail.
--->
 
