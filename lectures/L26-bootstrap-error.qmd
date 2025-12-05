@@ -1,5 +1,5 @@
 # Bootstrap II
-<!--
+
 ## Bootstrap with a prediction interval
 
 Recall where we had got to last time. We are interested in a statistic $T = T(X_1, \dots, X_n)$, where $X_1, \dots, X_n$ are IID copies of a random variable $X$. We want to find out about the distribution of $T$. But all we have to work with is $X_1, \dots, X_m$, where are$m$ IID samples from $X$.
@@ -59,13 +59,30 @@ So we've seen two ideas here about what to do when we only have samples from a d
 
 2.  The second ideas was the to find out about properties of a statistic, use **bootstrap** sampling.
 
-But an estimator $\widehat\theta$ is just a special type of statistic -- one that is hoped to be close to some true parameter $\theta$. So we can combine these two ideas together. Suppose we have $m$ samples $X_1, X_2, \dots, X_m$.
+But an estimator $\widehat\theta$ is just a special type of statistic -- one that is hoped to be close to some true parameter $\theta$. So we can combine these two ideas together. First, we estimate the true parameter $\theta$, use the plug-in estimator $\theta^*$.
+Then we can find out things about that estimator $\theta^*$ -- for example, its bias, variance, mean-square error, or a confidence interval -- using boot resampling.
 
-1.  To estimate a parameter $\theta$, use the plug-in estimator.
+One way to think about this is the "two world" of bootstrap estimation:
 
-2.  To find out things about that parameter -- for example, its bias, variance, mean-square error, or a confidence interval -- use bootstrap sampling.
+-   **The real-world:** We consider the data $X_1, X_2, \dots, X_m$ as a random sample from the population; and due to that randomness, there is variability of the plug-in estimator $\theta^*$ around the true value $\theta$.
+
+-   **The bootstrap world:** We treat the samples $X_1, X_2, \dots, X_m$ as fixed; bu there is variability of the bootstrap estimates $T^*_k$ around the plug-in estimate $\theta^*$, due to the sampling-with-replacement within the bootstrap procedure.
+
+**The key idea of bootstrapping** is this: that the variability of $\theta^*$ around $\theta$ in the real world can be approximated by the variability of the $T^*_k$s around
+$\theta^*$ in the bootstrap world.
 
 ## Bootstrap estimation of bias
+
+Suppose we have parameter $\theta$ we wish to estimate using a dataset $X_1, X_2, \dots, X_m$. Our best "point estimate" for $\theta$ is the plug-in estimator $\theta^*$.
+
+How might we estimate the bias of $\theta^*$ as an estimate of $\theta$?
+
+Well, the bias in "the real world" is $\mathbb E \theta^* - \theta$, the expected value of the estimator $\theta^*$ minus the true value $\theta$. In the bootstrap world, the role of $\theta$ is replaced $\theta^*$ and the role of $\theta^*$ is played by the $T_k^*$s; so the bias $\mathbb E \theta^* - \theta$ is estimated by $\overline{T^*} - \theta^*$
+
+In other words, we repeatedly sample $m$ points $X_1^*, \dots, X_m^*$ with replacement from the dataset, and calculate the bootstrap statistic $T^*_k = \theta^*(X^*_1, \dots, X^*_m)$
+Then the estimate of the bias is
+$$\overline{T^*} - \theta^* = \frac{1}{B} \sum_{k=1}^B T^*_k - \theta^* . $$
+
 
 ::: {#exm-sleep}
 Let's talk through an example. Let's suppose we want to estimate the average number of hours sleep people have per night. That is, we want to know $\theta = \mathbb EX$, where $X$ is the random distribution of sleep times for the entire population.
@@ -77,22 +94,23 @@ sleep <- read.csv("https://bookdown.org/jgscott/DSGI/data/NHANES_sleep.csv")$Sle
 m <- length(sleep)
 ```
 
-Our estimate for the average sleep time $\theta = \mathbb EX$ will be the plug-in estimator $\theta^* \mathbb E_*X^*$, which, as we have discussed before, is the sample mean $\theta^* = \overline{X}$.
+Our estimate for the median sleep time $\theta = \mathbb E X$ will be the plug-in estimator $\theta^* = \mathbb E_* X^*$, which, as we have discussed before, is the sample mean $\theta^* = \overline{X}$.
 
 ```{r}
 estimate <- mean(sleep)
 estimate
 ```
 
-This is a bit under 7 hours.
+This is 6.8790 hours.
 
-But we should check whether our estimator is likely to be biased or not. How can we estimate the bias (in order to check it's close to 0)? Well, the bias is, of course, $$ \operatorname{bias}(\theta^*) = \mathbb E(\theta^*) - \theta . $$ How will we estimate each of those terms. Well, we've already estimated the second term $\theta$ by $\theta^* = 6.8790$. And the first term, we have just discussed how to estimate that using bootstrapping.
+But we should check whether our estimator is likely to be biased or not. (Although, actually, in this case we do know the mean is an unbiased estimator of the expectation, so the answer is 0.)
 
-Here our estimator/statistic is using all $m$ pieces of data so, in our previous notation, $n$ and $m$ are the same: we will take $n = 1991$ samples from our $m = 1991$ pieces of data. Note that these are sampling *with replacement*, so we're not just getting the same thing every time.
+We form our bootstrap statistics as follows:
 
 ```{r}
 set.seed(3)
-boots <- 1e5
+
+boots <- 1e4
 bootests <- rep(0, boots)
 for (k in 1:boots) {
   resample <- sample(sleep, m, replace = TRUE)
@@ -103,35 +121,39 @@ est_exp
 ```
 
 This typically comes out as very close to the original estimate. With the seed set as 3 for reproducibility, we get 6.8795. So our estimate of the bias is $$ \widehat{\operatorname{bias}}(\theta^*) = \widehat{\mathbb E(\theta^*)} - \theta^* = 6.8795 - 6.8790 = 0.0005 .$$
+This is very small (as we expected).
 :::
 
-Note here that we are the bias $$ \operatorname{bias}(\theta^*) = \mathbb E(\theta^*) - \theta  $$ is estimated by $$ \widehat{\operatorname{bias}}(\theta) = \widehat{\mathbb E(\theta^*)} - \theta^*$$ In the first, true, expression, $\theta^*$ is playing the role of the estimator in the first term on the right-hand side; but in the second, estimated, expression, $\theta^*$ is playing the role of (the estimate of) the true value in the second term on the right-hand side.
-
-On this occasion our estimator turned out to be unbiased -- or at least extremely close to unbiased.
-
-But had we found some bias, it is often preferable to improve our estimator by removing that bias. Our refined, or "debiased", estimator would be
+Had we found some bias, it is often preferable to improve our estimator by subtracting that bias. The refined, or "debiased", estimator would be
 $$ \theta^* - \widehat{\operatorname{bias}}(\theta) = \theta^* - \Big(\widehat{\mathbb E(\theta^*)} - \theta^*\Big) = 2\theta^* - \widehat{\mathbb E(\theta^*)} . $$
 
-## Bootstrap estimation of variance and intervals
 
-What about the error in our estimator? We measure that through the variance, because the variance equals the mean-square error for an unbiased estimator. (For a biased estimator, the MSE is the bias-square plus the variance -- remember s\@thm-MSE-bias a long time ago). Again, we can use the bootstrap.
+## Bootstrap estimation of MSE
+
+What about the mean-square error of the plug-i estimator? Can we estimate the MSE? Well, the mean-square error, in the real world is
+$$ \operatorname{MSE} = \operatorname{\mathbb E}
+\big(\theta^* - \theta\big)^2 . $$
+In the bootstrap world, we estimate this by
+$$ \overline{(T^* - \theta^*)^2} = \frac{1}{B} \sum_{k=1}^B \big(T^*_k - \theta^*\big)^2 , $$
+where $\theta$ is replaced by $\theta^*$ and $\theta^*$ is replaced by the $T^*_k$s.
 
 ::: {#exm-sleep2}
 We continue the sleep example.
 
 ```{r}
-var(bootests)
+MSEest <- (1 / boots) * sum((bootests - estimate)^2)
+MSEest
 ```
 
-This is 0.09, which is a pretty good estimate for the variance.
-
-However, this sample variance is calculated as $$ S^2 = \frac{1}{B-1} \sum_{k=1}^B \big(T^*_k - \overline{T^*}\big)^2 . $$ But it's a bit strange to be looking at squared-difference from $\overline T^*$, a Monte Carlo-like estimate of $\theta$, when we have the plug-in estimate $\theta^*$ available, which we would think is better. So preferable to use is $$ \frac{1}{B-1} \sum_{k=1}^B \big(T^*_k - \theta^*\big)^2 . $$ Here, this is the following
+In the case of this simple parameter $\theta = \mathbb{E}X$, we could also have estimated the MSE in the tradition Monte Carlo-style way
 
 ```{r}
-(1 / (boots - 1)) * sum((bootests - estimate)^2)
+var(sleep) / m
 ```
 
-In this case, with plenty of samples and well-behaved data, this is identical to 6 decimal places. But on other occasions, with fewer samples and weirder data, it could be an improvement.
+Reassuringly, these come out as extremely close to each other.
 :::
 
--->
+Next time, we will look at the more complicated question of estimating a confidence interval for the plug-in estimator.
+
+

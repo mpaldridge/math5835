@@ -1,24 +1,9 @@
 # Bootstrap III
 
-<!--
+
 ## Bootstrap summary
 
 A reminder where we have got to with the bootstrap.
-
-To estimate a parameter $\theta$ from random samples
-$X_1, X_2, \dots, X_m$, we use the plug-in estimator $\theta^*$.
-
-We can also get bootstrap statistics $T^*_k$ by sampling $m$ of the
-datapoints *with replacement* and using those resampled points to
-re-calculate the estimator.
-
--   **The real-world:** Treating the samples $X_1, X_2, \dots, X_m$ as
-    random, there is variability of our estimator $\theta^*$ around the
-    true value $\theta$.
-
--   **The bootstrap world:** Treating the samples $X_1, X_2, \dots, X_m$
-    as fixed, there is variability of the bootstrap statistics $T^*_k$
-    around the plug-in estimate $\theta^*$.
 
 The idea of bootstrapping is that the variability of $\theta^*$ around
 $\theta$ can be approximated by the variability of the $T^*_k$ around
@@ -90,4 +75,4 @@ this can be important with a biased estimator or heavily skewed data.
 
 Researchers have looked into lots of other ways to build bootstrap
 confidence intervals, but we won't go into those here.
--->
+
