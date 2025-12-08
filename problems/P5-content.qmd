@@ -51,7 +51,7 @@ We see that while the prior though any number between 0 and $\tfrac12$, maybe ev
 ::::
 
 ::::::::::: myq
-**2.**     *\[2019 exam, Question 4\]*
+**2.**     ★ *\[2019 exam, Question 4\]*
 
 :::: subq
 **(a)**   Introducing any notation you use, state the Metropolis--Hastings algorithm for discrete state space, and explain the purpose of this algorithm.
@@ -151,13 +151,11 @@ W_i &= \max \{Z_j : 1 \leq j \leq i-1\} + Z_i
 ::: subq
 **(d)**   Let $(X_i)$ be a Markov chain with values in $\mathbb R$ and stationary distribution $\pi$. Consider the estimator $$\widehat{\theta}_n^{\mathrm{MCMC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i)  $$ for $\theta = \operatorname{\mathbb E}(\phi(X))$ for $X$ having PDF $\pi$. Assuming $X_1$ has PDF $\pi$, derive the result $$ \operatorname{Var} \big(\widehat{\theta}_n^{\mathrm{MCMC}}\big) \approx \frac{\operatorname{Var}(\phi(X))}{n} \left(1 + 2 \sum_{i=2}^\infty \operatorname{Corr}\big(\phi(X_1),\phi(X_i)\big) \right) . $$
 :::
+::::::::::::::: 
 
 :::::: myq
 **4.**     Let $\mathbf X = (X_1, \dots, X_n)$ be IID samples from a random variable $X$ with cumulative distribution function $F$. Let $F^*$ be the empirical cumulative distribution function of the samples $\mathbf X$.
 
-::: subq
-**(a)**   For fixed $x$, show that $\operatorname{\mathbb E}F^*(x) = F(x)$.
-:::
 
 :::: {.subq}
 **(a)**   For fixed $x$, show that $\operatorname{\mathbb E}F^*(x) = F(x)$.
@@ -185,7 +183,6 @@ $$ \begin{multline}
 
 :::: {.subq}
 **(c)**   For fixed $x$ and $y$ with $y > x$, find $\operatorname{Cov}\big(F^*(y), F^*(x)\big)$.
-**(c)**   For fixed $x$ and $y$ with $x \leq y$, find $\operatorname{Cov}\big(F^*(y), F^*(x)\big)$.
 
 ::: {.myanswers}
 *Solution.* Using the same notation again,
@@ -205,9 +202,9 @@ Hence we have
 $$ \operatorname{Cov}\big(F^*(y), F^*(x)\big) = \frac{1}{n} \big(F(x) - F(x)F(y)\big) = \frac{1}{n}\,F(x) \big(1 - F(y)\big) . $$
 :::
 ::::
-:::::
+::::::
 
-
+::::: {.myq}
 **5.**     A random variable $X$ has bounded support, and a statistician wishes to estimate $\theta = \max X$, the maximum value $X$ can take. The statistician has access to 24 IID samples $X_1, X_2, \dots, X_{24}$ from this random variable which can be read into R as follows:
 
 ```{r}

@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -69,6 +103,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../mystyle.css">
 </head>
@@ -363,8 +426,17 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#bootstrap-with-a-prediction-interval" id="toc-bootstrap-with-a-prediction-interval" class="nav-link active" data-scroll-target="#bootstrap-with-a-prediction-interval"><span class="header-section-number">26.1</span> Bootstrap with a prediction interval</a></li>
+  <li><a href="#bootstrap-for-statistical-inference" id="toc-bootstrap-for-statistical-inference" class="nav-link" data-scroll-target="#bootstrap-for-statistical-inference"><span class="header-section-number">26.2</span> Bootstrap for statistical inference</a></li>
+  <li><a href="#bootstrap-estimation-of-bias" id="toc-bootstrap-estimation-of-bias" class="nav-link" data-scroll-target="#bootstrap-estimation-of-bias"><span class="header-section-number">26.3</span> Bootstrap estimation of bias</a></li>
+  <li><a href="#bootstrap-estimation-of-mse" id="toc-bootstrap-estimation-of-mse" class="nav-link" data-scroll-target="#bootstrap-estimation-of-mse"><span class="header-section-number">26.4</span> Bootstrap estimation of MSE</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -397,325 +469,137 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!--
-## Bootstrap with a prediction interval
-
-Recall where we had got to last time. We are interested in a statistic $T = T(X_1, \dots, X_n)$, where $X_1, \dots, X_n$ are IID copies of a random variable $X$. We want to find out about the distribution of $T$. But all we have to work with is $X_1, \dots, X_m$, where are$m$ IID samples from $X$.
-
-So the bootstrap procedure is to repeatedly choose $n$ samples $X^*_1, \dots, X^*_n$ from the empirical distribution $X^*$ -- or, equivalently, choose $n$ of the values $X_1, \dots, X_m$ with replacement, and calculate the statistic $T^*_k = T(X^*_1, \dots, X^*_n)$. The distribution of the $T^*_k$ should be similar to the distribution of $T$.
-
-In particular, to estimate $\mathbb ET$ we can use the sample mean of the $T^*_1, \dots, T^*_B$, and to estimate $\operatorname{Var}(T)$, we can use the sample variance $S^2$ of the $T^*_k$.
-
-What if we want to estimate a prediction interval -- that is, an interval $[U, V]$ such that $\mathbb P(U \leq T \leq V) \approx 1- \alpha$?
-
-There is a lazy way to do this, which is to hope that the $T^*_k$ are approximately normally distributed. With $\overline{T^*}$ as the sample mean and $S^2$ as the sample variance of our observed statistics, we could take $$ \left[\overline{T^*} - z_{\alpha/2}\,S,\, \overline{T^*} + z_{\alpha/2}\,S\right] .$$ But we can do better than this by taking the actual distribution of the $T^*_k$, which might not be normal, into account.
-
-Instead, we can take the sample quantiles of the $T^*_k$. That is, put $T^*_1, \dots, T^*_B$ in increasing order. Go $\alpha/2$ of the way up the list to get the lower-$\alpha/2$ sample quantile, and $1 - \alpha/2$ of the way up the list to get the upper-$\alpha/2$ sample quantile. These two values can be our prediction interval.
-
-::: {#exm-boot-pi}
-Let's go back to The Edit Room cafe queues from last time. The statistic in question was the maximum queue length from 5 visits. The data and our bootstrap samples were these:
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-queues <- c(rep(0, 11), rep(1, 5), rep(2, 7), rep(3, 3), 4, 5, 7, 11)
-
-boots <- 1000
-maxes <- rep(0, boots)
-for (k in 1:boots) {
-  minisample <- sample(queues, 5, replace = TRUE)
-  maxes[k] <- max(minisample)
-}
-```
-:::
-
-
-
-
-
-
-We saw that our estimates for the expectation and the variance of the statistic were the following:
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-max_mean <- mean(maxes)
-max_var <- var(maxes)
-c(max_mean, max_var)
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1]  4.91700 10.50462
-```
-
-
-:::
-:::
-
-
-
-
-
-
-A lazy 80% prediction interval under a normal assumption would be the following:
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-max_mean + qnorm(c(0.1, 0.9)) * sqrt(max_var)
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 0.7633857 9.0706143
-```
-
-
-:::
-:::
-
-
-
-
-
-
-But that seems a bit silly -- our queue length isn't going to be a real number with seven decimal places. Better is to use the actual quantiles of the statistics we evaluated.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-quantile(maxes, c(0.1, 0.9))
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-10% 90% 
-  2  11 
-```
-
-
-:::
-:::
-
-
-
-
-
-
-I usually get the interval $[2, 11]$ from this data. this much better reflects the actual data. It also takes into account the "skew" of the data (lots of values of 0, where there was no queue, but no negative values, of course), to give a tighter lower boundary than the crude and inaccurate normal approximation.
-:::
-
-## Bootstrap for statistical inference
-
-So we've seen two ideas here about what to do when we only have samples from a distribution (for example, some data measurements).
-
-1.  The first idea was that to estimate something about the distribution, use the **plug-in estimator**.
-
-2.  The second ideas was the to find out about properties of a statistic, use **bootstrap** sampling.
-
-But an estimator $\widehat\theta$ is just a special type of statistic -- one that is hoped to be close to some true parameter $\theta$. So we can combine these two ideas together. Suppose we have $m$ samples $X_1, X_2, \dots, X_m$.
-
-1.  To estimate a parameter $\theta$, use the plug-in estimator.
-
-2.  To find out things about that parameter -- for example, its bias, variance, mean-square error, or a confidence interval -- use bootstrap sampling.
-
-## Bootstrap estimation of bias
-
-::: {#exm-sleep}
-Let's talk through an example. Let's suppose we want to estimate the average number of hours sleep people have per night. That is, we want to know $\theta = \mathbb EX$, where $X$ is the random distribution of sleep times for the entire population.
-
-We have data on $m = 1991$ people thanks to a survey by the US Centers for Disease Control and Prevention. (Credit: [Scott, *Data Science in R*](https://bookdown.org/jgscott/DSGI/the-bootstrap.html).) We can read this into R as follows.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-sleep <- read.csv("https://bookdown.org/jgscott/DSGI/data/NHANES_sleep.csv")$SleepHrsNight
-m <- length(sleep)
-```
-:::
-
-
-
-
-
-
-Our estimate for the average sleep time $\theta = \mathbb EX$ will be the plug-in estimator $\theta^* \mathbb E_*X^*$, which, as we have discussed before, is the sample mean $\theta^* = \overline{X}$.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-estimate <- mean(sleep)
-estimate
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 6.878955
-```
-
-
-:::
-:::
-
-
-
-
-
-
-This is a bit under 7 hours.
-
-But we should check whether our estimator is likely to be biased or not. How can we estimate the bias (in order to check it's close to 0)? Well, the bias is, of course, $$ \operatorname{bias}(\theta^*) = \mathbb E(\theta^*) - \theta . $$ How will we estimate each of those terms. Well, we've already estimated the second term $\theta$ by $\theta^* = 6.8790$. And the first term, we have just discussed how to estimate that using bootstrapping.
-
-Here our estimator/statistic is using all $m$ pieces of data so, in our previous notation, $n$ and $m$ are the same: we will take $n = 1991$ samples from our $m = 1991$ pieces of data. Note that these are sampling *with replacement*, so we're not just getting the same thing every time.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-set.seed(3)
-boots <- 1e5
-bootests <- rep(0, boots)
-for (k in 1:boots) {
-  resample <- sample(sleep, m, replace = TRUE)
-  bootests[k] <- mean(resample)
-}
-est_exp <- mean(bootests)
-est_exp
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 6.878924
-```
-
-
-:::
-:::
-
-
-
-
-
-
-This typically comes out as very close to the original estimate. With the seed set as 3 for reproducibility, we get 6.8795. So our estimate of the bias is $$ \widehat{\operatorname{bias}}(\theta^*) = \widehat{\mathbb E(\theta^*)} - \theta^* = 6.8795 - 6.8790 = 0.0005 .$$
-:::
-
-Note here that we are the bias $$ \operatorname{bias}(\theta^*) = \mathbb E(\theta^*) - \theta  $$ is estimated by $$ \widehat{\operatorname{bias}}(\theta) = \widehat{\mathbb E(\theta^*)} - \theta^*$$ In the first, true, expression, $\theta^*$ is playing the role of the estimator in the first term on the right-hand side; but in the second, estimated, expression, $\theta^*$ is playing the role of (the estimate of) the true value in the second term on the right-hand side.
-
-On this occasion our estimator turned out to be unbiased -- or at least extremely close to unbiased.
-
-But had we found some bias, it is often preferable to improve our estimator by removing that bias. Our refined, or "debiased", estimator would be
-$$ \theta^* - \widehat{\operatorname{bias}}(\theta) = \theta^* - \Big(\widehat{\mathbb E(\theta^*)} - \theta^*\Big) = 2\theta^* - \widehat{\mathbb E(\theta^*)} . $$
-
-## Bootstrap estimation of variance and intervals
-
-What about the error in our estimator? We measure that through the variance, because the variance equals the mean-square error for an unbiased estimator. (For a biased estimator, the MSE is the bias-square plus the variance -- remember s\@thm-MSE-bias a long time ago). Again, we can use the bootstrap.
-
-::: {#exm-sleep2}
-We continue the sleep example.
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-var(bootests)
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 0.0008780489
-```
-
-
-:::
-:::
-
-
-
-
-
-
-This is 0.09, which is a pretty good estimate for the variance.
-
-However, this sample variance is calculated as $$ S^2 = \frac{1}{B-1} \sum_{k=1}^B \big(T^*_k - \overline{T^*}\big)^2 . $$ But it's a bit strange to be looking at squared-difference from $\overline T^*$, a Monte Carlo-like estimate of $\theta$, when we have the plug-in estimate $\theta^*$ available, which we would think is better. So preferable to use is $$ \frac{1}{B-1} \sum_{k=1}^B \big(T^*_k - \theta^*\big)^2 . $$ Here, this is the following
-
-
-
-
-
-
-::: {.cell}
-
-```{.r .cell-code  code-summary="Code for drawing this graph"}
-(1 / (boots - 1)) * sum((bootests - estimate)^2)
-```
-
-::: {.cell-output .cell-output-stdout}
-
-```
-[1] 0.0008780498
-```
-
-
-:::
-:::
-
-
-
-
-
-
-In this case, with plenty of samples and well-behaved data, this is identical to 6 decimal places. But on other occasions, with fewer samples and weirder data, it could be an improvement.
-:::
-
--->
-
-
+<section id="bootstrap-with-a-prediction-interval" class="level2" data-number="26.1">
+<h2 data-number="26.1" class="anchored" data-anchor-id="bootstrap-with-a-prediction-interval"><span class="header-section-number">26.1</span> Bootstrap with a prediction interval</h2>
+<p>Recall where we had got to last time. We are interested in a statistic <span class="math inline">\(T = T(X_1, \dots, X_n)\)</span>, where <span class="math inline">\(X_1, \dots, X_n\)</span> are IID copies of a random variable <span class="math inline">\(X\)</span>. We want to find out about the distribution of <span class="math inline">\(T\)</span>. But all we have to work with is <span class="math inline">\(X_1, \dots, X_m\)</span>, where are<span class="math inline">\(m\)</span> IID samples from <span class="math inline">\(X\)</span>.</p>
+<p>So the bootstrap procedure is to repeatedly choose <span class="math inline">\(n\)</span> samples <span class="math inline">\(X^*_1, \dots, X^*_n\)</span> from the empirical distribution <span class="math inline">\(X^*\)</span> – or, equivalently, choose <span class="math inline">\(n\)</span> of the values <span class="math inline">\(X_1, \dots, X_m\)</span> with replacement, and calculate the statistic <span class="math inline">\(T^*_k = T(X^*_1, \dots, X^*_n)\)</span>. The distribution of the <span class="math inline">\(T^*_k\)</span> should be similar to the distribution of <span class="math inline">\(T\)</span>.</p>
+<p>In particular, to estimate <span class="math inline">\(\mathbb ET\)</span> we can use the sample mean of the <span class="math inline">\(T^*_1, \dots, T^*_B\)</span>, and to estimate <span class="math inline">\(\operatorname{Var}(T)\)</span>, we can use the sample variance <span class="math inline">\(S^2\)</span> of the <span class="math inline">\(T^*_k\)</span>.</p>
+<p>What if we want to estimate a prediction interval – that is, an interval <span class="math inline">\([U, V]\)</span> such that <span class="math inline">\(\mathbb P(U \leq T \leq V) \approx 1- \alpha\)</span>?</p>
+<p>There is a lazy way to do this, which is to hope that the <span class="math inline">\(T^*_k\)</span> are approximately normally distributed. With <span class="math inline">\(\overline{T^*}\)</span> as the sample mean and <span class="math inline">\(S^2\)</span> as the sample variance of our observed statistics, we could take <span class="math display">\[ \left[\overline{T^*} - z_{\alpha/2}\,S,\, \overline{T^*} + z_{\alpha/2}\,S\right] .\]</span> But we can do better than this by taking the actual distribution of the <span class="math inline">\(T^*_k\)</span>, which might not be normal, into account.</p>
+<p>Instead, we can take the sample quantiles of the <span class="math inline">\(T^*_k\)</span>. That is, put <span class="math inline">\(T^*_1, \dots, T^*_B\)</span> in increasing order. Go <span class="math inline">\(\alpha/2\)</span> of the way up the list to get the lower-<span class="math inline">\(\alpha/2\)</span> sample quantile, and <span class="math inline">\(1 - \alpha/2\)</span> of the way up the list to get the upper-<span class="math inline">\(\alpha/2\)</span> sample quantile. These two values can be our prediction interval.</p>
+<div id="exm-boot-pi" class="theorem example">
+<p><span class="theorem-title"><strong>Example 26.1</strong></span> Let’s go back to The Edit Room cafe queues from last time. The statistic in question was the maximum queue length from 5 visits. The data and our bootstrap samples were these:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>queues <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">11</span>), <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>), <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">3</span>), <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">11</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>boots <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>maxes <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, boots)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>boots) {</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  minisample <span class="ot">&lt;-</span> <span class="fu">sample</span>(queues, <span class="dv">5</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  maxes[k] <span class="ot">&lt;-</span> <span class="fu">max</span>(minisample)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We saw that our estimates for the expectation and the variance of the statistic were the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>max_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(maxes)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>max_var <span class="ot">&lt;-</span> <span class="fu">var</span>(maxes)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(max_mean, max_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  4.91700 10.50462</code></pre>
+</div>
+</div>
+<p>A lazy 80% prediction interval under a normal assumption would be the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>max_mean <span class="sc">+</span> <span class="fu">qnorm</span>(<span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>)) <span class="sc">*</span> <span class="fu">sqrt</span>(max_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7633857 9.0706143</code></pre>
+</div>
+</div>
+<p>But that seems a bit silly – our queue length isn’t going to be a real number with seven decimal places. Better is to use the actual quantiles of the statistics we evaluated.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(maxes, <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>10% 90% 
+  2  11 </code></pre>
+</div>
+</div>
+<p>I usually get the interval <span class="math inline">\([2, 11]\)</span> from this data. this much better reflects the actual data. It also takes into account the “skew” of the data (lots of values of 0, where there was no queue, but no negative values, of course), to give a tighter lower boundary than the crude and inaccurate normal approximation.</p>
+</div>
+</section>
+<section id="bootstrap-for-statistical-inference" class="level2" data-number="26.2">
+<h2 data-number="26.2" class="anchored" data-anchor-id="bootstrap-for-statistical-inference"><span class="header-section-number">26.2</span> Bootstrap for statistical inference</h2>
+<p>So we’ve seen two ideas here about what to do when we only have samples from a distribution (for example, some data measurements).</p>
+<ol type="1">
+<li><p>The first idea was that to estimate something about the distribution, use the <strong>plug-in estimator</strong>.</p></li>
+<li><p>The second ideas was the to find out about properties of a statistic, use <strong>bootstrap</strong> sampling.</p></li>
+</ol>
+<p>But an estimator <span class="math inline">\(\widehat\theta\)</span> is just a special type of statistic – one that is hoped to be close to some true parameter <span class="math inline">\(\theta\)</span>. So we can combine these two ideas together. First, we estimate the true parameter <span class="math inline">\(\theta\)</span>, use the plug-in estimator <span class="math inline">\(\theta^*\)</span>. Then we can find out things about that estimator <span class="math inline">\(\theta^*\)</span> – for example, its bias, variance, mean-square error, or a confidence interval – using boot resampling.</p>
+<p>One way to think about this is the “two world” of bootstrap estimation:</p>
+<ul>
+<li><p><strong>The real-world:</strong> We consider the data <span class="math inline">\(X_1, X_2, \dots, X_m\)</span> as a random sample from the population; and due to that randomness, there is variability of the plug-in estimator <span class="math inline">\(\theta^*\)</span> around the true value <span class="math inline">\(\theta\)</span>.</p></li>
+<li><p><strong>The bootstrap world:</strong> We treat the samples <span class="math inline">\(X_1, X_2, \dots, X_m\)</span> as fixed; bu there is variability of the bootstrap estimates <span class="math inline">\(T^*_k\)</span> around the plug-in estimate <span class="math inline">\(\theta^*\)</span>, due to the sampling-with-replacement within the bootstrap procedure.</p></li>
+</ul>
+<p><strong>The key idea of bootstrapping</strong> is this: that the variability of <span class="math inline">\(\theta^*\)</span> around <span class="math inline">\(\theta\)</span> in the real world can be approximated by the variability of the <span class="math inline">\(T^*_k\)</span>s around <span class="math inline">\(\theta^*\)</span> in the bootstrap world.</p>
+</section>
+<section id="bootstrap-estimation-of-bias" class="level2" data-number="26.3">
+<h2 data-number="26.3" class="anchored" data-anchor-id="bootstrap-estimation-of-bias"><span class="header-section-number">26.3</span> Bootstrap estimation of bias</h2>
+<p>Suppose we have parameter <span class="math inline">\(\theta\)</span> we wish to estimate using a dataset <span class="math inline">\(X_1, X_2, \dots, X_m\)</span>. Our best “point estimate” for <span class="math inline">\(\theta\)</span> is the plug-in estimator <span class="math inline">\(\theta^*\)</span>.</p>
+<p>How might we estimate the bias of <span class="math inline">\(\theta^*\)</span> as an estimate of <span class="math inline">\(\theta\)</span>?</p>
+<p>Well, the bias in “the real world” is <span class="math inline">\(\mathbb E \theta^* - \theta\)</span>, the expected value of the estimator <span class="math inline">\(\theta^*\)</span> minus the true value <span class="math inline">\(\theta\)</span>. In the bootstrap world, the role of <span class="math inline">\(\theta\)</span> is replaced <span class="math inline">\(\theta^*\)</span> and the role of <span class="math inline">\(\theta^*\)</span> is played by the <span class="math inline">\(T_k^*\)</span>s; so the bias <span class="math inline">\(\mathbb E \theta^* - \theta\)</span> is estimated by <span class="math inline">\(\overline{T^*} - \theta^*\)</span></p>
+<p>In other words, we repeatedly sample <span class="math inline">\(m\)</span> points <span class="math inline">\(X_1^*, \dots, X_m^*\)</span> with replacement from the dataset, and calculate the bootstrap statistic <span class="math inline">\(T^*_k = \theta^*(X^*_1, \dots, X^*_m)\)</span> Then the estimate of the bias is <span class="math display">\[\overline{T^*} - \theta^* = \frac{1}{B} \sum_{k=1}^B T^*_k - \theta^* . \]</span></p>
+<div id="exm-sleep" class="theorem example">
+<p><span class="theorem-title"><strong>Example 26.2</strong></span> Let’s talk through an example. Let’s suppose we want to estimate the average number of hours sleep people have per night. That is, we want to know <span class="math inline">\(\theta = \mathbb EX\)</span>, where <span class="math inline">\(X\)</span> is the random distribution of sleep times for the entire population.</p>
+<p>We have data on <span class="math inline">\(m = 1991\)</span> people thanks to a survey by the US Centers for Disease Control and Prevention. (Credit: <a href="https://bookdown.org/jgscott/DSGI/the-bootstrap.html">Scott, <em>Data Science in R</em></a>.) We can read this into R as follows.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sleep <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://bookdown.org/jgscott/DSGI/data/NHANES_sleep.csv"</span>)<span class="sc">$</span>SleepHrsNight</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(sleep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Our estimate for the median sleep time <span class="math inline">\(\theta = \mathbb E X\)</span> will be the plug-in estimator <span class="math inline">\(\theta^* = \mathbb E_* X^*\)</span>, which, as we have discussed before, is the sample mean <span class="math inline">\(\theta^* = \overline{X}\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>estimate <span class="ot">&lt;-</span> <span class="fu">mean</span>(sleep)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.878955</code></pre>
+</div>
+</div>
+<p>This is 6.8790 hours.</p>
+<p>But we should check whether our estimator is likely to be biased or not. (Although, actually, in this case we do know the mean is an unbiased estimator of the expectation, so the answer is 0.)</p>
+<p>We form our bootstrap statistics as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>boots <span class="ot">&lt;-</span> <span class="fl">1e4</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>bootests <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, boots)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>boots) {</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  resample <span class="ot">&lt;-</span> <span class="fu">sample</span>(sleep, m, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  bootests[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>(resample)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>est_exp <span class="ot">&lt;-</span> <span class="fu">mean</span>(bootests)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>est_exp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.879461</code></pre>
+</div>
+</div>
+<p>This typically comes out as very close to the original estimate. With the seed set as 3 for reproducibility, we get 6.8795. So our estimate of the bias is <span class="math display">\[ \widehat{\operatorname{bias}}(\theta^*) = \widehat{\mathbb E(\theta^*)} - \theta^* = 6.8795 - 6.8790 = 0.0005 .\]</span> This is very small (as we expected).</p>
+</div>
+<p>Had we found some bias, it is often preferable to improve our estimator by subtracting that bias. The refined, or “debiased”, estimator would be <span class="math display">\[ \theta^* - \widehat{\operatorname{bias}}(\theta) = \theta^* - \Big(\widehat{\mathbb E(\theta^*)} - \theta^*\Big) = 2\theta^* - \widehat{\mathbb E(\theta^*)} . \]</span></p>
+</section>
+<section id="bootstrap-estimation-of-mse" class="level2" data-number="26.4">
+<h2 data-number="26.4" class="anchored" data-anchor-id="bootstrap-estimation-of-mse"><span class="header-section-number">26.4</span> Bootstrap estimation of MSE</h2>
+<p>What about the mean-square error of the plug-i estimator? Can we estimate the MSE? Well, the mean-square error, in the real world is <span class="math display">\[ \operatorname{MSE} = \operatorname{\mathbb E}
+\big(\theta^* - \theta\big)^2 . \]</span> In the bootstrap world, we estimate this by <span class="math display">\[ \overline{(T^* - \theta^*)^2} = \frac{1}{B} \sum_{k=1}^B \big(T^*_k - \theta^*\big)^2 , \]</span> where <span class="math inline">\(\theta\)</span> is replaced by <span class="math inline">\(\theta^*\)</span> and <span class="math inline">\(\theta^*\)</span> is replaced by the <span class="math inline">\(T^*_k\)</span>s.</p>
+<div id="exm-sleep2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 26.3</strong></span> We continue the sleep example.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>MSEest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> boots) <span class="sc">*</span> <span class="fu">sum</span>((bootests <span class="sc">-</span> estimate)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>MSEest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0008791049</code></pre>
+</div>
+</div>
+<p>In the case of this simple parameter <span class="math inline">\(\theta = \mathbb{E}X\)</span>, we could also have estimated the MSE in the tradition Monte Carlo-style way</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(sleep) <span class="sc">/</span> m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0008717188</code></pre>
+</div>
+</div>
+<p>Reassuringly, these come out as extremely close to each other.</p>
+</div>
+<p>Next time, we will look at the more complicated question of estimating a confidence interval for the plug-in estimator.</p>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
