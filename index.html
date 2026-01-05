@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Matthew Aldridge">
+<meta name="dcterms.date" content="2025-09-30">
 
-<title>6&nbsp; Antithetic variables I – MATH5835M Statistical Computing</title>
+<title>MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,61 +22,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../problems/P1.html" rel="next">
-<link href="../lectures/L05-cv.html" rel="prev">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./lectures/L01-mc-intro.html" rel="next">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -103,37 +70,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="../mystyle.css">
+<link rel="stylesheet" href="mystyle.css">
 </head>
 
 <body class="nav-sidebar floating">
@@ -145,7 +83,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L06-antithetic-1.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">About MATH5835</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -160,9 +98,9 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">MATH5835</a> 
+      <a href="./">MATH5835</a> 
         <div class="sidebar-tools-main">
-    <a href="../MATH5835M-Statistical-Computing.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="./MATH5835M-Statistical-Computing.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
       </div>
@@ -175,7 +113,7 @@ window.Quarto = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../index.html" class="sidebar-item-text sidebar-link">
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">About MATH5835</span></a>
   </div>
 </li>
@@ -190,61 +128,61 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L01-mc-intro.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L01-mc-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L03-mc-error-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L04-mc-error-2.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L04-mc-error-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo error II: practice</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L05-cv.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L05-cv.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L06-antithetic-1.html" class="sidebar-item-text sidebar-link active">
+  <a href="./lectures/L06-antithetic-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../problems/P1.html" class="sidebar-item-text sidebar-link">
+  <a href="./problems/P1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 1</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L07-antithetic-2.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L07-antithetic-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Antithetic variables II</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L08-is-1.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L08-is-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Importance sampling I</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L09-is-2.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L09-is-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Importance sampling II</span></span></a>
   </div>
 </li>
@@ -261,55 +199,55 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L10-rng-intro.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L10-rng-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generating random numbers</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L11-lcg.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L11-lcg.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">LCGs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../problems/P2.html" class="sidebar-item-text sidebar-link">
+  <a href="./problems/P2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L12-uniform-discrete.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Uniform and discrete</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L13-inverse.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L13-inverse.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Inverse transform method</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L14-rejection.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L14-rejection.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Rejection sampling</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L15-envelope-1.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L15-envelope-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Envelope rejection sampling I</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L16-envelope-2.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L16-envelope-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Envelope rejection sampling II</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../problems/P3.html" class="sidebar-item-text sidebar-link">
+  <a href="./problems/P3.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 3</span></a>
   </div>
 </li>
@@ -326,49 +264,49 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L17-markov-intro.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L17-markov-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Markov chains in discrete space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L18-markov-longrun.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L18-markov-longrun.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Markov chains in the long run</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L19-mh-1.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L19-mh-1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in discrete space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L20-markov-cont.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L20-markov-cont.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Markov chains in continuous space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L21-mh-2.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L21-mh-2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Metropolis–Hastings in continuous space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../problems/P4.html" class="sidebar-item-text sidebar-link">
+  <a href="./problems/P4.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 4</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L22-mcmc-error.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L22-mcmc-error.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L23-bayes.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L23-bayes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">MCMC and Bayesian statistics</span></span></a>
   </div>
 </li>
@@ -385,31 +323,31 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L24-empirical.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L24-empirical.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L25-plugin.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L25-plugin.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation &amp; Bootstrap I</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L26-bootstrap-error.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L26-bootstrap-error.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bootstrap II</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L27-bootstrap-ci.html" class="sidebar-item-text sidebar-link">
+  <a href="./lectures/L27-bootstrap-ci.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Bootstrap III</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../problems/P5.html" class="sidebar-item-text sidebar-link">
+  <a href="./problems/P5.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Problem Sheet 5</span></a>
   </div>
 </li>
@@ -417,13 +355,13 @@ window.Quarto = {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../coursework/coursework.html" class="sidebar-item-text sidebar-link">
+  <a href="./coursework/coursework.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Computational coursework</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../problems/solutions.html" class="sidebar-item-text sidebar-link">
+  <a href="./problems/solutions.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Solutions</span></a>
   </div>
 </li>
@@ -437,9 +375,23 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#estimation-with-correlation" id="toc-estimation-with-correlation" class="nav-link active" data-scroll-target="#estimation-with-correlation"><span class="header-section-number">6.1</span> Estimation with correlation</a></li>
-  <li><a href="#monte-carlo-with-antithetic-variables" id="toc-monte-carlo-with-antithetic-variables" class="nav-link" data-scroll-target="#monte-carlo-with-antithetic-variables"><span class="header-section-number">6.2</span> Monte Carlo with antithetic variables</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">6.3</span> Examples</a></li>
+  <li><a href="#about-math5835" id="toc-about-math5835" class="nav-link active" data-scroll-target="#about-math5835">About MATH5835</a>
+  <ul class="collapse">
+  <li><a href="#organisation-of-math5835" id="toc-organisation-of-math5835" class="nav-link" data-scroll-target="#organisation-of-math5835">Organisation of MATH5835</a>
+  <ul class="collapse">
+  <li><a href="#lectures" id="toc-lectures" class="nav-link" data-scroll-target="#lectures">Lectures</a></li>
+  <li><a href="#problem-sheets-and-problem-classes" id="toc-problem-sheets-and-problem-classes" class="nav-link" data-scroll-target="#problem-sheets-and-problem-classes">Problem sheets and problem classes</a></li>
+  <li><a href="#coursework" id="toc-coursework" class="nav-link" data-scroll-target="#coursework">Coursework</a></li>
+  <li><a href="#office-hours" id="toc-office-hours" class="nav-link" data-scroll-target="#office-hours">Office hours</a></li>
+  <li><a href="#exam" id="toc-exam" class="nav-link" data-scroll-target="#exam">Exam</a></li>
+  </ul></li>
+  <li><a href="#content-of-math5835" id="toc-content-of-math5835" class="nav-link" data-scroll-target="#content-of-math5835">Content of MATH5835</a>
+  <ul class="collapse">
+  <li><a href="#necessary-background" id="toc-necessary-background" class="nav-link" data-scroll-target="#necessary-background">Necessary background</a></li>
+  <li><a href="#syllabus" id="toc-syllabus" class="nav-link" data-scroll-target="#syllabus">Syllabus</a></li>
+  <li><a href="#book" id="toc-book" class="nav-link" data-scroll-target="#book">Book</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -455,16 +407,28 @@ window.Quarto = {
 \newcommand{\ee}{\mathrm{e}} \]</span></p>
 </div>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L06-antithetic-1.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Antithetic variables I</span></h1>
+<h1 class="title">MATH5835M Statistical Computing</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Matthew Aldridge </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 30, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -474,93 +438,102 @@ window.Quarto = {
 </header>
 
 
-<div class="hidden">
-<p><span class="math display">\[ \]</span></p>
-</div>
-<section id="estimation-with-correlation" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="estimation-with-correlation"><span class="header-section-number">6.1</span> Estimation with correlation</h2>
-<p>This lecture and the next, we will be looking at our second variance reduction method for Monte Carlo estimation: the use of antithetic variables.” The word “antithetic” refers to using negative correlation to reduce the variance an estimator.</p>
-<p>Let’s start with the simple example of estimating an expectation from <span class="math inline">\(n = 2\)</span> samples. Suppose <span class="math inline">\(Y\)</span> has expectation <span class="math inline">\(\mu = \Ex Y\)</span> and variance <span class="math inline">\(\Var(Y) = \sigma^2\)</span>. Suppose <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are independent samples from <span class="math inline">\(Y\)</span>. Then the Monte Carlo estimator is <span class="math display">\[ \overline Y = \tfrac12(Y_1 + Y_2) . \]</span> This estimator is unbiased, since <span class="math display">\[ \Ex \overline Y = \Ex \big(\tfrac12(Y_1 + Y_2)\big) = \tfrac12 ( \Ex Y_1 + \Ex Y_2 ) = \tfrac12 (\mu + \mu) = \mu . \]</span> Thus the mean-square error equals the variance, which is <span class="math display">\[ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) \big)= \tfrac14 (\sigma^2 + \sigma^2) = \tfrac12 \sigma^2 . \]</span></p>
-<p>But what if <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> still have the same distribution as <span class="math inline">\(Y\)</span> but now are <em>not</em> independent? The expectation is still the same, so the estimator is still unbiased. But the variance (and hence mean-square error) is now <span class="math display">\[ \Var \big( \overline Y\big) = \Var \big(\tfrac12(Y_1 + Y_2)\big) =\tfrac14 \big( \Var(Y_1) + \Var(Y_2) + 2 \Cov(Y_1, Y_2) \big) . \]</span> Write <span class="math inline">\(\rho\)</span> for the correlation <span class="math display">\[ \rho = \Corr(Y_1, Y_2) = \frac{\Cov(Y_1, Y_2)}{\sqrt{\Var(Y_1) \Var(Y_2)}} = \frac{\Cov(Y_1, Y_2)}{\sqrt{\sigma^2 \times \sigma^2}} = \frac{\Cov(Y_1, Y_2)}{\sigma^2} . \]</span> (Remember that <span class="math inline">\(-1 \leq \rho \leq +1\)</span>.) Then the variance is <span class="math display">\[ \Var \big( \overline Y\big) = \tfrac14 ( \sigma^2 + \sigma^2 + 2 \rho \sigma^2 ) = \frac{1+\rho}{2} \,\sigma^2 . \]</span></p>
-<p>We can compare this with the variance <span class="math inline">\(\frac12 \sigma^2\)</span> from the independent-sample case:</p>
+<section id="about-math5835" class="level1 unnumbered">
+<h1 class="unnumbered">About MATH5835</h1>
+<section id="organisation-of-math5835" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="organisation-of-math5835">Organisation of MATH5835</h2>
+<p>This module is <strong>MATH5835M Statistical Computing</strong>.</p>
+<p>This module lasts for 11 weeks from 29 September to 12 December 2025. The exam will take place sometime between 12 and 23 January 2026.</p>
+<p>The module leader, the lecturer, and the main author of these notes is <a href="https://mpaldridge.github.io/">Dr Matthew Aldridge</a>. (You can call me “Matt”, “Matthew”, or “Dr Aldridge”, pronounced “<em>old</em>-ridge”.) My email address is <a href="mailto:m.aldridge@leeds.ac.uk">m.aldridge@leeds.ac.uk</a>, although I much prefer questions in person at office hours (see below) rather than by email.</p>
+<p>The HTML webpage is the best way to view the course material. There is also a <a href="MATH5835M-Statistical-Computing.pdf"><strong>PDF version</strong></a>, although I have been much less careful about the presentation of this material, and it does not include the problem sheets.</p>
+<section id="lectures" class="level3">
+<h3 class="anchored" data-anchor-id="lectures">Lectures</h3>
+<p>The main way you will learn new material for this module is by attending lectures. There are three lectures per week:</p>
 <ul>
-<li><p>If <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are <strong>positively correlated</strong>, in that <span class="math inline">\(\rho &gt; 0\)</span>, then the variance, and hence the mean-square error, has got bigger. This means the estimator is worse. This is because, with positive correlation, errors compound each other – if one sample is bigger than average, then the other one is likely to be bigger than average too; while if one sample is smaller than average, then the other one is likely to be smaller than average too.</p></li>
-<li><p>If <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> are <strong>negatively correlated</strong>, in that <span class="math inline">\(\rho &lt; 0\)</span>, then the variance, and hence the mean-square error, has got smaller. This means the estimator is better. This is because, with negative correlation, errors compensate for each other – if one sample is bigger than average, then the other one is likely to be smaller than average, which will help “cancel out” the error.</p></li>
+<li><p>Mondays at 1400</p></li>
+<li><p>Thursdays at 1200</p></li>
+<li><p>Fridays at 1000</p></li>
 </ul>
+<p>all in in <a href="https://students.leeds.ac.uk/buildings-and-rooms/3611/roger-stevens-lt-14-10m-14">Roger Stevens LT 14</a>.</p>
+<p>I recommend taking your own notes during the lecture. I will put brief summary notes from the lectures on this website, but they will not reflect all the details I say out loud and write on the whiteboard. Lectures will go through material quite quickly and the material may be quite difficult, so it’s likely you’ll want to spend time reading through your notes after the lecture. Lectures should be recorded on the lecture capture system; I find it very difficult to read the whiteboard in these videos, but if you unavoidably miss a lecture, for example due to illness, you may find they are better than nothing.</p>
+<p>In Weeks 3, 5, 7, 9 and 11, the Thursday lecture will operate as a “problems class” – see more on this below.</p>
+<p>Attendance at lectures in compulsory. You should record your attendance using the UniLeeds app and the QR code on the wall in the 15 minutes before the lecture or the 15 minutes after the lecture (but not during the lecture).</p>
 </section>
-<section id="monte-carlo-with-antithetic-variables" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="monte-carlo-with-antithetic-variables"><span class="header-section-number">6.2</span> Monte Carlo with antithetic variables</h2>
-<p>We have seen that negative correlation helps improve estimation from <span class="math inline">\(n=2\)</span> samples. How can we make this work in our favour for Monte Carlo simulation with many more samples?</p>
-<p>We will look at the idea of <strong>antithetic pairs</strong>. So instead of taking <span class="math inline">\(n\)</span> samples <span class="math display">\[ X_1, X_2, \dots, X_n \]</span> that are all independent of each other, we will take <span class="math inline">\(n/2\)</span> pairs of samples <span class="math display">\[ (X_1, X'_1), (X_2, X'_2), \dots, (X_{n/2}, X'_{n/2}) . \]</span> (Here, <span class="math inline">\(n/2\)</span> pairs means <span class="math inline">\(n\)</span> samples over all.) <em>Within</em> each pair, <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_i'\)</span> will <em>not</em> be independent, but <em>between</em> different pairs <span class="math inline">\(i \neq j\)</span>, <span class="math inline">\((X_i, X_i')\)</span> and <span class="math inline">\((X_j, X'_j)\)</span> <em>will</em> be independent.</p>
-<div id="def-AV" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 6.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Let <span class="math inline">\(X'\)</span> have the same distribution as <span class="math inline">\(X\)</span> (but not necessarily be independent of it). Suppose that <span class="math inline">\((X_1, X_1')\)</span>, <span class="math inline">\((X_2, X_2')\)</span>, <span class="math inline">\(\dots\)</span>, <span class="math inline">\((X_{n/2}, X'_{n/2})\)</span> are pairs of random samples from <span class="math inline">\((X, X')\)</span>. Then the <strong>antithetic variables Monte Carlo estimator</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{AV}}\)</span> of <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) .\]</span></p>
-</div>
-<p>The expression above for <span class="math inline">\(\widehat{\theta}_n^{\mathrm{AV}}\)</span> makes it clear that that this is a mean of the sum from each pair. Alternatively, we can rewrite the estimator as <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{2} \left( \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i) + \frac{1}{n/2} \sum_{i=1}^{n/2} \phi(X_i') \right) , \]</span> which highlights that it is the mean of the estimator from the <span class="math inline">\(X_i\)</span>s and the the estimator from the <span class="math inline">\(X'_i\)</span>s.</p>
+<section id="problem-sheets-and-problem-classes" class="level3">
+<h3 class="anchored" data-anchor-id="problem-sheets-and-problem-classes">Problem sheets and problem classes</h3>
+<p>Mathematics and statistics are “doing” subjects! To help you learn material for the module and to help you prepare for the exam, I will provide 5 unassessed problem sheets. These are for you to work through in your own time to help you learn; they are <em>not</em> formally assessed. You are welcome to discuss work on the problem sheets with colleagues and friends, although my recommendation would be to write-up your “last, best” attempt neatly by yourself.</p>
+<p>There will be an optional opportunity to submit one or two questions from the problem sheet to me in advance of the problems class for some brief informal feedback on your work. See the problem sheets for details.</p>
+<p>You should work through each problem sheet in preparation for the problems class in the Thursday lecture of Week 3, 5, 7, 9 and 11. In the problems class, you should be ready to explain your answers to questions you managed to solve, discuss your progress on questions you partially solved, and ask for help on questions you got stuck on.</p>
+<p>You can also ask for extra help or feedback at office hours (see below).</p>
 </section>
-<section id="examples" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="examples"><span class="header-section-number">6.3</span> Examples</h2>
-<div id="exm-MCprob4" class="theorem example">
-<p><span class="theorem-title"><strong>Example 6.1</strong></span> Recall <a href="#exm-MCprob" class="quarto-xref">Example&nbsp;<span class="quarto-unresolved-ref">exm-MCprob</span></a> (continued in <a href="#exm-MCprob2" class="quarto-xref">Example&nbsp;<span class="quarto-unresolved-ref">exm-MCprob2</span></a> and <a href="#exm-MCprob3" class="quarto-xref">Example&nbsp;<span class="quarto-unresolved-ref">exm-MCprob3</span></a>). Here, we were estimating <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span> for <span class="math inline">\(Z\)</span> a standard normal.</p>
-<p>The basic Monte Carlo estimate was</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest   <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022713</code></pre>
-</div>
-</div>
-<p>Can we improve this estimate with an antithetic variable? Well, if <span class="math inline">\(Z\)</span> is a standard normal, then <span class="math inline">\(Z' = -Z\)</span> is also standard normal and is not independent of <span class="math inline">\(Z\)</span>. So maybe that could work as an antithetic variable. Let’s try</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>samples1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>samples2 <span class="ot">&lt;-</span> <span class="sc">-</span>samples1</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>AVest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>((samples1 <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">+</span> (samples2 <span class="sc">&gt;</span> <span class="dv">2</span>))</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>AVest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022743</code></pre>
-</div>
-</div>
-</div>
-<div id="exm-AVunif" class="theorem example">
-<p><span class="theorem-title"><strong>Example 6.2</strong></span> Let’s consider estimating <span class="math inline">\(\mathbb E \sin U\)</span>, where <span class="math inline">\(U\)</span> is continuous uniform on <span class="math inline">\([0,1]\)</span>.</p>
-<p>The basic Monte Carlo estimate is</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">sin</span>(samples))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4596232</code></pre>
-</div>
-</div>
-<p>We used <code>runif(n, min, max)</code> to generate <span class="math inline">\(n\)</span> samples on the interval <span class="math inline">\([\mathtt{min}, \mathtt{max}]\)</span>. However, if you omit the <code>min</code> and <code>max</code> arguments, then R assumes the default values <code>min = 0</code>, <code>max = 1</code>, which is what we want here.</p>
-<p>If <span class="math inline">\(U\)</span> is uniform on <span class="math inline">\([0,1]\)</span>, then <span class="math inline">\(1 - U\)</span> is also uniform on <span class="math inline">\([0,1]\)</span>. We could try using that as an antithetic variable.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>samples1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>samples2 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> samples1</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>AVest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>(<span class="fu">sin</span>(samples1) <span class="sc">+</span> <span class="fu">sin</span>(samples2))</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>AVest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4597191</code></pre>
-</div>
-</div>
-</div>
-<p>Are these antithetic variables estimates an improvement on the basic Monte Carlo estimate? We’ll find out next time.</p>
-<p><strong>Next time:</strong> <em>We continue our study of the antithetic variables method with more examples and analysis of the error.</em></p>
-<div class="mysummary">
-<p><strong>Summary:</strong></p>
+<section id="coursework" class="level3">
+<h3 class="anchored" data-anchor-id="coursework">Coursework</h3>
+<p>There will be one piece of assessed coursework, which will make up 20% of your module mark. <a href="#coursework">You can read more about the coursework here.</a></p>
+<p>The coursework will be in the form of a worksheet. The worksheet will have some questions, mostly computational but also mathematical, and you will have to write a report containing your answers and computations.</p>
+<p>The assessed coursework will be introduced in the <strong>computer practical</strong> sessions in Week 9.</p>
+<p>The deadline for the coursework will be the penultimate day of the Autumn term, <strong>Thursday 12 December </strong> at 1400. Feedback and marks will be returned on Monday 13 January, the first day of the Spring term.</p>
+</section>
+<section id="office-hours" class="level3">
+<h3 class="anchored" data-anchor-id="office-hours">Office hours</h3>
+<p>I will run a n optional “office hours” drop-in session each week for feedback and consultation. You can come along if you want to talk to me about anything on the module, including if you’d like more feedback on your attempts at problem sheet questions. (For extremely short queries, you can approach me before or after lectures, but my response will often be: “Come to my office hours, and we can discuss it there!”)</p>
+<p>Office hours will happen on <strong>Thursdays from 1300 to 1400</strong> – so directly after the Thursday lecture / problems class – in my office, which is <strong>EC Stoner 9.10n</strong> in “Maths Research Deck” area on the 9th floor of the EC Stoner building. (One way to the Maths Research Deck is via the doors directly opposite the main entrance to the School of Mathematics; you can also get there from Staircase 1 on the Level 10 “red route” through EC Stoner, next to the Maths Satellite.) If you cannot make this time, contact me for an alternative arrangement.</p>
+</section>
+<section id="exam" class="level3">
+<h3 class="anchored" data-anchor-id="exam">Exam</h3>
+<p>There will be one exam, which will make up 80% of your module mark.</p>
+<p>The exam will be in the January 2026 exam period (12–23 January); the date and time will be announced in December. The exam will be in person and on campus.</p>
+<p>The exam will last 2 hours and 30 minutes. The exam will consist of 4 questions, all compulsory. You will be allowed to use a permitted calculator in the exam.</p>
+</section>
+</section>
+<section id="content-of-math5835" class="level2">
+<h2 class="anchored" data-anchor-id="content-of-math5835">Content of MATH5835</h2>
+<section id="necessary-background" class="level3">
+<h3 class="anchored" data-anchor-id="necessary-background">Necessary background</h3>
+<p>I recommend that students should have completed at least two undergraduate level courses in probability or statistics – although confidence and proficiency in basic material is more important than very deep knowledge of more complicated topics.</p>
+<p>For Leeds undergraduates, MATH2715 Statistical Methods is an official prerequisite (please get in touch with me if you are/were a Leeds undergraduate and have not taken MATH2715), although confidence and proficiency in the more basic material of MATH1710 &amp; MATH1712 Probability and Statistics 1 &amp; 2 is probably more important.</p>
+<p>Some knowledge I will assume:</p>
 <ul>
-<li><p>Estimation is helped by combining individual estimates that are negatively correlated.</p></li>
-<li><p>For antithetic variables Monte Carlo estimation, we take pairs of non-independent variables <span class="math inline">\((X, X')\)</span>, to get the estimator <span class="math display">\[ \widehat{\theta}_n^{\mathrm{AV}} = \frac{1}{n} \sum_{i=1}^{n/2} \big(\phi(X_i) + \phi(X'_i) \big) . \]</span></p></li>
+<li><p><strong>Probability:</strong> Basic rules of probability; random variables, both continuous and discrete; “famous” distributions (especially the normal distribution and the continuous uniform distribution); expectation, variance, covariance, correlation; law of large numbers and central limit theorem.</p></li>
+<li><p><strong>Statistics:</strong> Estimation of parameters; bias and error; sample mean and sample variance</p></li>
 </ul>
-<p>On <a href="#P1"><strong>Problem Sheet 1</strong></a>, you should now be able to answer all questions. You should work through this problem sheet in advance of the problems class on <em>Thursday 17 October</em>.</p>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection 3.3.2.</p>
+<p>This module will also include an material on Markov chains. I won’t assume any pre-existing knowledge of this, and I will introduce all new material we need, but students who have studied Markov chains before (for example in the Leeds module MATH2750 Introduction to Markov Processes) may find a couple of lectures here are merely a reminder of things they already know.</p>
+<p>The lectures will include examples using the <strong>R</strong> program language. The coursework and problem sheets will require use of R. The exam, while just a “pencil and paper” exam, will require understanding and writing short portions of R code. We will assume basic R capability – that you can enter R commands, store R objects using the <code>&lt;-</code> assignment, and perform basic arithmetic with numbers and vectors. Other concepts will be introduced as necessary. If you want to use R on your own device, I recommend downloading (if you have not already) the <a href="https://cran.r-project.org">R programming language</a> and the <a href="https://posit.co/downloads/">program RStudio</a>. (These lecture notes were written in R using RStudio.)</p>
+</section>
+<section id="syllabus" class="level3">
+<h3 class="anchored" data-anchor-id="syllabus">Syllabus</h3>
+<p>We plan to cover the following topics in the module:</p>
+<ul>
+<li><p><strong>Monte Carlo estimation:</strong> definition and examples; bias and error; variance reduction techniques: control variates, antithetic variables, importance sampling. [9 lectures]</p></li>
+<li><p><strong>Random number generation:</strong> pseudo-random number generation using linear congruential generators; inverse transform method; rejection sampling [7 lectures]</p></li>
+<li><p><strong>Markov chain Monte Carlo</strong> (MCMC)<strong>:</strong> [7 lectures]</p>
+<ul>
+<li><p>Introduction to Markov chains in discrete and continuous space</p></li>
+<li><p>Metropolis–Hastings algorithm: definition; examples; MCMC in practice; MCMC for Bayesian statistics</p></li>
+</ul></li>
+<li><p><strong>Resampling methods:</strong> Empirical distribution; plug-in estimation; bootstrap statistics; bootstrap estimation [4 lectures]</p></li>
+<li><p>Frequently-asked questions [1 lecture]</p></li>
+</ul>
+<p>Together with the 5 problems classes, this makes 33 lectures.</p>
+</section>
+<section id="book" class="level3">
+<h3 class="anchored" data-anchor-id="book">Book</h3>
+<p>The following book is strongly recommended for the module:</p>
+<ul>
+<li>J Voss, <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031"><em>An Introduction to Statistical Computing: A simulation-based approach</em></a>, Wiley Series in Computational Statistics, Wiley, 2014</li>
+</ul>
+<p>The library has <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">electronic access to this book</a> (and two paper copies).</p>
+<p>Dr Voss is a lecturer in the School of Mathematics and the University of Leeds, and has taught MATH5835 many times. <em>An Introduction to Statistical Computing</em> grew out of his lecture notes for this module, so the book is ideally suited for this module. My lectures will follow this book closely – specifically:</p>
+<ul>
+<li><p>Monte Carlo estimation: Sections 3.1–3.3</p></li>
+<li><p>Random number generation: Sections 1.1–1.4</p></li>
+<li><p>Markov chain Monte Carlo: Section 2.3 and Sections 4.1–4.3</p></li>
+<li><p>Bootstrap: Section 5.2</p></li>
+</ul>
+<p>For a second look at material, for preparatory reading, for optional extended reading, or for extra exercises, this book comes with my highest recommendation!</p>
 
 
-</div>
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -983,13 +956,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L05-cv.html" class="pagination-link" aria-label="Control variate">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control variate</span></span>
-      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../problems/P1.html" class="pagination-link" aria-label="Problem Sheet 1">
-        <span class="nav-page-text">Problem Sheet 1</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./lectures/L01-mc-intro.html" class="pagination-link" aria-label="Introduction to Monte Carlo">
+        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

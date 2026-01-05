@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; Uses of Monte Carlo – MATH5835M Statistical Computing</title>
+<title>Computational coursework – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L03-mc-error-1.html" rel="next">
-<link href="../lectures/L01-mc-intro.html" rel="prev">
+<link href="../problems/solutions.html" rel="next">
+<link href="../problems/P5.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -103,35 +69,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../mystyle.css">
 </head>
@@ -145,7 +82,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L02-mc-uses.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../coursework/coursework.html">Computational coursework</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -196,7 +133,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span></a>
   </div>
 </li>
@@ -417,7 +354,7 @@ window.Quarto = {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../coursework/coursework.html" class="sidebar-item-text sidebar-link">
+  <a href="../coursework/coursework.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Computational coursework</span></a>
   </div>
 </li>
@@ -437,8 +374,11 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#monte-carlo-for-probabilities" id="toc-monte-carlo-for-probabilities" class="nav-link active" data-scroll-target="#monte-carlo-for-probabilities"><span class="header-section-number">2.1</span> Monte Carlo for probabilities</a></li>
-  <li><a href="#monte-carlo-for-integrals" id="toc-monte-carlo-for-integrals" class="nav-link" data-scroll-target="#monte-carlo-for-integrals"><span class="header-section-number">2.2</span> Monte Carlo for integrals</a></li>
+  <li><a href="#about-the-coursework" id="toc-about-the-coursework" class="nav-link active" data-scroll-target="#about-the-coursework">About the coursework</a></li>
+  <li><a href="#about-your-report" id="toc-about-your-report" class="nav-link" data-scroll-target="#about-your-report">About your report</a></li>
+  <li><a href="#computer-practical-and-other-help" id="toc-computer-practical-and-other-help" class="nav-link" data-scroll-target="#computer-practical-and-other-help">Computer practical and other help</a></li>
+  <li><a href="#ai-use" id="toc-ai-use" class="nav-link" data-scroll-target="#ai-use">AI use</a></li>
+  <li><a href="#r-and-rstudio-on-university-computers" id="toc-r-and-rstudio-on-university-computers" class="nav-link" data-scroll-target="#r-and-rstudio-on-university-computers">R and RStudio on University computers</a></li>
   </ul>
 </nav>
     </div>
@@ -454,9 +394,9 @@ window.Quarto = {
 \newcommand{\ee}{\mathrm{e}} \]</span></p>
 </div>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L02-mc-uses.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></h1>
+<h1 class="title"><span id="coursework" class="quarto-section-identifier">Computational coursework</span></h1>
 </div>
 
 
@@ -473,152 +413,83 @@ window.Quarto = {
 </header>
 
 
-<div class="hidden">
-<p><span class="math display">\[ \]</span></p>
-</div>
-<p>Quick recap: Last time we defined the Monte Carlo estimator for an expectation of a function of a random variable <span class="math inline">\(\theta = \Exg \phi(X)\)</span> to be <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are independent random samples from <span class="math inline">\(X\)</span>.</p>
-<p>Today we look at two other things we can estimate using Monte Carlo simulation: probabilities, and integrals.</p>
-<section id="monte-carlo-for-probabilities" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="monte-carlo-for-probabilities"><span class="header-section-number">2.1</span> Monte Carlo for probabilities</h2>
-<p>What if we want to find a <em>probability</em>, rather than an expectation? What if we want <span class="math inline">\(\mathbb P(X = x)\)</span> for some <span class="math inline">\(x\)</span>, or <span class="math inline">\(\mathbb P(X \geq a)\)</span> for some <span class="math inline">\(a\)</span>, or, more generally, <span class="math inline">\(\mathbb P(X \in A)\)</span> for some set <span class="math inline">\(A\)</span>?</p>
-<p>The key thing that will help us here is the <em>indicator function</em>. The indicator function simply tells us whether an outcome <span class="math inline">\(x\)</span> is in a set <span class="math inline">\(A\)</span> or not.</p>
-<div id="def-indicator" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.1</strong></span> Let <span class="math inline">\(A\)</span> be a set. Then the <strong>indicator function</strong> <span class="math inline">\(\Ind_A\)</span> is defined by <span class="math display">\[ \Ind_A(x) = \begin{cases} 1 &amp; \text{if $x \in A$} \\ 0 &amp; \text{if $x \notin A$.} \end{cases} \]</span></p>
-</div>
-<p>The set <span class="math inline">\(A\)</span> could just be a single element <span class="math inline">\(A = \{y\}\)</span>. In that case <span class="math inline">\(\Ind_A(x)\)</span> is 1 if <span class="math inline">\(x = y\)</span> and 0 if <span class="math inline">\(x \neq y\)</span>. Or <span class="math inline">\(A\)</span> could be a semi-infinite interval, like <span class="math inline">\(A = [a, \infty)\)</span>. In that case <span class="math inline">\(\Ind_A(x)\)</span> is 1 if <span class="math inline">\(x \geq a\)</span> and 0 if <span class="math inline">\(x &lt; a\)</span>.</p>
-<p>Why is this helpful? Well <span class="math inline">\(\Ind_A\)</span> is a function, so let’s think about what the expectation <span class="math inline">\(\Exg \Ind_A(X)\)</span> would be for some random variable <span class="math inline">\(X\)</span>. Since <span class="math inline">\(\Ind_A\)</span> can only take two values, 0 and 1, we have <span class="math display">\[\begin{align*}
-\Exg \Ind_A(X) &amp;= \sum_{y \in\{0,1\}} y\,\mathbb P\big( \Ind_A(X) = y \big) \\\
-  &amp;= 0 \times \mathbb P\big( \Ind_A(X) = 0 \big) + 1 \times \mathbb P\big( \Ind_A(X) = 1 \big) \\
-  &amp;= 0 \times \mathbb P(X \notin A) + 1 \times \mathbb P(X \in A) \\
-  &amp;= \mathbb P(X \in A) .
-\end{align*}\]</span> P(X A) . \end{align*} In line three, we used that <span class="math inline">\(\Ind_A(X) = 0\)</span> if and only if <span class="math inline">\(X \notin A\)</span>, and that <span class="math inline">\(\Ind_A(X) = 1\)</span> if and only if <span class="math inline">\(X \in A\)</span>.</p>
-<p>So the expectation of an indicator function a set is the probability that <span class="math inline">\(X\)</span> is in that set. This idea connects “expectations of functions” back to probabilities: if we want to find <span class="math inline">\(\mathbb P(X \in A)\)</span> we can find the expectation of <span class="math inline">\(\Ind_A(X)\)</span>.</p>
-<p>With this idea in hand, how do we estimate <span class="math inline">\(\theta = \mathbb P(X \in A)\)</span> using the Monte Carlo method? We write <span class="math inline">\(\theta = \Exg\Ind_A(X)\)</span>. Then our Monte Carlo estimator is <span class="math display">\[  \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \Ind_A(X_i) . \]</span></p>
-<p>We remember that <span class="math inline">\(\Ind_A(X_i)\)</span> is 1 if <span class="math inline">\(X_i \in A\)</span> and 0 otherwise. So if we add up <span class="math inline">\(n\)</span> of these, we count an extra +1 each time we have an <span class="math inline">\(X_i \in A\)</span>. So <span class="math inline">\(\sum_{i=1}^n \Ind_A(X_i)\)</span> counts the total number of the <span class="math inline">\(X_i\)</span> that are in <span class="math inline">\(A\)</span>. So the Monte Carlo estimator can be written as <span class="math display">\[  \widehat{\theta}_n^{\mathrm{MC}} = \frac{\# \text{ of } X_i \text{ that are in $A$}}{n} . \]</span> (I’m using <span class="math inline">\(\#\)</span> as shorthand for “the number of”.)</p>
-<p>Although we’ve had to do a bit of work to get here, this a totally logical outcome! The right-hand side here is the proportion of the samples for which <span class="math inline">\(X_i \in A\)</span>. And if we want to estimate the probability something happens, looking at the proportion of times it happens in a random sample is very much the “intuitive” estimate to take. And that intuitive estimate is indeed the Monte Carlo estimate!</p>
-<div id="exm-MCprob" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.1</strong></span> <em>Let</em> <span class="math inline">\(Z \sim \operatorname{N}(0,1)\)</span> <em>be a standard normal distribution. Estimate</em> <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span><em>.</em></p>
-<p>This is a question that it is impossible to answer exactly using a pencil and paper: there’s no closed form for <span class="math display">\[ \mathbb P(Z &gt; 2) = \int_2^\infty \frac{1}{\sqrt{2\pi}}\,\mathrm{e}^{-z^2/2}\,\mathrm{d}z , \]</span> so we’ll have to use an estimation method.</p>
-<p>The Monte Carlo estimate means taking a random sample <span class="math inline">\(Z_1, Z_2, \dots, Z_n\)</span> of standard normals, and calculating what proportion of them are greater than 2. In R, we can do this as follows.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022873</code></pre>
-</div>
-</div>
-<p>In the second line, we could have written <code>rnorm(n, 0, 1)</code>. But, if you don’t give the parameters <code>mean</code> and <code>sd</code> to the function <code>rnorm()</code>, R just assumes you want the standard normal with <code>mean = 0</code> and <code>sd = 1</code>.</p>
-<p>We can check our answer: R’s inbuilt <code>pnorm()</code> function estimates probabilities for the normal distribution (using a method that, in this specific case, is much quicker and more accurate than Monte Carlo estimation). The true answer is very close to</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">2</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.02275013</code></pre>
-</div>
-</div>
-<p>so our estimate was pretty good.</p>
-</div>
-<p>We should explain the third line in the code we used for the Monte Carlo estimation <code>mean(samples &gt; 2)</code>. In R, some statements can be answered “true” or “false”: these are often statements involving equality <code>==</code> (that’s a <em>double</em> equals sign) or inequalities like <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&gt;</code>, for example. So <code>5 &gt; 2</code> is <code>TRUE</code> but <code>3 == 7</code> is <code>FALSE</code>. These can be applied “component by component” to vectors. So, for example, testing which numbers from 1 to 10 are greater than or equal to 7, we get</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">&gt;=</span> <span class="dv">7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE</code></pre>
-</div>
-</div>
-<p>six <code>FALSE</code>s (for 1 to 6) followed by four <code>TRUE</code>s (for 7 to 10).</p>
-<p>We can also use <code>&amp;</code> (“and”) and <code>|</code> (“or”) in true/false statements like these.</p>
-<p>But R also knows to treat <code>TRUE</code> like the number 1 and <code>FALSE</code> like the number 0. (This is just like the concept of the indicator function we’ve been discussing.) So if we add up some <code>TRUE</code>s and <code>FALSE</code>s, R simply counts how many <code>TRUE</code>s there are</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">&gt;=</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4</code></pre>
-</div>
-</div>
-<p>So in our Monte Carlo estimation code, <code>samples &gt; 2</code> was a vector of <code>TRUE</code>s and <code>FALSE</code>s, depending on whether each sample was greater than 2 or not, then <code>mean(samples &gt; 2)</code> took the <em>proportion</em> of the samples that were greater than 2.</p>
-</section>
-<section id="monte-carlo-for-integrals" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="monte-carlo-for-integrals"><span class="header-section-number">2.2</span> Monte Carlo for integrals</h2>
-<p>There’s another thing – a non-statistics thing – that Monte Carlo estimation is useful for. We can use Monte Carlo estimation to approximate integrals that are too hard to do by hand.</p>
-<p>This might seem surprising. Estimating the expectation of (a function of) a random variable seems a naturally statistical thing to do. But an integral is just a straight maths problem – there’s not any randomness at all. But actually, integrals and expectations are very similar things.</p>
-<p>Let’s think of an integral: say, <span class="math display">\[ \int_a^b h(x) \,\mathrm{d}x ,\]</span> the integral of some function <span class="math inline">\(h\)</span> (the “integrand”) between the limits <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. Now let’s compare that to the integral <span class="math inline">\(\Exg \phi(X)\)</span> of a continuous random variable that we can estimate using Monte Carlo estimation, <span class="math display">\[ \Exg \phi(X) = \int_{-\infty}^\infty \phi(x)\,f(x)\, \mathrm{d} x. \]</span> Matching things up, we can see that we if we were to a function <span class="math inline">\(\phi\)</span> and a PDF <span class="math inline">\(f\)</span> such that <span id="eq-match"><span class="math display">\[ \phi(x)\,f(x) = \begin{cases} 0 &amp; x &lt; a \\ h(x) &amp; a \leq x \leq b \\ 0 &amp; x &gt; b , \end{cases}  \tag{2.1}\]</span></span> then we would have <span class="math display">\[ \Exg \phi(X) = \int_{-\infty}^\infty \phi(x)\,f(x)\, \mathrm{d} x = \int_a^b h(x) \,\mathrm{d}x, \]</span> so the value of the expectation would be precisely the value of the integral we’re after. Then we could use Monte Carlo to estimate that expectation/integral.</p>
-<p>There are lots of choices of <span class="math inline">\(\phi\)</span> and <span class="math inline">\(f\)</span> that would satisfy this the condition in <a href="#eq-match" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-match</span></a>. But a “common-sense” choice that often works is to pick <span class="math inline">\(f\)</span> to be the PDF of <span class="math inline">\(X\)</span>, a continuous uniform distribution on the interval <span class="math inline">\([a,b]\)</span>. (This certainly works when <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are finite, anyway.) Recall that the continuous uniform distribution means that <span class="math inline">\(X\)</span> has PDF <span class="math display">\[ f(x) = \begin{cases} 0 &amp; x &lt; a \\ \displaystyle{\frac{1}{b-a}} &amp; a \leq x \leq b \\ 0 &amp; x &gt; b . \end{cases} \]</span> Comparing this equation with <a href="#eq-match" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-match</span></a>, we then have to choose <span class="math display">\[\phi(x) = \frac{h(x)}{f(x)} = (b-a)h(x).\]</span></p>
-<p>Putting this all together, we have <span class="math display">\[ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x = \int_a^b (b-a)h(x)\,\frac{1}{b-a}\,\mathrm{d}x = \int_a^b h(x) \,\mathrm{d}x ,\]</span> as required. This can then be estimated using the Monte Carlo method.</p>
-<div id="def-MCint" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.2</strong></span> Consider an integral <span class="math inline">\(\theta = \int_a^b h(x)\,\mathrm{d}x\)</span>. Let <span class="math inline">\(f\)</span> be the probability density function of a random variable <span class="math inline">\(X\)</span> and let <span class="math inline">\(\phi\)</span> be function such that <a href="#eq-match" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-match</span></a> holds. Then the <strong>Monte Carlo estimator</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{MC}}\)</span> of the integral <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are a random sample from <span class="math inline">\(X\)</span>.</p>
-</div>
-<div id="exm-MCint" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.2</strong></span> Suppose we want to approximate the integral <span class="math display">\[ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x . \]</span></p>
-<p>Since this is an integral on the finite interval <span class="math inline">\([0,2]\)</span>, it would seem to make sense to pick <span class="math inline">\(X\)</span> to be uniform on <span class="math inline">\([0,2]\)</span>. This means we should take <span class="math display">\[\phi(x) = \frac{h(x)}{f(x)} = (2-0)h(x) = 2\,x^{1.6}(2-x)^{0.7}.\]</span> We can then approximate this integral in R using the Monte Carlo estimator <span class="math display">\[ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x = \operatorname{\mathbb{E}} \phi(X) \approx \frac{1}{n} \sum_{i=1}^n 2\,X_i^{1.6} (2-X_i)^{0.7} . \]</span></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="fl">1.6</span> <span class="sc">*</span> (<span class="dv">2</span> <span class="sc">-</span> x)<span class="sc">^</span><span class="fl">0.7</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, a, b)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>((b <span class="sc">-</span> a) <span class="sc">*</span> <span class="fu">integrand</span>(samples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.443793</code></pre>
-</div>
-</div>
-<p>You have perhaps noticed that, here and elsewhere, I tend to split my R code up into lots of small bits, perhaps slightly unnecessarily. After all, those 6 lines of code could simply have been written as just 2 lines</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fl">1e6</span>, <span class="dv">0</span>, <span class="dv">2</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="dv">2</span> <span class="sc">*</span> samples<span class="sc">^</span><span class="fl">1.6</span> <span class="sc">*</span> (<span class="dv">2</span> <span class="sc">-</span> samples)<span class="sc">^</span><span class="fl">0.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>There’s nothing <em>wrong</em> with that. However, I find that code is easier to read if divided into small pieces. It also makes it easier to tinker with, if I want to use it to solve some similar but slightly different problem.</p>
-</div>
-<div id="exm-MCint2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.3</strong></span> Suppose we want to approximate the integral <span class="math display">\[ \int_{-\infty}^{+\infty}
-\mathrm{e}^{-0.1|x|} \cos x \, \mathrm{d}x . \]</span> This one is an integral on the whole real line, so we can’t take a uniform distribution. Maybe we should take <span class="math inline">\(f(x)\)</span> to be the PDF of a normal distribution, and then put <span class="math display">\[ \phi(x) = \frac{h(x)}{f(x)} = \frac{\mathrm{e}^{-0.1|x|} \cos x}{f(x)} . \]</span></p>
-<p>But which normal distribution should we take? Well, we’re <em>allowed</em> to take any one – we will still get an accurate estimate in the limit as <span class="math inline">\(n \to \infty\)</span>. But we’d like an estimator that gives accurate results at moderate-sized <span class="math inline">\(n\)</span>, and picking a “good” distribution for <span class="math inline">\(X\)</span> will help that.</p>
-<p>We’ll probably get the best results if we pick a distribution that is likely to mostly take values where <span class="math inline">\(h(x)\)</span> is big – or, rather, where the absolute value <span class="math inline">\(|h(x)|\)</span> is big, to be precise. That is because we don’t want to “waste” too many samples where <span class="math inline">\(h(x)\)</span> is very small, because they don’t contribute much to the integral. But we don’t want to “miss” – or only sample very rarely – places where <span class="math inline">\(h(x)\)</span> is big, which contribute a lot to the integral.</p>
-<p>Let’s have a look at the graph of <span class="math inline">\(h(x) = \mathrm{e}^{-0.1|x|} \cos x\)</span>.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code for drawing this graph</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">abs</span>(x)) <span class="sc">*</span> <span class="fu">cos</span>(x)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  integrand, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="sc">-</span><span class="dv">55</span>, <span class="at">to =</span> <span class="dv">55</span>,</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">3</span>,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"integrand h(x)"</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">50</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="L02-mc-uses_files/figure-html/h-graph-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>This suggests to me that a mean of 0 and a standard deviation of 20 might work quite well, since this will tend to take values in <span class="math inline">\([-40,40]\)</span> or so.</p>
-<p>We will use R’s function <code>dnorm()</code> for the probability density function of the normal distribution (which saves us from having to remember what that is).</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">abs</span>(x)) <span class="sc">*</span> <span class="fu">cos</span>(x)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>pdf       <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="dv">0</span>, <span class="dv">20</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>phi       <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">integrand</span>(x) <span class="sc">/</span> <span class="fu">pdf</span>(x)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">20</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">phi</span>(samples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.235336</code></pre>
-</div>
-</div>
-</div>
-<p><strong>Next time:</strong> <em>We will analyse the accuracy of these Monte Carlo estimates.</em></p>
 <div class="mysummary">
-<p><strong>Summary:</strong></p>
-<ul>
-<li><p>The indicator <span class="math inline">\(\Ind_A(x)\)</span> function of a set <span class="math inline">\(A\)</span> is 1 if <span class="math inline">\(x \in A\)</span> or 0 if <span class="math inline">\(x \notin A\)</span>.</p></li>
-<li><p>We can estimate a probability <span class="math inline">\(\mathbb P(X \in A)\)</span> by using the Monte Carlo estimate for <span class="math inline">\(\Exg\Ind_A(X)\)</span>.</p></li>
-<li><p>We can estimate an integral <span class="math inline">\(\int h(x) \, \mathrm{d}x\)</span> by using a Monte Carlo estimate with <span class="math inline">\(\phi(x)\,f(x) = h(x)\)</span>.</p></li>
-</ul>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Section 3.1 and Subsection 3.2.1.</p>
+<p>There is one piece of computational coursework for MATH5835M Statistical Computing. This coursework is worth 20% of the module mark.</p>
+<p>The coursework sheet is available in <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html">here in HTML format</a></strong> or <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.Rmd">here in R Markdown format</a></strong>.</p>
+<p>The deadline for the coursework will be the penultimate day of the Autumn term, <strong>Thursday 11 December </strong> at <strong>1400</strong>. (There is also an optional deadline if you wish to get feedback on a draft of your work: Friday 5 December at 1400.)</p>
+<p>Feedback on the final report and marks will be returned on Monday 12 January, the first day of the Spring term.</p>
 </div>
+<section id="about-the-coursework" class="level2">
+<h2 class="anchored" data-anchor-id="about-the-coursework">About the coursework</h2>
+<p>There is one piece of computational coursework for MATH5835M Statistical Computing. This coursework is worth 20% of the module mark.</p>
+<p>This page contains all the administrative and organisational information about the coursework.</p>
+<p>A coursework sheet contains the tasks you must carry out. The coursework sheet is available in <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.html">here in HTML format</a></strong> or <strong><a href="https://mpaldridge.github.io/math5835/coursework/math5835-coursework.Rmd">here in R Markdown format</a></strong>. The HTML page can be opened in a standard web browser. The R Markdown version (which I personally prefer) should be downloaded then opened in RStudio; I recommend using the “Visual” editor – see the button in the top left of the editing window.</p>
+<p>The are two deadlines for this work.</p>
+<ol type="1">
+<li><p>There is the <strong>main submission deadline</strong> which is the penultimate day of term, <strong>Thursday 11 December</strong> at <strong>1400</strong>. You must submit your work by this time. Work that is submitted after this deadline will receive a penalty of 5% for every day or part-day late. Work that is more than 14 days late will not be marked and will receive 0. Work will be submitted electronically through Gradescope via the Minerva page for the module.</p></li>
+<li><p><em>Optionally</em>, you <em>may</em> also wish to get some brief informal feedback on your draft work before the main deadline. <em>If</em> you wish to get feedback on your draft work, you should submit that draft by Friday 6 December at 1400. I will return a small amount of general feedback about your work by Monday 9 December. I will not give a mark to your draft, and the feedback will be a brief sentence or too that may be of a little help when completing the final version of your work. The quality of your draft submission will have no effect (either positive or negative) on the mark for your main submission, and there is no penalty if you choose not to take advantage of this offer. You still must submit your final work by the main submission deadline, even if you submit a draft for feedback. No extensions can be offered on the deadline for this informal feedback.</p></li>
+</ol>
+<p>The Gradescope submission for the final report will open after 1400 on Friday 6 December (to avoid drafts for optional feedback getting mixed up with final reports). The Gradescope submission for optional feedback on draft work will be open from the computer practical sessions in week 9.</p>
+<p>You must comply with <a href="https://students.leeds.ac.uk/info/10110/academic-integrity">the University’s rules on academic integrity</a>. <a href="#AI">See below</a> for comments on use of AI.</p>
+<p>If you encounter extraordinary unforeseeable personal circumstances that make it impossible for you to submit your coursework on time, you can apply for an deadline extension through <a href="https://students.leeds.ac.uk/info/10111/assessment/860/mitigating_circumstances">the usual mitigating circumstances procedure</a>. (Do not contact me about this – I cannot unilaterally offer deadline extensions.)</p>
+</section>
+<section id="about-your-report" class="level2">
+<h2 class="anchored" data-anchor-id="about-your-report">About your report</h2>
+<p>Your task is to write a short report in response to the tasks on the coursework sheet. Your report should include all the important R code you use and any important plots you draw. If I can’t work out what R code you ran to get your results, I cannot award you marks for those results. Only include the code and figures relevant to your final and best solution – I don’t need or want to see earlier attempts or errors along the way, unless they genuinely help explain your final choices.</p>
+<p><em>All computational work must be done in R</em> – no marks will be given for code written in Python or any other language. It is strongly recommended that you draw figures in R (with the possible exception of rough illustrative sketches, if you find them useful), but I do not insist on this.</p>
+<p>You report must end with a declaration of AI use. <a href="#AI">See below</a> for more on this.</p>
+<p>I call your output a “report” because your work should be explained in detail, in full English-language sentences, with your solutions discussed and justified. The code and figures you include should be an integral part of your report, not just copy-pasted in at random, and should be fully explained within the text. However, other parts of a more formal “report”, such as an introduction, literature review, conclusion, references, etc, are not required here.</p>
+<p>There is <em>no page limit</em> for the report, although I expect that good reports will typically be around 5–8 pages. If your report is 4 pages or less, make sure you have completed all the tasks and fully explained your work. If your report has 10 pages or more, make sure you are not wandering from the point or including too many unnecessary figures.</p>
+<p>Your report should be prepared electronically, but can be submitted in any sensible format – I recommend PDF (whether produced by LaTeX, R Markdown, Microsoft Word, or any other way), but HTML or Word document are fine too.</p>
+</section>
+<section id="computer-practical-and-other-help" class="level2">
+<h2 class="anchored" data-anchor-id="computer-practical-and-other-help">Computer practical and other help</h2>
+<p>There will be a computer practical in Week 9 where I will introduce the practical coursework in more detail. This is a good place to ask any questions you have about the coursework. You may wish to bring your own laptop to the computer practical, if you prefer working on that to on University computers.</p>
+<p>Places where you can get help with the coursework include:</p>
+<ul>
+<li><p>In the computer practical session.</p></li>
+<li><p>In my office hours: Thursdays 1300–1400 in my office, 9.10n in the “Maths Research Deck” area on the 9th floor of the EC Stoner building at staircase 1. (It is unlikely I will have time to discuss computational work at the beginning or end of a lecture, although if your question is <em>extremely</em> short you can try.)</p></li>
+<li><p>By submitting your draft work for optional feedback, as discussed above.</p></li>
+</ul>
+</section>
+<section id="ai-use" class="level2">
+<h2 class="anchored" data-anchor-id="ai-use">AI use</h2>
+<p>This coursework is rated AMBER for use of AI. This means that generative AI may be used in an “assistive role” only, provided you disclose (that is, tell me about) this use.</p>
+<p>The following uses of generative AI go beyond merely “assistive” and are <strong>not permitted</strong>. Work that I suspect has used generative AI this way will be reported as an academic integrity case.</p>
+<ul>
+<li><p>Asking an LLM chatbot how to answer the questions on the problem sheet.</p></li>
+<li><p>Writing R code for you.</p></li>
+<li><p>Writing the text of your report for you.</p></li>
+</ul>
+<p>The following uses of generative AI are only “assistive”, and are permitted <em>provided you tell me that you used generative AI this way</em>. Work that uses AI this way, where the AI use <em>is</em> disclosed, will not be penalised in any way. Work that uses AI this way where the AI use is <em>not</em> disclosed will be treated as an academic integrity case.</p>
+<ul>
+<li><p>General revision of topics from the module, not particularly tailored to the coursework problems.</p></li>
+<li><p>Debugging almost-complete R code that you wrote yourself.</p></li>
+<li><p>Spell-checking and grammar-checking a report that you wrote yourself.</p></li>
+<li><p>Help with LaTeX code, if you choose to write your report in LaTeX.</p></li>
+</ul>
+<p>All reports must end with a <strong>declaration of generative AI use</strong>.</p>
+<ul>
+<li><p>If you did not use generative AI at all, this can simply say: <em>“I did not use generative AI for the coursework project.”</em></p></li>
+<li><p>If you did use generative AI, this should say what system you used, what tasks it performed, and how you prompted it. Declarations like these should be one paragraph long, typically around 40–100 words.</p></li>
+</ul>
+<p>For example, here are two hypothetical declarations:</p>
+<blockquote class="blockquote">
+<p><strong>Declaration of generative AI use (1).</strong> The only place I used AI in this coursework was to spell- and grammar-check my report. I uploaded my Word document to Copilot, and prompted it: “Please check this report for spelling and grammar mistakes.” It found 5 small errors, which I corrected.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>Declaration of generative AI use (2).</strong> I used AI to help when I had a bug in my R code that I couldn’t fix myself. I copy-and-pasted my R script into ChatGPT, along with the text of the error from RStudio, and asked ChatGPT what the error was. It pointed out that, in drawing a graph, I had written <code>col = blue</code> without quotation-marks around <code>"blue"</code>. This was the only time I used AI for the coursework.</p>
+</blockquote>
+</section>
+<section id="r-and-rstudio-on-university-computers" class="level2">
+<h2 class="anchored" data-anchor-id="r-and-rstudio-on-university-computers">R and RStudio on University computers</h2>
+<p>A quick reminder, if you need it, on how to access R and RStudio on University computers.</p>
+<ol type="1">
+<li><p><strong>Open the AppsAnywhere portal</strong> This should be a link on the desktop. If invited to run any software, accept.</p></li>
+<li><p><strong>Load the language R</strong> Search on AppsAnywhere for “R for Windows” (or similar) and launch it. This will (silently) load the language R. It will also open an inferior RStudio-like program called “RGui” – you can close it.</p></li>
+</ol>
+<p>3.<strong>Launch RStudio</strong> Search on AppsAnywhere for “RStudio” (or similar) and launch it.</p>
+<p>You can alternatively use the <a href="https://posit.cloud">Posit Cloud</a> to access R and RStudio online.</p>
 
 
 </section>
@@ -1043,13 +914,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L01-mc-intro.html" class="pagination-link" aria-label="Introduction to Monte Carlo">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span>
+      <a href="../problems/P5.html" class="pagination-link" aria-label="Problem Sheet 5">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Problem Sheet 5</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L03-mc-error-1.html" class="pagination-link" aria-label="Monte Carlo error I: theory">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../problems/solutions.html" class="pagination-link" aria-label="Solutions">
+        <span class="nav-page-text">Solutions</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -1,7 +1,7 @@
 {{< include ../_header.qmd >}}
 
 :::: myq
-**1.**     The Gamma distribution $X \sim \Gamma(m, \lambda)$ has PDF $$ f(x) = \frac{\lambda^m}{(m-1)!} \,x^{m-1}\,\mathrm{e}^{-\lambda x} . $$ \[**Correction:** *There was a typo in this PDF earlier.*\] (This PDF can be evaluated with the `dgamma()` function in R.) The time between eruptions of a volcano, measured in years, is modelled as $X \sim \Gamma(5, \theta)$, IID over eruptions, where $\theta$ is unknown. A scientist beliefs about $\theta$ are represented in a prior distribution $\theta \sim \operatorname{Exp}(6)$.
+**1.**     The Gamma distribution $X \sim \Gamma(m, \lambda)$ has PDF $$ f(x) = \frac{\lambda^m}{(m-1)!} \,x^{m-1}\,\mathrm{e}^{-\lambda x} . $$ (This PDF can be evaluated with the `dgamma()` function in R.) The time between eruptions of a volcano, measured in years, is modelled as $X \sim \Gamma(5, \theta)$, IID over eruptions, where $\theta$ is unknown. A scientist beliefs about $\theta$ are represented in a prior distribution $\theta \sim \operatorname{Exp}(6)$.
 
 The following times between eruptions are available in the historical record:
 
@@ -46,11 +46,11 @@ curve(prior, add = TRUE, col = "blue", lwd = 2)
 
 A little experimentation suggested $\sigma = 0.2$ worked about right -- $\sigma = 0.5$ rejected too many changes. With my initial start point of 1, I found a short burn-in period was necessary, so my histogram starts with the 100th step of the random walk. (I could have just started from 0.2 instead, I suppose.)
 
-We see that while the prior though any number between 0 and $\tfrac12$, maybe even more, was plausible for $\theta$, we can see the prior has become concentrated in the interval $[0.11, 0.32]$ or so, with values around 0.2 the most common. The posterior variance is much smaller than the prior, so we have gained certainty from the results.
+We see that while the prior thought any number between 0 and $\tfrac12$, maybe even more, was plausible for $\theta$, we can see the prior has become concentrated in the interval $[0.11, 0.32]$ or so, with values around 0.2 the most common. The posterior variance is much smaller than the prior, so we have gained certainty from the results.
 :::
 ::::
 
-::::::::::: myq
+::::: myq
 **2.**     ★ *\[2019 exam, Question 4\]*
 
 :::: subq
@@ -125,12 +125,12 @@ The question is: for what $r$ will it be possible to jump between the different 
 **(ii)** The stationary distribution is the desired distribution for $r > 3$, which is the values for which the algorithm technically "works", as $n \to \infty$. To work "well", $r$ will need to be comfortably bigger than 3 (so that movement to and from the top-left is reasonably common) while not being so huge that most steps are to ridiculously far away.
 :::
 ::::
-:::::::::::
+:::::
 
-::::::: myq
+::::: myq
 **3.**     *\[2017 exam, Question 5\]*
 
-::: subq
+:::: subq
 **(a)**   Give the definition of a Markov chain with state space $\mathcal S$.
 
 Let $(Z_i)$ be a sequence of IID random variables whose distribution is known. Consider the stochastic processes $(U_i)$, $(V_i)$, $(W_i)$ defined by \begin{align}
@@ -138,22 +138,82 @@ U_i &= Z_1 + Z_2 + \cdots + Z_i \\
 V_i &= \frac{1}{i} (Z_1 + Z_2 + \cdots + Z_i) \\
 W_i &= \max \{Z_j : 1 \leq j \leq i-1\} + Z_i
 \end{align} for $i = 1, 2, \dots$. Which of these processes are Markov chains? Justify your answers.
-:::
 
-::: subq
+::: myanswers
+*Solution.* A Markov chain is a stochastic process $(X_n)$ satisfying the Markov property
+$$ \mathbb P(X_{n+1} = x_{n+1} \mid X_n = x_n, \dots, X_1 = x_1) = \mathbb P(X_{n+1} = x_{n+1} \mid X_n = x_n) $$
+for all states $x_{n+1}, x_n, \dots, x_1 \in \mathcal S$ such that the conditional probabilities are defined.
+
+Since $U_{i+1} = U_{i} + Z_{i+1}$, this satisfies the Markov property (and, indeed, is a random walk).
+
+Since $V_{i+1} = \frac{i}{i+1} V_i + \frac{1}{i+1} Z_{i+1}$, this satisfies the Markov property.
+
+The process $(W_i)$ does not satisfy the Markov property. Suppose $Z_i = \pm 1$ with probability $\frac12$ each. Then $W_1 = Z_1$ and $W_2 = W_1 + Z_2 = Z_1 + Z_2$. Suppose $W_2 = 0$. Then the distribution of $W_3$ does not solely depend on $W_2$, conditionally independent of $W_1$. If $W_1 = Z_1 = +1$, then
+$$ W_3 = \max\{W_1, W_2\} + Z_3 = \max\{1, 0\} + Z_3 = 1 + Z_3 , $$
+while if $W_1 = Z_1 = -1$, then
+$$ W_3 = \max\{W_1, W_2\} + Z_3 = \max\{-1, 0\} + Z_3 = Z_3 . $$
+:::
+::::
+
+:::: subq
 **(b)**   Defining any notation you use, state the random walk Metropolis algorithm. What is the purpose of this algorithm?
-:::
 
-::: subq
+::: myanswers
+*Solution.* The purpose of the random walk Metropolis algorithm is to approximately sample from a distribution $\pi$ on the integers $\mathcal S = \mathbb Z$.
+
+We form a Markov chain $(X_i)$ by making proposals that are accepted or rejected. From $X_i = x$ we propose a move to $y = x+1$ with probability $\frac12$ or to $y = x-1$ with probability $\frac12$. Such a proposal is accepted with probability
+$$\alpha(x, y) = \min \left\{ \frac{\pi(y)}{\pi(x)} , \, 1 \right\} . $$
+An acceptance means $X_{i+1} = y$, while a rejection means $X_{i+1} = x$. This is repeated $n$ times.
+:::
+::::
+
+:::: subq
 **(c)**   Use the Metropolis--Hastings algorithm to define a Markov chain $(X_n)$ on $\mathcal S = \{0, 1, 2, \dots \}$ whose stationary distribution is the Poisson distribution $\pi(x) = \mathrm{e}^{-\lambda} \lambda^x/x!$.
-:::
 
-::: subq
-**(d)**   Let $(X_i)$ be a Markov chain with values in $\mathbb R$ and stationary distribution $\pi$. Consider the estimator $$\widehat{\theta}_n^{\mathrm{MCMC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i)  $$ for $\theta = \operatorname{\mathbb E}(\phi(X))$ for $X$ having PDF $\pi$. Assuming $X_1$ has PDF $\pi$, derive the result $$ \operatorname{Var} \big(\widehat{\theta}_n^{\mathrm{MCMC}}\big) \approx \frac{\operatorname{Var}(\phi(X))}{n} \left(1 + 2 \sum_{i=2}^\infty \operatorname{Corr}\big(\phi(X_1),\phi(X_i)\big) \right) . $$
-:::
-:::::::
+::: myanswers
+*Solutions.* Proposals are made as in part (b) above. The acceptance probability for an "up" move is
+\begin{align*}
+\alpha(x, x+1) &= \min \left\{ \frac{\pi(x+1)}{\pi(x)} , \, 1 \right\} \\
+&= \min \left\{ \frac{\mathrm{e}^{-\lambda} \lambda^{x+1}/(x+1)! }{\mathrm{e}^{-\lambda} \lambda^{x}/x!} , \, 1 \right\} \\
+&= \min \left\{ \frac{\lambda}{x+1} , \, 1 \right\} .
+\end{align*}
+The acceptance probability for a "down" move is
+\begin{align*}
+\alpha(x, x-1) &= \min \left\{ \frac{\pi(x-1)}{\pi(x)} , \, 1 \right\} \\
+&= \min \left\{ \frac{\mathrm{e}^{-\lambda} \lambda^{x-1}/(x-1)! }{\mathrm{e}^{-\lambda} \lambda^{x}/x!} , \, 1 \right\} \\
+&= \min \left\{ \frac{x}{\lambda} , \, 1 \right\} .
+\end{align*}
+for $x > 0$, or $\alpha(0, -1) = 0$.
 
-::::::::: myq
+The starting point should be a non-negative integer; the nearest integer to $\lambda$ is a good choice.
+:::
+::::
+
+:::: subq
+**(d)**   Let $(X_i)$ be a Markov chain with values in $\mathbb R$ and stationary distribution $\pi$. Consider the estimator $$\widehat{\theta}_n^{\mathrm{MCMC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i)  $$ for $\theta = \operatorname{\mathbb E}(\phi(X))$ for $X$ having PDF $\pi$. Assuming $X_1$ has PDF $\pi$, derive the result $$ \operatorname{Var} \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i)\right) \approx \frac{\operatorname{Var}(\phi(X))}{n} \left(1 + 2 \sum_{i=2}^\infty \operatorname{Corr}\big(\phi(X_1),\phi(X_i)\big) \right) . $$
+
+::: myanswers
+*Solution.* We have
+$$ \operatorname{Var} \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i) \right) = \frac{1}{n^2} \left( \sum_{i=1}^n\operatorname{Var}\big(\phi(X_i)\big) + 2 \sum_{i < j} \operatorname{Cov}\big(\phi(X_i),\phi(X_j)\big) \right) . $$
+
+Write $\operatorname{Var}(\phi(X)) = \sigma^2$. Suppose, seeking an approximation, that the Markov chain was started in equilibrium, so with $X_1$ distributed according to $\pi$. Since $\pi$ is a stationary distribution, we then have all $X_i$ distributed according to $\pi$. Then $\operatorname{Var}(\phi(X_i)) = \sigma^2$ for all $i$ and 
+$$ \operatorname{Cov}\big(\phi(X_i),\phi(X_j)\big) = \rho(j-i) \, \sigma^2, $$ where $\rho(k) = \operatorname{Corr}(X_1, X_{k+1})$ is the autocorrelation at lag $k$. We then have
+\begin{align*}
+\operatorname{Var} \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i) \right) &\approx \frac{1}{n^2} \left( n \sigma^2 + 2 \sum_{i < j} \rho(j - i) \sigma^2 \right) \\
+&= \frac{\sigma^2}{n^2} \left(n + 2 \sum_{j=1}^n \sum_{k=1}^{n-j} \rho(k) \right)
+\end{align*}
+We can approximate $\sum_{k=1}^{n-j} \rho(k)$ by $\sum_{k=1}^{\infty} \rho(k)$, since $n$ is large and the autocorrelation should decay quickly for a well-designed Markov chain. Hence
+\begin{align*}
+\operatorname{Var} \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i) \right) &\approx \frac{\sigma^2}{n^2} \left(n + 2 \sum_{j=1}^n \sum_{k=1}^{\infty} \rho(k) \right) \\
+&= \frac{\sigma^2}{n^2} \left(n + 2 n \sum_{k=1}^{\infty} \rho(k) \right) \\
+&= \frac{\sigma^2}{n} \left(1 + 2 \sum_{k=1}^{\infty} \rho(k) \right) .
+\end{align*}
+This is equivalent to the stated result.
+:::
+::::
+:::::
+
+::::: myq
 **4.**     Let $\mathbf X = (X_1, \dots, X_n)$ be IID samples from a random variable $X$ with cumulative distribution function $F$. Let $F^*$ be the empirical cumulative distribution function of the samples $\mathbf X$.
 
 :::: subq
@@ -193,9 +253,9 @@ So we need to find that covariance. In particular, we have $$\operatorname{\math
 Hence we have $$ \operatorname{Cov}\big(F^*(y), F^*(x)\big) = \frac{1}{n} \big(F(x) - F(x)F(y)\big) = \frac{1}{n}\,F(x) \big(1 - F(y)\big) . $$
 :::
 ::::
-:::::::::
+:::::
 
-::::::::: myq
+::::: myq
 **5.**     A random variable $X$ has bounded support, and a statistician wishes to estimate $\theta = \max X$, the maximum value $X$ can take. The statistician has access to 24 IID samples $X_1, X_2, \dots, X_{24}$ from this random variable which can be read into R as follows:
 
 ```{r}
@@ -255,4 +315,4 @@ plugin - bias
 ```
 :::
 ::::
-:::::::::
+::::::

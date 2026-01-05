@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; Uses of Monte Carlo – MATH5835M Statistical Computing</title>
+<title>22&nbsp; MCMC error – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L03-mc-error-1.html" rel="next">
-<link href="../lectures/L01-mc-intro.html" rel="prev">
+<link href="../lectures/L23-bayes.html" rel="next">
+<link href="../problems/P4.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L02-mc-uses.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L22-mcmc-error.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -196,7 +196,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span></a>
   </div>
 </li>
@@ -362,7 +362,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L22-mcmc-error.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L22-mcmc-error.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></span></a>
   </div>
 </li>
@@ -437,8 +437,9 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#monte-carlo-for-probabilities" id="toc-monte-carlo-for-probabilities" class="nav-link active" data-scroll-target="#monte-carlo-for-probabilities"><span class="header-section-number">2.1</span> Monte Carlo for probabilities</a></li>
-  <li><a href="#monte-carlo-for-integrals" id="toc-monte-carlo-for-integrals" class="nav-link" data-scroll-target="#monte-carlo-for-integrals"><span class="header-section-number">2.2</span> Monte Carlo for integrals</a></li>
+  <li><a href="#bias-for-mcmc" id="toc-bias-for-mcmc" class="nav-link active" data-scroll-target="#bias-for-mcmc"><span class="header-section-number">22.1</span> Bias for MCMC</a></li>
+  <li><a href="#variance-for-mcmc" id="toc-variance-for-mcmc" class="nav-link" data-scroll-target="#variance-for-mcmc"><span class="header-section-number">22.2</span> Variance for MCMC</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">22.3</span> Example</a></li>
   </ul>
 </nav>
     </div>
@@ -454,9 +455,9 @@ window.Quarto = {
 \newcommand{\ee}{\mathrm{e}} \]</span></p>
 </div>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L02-mc-uses.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L17-markov-intro.html">MCMC</a></li><li class="breadcrumb-item"><a href="../lectures/L22-mcmc-error.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></h1>
+<h1 class="title"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">MCMC error</span></h1>
 </div>
 
 
@@ -476,151 +477,127 @@ window.Quarto = {
 <div class="hidden">
 <p><span class="math display">\[ \]</span></p>
 </div>
-<p>Quick recap: Last time we defined the Monte Carlo estimator for an expectation of a function of a random variable <span class="math inline">\(\theta = \Exg \phi(X)\)</span> to be <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are independent random samples from <span class="math inline">\(X\)</span>.</p>
-<p>Today we look at two other things we can estimate using Monte Carlo simulation: probabilities, and integrals.</p>
-<section id="monte-carlo-for-probabilities" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="monte-carlo-for-probabilities"><span class="header-section-number">2.1</span> Monte Carlo for probabilities</h2>
-<p>What if we want to find a <em>probability</em>, rather than an expectation? What if we want <span class="math inline">\(\mathbb P(X = x)\)</span> for some <span class="math inline">\(x\)</span>, or <span class="math inline">\(\mathbb P(X \geq a)\)</span> for some <span class="math inline">\(a\)</span>, or, more generally, <span class="math inline">\(\mathbb P(X \in A)\)</span> for some set <span class="math inline">\(A\)</span>?</p>
-<p>The key thing that will help us here is the <em>indicator function</em>. The indicator function simply tells us whether an outcome <span class="math inline">\(x\)</span> is in a set <span class="math inline">\(A\)</span> or not.</p>
-<div id="def-indicator" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.1</strong></span> Let <span class="math inline">\(A\)</span> be a set. Then the <strong>indicator function</strong> <span class="math inline">\(\Ind_A\)</span> is defined by <span class="math display">\[ \Ind_A(x) = \begin{cases} 1 &amp; \text{if $x \in A$} \\ 0 &amp; \text{if $x \notin A$.} \end{cases} \]</span></p>
-</div>
-<p>The set <span class="math inline">\(A\)</span> could just be a single element <span class="math inline">\(A = \{y\}\)</span>. In that case <span class="math inline">\(\Ind_A(x)\)</span> is 1 if <span class="math inline">\(x = y\)</span> and 0 if <span class="math inline">\(x \neq y\)</span>. Or <span class="math inline">\(A\)</span> could be a semi-infinite interval, like <span class="math inline">\(A = [a, \infty)\)</span>. In that case <span class="math inline">\(\Ind_A(x)\)</span> is 1 if <span class="math inline">\(x \geq a\)</span> and 0 if <span class="math inline">\(x &lt; a\)</span>.</p>
-<p>Why is this helpful? Well <span class="math inline">\(\Ind_A\)</span> is a function, so let’s think about what the expectation <span class="math inline">\(\Exg \Ind_A(X)\)</span> would be for some random variable <span class="math inline">\(X\)</span>. Since <span class="math inline">\(\Ind_A\)</span> can only take two values, 0 and 1, we have <span class="math display">\[\begin{align*}
-\Exg \Ind_A(X) &amp;= \sum_{y \in\{0,1\}} y\,\mathbb P\big( \Ind_A(X) = y \big) \\\
-  &amp;= 0 \times \mathbb P\big( \Ind_A(X) = 0 \big) + 1 \times \mathbb P\big( \Ind_A(X) = 1 \big) \\
-  &amp;= 0 \times \mathbb P(X \notin A) + 1 \times \mathbb P(X \in A) \\
-  &amp;= \mathbb P(X \in A) .
-\end{align*}\]</span> P(X A) . \end{align*} In line three, we used that <span class="math inline">\(\Ind_A(X) = 0\)</span> if and only if <span class="math inline">\(X \notin A\)</span>, and that <span class="math inline">\(\Ind_A(X) = 1\)</span> if and only if <span class="math inline">\(X \in A\)</span>.</p>
-<p>So the expectation of an indicator function a set is the probability that <span class="math inline">\(X\)</span> is in that set. This idea connects “expectations of functions” back to probabilities: if we want to find <span class="math inline">\(\mathbb P(X \in A)\)</span> we can find the expectation of <span class="math inline">\(\Ind_A(X)\)</span>.</p>
-<p>With this idea in hand, how do we estimate <span class="math inline">\(\theta = \mathbb P(X \in A)\)</span> using the Monte Carlo method? We write <span class="math inline">\(\theta = \Exg\Ind_A(X)\)</span>. Then our Monte Carlo estimator is <span class="math display">\[  \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \Ind_A(X_i) . \]</span></p>
-<p>We remember that <span class="math inline">\(\Ind_A(X_i)\)</span> is 1 if <span class="math inline">\(X_i \in A\)</span> and 0 otherwise. So if we add up <span class="math inline">\(n\)</span> of these, we count an extra +1 each time we have an <span class="math inline">\(X_i \in A\)</span>. So <span class="math inline">\(\sum_{i=1}^n \Ind_A(X_i)\)</span> counts the total number of the <span class="math inline">\(X_i\)</span> that are in <span class="math inline">\(A\)</span>. So the Monte Carlo estimator can be written as <span class="math display">\[  \widehat{\theta}_n^{\mathrm{MC}} = \frac{\# \text{ of } X_i \text{ that are in $A$}}{n} . \]</span> (I’m using <span class="math inline">\(\#\)</span> as shorthand for “the number of”.)</p>
-<p>Although we’ve had to do a bit of work to get here, this a totally logical outcome! The right-hand side here is the proportion of the samples for which <span class="math inline">\(X_i \in A\)</span>. And if we want to estimate the probability something happens, looking at the proportion of times it happens in a random sample is very much the “intuitive” estimate to take. And that intuitive estimate is indeed the Monte Carlo estimate!</p>
-<div id="exm-MCprob" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.1</strong></span> <em>Let</em> <span class="math inline">\(Z \sim \operatorname{N}(0,1)\)</span> <em>be a standard normal distribution. Estimate</em> <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span><em>.</em></p>
-<p>This is a question that it is impossible to answer exactly using a pencil and paper: there’s no closed form for <span class="math display">\[ \mathbb P(Z &gt; 2) = \int_2^\infty \frac{1}{\sqrt{2\pi}}\,\mathrm{e}^{-z^2/2}\,\mathrm{d}z , \]</span> so we’ll have to use an estimation method.</p>
-<p>The Monte Carlo estimate means taking a random sample <span class="math inline">\(Z_1, Z_2, \dots, Z_n\)</span> of standard normals, and calculating what proportion of them are greater than 2. In R, we can do this as follows.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022873</code></pre>
-</div>
-</div>
-<p>In the second line, we could have written <code>rnorm(n, 0, 1)</code>. But, if you don’t give the parameters <code>mean</code> and <code>sd</code> to the function <code>rnorm()</code>, R just assumes you want the standard normal with <code>mean = 0</code> and <code>sd = 1</code>.</p>
-<p>We can check our answer: R’s inbuilt <code>pnorm()</code> function estimates probabilities for the normal distribution (using a method that, in this specific case, is much quicker and more accurate than Monte Carlo estimation). The true answer is very close to</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">2</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.02275013</code></pre>
-</div>
-</div>
-<p>so our estimate was pretty good.</p>
-</div>
-<p>We should explain the third line in the code we used for the Monte Carlo estimation <code>mean(samples &gt; 2)</code>. In R, some statements can be answered “true” or “false”: these are often statements involving equality <code>==</code> (that’s a <em>double</em> equals sign) or inequalities like <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&gt;</code>, for example. So <code>5 &gt; 2</code> is <code>TRUE</code> but <code>3 == 7</code> is <code>FALSE</code>. These can be applied “component by component” to vectors. So, for example, testing which numbers from 1 to 10 are greater than or equal to 7, we get</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">&gt;=</span> <span class="dv">7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE</code></pre>
-</div>
-</div>
-<p>six <code>FALSE</code>s (for 1 to 6) followed by four <code>TRUE</code>s (for 7 to 10).</p>
-<p>We can also use <code>&amp;</code> (“and”) and <code>|</code> (“or”) in true/false statements like these.</p>
-<p>But R also knows to treat <code>TRUE</code> like the number 1 and <code>FALSE</code> like the number 0. (This is just like the concept of the indicator function we’ve been discussing.) So if we add up some <code>TRUE</code>s and <code>FALSE</code>s, R simply counts how many <code>TRUE</code>s there are</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">&gt;=</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4</code></pre>
-</div>
-</div>
-<p>So in our Monte Carlo estimation code, <code>samples &gt; 2</code> was a vector of <code>TRUE</code>s and <code>FALSE</code>s, depending on whether each sample was greater than 2 or not, then <code>mean(samples &gt; 2)</code> took the <em>proportion</em> of the samples that were greater than 2.</p>
+<section id="bias-for-mcmc" class="level2" data-number="22.1">
+<h2 data-number="22.1" class="anchored" data-anchor-id="bias-for-mcmc"><span class="header-section-number">22.1</span> Bias for MCMC</h2>
+<p>Back in Lectures 3 and 4 we looked at the bias, variance, mean-square error and root-mean-square error for the Monte Carlo estimator <span class="math display">\[ \widehat\theta_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) \]</span> of <span class="math inline">\(\theta = \operatorname{\mathbb E}\phi(X)\)</span> where the samples <span class="math inline">\(X_i\)</span> are IID with the same distribution as <span class="math inline">\(X\)</span>. We saw that the estimator is unbiased, and that the variance and mean-square error are <span class="math display">\[ \Var\big(\widehat\theta_n^{\mathrm{MC}}\big) = \operatorname{MSE} \big(\widehat\theta_n^{\mathrm{MC}}\big) = \frac{1}{n} \Var\big(\phi(X)\big) . \]</span></p>
+<p>We now want to find these same values where the samples <span class="math inline">\(X_i\)</span> are not IID but are the output of a Markov chain whose stationary distribution is that of <span class="math inline">\(X\)</span>. This will be harder. We saw (under certain technical conditions that we will assume hold throughout) that the <span class="math inline">\(X_i\)</span> tend to the distribution of <span class="math inline">\(X\)</span> in the limit as <span class="math inline">\(i \to \infty\)</span>. But this is not the same as saying that their distribution is exactly the same as <span class="math inline">\(X\)</span> (let alone are independent). So here we can get as far as <span class="math display">\[ \Exg \widehat\theta_n^{\mathrm{MC}} =  \Exg \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i) \right) = \frac{1}{n} \sum_{i=1}^n \Exg\phi(X_i) \]</span> (remembering that linearity of expectation does not require independence), but then we’re a bit stuck.</p>
+<p>To make progress, we will make a simplifying assumption. Suppose we picked the initial state <span class="math inline">\(X_1\)</span> according to the distribution <span class="math inline">\(\pi\)</span>. Then, since <span class="math inline">\(\pi\)</span> is a stationary distribution, <span class="math inline">\(X_2\)</span> is distributed according to <span class="math inline">\(\pi\)</span> too. And <span class="math inline">\(X_3\)</span>, and <span class="math inline">\(X_4\)</span>, and so on. And <span class="math inline">\(\pi\)</span> itself is the distribution for <span class="math inline">\(X\)</span>. So, if we started from the stationary distribution – or “in equilibrium” – then we have <span class="math display">\[  \Exg \widehat\theta_n^{\mathrm{MC}} =  \Exg \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i) \right) = \frac{1}{n} \sum_{i=1}^n \Exg\phi(X_i) = \frac{1}{n}\,n\Exg\phi(X) = \Exg\phi(X) ,\]</span> and our estimator is unbiased.</p>
+<p>Of course, in real life, it is highly unlikely that we are able to sample the initial state from <span class="math inline">\(\pi\)</span>. After all, if we could do that, we could presumably sample all the <span class="math inline">\(X_i\)</span> from <span class="math inline">\(\pi\)</span> independently, as just use the basic Monte Carlo estimator instead. However, if we have used a burn-in period of appropriate length, we hope that by the time we take the first sample “that counts”, after the burn-in period, that will be very close to the stationary distribution, and hence we will have <span class="math display">\[  \Exg \widehat\theta_n^{\mathrm{MC}} \approx \Exg\phi(X) ,\]</span> and our estimator will be approximately unbiased.</p>
 </section>
-<section id="monte-carlo-for-integrals" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="monte-carlo-for-integrals"><span class="header-section-number">2.2</span> Monte Carlo for integrals</h2>
-<p>There’s another thing – a non-statistics thing – that Monte Carlo estimation is useful for. We can use Monte Carlo estimation to approximate integrals that are too hard to do by hand.</p>
-<p>This might seem surprising. Estimating the expectation of (a function of) a random variable seems a naturally statistical thing to do. But an integral is just a straight maths problem – there’s not any randomness at all. But actually, integrals and expectations are very similar things.</p>
-<p>Let’s think of an integral: say, <span class="math display">\[ \int_a^b h(x) \,\mathrm{d}x ,\]</span> the integral of some function <span class="math inline">\(h\)</span> (the “integrand”) between the limits <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. Now let’s compare that to the integral <span class="math inline">\(\Exg \phi(X)\)</span> of a continuous random variable that we can estimate using Monte Carlo estimation, <span class="math display">\[ \Exg \phi(X) = \int_{-\infty}^\infty \phi(x)\,f(x)\, \mathrm{d} x. \]</span> Matching things up, we can see that we if we were to a function <span class="math inline">\(\phi\)</span> and a PDF <span class="math inline">\(f\)</span> such that <span id="eq-match"><span class="math display">\[ \phi(x)\,f(x) = \begin{cases} 0 &amp; x &lt; a \\ h(x) &amp; a \leq x \leq b \\ 0 &amp; x &gt; b , \end{cases}  \tag{2.1}\]</span></span> then we would have <span class="math display">\[ \Exg \phi(X) = \int_{-\infty}^\infty \phi(x)\,f(x)\, \mathrm{d} x = \int_a^b h(x) \,\mathrm{d}x, \]</span> so the value of the expectation would be precisely the value of the integral we’re after. Then we could use Monte Carlo to estimate that expectation/integral.</p>
-<p>There are lots of choices of <span class="math inline">\(\phi\)</span> and <span class="math inline">\(f\)</span> that would satisfy this the condition in <a href="#eq-match" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-match</span></a>. But a “common-sense” choice that often works is to pick <span class="math inline">\(f\)</span> to be the PDF of <span class="math inline">\(X\)</span>, a continuous uniform distribution on the interval <span class="math inline">\([a,b]\)</span>. (This certainly works when <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are finite, anyway.) Recall that the continuous uniform distribution means that <span class="math inline">\(X\)</span> has PDF <span class="math display">\[ f(x) = \begin{cases} 0 &amp; x &lt; a \\ \displaystyle{\frac{1}{b-a}} &amp; a \leq x \leq b \\ 0 &amp; x &gt; b . \end{cases} \]</span> Comparing this equation with <a href="#eq-match" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-match</span></a>, we then have to choose <span class="math display">\[\phi(x) = \frac{h(x)}{f(x)} = (b-a)h(x).\]</span></p>
-<p>Putting this all together, we have <span class="math display">\[ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x = \int_a^b (b-a)h(x)\,\frac{1}{b-a}\,\mathrm{d}x = \int_a^b h(x) \,\mathrm{d}x ,\]</span> as required. This can then be estimated using the Monte Carlo method.</p>
-<div id="def-MCint" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.2</strong></span> Consider an integral <span class="math inline">\(\theta = \int_a^b h(x)\,\mathrm{d}x\)</span>. Let <span class="math inline">\(f\)</span> be the probability density function of a random variable <span class="math inline">\(X\)</span> and let <span class="math inline">\(\phi\)</span> be function such that <a href="#eq-match" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-match</span></a> holds. Then the <strong>Monte Carlo estimator</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{MC}}\)</span> of the integral <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are a random sample from <span class="math inline">\(X\)</span>.</p>
+<section id="variance-for-mcmc" class="level2" data-number="22.2">
+<h2 data-number="22.2" class="anchored" data-anchor-id="variance-for-mcmc"><span class="header-section-number">22.2</span> Variance for MCMC</h2>
+<p>What about the variance of the MCMC estimator. Unlike the basic IID Monte Carlo case, we can no longer say <span class="math display">\[  \Var \big( \widehat\theta_n^{\mathrm{MC}}\big) =  \Var \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i) \right) = \frac{1}{n^2} \sum_{i=1}^n \Var\big(\phi(X_i)\big),\]</span> because the samples from a Markov chain are not independent (although we have limited their dependence structure).</p>
+<p>Instead, we have to include the “cross” covariance terms: <span class="math display">\[  \Var \big( \widehat\theta_n^{\mathrm{MC}}\big) =  \Var \left(\frac{1}{n} \sum_{i=1}^n \phi(X_i) \right) = \frac{1}{n^2} \left(\sum_{i=1}^n \Var\big(\phi(X_i)\big) + 2 \sum_{i &lt; j} \Cov\big(\phi(X_i), \phi(X_j)\big) \right) .\]</span></p>
+<p>Again, we grind to a halt as far as exact results are concerned. But we can again invoke our simplifying assumption that <span class="math inline">\(X_1\)</span> was chosen from <span class="math inline">\(\pi\)</span>, and that we are in equilibrium. Then the variance terms are all <span class="math inline">\(\Var(\phi(X_i)) = \Var(\phi(X))\)</span>, which I shall call <span class="math inline">\(\sigma^2\)</span>. What about the covariance terms? Well, if the Markov chain is stationary, then <span class="math inline">\(\Cov(\phi(X_i), \phi(X_j))\)</span> only depends on how many steps apart <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> are. In equilibrium, <span class="math inline">\(\Cov(\phi(X_1), \phi(X_7))\)</span> is the same as <span class="math inline">\(\Cov(\phi(X_2), \phi(X_8))\)</span> or <span class="math inline">\(\Cov(\phi(X_{101}), \phi(X_{107}))\)</span>: these all represent the covariance between one state chosen according to <span class="math inline">\(\pi\)</span> and the state <span class="math inline">\(k = 7 - 1 = 6\)</span> steps later.</p>
+<p>So here we can write <span class="math display">\[ \Cov\big(\phi(X_i), \phi(X_j)\big) = \gamma(j - i) = \gamma(k) \]</span> where <span class="math inline">\(k = j - i\)</span> is the number of steps between <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. Students who have studied time series will know that <span class="math inline">\(\gamma(k)\)</span> is called the <strong>autocovariance</strong> at <strong>lag</strong> <span class="math inline">\(k\)</span>. (The prefix “auto-” mean “self-”, and “lag” means something like a delay.)</p>
+<p>(The tempting hope that we might have <span class="math inline">\(\gamma(k) = 0\)</span> for <span class="math inline">\(k \geq 2\)</span> is not true. [EXPLAIN])</p>
+<p>So now, in equilibrium, we have <span class="math display">\[\begin{align}
+\Var \big( \widehat\theta_n^{\mathrm{MC}}\big)
+&amp;=  \frac{1}{n^2} \left(\sum_{i=1}^n \Var\big(\phi(X_i)\big) + 2 \sum_{i &lt; j} \Cov\big(\phi(X_i), \phi(X_j)\big) \right) \\
+&amp;= \frac{1}{n^2} \left(\sum_{i=1}^n \sigma^2 + 2 \sum_{i &lt; j} \gamma(j - i) \right) \\
+&amp;=  \frac{1}{n^2} \left(n\sigma^2 + 2 \sum_{i &lt; j} \gamma(j - i) \right)
+\end{align}\]</span></p>
+<p>When we studied antithetic variables, we found it more convenient to work with the correlation <span class="math display">\[ \operatorname{Corr}\big(\phi(X_i),\phi(X_j)\big) = \frac{\operatorname{Cov}\big(\phi(X_i),\phi(X_j)\big)}{\sqrt{\operatorname{Var}\big(\phi(X_i)\big)\operatorname{Var}\big(\phi(X_i)\big)}} . \]</span> In equilibrium, this is <span class="math display">\[ \rho(j - i) = \operatorname{Corr}\big(\phi(X_i),\phi(X_j)\big) = \frac{\gamma(j-i)}{\sqrt{\sigma^2\,\sigma^2}} = \frac{\gamma(j-i)}{\sigma^2}, \]</span> where <span class="math inline">\(\rho(k)\)</span> is called the <strong>autocorrelation</strong> at lag <span class="math inline">\(k\)</span>.</p>
+<p>So now we have <span class="math display">\[\begin{align}
+\Var \big( \widehat\theta_n^{\mathrm{MC}}\big)
+&amp;=  \frac{1}{n^2} \left(n\sigma^2 + 2 \sum_{i &lt; j} \gamma(j - i) \right) \\
+&amp;= \frac{1}{n}\,\sigma^2 + \frac{2}{n^2} \sum_{i &lt; j} \rho(j - i) \,\sigma^2 \\
+&amp;= \frac{\sigma^2}{n} \left(1 + \frac{2}{n} \sum_{i=1}^n \sum_{j = i+1}^n \rho(j - i) \right) \\
+&amp;= \frac{\sigma^2}{n} \left(1 + \frac{2}{n} \sum_{i=1}^n \sum_{k = 1}^{n-i} \rho(k) \right) .
+\end{align}\]</span></p>
+<p>We know from the limit theorem that, as <span class="math inline">\(n \to \infty\)</span>, a Markov chain tends to its stationary distribution regardless of what state it started from – it’s as if the Markov chain forgets where it starts from. Therefore we know that the autocorrelation <span class="math inline">\(\rho(k)\)</span> tends to 0 as <span class="math inline">\(k \to \infty\)</span>. So, provided that the number of samples <span class="math inline">\(n\)</span> is large, there usually very little loss from approximating <span class="math inline">\(\sum_{k = 1}^{n-i} \rho(k)\)</span> by <span class="math inline">\(\sum_{k = 1}^{\infty} \rho(k)\)</span>, because the extra autocorrelations we’ve added in will all be very small.</p>
+<p>Finally, we get the result <span class="math display">\[\begin{align}
+\Var \big( \widehat\theta_n^{\mathrm{MC}}\big)
+&amp;= \frac{\sigma^2}{n} \left(1 +  \frac{2}{n} \sum_{i=1}^n \sum_{k = 1}^{n-i} \rho(k) \right) \\
+&amp;\approx \frac{\sigma^2}{n} \left(1 + \frac{2}{n} \sum_{i=1}^n \sum_{k = 1}^{\infty} \rho(k) \right) \\
+&amp;= \frac{\sigma^2}{n} \left(1 + \frac{2}{n}\,n \sum_{k = 1}^{\infty} \rho(k) \right) \\
+&amp;= \frac{\sigma^2}{n} \left(1 + 2 \sum_{k = 1}^{\infty} \rho(k) \right) .
+\end{align}\]</span></p>
+<p>In conclusion, we have the following.</p>
+<div id="thm-mcmc-err" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 22.1</strong></span> Let <span class="math inline">\((X_i)\)</span> be a Markov chain started in its stationary distribution <span class="math inline">\(\pi\)</span>, and let <span class="math inline">\(X\)</span> have distribution <span class="math inline">\(\pi\)</span> also. Consider <span class="math inline">\(\theta = \Exg\phi(X)\)</span> and its MCMC estimator <span class="math display">\[ \widehat\theta_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) .\]</span> Then, writing <span class="math inline">\(\sigma^2 = \Var(\phi(X))\)</span>, we have the following:</p>
+<ul>
+<li><p><span class="math inline">\(\widehat\theta_n^{\mathrm{MC}}\)</span> is unbiased, in that <span class="math inline">\(\Exg \widehat\theta_n^{\mathrm{MC}} = \theta\)</span>.</p></li>
+<li><p>The variance of <span class="math inline">\(\widehat\theta_n^{\mathrm{MC}}\)</span> is approximately <span class="math display">\[ \Var \big( \widehat\theta_n^{\mathrm{MC}}\big) \approx \frac{\sigma^2}{n} \left(1 + 2 \sum_{k = 1}^{\infty} \rho(k) \right) . \]</span></p></li>
+<li><p>The mean-square error of <span class="math inline">\(\widehat\theta_n^{\mathrm{MC}}\)</span> is approximately <span class="math display">\[ \operatorname{MSE} \big( \widehat\theta_n^{\mathrm{MC}}\big) \approx \frac{\sigma^2}{n} \left(1 + 2 \sum_{k = 1}^{\infty} \rho(k) \right) . \]</span></p></li>
+<li><p>The root-mean-square error of <span class="math inline">\(\widehat\theta_n^{\mathrm{MC}}\)</span> is approximately <span class="math display">\[ \operatorname{RMSE} \big( \widehat\theta_n^{\mathrm{MC}}\big) \approx \frac{\sigma}{\sqrt{n}} \sqrt{1 + 2 \sum_{k = 1}^{\infty} \rho(k) } . \]</span></p></li>
+</ul>
 </div>
-<div id="exm-MCint" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.2</strong></span> Suppose we want to approximate the integral <span class="math display">\[ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x . \]</span></p>
-<p>Since this is an integral on the finite interval <span class="math inline">\([0,2]\)</span>, it would seem to make sense to pick <span class="math inline">\(X\)</span> to be uniform on <span class="math inline">\([0,2]\)</span>. This means we should take <span class="math display">\[\phi(x) = \frac{h(x)}{f(x)} = (2-0)h(x) = 2\,x^{1.6}(2-x)^{0.7}.\]</span> We can then approximate this integral in R using the Monte Carlo estimator <span class="math display">\[ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x = \operatorname{\mathbb{E}} \phi(X) \approx \frac{1}{n} \sum_{i=1}^n 2\,X_i^{1.6} (2-X_i)^{0.7} . \]</span></p>
+<p>Compared to the standard Monte Carlo variance <span class="math inline">\(\Var (\widehat\theta_n^{\mathrm{MC}}) = \sigma^2/n\)</span> we have the extra term <span class="math inline">\(2 \sum_{k = 1}^{\infty} \rho(k)\)</span>. While it would be nice for the autocorrelation to be negative, to give us an improvement (like with antithetical variables), this almost never happens with Markov chains, which almost always have positive autocorrelation. Instead, we get the best results when the autocorrelation <span class="math inline">\(\rho(k)\)</span> dies away to 0 as quickly as possible, and get poor results when the autocorrelation only decays to 0 very slowly.</p>
+</section>
+<section id="example" class="level2" data-number="22.3">
+<h2 data-number="22.3" class="anchored" data-anchor-id="example"><span class="header-section-number">22.3</span> Example</h2>
+<p>Last time, we used the random walk Metropolis in continuous space to sample from the <span class="math inline">\(\operatorname{Exp}(0.1)\)</span> distribution. Let’s try some different typical step sizes <span class="math inline">\(\sigma = 2, 15, 400\)</span>. Let’s use these Markov chains to estimate <span class="math inline">\(\mathbb EX\)</span> (which we know is 10), and examine the error in these estimators.</p>
+<p>The function we used last time was this.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="fl">1.6</span> <span class="sc">*</span> (<span class="dv">2</span> <span class="sc">-</span> x)<span class="sc">^</span><span class="fl">0.7</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, a, b)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>((b <span class="sc">-</span> a) <span class="sc">*</span> <span class="fu">integrand</span>(samples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.443793</code></pre>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>metroexp <span class="ot">&lt;-</span> <span class="cf">function</span>(n, rate, sigma, initial) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  MC <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  accept <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) <span class="fu">exp</span>(<span class="sc">-</span>rate <span class="sc">*</span> (y <span class="sc">-</span> x))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  MC[<span class="dv">1</span>] <span class="ot">&lt;-</span> initial</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    prop <span class="ot">&lt;-</span> MC[i] <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="dv">0</span>, sigma)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (prop <span class="sc">&lt;</span> <span class="dv">0</span>)  MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;=</span> <span class="fu">accept</span>(MC[i], prop)) MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> prop</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> MC[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> MC[i]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(MC)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>You have perhaps noticed that, here and elsewhere, I tend to split my R code up into lots of small bits, perhaps slightly unnecessarily. After all, those 6 lines of code could simply have been written as just 2 lines</p>
+<p>We can plot the autocorrelation <span class="math inline">\(\rho(k)\)</span> against the lag <span class="math inline">\(k\)</span> in R using the <code>acf()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fl">1e6</span>, <span class="dv">0</span>, <span class="dv">2</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="dv">2</span> <span class="sc">*</span> samples<span class="sc">^</span><span class="fl">1.6</span> <span class="sc">*</span> (<span class="dv">2</span> <span class="sc">-</span> samples)<span class="sc">^</span><span class="fl">0.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>There’s nothing <em>wrong</em> with that. However, I find that code is easier to read if divided into small pieces. It also makes it easier to tinker with, if I want to use it to solve some similar but slightly different problem.</p>
-</div>
-<div id="exm-MCint2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.3</strong></span> Suppose we want to approximate the integral <span class="math display">\[ \int_{-\infty}^{+\infty}
-\mathrm{e}^{-0.1|x|} \cos x \, \mathrm{d}x . \]</span> This one is an integral on the whole real line, so we can’t take a uniform distribution. Maybe we should take <span class="math inline">\(f(x)\)</span> to be the PDF of a normal distribution, and then put <span class="math display">\[ \phi(x) = \frac{h(x)}{f(x)} = \frac{\mathrm{e}^{-0.1|x|} \cos x}{f(x)} . \]</span></p>
-<p>But which normal distribution should we take? Well, we’re <em>allowed</em> to take any one – we will still get an accurate estimate in the limit as <span class="math inline">\(n \to \infty\)</span>. But we’d like an estimator that gives accurate results at moderate-sized <span class="math inline">\(n\)</span>, and picking a “good” distribution for <span class="math inline">\(X\)</span> will help that.</p>
-<p>We’ll probably get the best results if we pick a distribution that is likely to mostly take values where <span class="math inline">\(h(x)\)</span> is big – or, rather, where the absolute value <span class="math inline">\(|h(x)|\)</span> is big, to be precise. That is because we don’t want to “waste” too many samples where <span class="math inline">\(h(x)\)</span> is very small, because they don’t contribute much to the integral. But we don’t want to “miss” – or only sample very rarely – places where <span class="math inline">\(h(x)\)</span> is big, which contribute a lot to the integral.</p>
-<p>Let’s have a look at the graph of <span class="math inline">\(h(x) = \mathrm{e}^{-0.1|x|} \cos x\)</span>.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code for drawing this graph</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">abs</span>(x)) <span class="sc">*</span> <span class="fu">cos</span>(x)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  integrand, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="sc">-</span><span class="dv">55</span>, <span class="at">to =</span> <span class="dv">55</span>,</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">3</span>,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"integrand h(x)"</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">50</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>MC_small <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="fl">1e6</span>, <span class="fl">0.1</span>, <span class="dv">2</span>, <span class="dv">0</span>) </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(MC_small, <span class="at">lag.max =</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="L02-mc-uses_files/figure-html/h-graph-1.svg" class="img-fluid figure-img" width="672"></p>
+<p><img src="L22-mcmc-error_files/figure-html/unnamed-chunk-2-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>MC_medium <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="fl">1e6</span>, <span class="fl">0.1</span>, <span class="dv">15</span>, <span class="dv">0</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(MC_medium, <span class="at">lag.max =</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L22-mcmc-error_files/figure-html/unnamed-chunk-2-2.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>MC_big <span class="ot">&lt;-</span> <span class="fu">metroexp</span>(<span class="fl">1e6</span>, <span class="fl">0.1</span>, <span class="dv">400</span>, <span class="dv">0</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(MC_big, <span class="at">lag.max =</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L22-mcmc-error_files/figure-html/unnamed-chunk-2-3.svg" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>This suggests to me that a mean of 0 and a standard deviation of 20 might work quite well, since this will tend to take values in <span class="math inline">\([-40,40]\)</span> or so.</p>
-<p>We will use R’s function <code>dnorm()</code> for the probability density function of the normal distribution (which saves us from having to remember what that is).</p>
+<p>Remember that our goal is for the autocorrelation to die away as quickly as possible. We see that the large step size and small step size have the autocorrelation decaying slowly, while the medium step size has the autocorrelation decaying much quicker. This matched with our earlier discussion. When <span class="math inline">\(\sigma\)</span> is too small, the Markov chain crawls around the state space too slowly; when <span class="math inline">\(\sigma\)</span> is too large, large proposal moves are usually rejected, leading the Markov chain to stay in place. We need <span class="math inline">\(\sigma\)</span> in the “Goldilocks” position where <span class="math inline">\(\sigma\)</span> is small enough that the moves proposed are not too outrageous, but <span class="math inline">\(\sigma\)</span> is big enough that we make good progress around the state space.</p>
+<p>This is confirmed by looking at the relevant term <span class="math inline">\(1 + 2\sum_{k=1}^\infty \rho(k)\)</span> from the variance of the MCMC estimator. Well, let’s just look at the sum of the first 1000 terms. We have</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">abs</span>(x)) <span class="sc">*</span> <span class="fu">cos</span>(x)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>pdf       <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="dv">0</span>, <span class="dv">20</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>phi       <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">integrand</span>(x) <span class="sc">/</span> <span class="fu">pdf</span>(x)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">20</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">phi</span>(samples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sum_small  <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">sum</span>(<span class="fu">acf</span>(MC_small,  <span class="at">lag.max =</span> <span class="dv">1000</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>acf) </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sum_medium <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">sum</span>(<span class="fu">acf</span>(MC_medium, <span class="at">lag.max =</span> <span class="dv">1000</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>acf)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>sum_big    <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">sum</span>(<span class="fu">acf</span>(MC_big,    <span class="at">lag.max =</span> <span class="dv">1000</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>acf)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(sum_small, sum_medium, sum_big), <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.235336</code></pre>
+<pre><code>[1] 197.7  14.7 131.1</code></pre>
 </div>
 </div>
-</div>
-<p><strong>Next time:</strong> <em>We will analyse the accuracy of these Monte Carlo estimates.</em></p>
+<p>With the small and big step sizes, we need to take over 100 samples from the Markov chain to get the equivalent of one independent sample. But with the medium step size, we are getting the equivalent of one independent sample from roughly every 15 samples of the Markov chain.</p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
-<li><p>The indicator <span class="math inline">\(\Ind_A(x)\)</span> function of a set <span class="math inline">\(A\)</span> is 1 if <span class="math inline">\(x \in A\)</span> or 0 if <span class="math inline">\(x \notin A\)</span>.</p></li>
-<li><p>We can estimate a probability <span class="math inline">\(\mathbb P(X \in A)\)</span> by using the Monte Carlo estimate for <span class="math inline">\(\Exg\Ind_A(X)\)</span>.</p></li>
-<li><p>We can estimate an integral <span class="math inline">\(\int h(x) \, \mathrm{d}x\)</span> by using a Monte Carlo estimate with <span class="math inline">\(\phi(x)\,f(x) = h(x)\)</span>.</p></li>
+<li><p>We can analyse the error in Monte Carlo estimation with the output of a Markov chain by assuming it begins “in equilibrium”.</p></li>
+<li><p>MCMC is approximately unbiased and with MSE <span class="math inline">\({\displaystyle \approx \frac{\sigma^2}{n} \left(1 + 2 \sum_{k = 1}^{\infty} \rho(k) \right)}\)</span>.</p></li>
+<li><p>We want the autocorrelation <span class="math inline">\(\rho(k)\)</span> to decay as quickly as possible.</p></li>
 </ul>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Section 3.1 and Subsection 3.2.1.</p>
+<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Subsection ?.?.?.</p>
+
+
 </div>
-
-
 </section>
 
 </main> <!-- /main -->
@@ -1043,13 +1020,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L01-mc-intro.html" class="pagination-link" aria-label="Introduction to Monte Carlo">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span>
+      <a href="../problems/P4.html" class="pagination-link" aria-label="Problem Sheet 4">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Problem Sheet 4</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L03-mc-error-1.html" class="pagination-link" aria-label="Monte Carlo error I: theory">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L23-bayes.html" class="pagination-link" aria-label="MCMC and Bayesian statistics">
+        <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">MCMC and Bayesian statistics</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

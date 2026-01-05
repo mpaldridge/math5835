@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; Uses of Monte Carlo – MATH5835M Statistical Computing</title>
+<title>25&nbsp; Plug-in estimation &amp; Bootstrap I – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L03-mc-error-1.html" rel="next">
-<link href="../lectures/L01-mc-intro.html" rel="prev">
+<link href="../lectures/L26-bootstrap-error.html" rel="next">
+<link href="../lectures/L24-empirical.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L02-mc-uses.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html">Resampling methods</a></li><li class="breadcrumb-item"><a href="../lectures/L25-plugin.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation &amp; Bootstrap I</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -196,7 +196,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span></a>
   </div>
 </li>
@@ -391,7 +391,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L25-plugin.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L25-plugin.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation &amp; Bootstrap I</span></span></a>
   </div>
 </li>
@@ -437,8 +437,9 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#monte-carlo-for-probabilities" id="toc-monte-carlo-for-probabilities" class="nav-link active" data-scroll-target="#monte-carlo-for-probabilities"><span class="header-section-number">2.1</span> Monte Carlo for probabilities</a></li>
-  <li><a href="#monte-carlo-for-integrals" id="toc-monte-carlo-for-integrals" class="nav-link" data-scroll-target="#monte-carlo-for-integrals"><span class="header-section-number">2.2</span> Monte Carlo for integrals</a></li>
+  <li><a href="#the-plug-in-principle" id="toc-the-plug-in-principle" class="nav-link active" data-scroll-target="#the-plug-in-principle"><span class="header-section-number">25.1</span> The “plug-in” principle</a></li>
+  <li><a href="#the-bootstrap-set-up" id="toc-the-bootstrap-set-up" class="nav-link" data-scroll-target="#the-bootstrap-set-up"><span class="header-section-number">25.2</span> The bootstrap set-up</a></li>
+  <li><a href="#bootstrap-for-expectation-and-variance" id="toc-bootstrap-for-expectation-and-variance" class="nav-link" data-scroll-target="#bootstrap-for-expectation-and-variance"><span class="header-section-number">25.3</span> Bootstrap for expectation and variance</a></li>
   </ul>
 </nav>
     </div>
@@ -454,9 +455,9 @@ window.Quarto = {
 \newcommand{\ee}{\mathrm{e}} \]</span></p>
 </div>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L02-mc-uses.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L24-empirical.html">Resampling methods</a></li><li class="breadcrumb-item"><a href="../lectures/L25-plugin.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation &amp; Bootstrap I</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></h1>
+<h1 class="title"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Plug-in estimation &amp; Bootstrap I</span></h1>
 </div>
 
 
@@ -473,152 +474,140 @@ window.Quarto = {
 </header>
 
 
-<div class="hidden">
-<p><span class="math display">\[ \]</span></p>
-</div>
-<p>Quick recap: Last time we defined the Monte Carlo estimator for an expectation of a function of a random variable <span class="math inline">\(\theta = \Exg \phi(X)\)</span> to be <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are independent random samples from <span class="math inline">\(X\)</span>.</p>
-<p>Today we look at two other things we can estimate using Monte Carlo simulation: probabilities, and integrals.</p>
-<section id="monte-carlo-for-probabilities" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="monte-carlo-for-probabilities"><span class="header-section-number">2.1</span> Monte Carlo for probabilities</h2>
-<p>What if we want to find a <em>probability</em>, rather than an expectation? What if we want <span class="math inline">\(\mathbb P(X = x)\)</span> for some <span class="math inline">\(x\)</span>, or <span class="math inline">\(\mathbb P(X \geq a)\)</span> for some <span class="math inline">\(a\)</span>, or, more generally, <span class="math inline">\(\mathbb P(X \in A)\)</span> for some set <span class="math inline">\(A\)</span>?</p>
-<p>The key thing that will help us here is the <em>indicator function</em>. The indicator function simply tells us whether an outcome <span class="math inline">\(x\)</span> is in a set <span class="math inline">\(A\)</span> or not.</p>
-<div id="def-indicator" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.1</strong></span> Let <span class="math inline">\(A\)</span> be a set. Then the <strong>indicator function</strong> <span class="math inline">\(\Ind_A\)</span> is defined by <span class="math display">\[ \Ind_A(x) = \begin{cases} 1 &amp; \text{if $x \in A$} \\ 0 &amp; \text{if $x \notin A$.} \end{cases} \]</span></p>
-</div>
-<p>The set <span class="math inline">\(A\)</span> could just be a single element <span class="math inline">\(A = \{y\}\)</span>. In that case <span class="math inline">\(\Ind_A(x)\)</span> is 1 if <span class="math inline">\(x = y\)</span> and 0 if <span class="math inline">\(x \neq y\)</span>. Or <span class="math inline">\(A\)</span> could be a semi-infinite interval, like <span class="math inline">\(A = [a, \infty)\)</span>. In that case <span class="math inline">\(\Ind_A(x)\)</span> is 1 if <span class="math inline">\(x \geq a\)</span> and 0 if <span class="math inline">\(x &lt; a\)</span>.</p>
-<p>Why is this helpful? Well <span class="math inline">\(\Ind_A\)</span> is a function, so let’s think about what the expectation <span class="math inline">\(\Exg \Ind_A(X)\)</span> would be for some random variable <span class="math inline">\(X\)</span>. Since <span class="math inline">\(\Ind_A\)</span> can only take two values, 0 and 1, we have <span class="math display">\[\begin{align*}
-\Exg \Ind_A(X) &amp;= \sum_{y \in\{0,1\}} y\,\mathbb P\big( \Ind_A(X) = y \big) \\\
-  &amp;= 0 \times \mathbb P\big( \Ind_A(X) = 0 \big) + 1 \times \mathbb P\big( \Ind_A(X) = 1 \big) \\
-  &amp;= 0 \times \mathbb P(X \notin A) + 1 \times \mathbb P(X \in A) \\
-  &amp;= \mathbb P(X \in A) .
-\end{align*}\]</span> P(X A) . \end{align*} In line three, we used that <span class="math inline">\(\Ind_A(X) = 0\)</span> if and only if <span class="math inline">\(X \notin A\)</span>, and that <span class="math inline">\(\Ind_A(X) = 1\)</span> if and only if <span class="math inline">\(X \in A\)</span>.</p>
-<p>So the expectation of an indicator function a set is the probability that <span class="math inline">\(X\)</span> is in that set. This idea connects “expectations of functions” back to probabilities: if we want to find <span class="math inline">\(\mathbb P(X \in A)\)</span> we can find the expectation of <span class="math inline">\(\Ind_A(X)\)</span>.</p>
-<p>With this idea in hand, how do we estimate <span class="math inline">\(\theta = \mathbb P(X \in A)\)</span> using the Monte Carlo method? We write <span class="math inline">\(\theta = \Exg\Ind_A(X)\)</span>. Then our Monte Carlo estimator is <span class="math display">\[  \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \Ind_A(X_i) . \]</span></p>
-<p>We remember that <span class="math inline">\(\Ind_A(X_i)\)</span> is 1 if <span class="math inline">\(X_i \in A\)</span> and 0 otherwise. So if we add up <span class="math inline">\(n\)</span> of these, we count an extra +1 each time we have an <span class="math inline">\(X_i \in A\)</span>. So <span class="math inline">\(\sum_{i=1}^n \Ind_A(X_i)\)</span> counts the total number of the <span class="math inline">\(X_i\)</span> that are in <span class="math inline">\(A\)</span>. So the Monte Carlo estimator can be written as <span class="math display">\[  \widehat{\theta}_n^{\mathrm{MC}} = \frac{\# \text{ of } X_i \text{ that are in $A$}}{n} . \]</span> (I’m using <span class="math inline">\(\#\)</span> as shorthand for “the number of”.)</p>
-<p>Although we’ve had to do a bit of work to get here, this a totally logical outcome! The right-hand side here is the proportion of the samples for which <span class="math inline">\(X_i \in A\)</span>. And if we want to estimate the probability something happens, looking at the proportion of times it happens in a random sample is very much the “intuitive” estimate to take. And that intuitive estimate is indeed the Monte Carlo estimate!</p>
-<div id="exm-MCprob" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.1</strong></span> <em>Let</em> <span class="math inline">\(Z \sim \operatorname{N}(0,1)\)</span> <em>be a standard normal distribution. Estimate</em> <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span><em>.</em></p>
-<p>This is a question that it is impossible to answer exactly using a pencil and paper: there’s no closed form for <span class="math display">\[ \mathbb P(Z &gt; 2) = \int_2^\infty \frac{1}{\sqrt{2\pi}}\,\mathrm{e}^{-z^2/2}\,\mathrm{d}z , \]</span> so we’ll have to use an estimation method.</p>
-<p>The Monte Carlo estimate means taking a random sample <span class="math inline">\(Z_1, Z_2, \dots, Z_n\)</span> of standard normals, and calculating what proportion of them are greater than 2. In R, we can do this as follows.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022873</code></pre>
-</div>
-</div>
-<p>In the second line, we could have written <code>rnorm(n, 0, 1)</code>. But, if you don’t give the parameters <code>mean</code> and <code>sd</code> to the function <code>rnorm()</code>, R just assumes you want the standard normal with <code>mean = 0</code> and <code>sd = 1</code>.</p>
-<p>We can check our answer: R’s inbuilt <code>pnorm()</code> function estimates probabilities for the normal distribution (using a method that, in this specific case, is much quicker and more accurate than Monte Carlo estimation). The true answer is very close to</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">2</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.02275013</code></pre>
-</div>
-</div>
-<p>so our estimate was pretty good.</p>
-</div>
-<p>We should explain the third line in the code we used for the Monte Carlo estimation <code>mean(samples &gt; 2)</code>. In R, some statements can be answered “true” or “false”: these are often statements involving equality <code>==</code> (that’s a <em>double</em> equals sign) or inequalities like <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&gt;</code>, for example. So <code>5 &gt; 2</code> is <code>TRUE</code> but <code>3 == 7</code> is <code>FALSE</code>. These can be applied “component by component” to vectors. So, for example, testing which numbers from 1 to 10 are greater than or equal to 7, we get</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">&gt;=</span> <span class="dv">7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE</code></pre>
-</div>
-</div>
-<p>six <code>FALSE</code>s (for 1 to 6) followed by four <code>TRUE</code>s (for 7 to 10).</p>
-<p>We can also use <code>&amp;</code> (“and”) and <code>|</code> (“or”) in true/false statements like these.</p>
-<p>But R also knows to treat <code>TRUE</code> like the number 1 and <code>FALSE</code> like the number 0. (This is just like the concept of the indicator function we’ve been discussing.) So if we add up some <code>TRUE</code>s and <code>FALSE</code>s, R simply counts how many <code>TRUE</code>s there are</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">&gt;=</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4</code></pre>
-</div>
-</div>
-<p>So in our Monte Carlo estimation code, <code>samples &gt; 2</code> was a vector of <code>TRUE</code>s and <code>FALSE</code>s, depending on whether each sample was greater than 2 or not, then <code>mean(samples &gt; 2)</code> took the <em>proportion</em> of the samples that were greater than 2.</p>
+<p>Last time, we defined the empirical distribution of a dataset <span class="math inline">\(\mathbf x = (x_1, x_2, \dots, x_m)\)</span>. We saw that the empirical distribution <span class="math inline">\(X^*\)</span> has probability mass function <span class="math display">\[ p^*(x) = \frac{1}{m} \sum_{j=1}^m \mathbb I_{\{x\}}(x_j) , \]</span> which is simply the proportion of datapoints taking the value <span class="math inline">\(x_j\)</span>.</p>
+<section id="the-plug-in-principle" class="level2" data-number="25.1">
+<h2 data-number="25.1" class="anchored" data-anchor-id="the-plug-in-principle"><span class="header-section-number">25.1</span> The “plug-in” principle</h2>
+<p>Suppose now that a sample <span class="math inline">\(\mathbf X = (X_1, X_2, \dots, X_m)\)</span> is an IID sample from a populatoin distribution <span class="math inline">\(X\)</span> that is either unknown or too difficult to work with directly. How can we find out things about this distribution <span class="math inline">\(X\)</span>?</p>
+<p>Well, we could form the empirical distribution <span class="math inline">\(X^*\)</span> from these samples, and work with that instead.</p>
+<p>We have to be a bit careful here, because there two levels of randomness here.</p>
+<ol type="1">
+<li><p>First, there is the fact that the samples <span class="math inline">\(\mathbf X = (X_1, X_2, \dots, X_m)\)</span> are random IID samples from <span class="math inline">\(X\)</span>.</p></li>
+<li><p>Once we have the samples <span class="math inline">\(\mathbf X\)</span>, that fixes the empirical PMF <span class="math inline">\(p^*\)</span>. Then <span class="math inline">\(X^*\)</span> is itself a random variable, with PMF <span class="math inline">\(p^*\)</span>.</p></li>
+</ol>
+<p>We will write <span class="math inline">\(\mathbb E\)</span>, <span class="math inline">\(\mathbb P\)</span>, <span class="math inline">\(\operatorname{Var}\)</span> and so on for the first type of randomness – that is, randomness coming from the random variable <span class="math inline">\(X\)</span>. We will write <span class="math inline">\(\mathbb E_*\)</span>, <span class="math inline">\(\mathbb P_*\)</span>, <span class="math inline">\(\operatorname{Var}_*\)</span> and so on for randomness coming from the empirical random variable <span class="math inline">\(X^*\)</span> <em>treating the samples</em> <span class="math inline">\(\mathbf X\)</span> as fixed. So, for example, the expectation <span class="math inline">\(\mathbb E_*(\phi(X^*))\)</span> is really shorthand for the <em>conditional</em> expectation <span class="math inline">\(\mathbb E_*(\phi(X^*) \mid \mathbf X)\)</span>.</p>
+<p>One way to estimate something about the random variable <span class="math inline">\(X\)</span> is to take the formula involving <span class="math inline">\(X\)</span>, then keep that same formula, but replace the true random variable <span class="math inline">\(X\)</span> with the empirical random variable <span class="math inline">\(X^*\)</span>. This is called the <strong>plug-in principle</strong>, and such an estimator is a <strong>plug-in estimator</strong> – the idea is that we simply “plug <span class="math inline">\(X^*\)</span> in” to the existing formula.</p>
+<p>This is easier to see if we take some examples.</p>
+<p>Suppose we wanted to estimate the expectation <span class="math inline">\(\mathbb EX\)</span> of the true distribution <span class="math inline">\(X\)</span>. To estimate this, we instead plug in the empirical distribution <span class="math inline">\(X^*\)</span> in place of <span class="math inline">\(X\)</span> and the empirical expectation <span class="math inline">\(\mathbb E_*\)</span> in place of the expectation over the random samples <span class="math inline">\(\mathbb E\)</span>. So our estimator is instead <span class="math inline">\(\mathbb E_*X^*\)</span>. We saw last time that <span class="math inline">\(\mathbb E_*X^*\)</span> is the sample mean <span class="math display">\[\overline X = \frac{1}{m} \sum_{j=1}^m X_j .\]</span> So the plug-in estimator for the expectation <span class="math inline">\(\mathbb EX\)</span> is the sample mean <span class="math inline">\(\overline X\)</span>.</p>
+<p>Suppose we wanted to estimate the variance <span class="math inline">\(\operatorname{Var}(X)\)</span> of the true distribution. Again, we plug in <span class="math inline">\(X^*\)</span>, to instead find <span class="math inline">\(\operatorname{Var}_*(X^*)\)</span>, which we saw last time is <span class="math display">\[ \operatorname{Var}_*(X^*) = \frac{1}{m} \sum_{j = 1}^m \big(X_j - \overline X\big)^2 , \]</span> which is very similar to the sample variance of <span class="math inline">\(\mathbf X\)</span>.</p>
+<p>Suppose wanted to estimate <span class="math inline">\(\operatorname{\mathbb E}\phi(X)\)</span> for some function <span class="math inline">\(\phi\)</span>. The plug-in estimator for this is <span class="math display">\[\begin{align}
+\operatorname{\mathbb{E}}_* \phi(X^*) &amp;= \sum_x \phi(x)\,p^*(x) \\
+&amp;=\sum_x \phi(x)\, \frac{1}{m} \sum_{j=1}^m \mathbb{I}_{\{x\}}(X_j)  \\
+&amp;= \frac{1}{m} \sum_{j=1}^m \sum_x \phi(x)\, \mathbb{I}_{\{x\}}(X_j) \\
+&amp;= \frac{1}{m} \sum_{j=1}^m \phi(X_j) ,
+\end{align}\]</span> by the same logic we used for the expectation and variance last time. This is the Monte Carlo estimator from the beginning of this module – we have a sample <span class="math inline">\(X_1, X_2, \dots, X_m\)</span> and we have form the Monte Carlo estimator <span class="math inline">\(\operatorname{\mathbb E}\phi(X)\)</span>. This shows there are deep connections between Monte Carlo estimation and the the empirical distribution and plug-in estimation.</p>
 </section>
-<section id="monte-carlo-for-integrals" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="monte-carlo-for-integrals"><span class="header-section-number">2.2</span> Monte Carlo for integrals</h2>
-<p>There’s another thing – a non-statistics thing – that Monte Carlo estimation is useful for. We can use Monte Carlo estimation to approximate integrals that are too hard to do by hand.</p>
-<p>This might seem surprising. Estimating the expectation of (a function of) a random variable seems a naturally statistical thing to do. But an integral is just a straight maths problem – there’s not any randomness at all. But actually, integrals and expectations are very similar things.</p>
-<p>Let’s think of an integral: say, <span class="math display">\[ \int_a^b h(x) \,\mathrm{d}x ,\]</span> the integral of some function <span class="math inline">\(h\)</span> (the “integrand”) between the limits <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. Now let’s compare that to the integral <span class="math inline">\(\Exg \phi(X)\)</span> of a continuous random variable that we can estimate using Monte Carlo estimation, <span class="math display">\[ \Exg \phi(X) = \int_{-\infty}^\infty \phi(x)\,f(x)\, \mathrm{d} x. \]</span> Matching things up, we can see that we if we were to a function <span class="math inline">\(\phi\)</span> and a PDF <span class="math inline">\(f\)</span> such that <span id="eq-match"><span class="math display">\[ \phi(x)\,f(x) = \begin{cases} 0 &amp; x &lt; a \\ h(x) &amp; a \leq x \leq b \\ 0 &amp; x &gt; b , \end{cases}  \tag{2.1}\]</span></span> then we would have <span class="math display">\[ \Exg \phi(X) = \int_{-\infty}^\infty \phi(x)\,f(x)\, \mathrm{d} x = \int_a^b h(x) \,\mathrm{d}x, \]</span> so the value of the expectation would be precisely the value of the integral we’re after. Then we could use Monte Carlo to estimate that expectation/integral.</p>
-<p>There are lots of choices of <span class="math inline">\(\phi\)</span> and <span class="math inline">\(f\)</span> that would satisfy this the condition in <a href="#eq-match" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-match</span></a>. But a “common-sense” choice that often works is to pick <span class="math inline">\(f\)</span> to be the PDF of <span class="math inline">\(X\)</span>, a continuous uniform distribution on the interval <span class="math inline">\([a,b]\)</span>. (This certainly works when <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are finite, anyway.) Recall that the continuous uniform distribution means that <span class="math inline">\(X\)</span> has PDF <span class="math display">\[ f(x) = \begin{cases} 0 &amp; x &lt; a \\ \displaystyle{\frac{1}{b-a}} &amp; a \leq x \leq b \\ 0 &amp; x &gt; b . \end{cases} \]</span> Comparing this equation with <a href="#eq-match" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-match</span></a>, we then have to choose <span class="math display">\[\phi(x) = \frac{h(x)}{f(x)} = (b-a)h(x).\]</span></p>
-<p>Putting this all together, we have <span class="math display">\[ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x = \int_a^b (b-a)h(x)\,\frac{1}{b-a}\,\mathrm{d}x = \int_a^b h(x) \,\mathrm{d}x ,\]</span> as required. This can then be estimated using the Monte Carlo method.</p>
-<div id="def-MCint" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.2</strong></span> Consider an integral <span class="math inline">\(\theta = \int_a^b h(x)\,\mathrm{d}x\)</span>. Let <span class="math inline">\(f\)</span> be the probability density function of a random variable <span class="math inline">\(X\)</span> and let <span class="math inline">\(\phi\)</span> be function such that <a href="#eq-match" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-match</span></a> holds. Then the <strong>Monte Carlo estimator</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{MC}}\)</span> of the integral <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are a random sample from <span class="math inline">\(X\)</span>.</p>
-</div>
-<div id="exm-MCint" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.2</strong></span> Suppose we want to approximate the integral <span class="math display">\[ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x . \]</span></p>
-<p>Since this is an integral on the finite interval <span class="math inline">\([0,2]\)</span>, it would seem to make sense to pick <span class="math inline">\(X\)</span> to be uniform on <span class="math inline">\([0,2]\)</span>. This means we should take <span class="math display">\[\phi(x) = \frac{h(x)}{f(x)} = (2-0)h(x) = 2\,x^{1.6}(2-x)^{0.7}.\]</span> We can then approximate this integral in R using the Monte Carlo estimator <span class="math display">\[ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x = \operatorname{\mathbb{E}} \phi(X) \approx \frac{1}{n} \sum_{i=1}^n 2\,X_i^{1.6} (2-X_i)^{0.7} . \]</span></p>
+<section id="the-bootstrap-set-up" class="level2" data-number="25.2">
+<h2 data-number="25.2" class="anchored" data-anchor-id="the-bootstrap-set-up"><span class="header-section-number">25.2</span> The bootstrap set-up</h2>
+<p>OK, we’re now moving on from the empirical distribution to a slightly different but related topic: the bootstrap.</p>
+<p>Suppose a statistician is interested in a statistic <span class="math inline">\(T = T(X_1, X_2, \dots, X_n)\)</span> of <span class="math inline">\(n\)</span> IID samples from a random variable <span class="math inline">\(X\)</span>. For example, this might be:</p>
+<ul>
+<li><p>Suppose I pick a basketball squad of 12 players at random; what is their average height? Here, <span class="math inline">\(X\)</span> is the distribution of basketball players’ heights, <span class="math inline">\(n = 12\)</span>, and the statistic is <span class="math display">\[ T = T(X_1, X_2, \dots, X_{12}) = \frac{1}{12} \sum_{i=1}^{12} X_i . \]</span></p></li>
+<li><p>Suppose I visit The Edit Room cafe 5 times; what’s the longest queue I have to deal with. Here, <span class="math inline">\(X\)</span> is the distribution of queue lengths at The Edit Room, <span class="math inline">\(n = 5\)</span>, and the statistic is <span class="math display">\[ T = T(X_1, X_2, X_3, X_4, X_5) = \max\{X_1, X_2, X_3, X_4, X_5\} . \]</span></p></li>
+<li><p>Suppose a supermarket distributor buys 1001 beef steaks; what is the median weight of the steaks? Here <span class="math inline">\(X\)</span> is the distribution of weights of steaks, <span class="math inline">\(n = 1001\)</span>, and the statistic is <span class="math display">\[ T = T(X_1, X_2, \dots, X_{1000}) = \operatorname{median} (X_1, X_2, \dots, X_{1001}) . \]</span></p></li>
+</ul>
+<p>The statistician is likely to be interested in properties of this statistic. For example, three of the most important things the statistician is likely to want to know are:</p>
+<ul>
+<li><p>The <strong>expectation</strong> <span class="math inline">\(\mathbb ET = \mathbb ET(X_1, \dots, X_n)\)</span> of the statistic.</p></li>
+<li><p>The <strong>variance</strong> <span class="math inline">\(\operatorname{Var}(T) = \operatorname{Var}(T(X_1, \dots, X_n))\)</span> of the statistic – or related concepts like the standard deviation.</p></li>
+<li><p>A <strong>prediction interval</strong> <span class="math inline">\([U,V]\)</span> for the statistic, such that <span class="math inline">\(\mathbb P(T \in [U,V]) = 1-\alpha\)</span>.</p></li>
+</ul>
+<p>Now, if the statistician knew the true distribution <span class="math inline">\(X\)</span>, and if it were simple enough to work with, then she could calculate the true values of these. But suppose the distribution is unknown (or too complicated to work with). Instead, the statistician just has <span class="math inline">\(m\)</span> samples <span class="math inline">\(\mathbf X = (X_1, X_2, \dots, X_m)\)</span>. You could think of these as data measurements that are modelled as coming from the distribution <span class="math inline">\(X\)</span>, or you could think of them as output from a computer program that can sample from <span class="math inline">\(X\)</span> exactly.</p>
+<p>Note that there’s two numbers here: <span class="math inline">\(n\)</span> is the number of samples required to calculate the statistic <span class="math inline">\(T = T(X_1, X_2, \dots, X_n)\)</span> once, and <span class="math inline">\(m\)</span> is the total number of samples we have available. The most common situation is “<span class="math inline">\(m\)</span> is somewhat bigger than <span class="math inline">\(n\)</span>, although not vastly bigger”, but the mathematical definitions are valid for any <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>.</p>
+<p>The <strong>bootstrap</strong> method is the following idea:</p>
+<ol type="1">
+<li><p>Take <span class="math inline">\(n\)</span> samples from the empirical distribution <span class="math inline">\(X^*\)</span> of <span class="math inline">\(\mathbf X\)</span>. This is equivalent to sampling <span class="math inline">\(n\)</span> of the values <span class="math inline">\(X_1, X_2, \dots, X_m\)</span> with replacement. Let’s call these samples <span class="math inline">\(X^*_1, X^*_2, \dots, X^*_n\)</span>. Evaluate the statistic with these samples <span class="math display">\[ T^* = T(X_1^*, X_2^*, \dots, X_n^*) . \]</span></p></li>
+<li><p>Repeat step 1 many times; let’s say <span class="math inline">\(B\)</span> times. Keep taking <span class="math inline">\(n\)</span> of the samples with replacement and evaluating the statistic. We now have <span class="math inline">\(B\)</span> versions of that statistic <span class="math inline">\(T^*_1, T^*_2, \dots, T^*_B\)</span>.</p></li>
+<li><p>Use these <span class="math inline">\(B\)</span> versions of the statistic to get a <strong>bootstrap estimate</strong> of the expectation, variance, or prediction interval. To estimate the expectation of the statistic <span class="math inline">\(\mathbb ET = \mathbb ET(X_1, \dots, X_n)\)</span>, use the sample mean of the evaluated statistics <span class="math inline">\(\overline{T^*} = \frac{1}{B} \sum_{k=1}^B T^*_B\)</span>. To estimate the variance <span class="math inline">\(\operatorname{Var}(T)\)</span> use the sample variance <span class="math display">\[ \sum{1}{B-1} \sum_{k=1}^B \big(T^*_k - \overline{T^*}\big) .\]</span> We’ll come back to the prediction interval next time.</p></li>
+</ol>
+<p>The bootstrap concept was discovered by the American statistician Bradley Efron in a hugely influential paper <a href="https://doi.org/10.1214/aos/1176344552">“Bootstrap methods: another look at the jackknife”</a> in 1979. The name “bootstrap” comes from the phrase “to pull yourself up by your bootstraps”, which roughly means to make progress without any outside help, in a way that might initially seem impossible – similarly, the bootstrap manages to estimate properties of a statistic by just reusing the same set of samples over and over again. (The “jackknife” in the title of Efron’s paper was and earlier, simpler, less powerful idea along similar lines, named after the multipurpose tool the jackknife.)</p>
+</section>
+<section id="bootstrap-for-expectation-and-variance" class="level2" data-number="25.3">
+<h2 data-number="25.3" class="anchored" data-anchor-id="bootstrap-for-expectation-and-variance"><span class="header-section-number">25.3</span> Bootstrap for expectation and variance</h2>
+<div id="exm-cafe" class="theorem example">
+<p><span class="theorem-title"><strong>Example 25.1</strong></span> Let’s take the cafe example above. The statistic in question is <span class="math display">\[ T = T(X_1, X_2, X_3, X_4, X_5) = \min\{X_1, X_2, X_3, X_4, X_5\} . \]</span> A researcher wants to estimate the expectation of this statistic.</p>
+<p>The researcher visits The Edit Room at 30 random occasion and notes the following data.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Queue length</strong></th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">7</th>
+<th style="text-align: center;">11</th>
+<th style="text-align: center;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Number of occasions</strong></td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">30</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>We start by taking 5 samples from the empirical distribution – that is, we choose 5 of the datapoints uniformly at random with replacement. Let’s say these are <span class="math inline">\((0, 1, 4, 4, 5)\)</span>. (It turns out we sampled the value 4 twice, even though it only occured once – that does happen sometimes when we’re sampling with replacement.) The value of the statistic for this sample is <span class="math display">\[ T_1^* = T(0, 1, 4, 4, 5) = \max \{0, 1, 4, 4, 5\} = 5 .\]</span></p>
+<p>We keep doing this many times – we pick five samples with replacement, and calculate their maximum.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="fl">1.6</span> <span class="sc">*</span> (<span class="dv">2</span> <span class="sc">-</span> x)<span class="sc">^</span><span class="fl">0.7</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, a, b)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>((b <span class="sc">-</span> a) <span class="sc">*</span> <span class="fu">integrand</span>(samples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>queues <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">11</span>), <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>), <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">3</span>), <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">11</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>boots <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>maxes <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, boots)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>boots) {</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  minisample <span class="ot">&lt;-</span> <span class="fu">sample</span>(queues, <span class="dv">5</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  maxes[k] <span class="ot">&lt;-</span> <span class="fu">max</span>(minisample)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This gives us 1000 realisations of the test statistic. We can use these to look at the distribution of the test statistic:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">&lt;-</span> <span class="fu">table</span>(maxes) <span class="sc">/</span> boots</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.443793</code></pre>
+<pre><code>maxes
+    0     1     2     3     4     5     7    11 
+0.009 0.034 0.223 0.227 0.103 0.107 0.124 0.173 </code></pre>
 </div>
-</div>
-<p>You have perhaps noticed that, here and elsewhere, I tend to split my R code up into lots of small bits, perhaps slightly unnecessarily. After all, those 6 lines of code could simply have been written as just 2 lines</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fl">1e6</span>, <span class="dv">0</span>, <span class="dv">2</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="dv">2</span> <span class="sc">*</span> samples<span class="sc">^</span><span class="fl">1.6</span> <span class="sc">*</span> (<span class="dv">2</span> <span class="sc">-</span> samples)<span class="sc">^</span><span class="fl">0.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>There’s nothing <em>wrong</em> with that. However, I find that code is easier to read if divided into small pieces. It also makes it easier to tinker with, if I want to use it to solve some similar but slightly different problem.</p>
-</div>
-<div id="exm-MCint2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.3</strong></span> Suppose we want to approximate the integral <span class="math display">\[ \int_{-\infty}^{+\infty}
-\mathrm{e}^{-0.1|x|} \cos x \, \mathrm{d}x . \]</span> This one is an integral on the whole real line, so we can’t take a uniform distribution. Maybe we should take <span class="math inline">\(f(x)\)</span> to be the PDF of a normal distribution, and then put <span class="math display">\[ \phi(x) = \frac{h(x)}{f(x)} = \frac{\mathrm{e}^{-0.1|x|} \cos x}{f(x)} . \]</span></p>
-<p>But which normal distribution should we take? Well, we’re <em>allowed</em> to take any one – we will still get an accurate estimate in the limit as <span class="math inline">\(n \to \infty\)</span>. But we’d like an estimator that gives accurate results at moderate-sized <span class="math inline">\(n\)</span>, and picking a “good” distribution for <span class="math inline">\(X\)</span> will help that.</p>
-<p>We’ll probably get the best results if we pick a distribution that is likely to mostly take values where <span class="math inline">\(h(x)\)</span> is big – or, rather, where the absolute value <span class="math inline">\(|h(x)|\)</span> is big, to be precise. That is because we don’t want to “waste” too many samples where <span class="math inline">\(h(x)\)</span> is very small, because they don’t contribute much to the integral. But we don’t want to “miss” – or only sample very rarely – places where <span class="math inline">\(h(x)\)</span> is big, which contribute a lot to the integral.</p>
-<p>Let’s have a look at the graph of <span class="math inline">\(h(x) = \mathrm{e}^{-0.1|x|} \cos x\)</span>.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code for drawing this graph</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">abs</span>(x)) <span class="sc">*</span> <span class="fu">cos</span>(x)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  integrand, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="sc">-</span><span class="dv">55</span>, <span class="at">to =</span> <span class="dv">55</span>,</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">3</span>,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"integrand h(x)"</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">50</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="L02-mc-uses_files/figure-html/h-graph-1.svg" class="img-fluid figure-img" width="672"></p>
+<p><img src="L25-plugin_files/figure-html/unnamed-chunk-2-1.svg" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>This suggests to me that a mean of 0 and a standard deviation of 20 might work quite well, since this will tend to take values in <span class="math inline">\([-40,40]\)</span> or so.</p>
-<p>We will use R’s function <code>dnorm()</code> for the probability density function of the normal distribution (which saves us from having to remember what that is).</p>
+<p>We can also look at particular figures of interest. For example, the expectation of <span class="math inline">\(T\)</span> should be close to the sample mean of our <span class="math inline">\(T^*\)</span>s, and the variance of <span class="math inline">\(T\)</span> should be close to the sample variance of our <span class="math inline">\(T^*\)</span>s.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">abs</span>(x)) <span class="sc">*</span> <span class="fu">cos</span>(x)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>pdf       <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="dv">0</span>, <span class="dv">20</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>phi       <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">integrand</span>(x) <span class="sc">/</span> <span class="fu">pdf</span>(x)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">20</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">phi</span>(samples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">mean</span>(maxes), <span class="fu">var</span>(maxes))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.235336</code></pre>
+<pre><code>[1]  4.87900 10.50687</code></pre>
 </div>
 </div>
 </div>
-<p><strong>Next time:</strong> <em>We will analyse the accuracy of these Monte Carlo estimates.</em></p>
-<div class="mysummary">
-<p><strong>Summary:</strong></p>
-<ul>
-<li><p>The indicator <span class="math inline">\(\Ind_A(x)\)</span> function of a set <span class="math inline">\(A\)</span> is 1 if <span class="math inline">\(x \in A\)</span> or 0 if <span class="math inline">\(x \notin A\)</span>.</p></li>
-<li><p>We can estimate a probability <span class="math inline">\(\mathbb P(X \in A)\)</span> by using the Monte Carlo estimate for <span class="math inline">\(\Exg\Ind_A(X)\)</span>.</p></li>
-<li><p>We can estimate an integral <span class="math inline">\(\int h(x) \, \mathrm{d}x\)</span> by using a Monte Carlo estimate with <span class="math inline">\(\phi(x)\,f(x) = h(x)\)</span>.</p></li>
-</ul>
-<p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Section 3.1 and Subsection 3.2.1.</p>
-</div>
+<p>Next time, we’ll look into bootstrap methods in more detail.</p>
 
 
 </section>
@@ -1043,13 +1032,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L01-mc-intro.html" class="pagination-link" aria-label="Introduction to Monte Carlo">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span>
+      <a href="../lectures/L24-empirical.html" class="pagination-link" aria-label="Empirical distribution">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Empirical distribution</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L03-mc-error-1.html" class="pagination-link" aria-label="Monte Carlo error I: theory">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L26-bootstrap-error.html" class="pagination-link" aria-label="Bootstrap II">
+        <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bootstrap II</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

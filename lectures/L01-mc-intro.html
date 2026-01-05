@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; Uses of Monte Carlo – MATH5835M Statistical Computing</title>
+<title>1&nbsp; Introduction to Monte Carlo – MATH5835M Statistical Computing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/L03-mc-error-1.html" rel="next">
-<link href="../lectures/L01-mc-intro.html" rel="prev">
+<link href="../lectures/L02-mc-uses.html" rel="next">
+<link href="../index.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L02-mc-uses.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -190,13 +190,13 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L01-mc-intro.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/L01-mc-intro.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/L02-mc-uses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span></a>
   </div>
 </li>
@@ -437,8 +437,9 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#monte-carlo-for-probabilities" id="toc-monte-carlo-for-probabilities" class="nav-link active" data-scroll-target="#monte-carlo-for-probabilities"><span class="header-section-number">2.1</span> Monte Carlo for probabilities</a></li>
-  <li><a href="#monte-carlo-for-integrals" id="toc-monte-carlo-for-integrals" class="nav-link" data-scroll-target="#monte-carlo-for-integrals"><span class="header-section-number">2.2</span> Monte Carlo for integrals</a></li>
+  <li><a href="#what-is-statistical-computing" id="toc-what-is-statistical-computing" class="nav-link active" data-scroll-target="#what-is-statistical-computing"><span class="header-section-number">1.1</span> What is statistical computing?</a></li>
+  <li><a href="#what-is-monte-carlo-estimation" id="toc-what-is-monte-carlo-estimation" class="nav-link" data-scroll-target="#what-is-monte-carlo-estimation"><span class="header-section-number">1.2</span> What is Monte Carlo estimation?</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">1.3</span> Examples</a></li>
   </ul>
 </nav>
     </div>
@@ -454,9 +455,9 @@ window.Quarto = {
 \newcommand{\ee}{\mathrm{e}} \]</span></p>
 </div>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L02-mc-uses.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html">Monte Carlo estimation</a></li><li class="breadcrumb-item"><a href="../lectures/L01-mc-intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></h1>
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></h1>
 </div>
 
 
@@ -476,146 +477,83 @@ window.Quarto = {
 <div class="hidden">
 <p><span class="math display">\[ \]</span></p>
 </div>
-<p>Quick recap: Last time we defined the Monte Carlo estimator for an expectation of a function of a random variable <span class="math inline">\(\theta = \Exg \phi(X)\)</span> to be <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are independent random samples from <span class="math inline">\(X\)</span>.</p>
-<p>Today we look at two other things we can estimate using Monte Carlo simulation: probabilities, and integrals.</p>
-<section id="monte-carlo-for-probabilities" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="monte-carlo-for-probabilities"><span class="header-section-number">2.1</span> Monte Carlo for probabilities</h2>
-<p>What if we want to find a <em>probability</em>, rather than an expectation? What if we want <span class="math inline">\(\mathbb P(X = x)\)</span> for some <span class="math inline">\(x\)</span>, or <span class="math inline">\(\mathbb P(X \geq a)\)</span> for some <span class="math inline">\(a\)</span>, or, more generally, <span class="math inline">\(\mathbb P(X \in A)\)</span> for some set <span class="math inline">\(A\)</span>?</p>
-<p>The key thing that will help us here is the <em>indicator function</em>. The indicator function simply tells us whether an outcome <span class="math inline">\(x\)</span> is in a set <span class="math inline">\(A\)</span> or not.</p>
-<div id="def-indicator" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.1</strong></span> Let <span class="math inline">\(A\)</span> be a set. Then the <strong>indicator function</strong> <span class="math inline">\(\Ind_A\)</span> is defined by <span class="math display">\[ \Ind_A(x) = \begin{cases} 1 &amp; \text{if $x \in A$} \\ 0 &amp; \text{if $x \notin A$.} \end{cases} \]</span></p>
+<p>Today, we’ll start the first main topic of the module, which is called “Monte Carlo estimation”. But first, a bit about the subject as a whole.</p>
+<section id="what-is-statistical-computing" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="what-is-statistical-computing"><span class="header-section-number">1.1</span> What is statistical computing?</h2>
+<p>“Statistical computing” – or “computational statistics” – refers to the branch of statistics that involves not attacking statistical problems merely with a pencil and paper, but rather by combining human ingenuity with the immense calculating powers of computers.</p>
+<p>One of the big ideas here is <strong>simulation</strong>. Simulation is the idea that we can understand the properties of a random model not by cleverly working out the properties using theory – this is usually impossible for anything but the simplest “toy models” – but rather by running the model many times on a computer. From these many simulations, we can observe and measure things like the typical (or “expected”) behaviour, the spread (or “variance”) of the behaviour, and other things. This concept of simulation is at the heart of the module MATH5835M Statistical Computing.</p>
+<p>In particular, we will look at <strong>Monte Carlo</strong> estimation. Monte Carlo is about estimating a parameter, expectation or probability related to a random variable by taking many samples of that random variable, then computing a relevant sample mean from those samples. We will study Monte Carlo in its standard “basic” form, then look at ways we can make Monte Carlo estimation more accurate (Lectures 1–9).</p>
+<p>To run a simulation – for example, when performing Monte Carlo estimation – one needs random numbers with the correct distribution. <strong>Random number generation</strong> (Lectures 10–16) will be an important part of this module. We will look first at how to generate randomness of any sort, and then how to manipulate that randomness into the shape of the distributions we want.</p>
+<p>Sometimes, it’s not possible to generate perfectly independent samples from exactly the distribution you want. But we can use the output of a process called a “Markov chain” to get “fairly independent” samples from nearly the distribution we want. When we perform Monte Carlo estimation with the output of a Markov chain, this is called <strong>Markov chain Monte Carlo (MCMC)</strong> (Lectures 17–23). MCMC has become a vital part of modern Bayesian statistical analysis.</p>
+<p>The final section of the module is about dealing with data. Choosing a random piece of data from a given dataset is a lot like generating a random number from a given distribution, and similar Monte Carlo estimation ideas can be used to find out about that data. We think of a dataset as being a sample from a population, and sampling again from that dataset is known as <strong>resampling</strong> (Lecture 24–27). The most important method of finding out about a population by using resampling from a dataset is called the “bootstrap”, and we will study the bootstrap in detail.</p>
+<p>MATH5835M Statistical Computing is a <em>mathematics</em> module that will concentrate on the <em>mathematical</em> ideas that underpin statistical computing. It is not a programming module that will go deeply into the practical issues of the most efficient possible coding of the algorithms we study. But we will want to investigate the behaviour of the methods we learn about and to explore their properties, so will be computer programming to help us do that. We will be using the statistical programming language R, (although one could just as easily have used Python or other similar languages). As my PhD supervisor often told me: “You don’t really understand a mathematical algorithm until you’ve coded it up yourself.”</p>
+</section>
+<section id="what-is-monte-carlo-estimation" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="what-is-monte-carlo-estimation"><span class="header-section-number">1.2</span> What is Monte Carlo estimation?</h2>
+<p>Let <span class="math inline">\(X\)</span> be a random variable. We recall the <strong>expectation</strong> <span class="math inline">\(\Ex X\)</span> of <span class="math inline">\(X\)</span>. If <span class="math inline">\(X\)</span> is discrete with probability mass function (PMF) <span class="math inline">\(p\)</span>, then the expectation of <span class="math inline">\(X\)</span> is <span class="math display">\[ \Ex X = \sum_x x\,p(x) ;\]</span> while if <span class="math inline">\(X\)</span> is continuous with probability density function (PDF) <span class="math inline">\(f\)</span>, then the expectation is <span class="math display">\[ \Ex X = \int_{-\infty}^{+\infty} x\,f(x)\,\mathrm{d}x . \]</span> More generally, the expectation of a function <span class="math inline">\(\phi\)</span> of <span class="math inline">\(X\)</span> is <span class="math display">\[ \Exg \phi(X) = \begin{cases} {\displaystyle \sum_x \phi(x)\,p(x)} &amp; \text{for $X$ discrete}\\ {\displaystyle \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x}  &amp; \text{for $X$ continuous.} \end{cases}\]</span> (This matches with the “plain” expectation when <span class="math inline">\(\phi(x) = x\)</span>.)</p>
+<p>But how do we actually <em>calculate</em> an expectation like one of these? If <span class="math inline">\(X\)</span> is discrete and can only take a small, finite number of values, then we can simply add up the sum <span class="math inline">\(\sum_x \phi(x)\,p(x)\)</span>. But otherwise, we just have to hope that <span class="math inline">\(\phi\)</span> and <span class="math inline">\(p\)</span> or <span class="math inline">\(f\)</span> are sufficiently “nice” that we can manage to work out the sum/integral using a pencil and paper (and our brain). But while this is often possible in the sort of “toy example” one comes across in maths or statistics lectures, this is very rare in “real life” problems.</p>
+<p><strong>Monte Carlo estimation</strong> is the idea that we can get an approximate answer for <span class="math inline">\(\Ex X\)</span> or <span class="math inline">\(\Exg \phi(X)\)</span> if we have access to lots of samples from <span class="math inline">\(X\)</span>. If we have access to <span class="math inline">\(X_1, X_2 \dots, X_n\)</span> , independent and identically distributed (IID) samples with the same distribution as <span class="math inline">\(X\)</span>, then we already know that the mean <span class="math display">\[ \overline X = \frac{1}{n}(X_1 + X_2 + \cdots + X_n) = \frac{1}{n} \sum_{i=1}^n X_i \]</span> can be used to estimate the expectation <span class="math inline">\(\mathbb EX\)</span>. We know that <span class="math inline">\(\overline X\)</span> is usually close to the expectation <span class="math inline">\(\Ex X\)</span>, at least if if the number of samples <span class="math inline">\(n\)</span> is large; this is justified by the “law of large numbers”, which says that <span class="math inline">\(\overline X \to \mathbb EX\)</span> as <span class="math inline">\(n \to \infty\)</span>.</p>
+<p>Similarly, we can use <span class="math display">\[ \frac{1}{n} \big(\phi(X_1) + \phi(X_2) + \cdots + \phi(X_n) \big) = \frac{1}{n} \sum_{i=1}^n \phi(X_i) \]</span> to estimate <span class="math inline">\(\Exg \phi(X)\)</span>. The law of large numbers again says that this estimate tends to the correct value <span class="math inline">\(\Exg \phi(X)\)</span> as <span class="math inline">\(n \to \infty\)</span>.</p>
+<p>In this module we will write that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> is a “<strong>random sample</strong> from <span class="math inline">\(X\)</span>” to mean that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are IID with the same distribution as <span class="math inline">\(X\)</span>.</p>
+<div id="def-MCest" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.1</strong></span> Let <span class="math inline">\(X\)</span> be a random variable, <span class="math inline">\(\phi\)</span> a function, and write <span class="math inline">\(\theta = \Exg\phi(X)\)</span>. Then the <strong>Monte Carlo estimator</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{MC}}\)</span> of <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are a random sample from <span class="math inline">\(X\)</span>.</p>
 </div>
-<p>The set <span class="math inline">\(A\)</span> could just be a single element <span class="math inline">\(A = \{y\}\)</span>. In that case <span class="math inline">\(\Ind_A(x)\)</span> is 1 if <span class="math inline">\(x = y\)</span> and 0 if <span class="math inline">\(x \neq y\)</span>. Or <span class="math inline">\(A\)</span> could be a semi-infinite interval, like <span class="math inline">\(A = [a, \infty)\)</span>. In that case <span class="math inline">\(\Ind_A(x)\)</span> is 1 if <span class="math inline">\(x \geq a\)</span> and 0 if <span class="math inline">\(x &lt; a\)</span>.</p>
-<p>Why is this helpful? Well <span class="math inline">\(\Ind_A\)</span> is a function, so let’s think about what the expectation <span class="math inline">\(\Exg \Ind_A(X)\)</span> would be for some random variable <span class="math inline">\(X\)</span>. Since <span class="math inline">\(\Ind_A\)</span> can only take two values, 0 and 1, we have <span class="math display">\[\begin{align*}
-\Exg \Ind_A(X) &amp;= \sum_{y \in\{0,1\}} y\,\mathbb P\big( \Ind_A(X) = y \big) \\\
-  &amp;= 0 \times \mathbb P\big( \Ind_A(X) = 0 \big) + 1 \times \mathbb P\big( \Ind_A(X) = 1 \big) \\
-  &amp;= 0 \times \mathbb P(X \notin A) + 1 \times \mathbb P(X \in A) \\
-  &amp;= \mathbb P(X \in A) .
-\end{align*}\]</span> P(X A) . \end{align*} In line three, we used that <span class="math inline">\(\Ind_A(X) = 0\)</span> if and only if <span class="math inline">\(X \notin A\)</span>, and that <span class="math inline">\(\Ind_A(X) = 1\)</span> if and only if <span class="math inline">\(X \in A\)</span>.</p>
-<p>So the expectation of an indicator function a set is the probability that <span class="math inline">\(X\)</span> is in that set. This idea connects “expectations of functions” back to probabilities: if we want to find <span class="math inline">\(\mathbb P(X \in A)\)</span> we can find the expectation of <span class="math inline">\(\Ind_A(X)\)</span>.</p>
-<p>With this idea in hand, how do we estimate <span class="math inline">\(\theta = \mathbb P(X \in A)\)</span> using the Monte Carlo method? We write <span class="math inline">\(\theta = \Exg\Ind_A(X)\)</span>. Then our Monte Carlo estimator is <span class="math display">\[  \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \Ind_A(X_i) . \]</span></p>
-<p>We remember that <span class="math inline">\(\Ind_A(X_i)\)</span> is 1 if <span class="math inline">\(X_i \in A\)</span> and 0 otherwise. So if we add up <span class="math inline">\(n\)</span> of these, we count an extra +1 each time we have an <span class="math inline">\(X_i \in A\)</span>. So <span class="math inline">\(\sum_{i=1}^n \Ind_A(X_i)\)</span> counts the total number of the <span class="math inline">\(X_i\)</span> that are in <span class="math inline">\(A\)</span>. So the Monte Carlo estimator can be written as <span class="math display">\[  \widehat{\theta}_n^{\mathrm{MC}} = \frac{\# \text{ of } X_i \text{ that are in $A$}}{n} . \]</span> (I’m using <span class="math inline">\(\#\)</span> as shorthand for “the number of”.)</p>
-<p>Although we’ve had to do a bit of work to get here, this a totally logical outcome! The right-hand side here is the proportion of the samples for which <span class="math inline">\(X_i \in A\)</span>. And if we want to estimate the probability something happens, looking at the proportion of times it happens in a random sample is very much the “intuitive” estimate to take. And that intuitive estimate is indeed the Monte Carlo estimate!</p>
-<div id="exm-MCprob" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.1</strong></span> <em>Let</em> <span class="math inline">\(Z \sim \operatorname{N}(0,1)\)</span> <em>be a standard normal distribution. Estimate</em> <span class="math inline">\(\mathbb P(Z &gt; 2)\)</span><em>.</em></p>
-<p>This is a question that it is impossible to answer exactly using a pencil and paper: there’s no closed form for <span class="math display">\[ \mathbb P(Z &gt; 2) = \int_2^\infty \frac{1}{\sqrt{2\pi}}\,\mathrm{e}^{-z^2/2}\,\mathrm{d}z , \]</span> so we’ll have to use an estimation method.</p>
-<p>The Monte Carlo estimate means taking a random sample <span class="math inline">\(Z_1, Z_2, \dots, Z_n\)</span> of standard normals, and calculating what proportion of them are greater than 2. In R, we can do this as follows.</p>
+<p>While general ideas for estimating using simulation go back a long time, the modern theory of Monte Carlo estimation was developed by the physicists <a href="https://en.wikipedia.org/wiki/Stanisław_Ulam">Stanislaw Ulam</a> and <a href="https://en.wikipedia.org/wiki/John_von_Neumann">John von Neumann</a>. Ulam (who was Polish) and von Neumann (who was Hungarian) moved to the US in the early 1940s to work on the Manhattan project to build the atomic bomb (as made famous by the film <em>Oppenheimer</em>). Later in the 1940s, they worked together in the Los Alamos National Laboratory continuing their research on nuclear physics generally and nuclear weapons more specifically, where they used simulations on early computers to help them numerically solve difficult mathematical and physical problems.</p>
+<p>The name “Monte Carlo” was chosen because the use of randomness to solve such problems reminded them of gamblers in the casinos of Monte Carlo, Monaco. Ulam and von Neumann also worked closely with another colleague Nicholas Metropolis, whose work we will study later in this module.</p>
+</section>
+<section id="examples" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="examples"><span class="header-section-number">1.3</span> Examples</h2>
+<p>Let’s see some simple examples of Monte Carlo estimation using R.</p>
+<div id="exm-MCexp" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1.1</strong></span> Let’s suppose we’ve forgotten the expectation of the exponential distribution <span class="math inline">\(X \sim \operatorname{Exp}(2)\)</span> with rate 2. In this simple case, we could work out the answer using the PDF <span class="math inline">\(f(x) = 2\mathrm{e}^{-2x}\)</span> as<br>
+<span class="math display">\[ \mathbb E X = \int_0^\infty x\,2\mathrm{e}^{-2x}\,\mathrm{d}x \]</span>and, without too much difficulty, get the answer <span class="math inline">\(\frac12\)</span>. But instead, let’s do this the Monte Carlo way.</p>
+<p>In R, we can use the <code>rexp()</code> function to get IID samples from the exponential distribution: the full syntax is <code>rexp(n, rate)</code>, which gives <code>n</code> samples from an exponential distribution with rate <code>rate</code>. The following code takes the mean of <span class="math inline">\(n = 100\)</span> samples from the exponential distribution.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">/</span> n) <span class="sc">*</span> <span class="fu">sum</span>(samples)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.022873</code></pre>
+<pre><code>[1] 0.5378136</code></pre>
 </div>
 </div>
-<p>In the second line, we could have written <code>rnorm(n, 0, 1)</code>. But, if you don’t give the parameters <code>mean</code> and <code>sd</code> to the function <code>rnorm()</code>, R just assumes you want the standard normal with <code>mean = 0</code> and <code>sd = 1</code>.</p>
-<p>We can check our answer: R’s inbuilt <code>pnorm()</code> function estimates probabilities for the normal distribution (using a method that, in this specific case, is much quicker and more accurate than Monte Carlo estimation). The true answer is very close to</p>
+<p>So our Monte Carlo estimate is 0.5378, to 4 decimal places.</p>
+<p>That’s fairly close to the correct answer of <span class="math inline">\(\frac12\)</span>. But we should (hopefully) be able to get a more accurate estimation if we use more samples. We could also simplify the third line of our code by using the <code>mean()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">2</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="dv">2</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(samples)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.02275013</code></pre>
+<pre><code>[1] 0.4994785</code></pre>
 </div>
 </div>
-<p>so our estimate was pretty good.</p>
+<p>In the second line, <code>1e6</code> is R code for the scientific notation <span class="math inline">\(1 \times 10^6\)</span>, or a million. I just picked this as “a big number, but where my code still only took a few seconds to run.”</p>
+<p>Our new Monte Carlo estimate is 0.4995, which is (probably) much closer to the true value of <span class="math inline">\(\frac12\)</span>.</p>
 </div>
-<p>We should explain the third line in the code we used for the Monte Carlo estimation <code>mean(samples &gt; 2)</code>. In R, some statements can be answered “true” or “false”: these are often statements involving equality <code>==</code> (that’s a <em>double</em> equals sign) or inequalities like <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&gt;</code>, for example. So <code>5 &gt; 2</code> is <code>TRUE</code> but <code>3 == 7</code> is <code>FALSE</code>. These can be applied “component by component” to vectors. So, for example, testing which numbers from 1 to 10 are greater than or equal to 7, we get</p>
+<p>By the way: all R code “chunks” displayed in the notes should work perfectly if you copy-and-paste them into RStudio. (Indeed, when I compile these lecture notes in RStudio, all the R code gets run on my computer – so I’m certain in must work correctly!) If you hover over a code chunk, a little “clipboard” icon should appear in the top-right, and clicking on that will copy it so you can paste it into RStudio. I strongly encourage playing about with the code as a good way to learn this material and explore further!</p>
+<div id="exm-MC2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1.2</strong></span> Let’s try another example. Let <span class="math inline">\(X \sim \operatorname{N}(1, 2^2)\)</span> be a normal distribution with mean 1 and standard deviation 2. Suppose we want to find out <span class="math inline">\(\mathbb E(\sin X)\)</span> (for some reason). While it <em>might</em> be possible to somehow calculate the integral <span class="math display">\[ \mathbb E(\sin X) = \int_{-\infty}^{+\infty} (\sin x) \, \frac{1}{\sqrt{2\pi\times 2^2}} \exp\left(-\frac{(x - 1)^2}{2\times 2^2}\right) \, \mathrm{d} x , \]</span> that looks extremely difficult to me.</p>
+<p>Instead, a Monte Carlo estimation of <span class="math inline">\(\mathbb{E}(\sin X)\)</span> is very straightforward: we just take the mean of the sine of a bunch of normally distributed random numbers. That is we get a random samples <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> from <span class="math inline">\(X\)</span>; then take the mean of the values <span class="math display">\[\sin(X_1), \sin(X_2), \dots, \sin(X_n) .\]</span></p>
+<p>(We must remember, though, when using the <code>rnorm()</code> function to generate normally distributed random variates, that the third argument is the <em>standard deviation</em>, here <span class="math inline">\(2\)</span>, <em>not</em> the variance, here <span class="math inline">\(2^2 = 4\)</span>.)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">&gt;=</span> <span class="dv">7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>MCest <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">sin</span>(samples))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>MCest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE</code></pre>
+<pre><code>[1] 0.1129711</code></pre>
 </div>
 </div>
-<p>six <code>FALSE</code>s (for 1 to 6) followed by four <code>TRUE</code>s (for 7 to 10).</p>
-<p>We can also use <code>&amp;</code> (“and”) and <code>|</code> (“or”) in true/false statements like these.</p>
-<p>But R also knows to treat <code>TRUE</code> like the number 1 and <code>FALSE</code> like the number 0. (This is just like the concept of the indicator function we’ve been discussing.) So if we add up some <code>TRUE</code>s and <code>FALSE</code>s, R simply counts how many <code>TRUE</code>s there are</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">&gt;=</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4</code></pre>
+<p>Our Monte Carlo estimate is 0.11297.</p>
 </div>
-</div>
-<p>So in our Monte Carlo estimation code, <code>samples &gt; 2</code> was a vector of <code>TRUE</code>s and <code>FALSE</code>s, depending on whether each sample was greater than 2 or not, then <code>mean(samples &gt; 2)</code> took the <em>proportion</em> of the samples that were greater than 2.</p>
-</section>
-<section id="monte-carlo-for-integrals" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="monte-carlo-for-integrals"><span class="header-section-number">2.2</span> Monte Carlo for integrals</h2>
-<p>There’s another thing – a non-statistics thing – that Monte Carlo estimation is useful for. We can use Monte Carlo estimation to approximate integrals that are too hard to do by hand.</p>
-<p>This might seem surprising. Estimating the expectation of (a function of) a random variable seems a naturally statistical thing to do. But an integral is just a straight maths problem – there’s not any randomness at all. But actually, integrals and expectations are very similar things.</p>
-<p>Let’s think of an integral: say, <span class="math display">\[ \int_a^b h(x) \,\mathrm{d}x ,\]</span> the integral of some function <span class="math inline">\(h\)</span> (the “integrand”) between the limits <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. Now let’s compare that to the integral <span class="math inline">\(\Exg \phi(X)\)</span> of a continuous random variable that we can estimate using Monte Carlo estimation, <span class="math display">\[ \Exg \phi(X) = \int_{-\infty}^\infty \phi(x)\,f(x)\, \mathrm{d} x. \]</span> Matching things up, we can see that we if we were to a function <span class="math inline">\(\phi\)</span> and a PDF <span class="math inline">\(f\)</span> such that <span id="eq-match"><span class="math display">\[ \phi(x)\,f(x) = \begin{cases} 0 &amp; x &lt; a \\ h(x) &amp; a \leq x \leq b \\ 0 &amp; x &gt; b , \end{cases}  \tag{2.1}\]</span></span> then we would have <span class="math display">\[ \Exg \phi(X) = \int_{-\infty}^\infty \phi(x)\,f(x)\, \mathrm{d} x = \int_a^b h(x) \,\mathrm{d}x, \]</span> so the value of the expectation would be precisely the value of the integral we’re after. Then we could use Monte Carlo to estimate that expectation/integral.</p>
-<p>There are lots of choices of <span class="math inline">\(\phi\)</span> and <span class="math inline">\(f\)</span> that would satisfy this the condition in <a href="#eq-match" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-match</span></a>. But a “common-sense” choice that often works is to pick <span class="math inline">\(f\)</span> to be the PDF of <span class="math inline">\(X\)</span>, a continuous uniform distribution on the interval <span class="math inline">\([a,b]\)</span>. (This certainly works when <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are finite, anyway.) Recall that the continuous uniform distribution means that <span class="math inline">\(X\)</span> has PDF <span class="math display">\[ f(x) = \begin{cases} 0 &amp; x &lt; a \\ \displaystyle{\frac{1}{b-a}} &amp; a \leq x \leq b \\ 0 &amp; x &gt; b . \end{cases} \]</span> Comparing this equation with <a href="#eq-match" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-match</span></a>, we then have to choose <span class="math display">\[\phi(x) = \frac{h(x)}{f(x)} = (b-a)h(x).\]</span></p>
-<p>Putting this all together, we have <span class="math display">\[ \Exg \phi(X) = \int_{-\infty}^{+\infty} \phi(x)\,f(x)\,\mathrm{d}x = \int_a^b (b-a)h(x)\,\frac{1}{b-a}\,\mathrm{d}x = \int_a^b h(x) \,\mathrm{d}x ,\]</span> as required. This can then be estimated using the Monte Carlo method.</p>
-<div id="def-MCint" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.2</strong></span> Consider an integral <span class="math inline">\(\theta = \int_a^b h(x)\,\mathrm{d}x\)</span>. Let <span class="math inline">\(f\)</span> be the probability density function of a random variable <span class="math inline">\(X\)</span> and let <span class="math inline">\(\phi\)</span> be function such that <a href="#eq-match" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-match</span></a> holds. Then the <strong>Monte Carlo estimator</strong> <span class="math inline">\(\widehat\theta_n^{\mathrm{MC}}\)</span> of the integral <span class="math inline">\(\theta\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , \]</span> where <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are a random sample from <span class="math inline">\(X\)</span>.</p>
-</div>
-<div id="exm-MCint" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.2</strong></span> Suppose we want to approximate the integral <span class="math display">\[ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x . \]</span></p>
-<p>Since this is an integral on the finite interval <span class="math inline">\([0,2]\)</span>, it would seem to make sense to pick <span class="math inline">\(X\)</span> to be uniform on <span class="math inline">\([0,2]\)</span>. This means we should take <span class="math display">\[\phi(x) = \frac{h(x)}{f(x)} = (2-0)h(x) = 2\,x^{1.6}(2-x)^{0.7}.\]</span> We can then approximate this integral in R using the Monte Carlo estimator <span class="math display">\[ \int_0^2 x^{1.6} (2-x)^{0.7} \, \mathrm{d}x = \operatorname{\mathbb{E}} \phi(X) \approx \frac{1}{n} \sum_{i=1}^n 2\,X_i^{1.6} (2-X_i)^{0.7} . \]</span></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="fl">1.6</span> <span class="sc">*</span> (<span class="dv">2</span> <span class="sc">-</span> x)<span class="sc">^</span><span class="fl">0.7</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, a, b)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>((b <span class="sc">-</span> a) <span class="sc">*</span> <span class="fu">integrand</span>(samples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.443793</code></pre>
-</div>
-</div>
-<p>You have perhaps noticed that, here and elsewhere, I tend to split my R code up into lots of small bits, perhaps slightly unnecessarily. After all, those 6 lines of code could simply have been written as just 2 lines</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fl">1e6</span>, <span class="dv">0</span>, <span class="dv">2</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="dv">2</span> <span class="sc">*</span> samples<span class="sc">^</span><span class="fl">1.6</span> <span class="sc">*</span> (<span class="dv">2</span> <span class="sc">-</span> samples)<span class="sc">^</span><span class="fl">0.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>There’s nothing <em>wrong</em> with that. However, I find that code is easier to read if divided into small pieces. It also makes it easier to tinker with, if I want to use it to solve some similar but slightly different problem.</p>
-</div>
-<div id="exm-MCint2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.3</strong></span> Suppose we want to approximate the integral <span class="math display">\[ \int_{-\infty}^{+\infty}
-\mathrm{e}^{-0.1|x|} \cos x \, \mathrm{d}x . \]</span> This one is an integral on the whole real line, so we can’t take a uniform distribution. Maybe we should take <span class="math inline">\(f(x)\)</span> to be the PDF of a normal distribution, and then put <span class="math display">\[ \phi(x) = \frac{h(x)}{f(x)} = \frac{\mathrm{e}^{-0.1|x|} \cos x}{f(x)} . \]</span></p>
-<p>But which normal distribution should we take? Well, we’re <em>allowed</em> to take any one – we will still get an accurate estimate in the limit as <span class="math inline">\(n \to \infty\)</span>. But we’d like an estimator that gives accurate results at moderate-sized <span class="math inline">\(n\)</span>, and picking a “good” distribution for <span class="math inline">\(X\)</span> will help that.</p>
-<p>We’ll probably get the best results if we pick a distribution that is likely to mostly take values where <span class="math inline">\(h(x)\)</span> is big – or, rather, where the absolute value <span class="math inline">\(|h(x)|\)</span> is big, to be precise. That is because we don’t want to “waste” too many samples where <span class="math inline">\(h(x)\)</span> is very small, because they don’t contribute much to the integral. But we don’t want to “miss” – or only sample very rarely – places where <span class="math inline">\(h(x)\)</span> is big, which contribute a lot to the integral.</p>
-<p>Let’s have a look at the graph of <span class="math inline">\(h(x) = \mathrm{e}^{-0.1|x|} \cos x\)</span>.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code for drawing this graph</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">abs</span>(x)) <span class="sc">*</span> <span class="fu">cos</span>(x)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  integrand, <span class="at">n =</span> <span class="dv">1001</span>, <span class="at">from =</span> <span class="sc">-</span><span class="dv">55</span>, <span class="at">to =</span> <span class="dv">55</span>,</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">3</span>,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"integrand h(x)"</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">50</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="L02-mc-uses_files/figure-html/h-graph-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>This suggests to me that a mean of 0 and a standard deviation of 20 might work quite well, since this will tend to take values in <span class="math inline">\([-40,40]\)</span> or so.</p>
-<p>We will use R’s function <code>dnorm()</code> for the probability density function of the normal distribution (which saves us from having to remember what that is).</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">abs</span>(x)) <span class="sc">*</span> <span class="fu">cos</span>(x)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>pdf       <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="dv">0</span>, <span class="dv">20</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>phi       <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">integrand</span>(x) <span class="sc">/</span> <span class="fu">pdf</span>(x)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">20</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">phi</span>(samples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.235336</code></pre>
-</div>
-</div>
-</div>
-<p><strong>Next time:</strong> <em>We will analyse the accuracy of these Monte Carlo estimates.</em></p>
+<p><strong>Next time:</strong> <em>We look at more examples of things we can estimate using the Monte Carlo method.</em></p>
 <div class="mysummary">
 <p><strong>Summary:</strong></p>
 <ul>
-<li><p>The indicator <span class="math inline">\(\Ind_A(x)\)</span> function of a set <span class="math inline">\(A\)</span> is 1 if <span class="math inline">\(x \in A\)</span> or 0 if <span class="math inline">\(x \notin A\)</span>.</p></li>
-<li><p>We can estimate a probability <span class="math inline">\(\mathbb P(X \in A)\)</span> by using the Monte Carlo estimate for <span class="math inline">\(\Exg\Ind_A(X)\)</span>.</p></li>
-<li><p>We can estimate an integral <span class="math inline">\(\int h(x) \, \mathrm{d}x\)</span> by using a Monte Carlo estimate with <span class="math inline">\(\phi(x)\,f(x) = h(x)\)</span>.</p></li>
+<li><p>Statistical computing is about solving statistical problems by combining human ingenuity with computing power.</p></li>
+<li><p>The Monte Carlo estimate of <span class="math inline">\(\Exg \phi(X)\)</span> is <span class="math display">\[ \widehat{\theta}_n^{\mathrm{MC}} = \frac{1}{n} \sum_{i=1}^n \phi(X_i) , \]</span> where <span class="math inline">\(X_1, \dots, X_n\)</span> are IID random samples from <span class="math inline">\(X\)</span>.</p></li>
+<li><p>Monte Carlo estimation typically gets more accurate as the number of samples <span class="math inline">\(n\)</span> gets bigger.</p></li>
 </ul>
 <p><strong>Read more:</strong> <a href="https://leeds.primo.exlibrisgroup.com/permalink/44LEE_INST/1fj430b/cdi_askewsholts_vlebooks_9781118728031">Voss, <em>An Introduction to Statistical Computing</em></a>, Section 3.1 and Subsection 3.2.1.</p>
 </div>
@@ -1043,13 +981,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/L01-mc-intro.html" class="pagination-link" aria-label="Introduction to Monte Carlo">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Monte Carlo</span></span>
+      <a href="../index.html" class="pagination-link" aria-label="About MATH5835">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">About MATH5835</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/L03-mc-error-1.html" class="pagination-link" aria-label="Monte Carlo error I: theory">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo error I: theory</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/L02-mc-uses.html" class="pagination-link" aria-label="Uses of Monte Carlo">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uses of Monte Carlo</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
